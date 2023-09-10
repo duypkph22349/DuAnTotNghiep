@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Entity
 @Getter
 @Setter
-@Table(name = "Account")
+@Table(name = "account")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,6 +38,6 @@ public class Account {
   private String email;
   @Column(name = "password")
   private String password;
-  @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-  private Employee employee;
+  // @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+  // private Customer customer;
 }

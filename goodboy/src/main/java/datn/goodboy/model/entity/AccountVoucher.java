@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @Entity
 @Getter
 @Setter
-@Table(name = "AccountVoucher")
+@Table(name = "account_voucher")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,5 +32,4 @@ public class AccountVoucher {
   private UUID id_voucher;
   @Column(name = "status")
   private int status;
-
 }

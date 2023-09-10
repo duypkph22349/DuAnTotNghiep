@@ -15,39 +15,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
-public class BillResponse {
-
-  UUID id_customer;
-
-  UUID id_employee;
-
-  int id_pay;
-
+public class CustomerResponse {
+  UUID id;
   String code;
-
-  LocalDateTime confirmation_date;
-
-  LocalDateTime delivery_date;
-
-  LocalDateTime received_date;
-
-  LocalDateTime completion_date;
-
-  String customer_name;
-
+  String name;
+  boolean gender;
+  LocalDateTime birth_date;
   String phone;
-
   String address;
-
-  float money_ship;
-
-  float total_money;
-
-  float reduction_amount;
-
-  float deposit;
-
-  String note;
-
+  String city;
+  String country;
   int status;
 }

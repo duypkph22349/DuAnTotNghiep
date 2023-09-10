@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,7 @@ import lombok.AllArgsConstructor;
 @Data
 @Getter
 @Setter
-@Table(name = "VoucherDetail")
+@Table(name = "voucher_detail")
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoucherDetail {
@@ -28,10 +29,10 @@ public class VoucherDetail {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private int id;
-  @OneToMany
+  @OneToOne
   @JoinColumn(name = "id_bill")
   private Bill bill;
-  @OneToMany
+  @OneToOne
   @JoinColumn(name = "id_voucher")
   private Voucher voucher;
   @Column(name = "money_before_reduction")

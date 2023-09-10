@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-GoodboyApplication<goodboy>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "datn.goodboy.GoodboyApplication",
+      "projectName": "goodboy",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
