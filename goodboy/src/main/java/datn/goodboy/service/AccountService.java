@@ -7,6 +7,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Account;
+import datn.goodboy.model.request.AccountFillter;
+import datn.goodboy.model.request.AccountRequest;
+import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.repository.AccountRepository;
 
 @Service
@@ -34,5 +37,26 @@ public class AccountService {
 
   public void deleteAccount(UUID id) {
     accountRepository.deleteById(id);
+  }
+
+  public List<AccountResponse> getPageNo(int pageno, String sortBy, boolean sortDir) {
+    // Sort sort =
+    return null;
+  }
+
+  public AccountResponse createAccout(AccountRequest request) {
+    return null;
+  }
+
+  public AccountResponse updateAccout(AccountRequest request) {
+    return null;
+  }
+
+  public List<AccountResponse> fillter(AccountFillter fillter) {
+    return null;
+  }
+
+  public Account changePassword() {
+    return null;
   }
 }
