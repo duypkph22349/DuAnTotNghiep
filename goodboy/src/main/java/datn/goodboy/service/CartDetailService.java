@@ -33,17 +33,14 @@ public class CartDetailService {
 
 
     public CartDetail saveCart(CartDetail cartDetail) {
-
         return cartDetailRepository.save(cartDetail);
     }
 
     public void deleteCart(int id) {
-
         cartDetailRepository.deleteById(id);
     }
 
     public Optional<CartDetail> findByIdCart(int id) {
-
         return cartDetailRepository.findById(id);
     }
 }
