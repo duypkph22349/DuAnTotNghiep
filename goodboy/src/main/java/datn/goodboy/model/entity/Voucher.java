@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Data
 @Getter
 @Setter
-@Table(name = "Voucher")
+@Table(name = "voucher")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Voucher {

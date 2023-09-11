@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.model.request.VoucherRequest;
+import datn.goodboy.model.response.VoucherResponse;
 import datn.goodboy.repository.VoucherRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class VoucherService {
@@ -20,6 +23,7 @@ public class VoucherService {
   private final VoucherRepository voucherRepository;
 
   // Use constructor-based dependency injection
+  // admin
   @Autowired
   public VoucherService(VoucherRepository voucherRepository) {
     this.voucherRepository = voucherRepository;
@@ -39,5 +43,15 @@ public class VoucherService {
 
   public void deleteVoucher(int id) {
     voucherRepository.deleteById(id);
+  }
+
+  // manager
+  public Voucher updateVoucher(UUID id_voucher, VoucherRequest request) {
+    return null;
+  }
+  // user
+
+  public List<VoucherResponse> getAllVoucherInAccount(UUID idAccount) {
+    return null;
   }
 }

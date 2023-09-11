@@ -21,13 +21,13 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "Customer")
+@Table(name = "customer")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   UUID id;
   @Column(name = "code")
@@ -42,6 +42,10 @@ public class Customer {
   String address;
   @Column(name = "phone")
   String phone;
+  @Column(name = "city")
+  String city;
+  @Column(name = "country")
+  String country;
   @Column(name = "status")
   int status;
   @OneToOne(cascade = CascadeType.ALL)

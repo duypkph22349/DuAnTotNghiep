@@ -7,11 +7,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,15 +18,14 @@ import lombok.AllArgsConstructor;
 @Entity
 @Getter
 @Setter
-@Table(name = "Account")
+@Table(name = "account")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
   @Id
-  @OneToOne
-  @JoinColumn(name = "id")
-  private Customer customer;
+  @Column(name = "id")
+  private UUID id;
   @Column(name = "code")
   private String code;
   @Column(name = "name")
@@ -42,7 +38,6 @@ public class Account {
   private String email;
   @Column(name = "password")
   private String password;
-  @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-  private Employee employee;
-
+  // @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+  // private Customer customer;
 }
