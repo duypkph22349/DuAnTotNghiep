@@ -1,5 +1,8 @@
 package datn.goodboy.repository;
 
-public class EmployeeRepository {
-  
+
+import datn.goodboy.model.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 }
