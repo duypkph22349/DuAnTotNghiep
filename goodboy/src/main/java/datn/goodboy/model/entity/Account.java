@@ -26,18 +26,12 @@ public class Account {
   @Id
   @Column(name = "id")
   private UUID id;
-  @Column(name = "code")
-  private String code;
-  @Column(name = "name")
-  private String name;
-  @Column(name = "birth_date")
-  private LocalDate birth_date;
-  @Column(name = "phone")
-  private String phone;
   @Column(name = "email")
   private String email;
   @Column(name = "password")
   private String password;
+  @Column(name = "status")
+  private int status;
   // @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
   // private Customer customer;
 }

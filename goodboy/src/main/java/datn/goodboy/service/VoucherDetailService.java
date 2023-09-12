@@ -43,6 +43,8 @@ public class VoucherDetailService {
   // manager
   // user
   public BillResponse userVoucher(UUID id_voucher, int id_bill) {
+    UUID id_customer = UUID.randomUUID();
+    
     return null;
   }
 }

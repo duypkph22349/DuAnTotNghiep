@@ -4,7 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.request.AccountFillter;
@@ -14,7 +19,8 @@ import datn.goodboy.repository.AccountRepository;
 
 @Service
 public class AccountService {
-
+  @Autowired
+  PasswordEncoder encoder;
   // Declare the repository as final to ensure its immutability
   private final AccountRepository accountRepository;
 
@@ -45,18 +51,28 @@ public class AccountService {
   }
 
   public AccountResponse createAccout(AccountRequest request) {
-    return null;
+    Account newAcc = new Account();
+    newAcc.setEmail(request.email);
+    newAcc.setPassword(encoder.encode(request.password));
+    newAcc.setStatus(0);
+    Account saveAccout = accountRepository.save(newAcc);
+    return new AccountResponse(saveAccout.getId(), saveAccout.getEmail(), saveAccout.getStatus());
   }
 
-  public AccountResponse updateAccout(AccountRequest request) {
-    return null;
+  public AccountResponse changePassword(AccountRequest request) {
+    Optional<Account> accountExits = accountRepository.findById(request.idCustomer);
+    if (accountExits.isPresent()) {
+      Account newAcc = accountExits.get();
+      newAcc.setPassword(encoder.encode(request.password));
+      Account saveAccout = accountRepository.save(newAcc);
+      return new AccountResponse(saveAccout.getId(), saveAccout.getEmail(), saveAccout.getStatus());
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not find Account with id ");
+    }
   }
 
   public List<AccountResponse> fillter(AccountFillter fillter) {
     return null;
   }
 
-  public Account changePassword() {
-    return null;
-  }
 }

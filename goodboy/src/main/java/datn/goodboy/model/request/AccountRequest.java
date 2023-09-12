@@ -12,13 +12,8 @@ public class AccountRequest {
   @NotNull
   UUID idCustomer;
   @NotNull
-  String name;
-  @NotNull
-  LocalDate birth_date;
-  @NotNull
-  String phone;
-  @NotNull
   String email;
   @NotNull
   String password;
+  int status;
 }

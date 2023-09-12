@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,24 +43,24 @@ public class AccountVoucherService {
   }
 
   // manager
-  public List<AccountVoucher> addVoucherToAccounts(UUID idVoucher, List<String> idAccount) {
-    return null;
+  public List<AccountVoucher> addVoucherToAccounts(UUID idVoucher, List<UUID> idAccount) {
+    List<AccountVoucher> list = new ArrayList<>();
+    for (UUID idacc : idAccount) {
+      AccountVoucher vcacc = new AccountVoucher();
+      vcacc.setId_account(idacc);
+      vcacc.setId_voucher(idVoucher);
+      vcacc.setStatus(1);
+      list.add(vcacc);
+    }
+    return accountVoucherRepository.saveAll(list);
   }
 
-  public List<AccountVoucher> removeVoucherToAccounts(UUID idVoucher, List<String> idAccount) {
-    return null;
-  }
-
-  public AccountResponse addVoucher(AccountRequest request) {
-    return null;
-  }
-
-  public AccountResponse updateVoucher(AccountRequest request) {
-    return null;
+  public List<AccountVoucher> removeVoucherToAccounts(List<Integer> idVcAcc) {
+    List<AccountVoucher> listacc = accountVoucherRepository.findAllById(idVcAcc);
+    listacc.forEach(acc -> acc.setStatus(0));
+    return accountVoucherRepository.saveAll(listacc);
   }
 
   // user
-  public boolean useAccount(BillRequest request) {
-    return true;
-  }
+
 }
