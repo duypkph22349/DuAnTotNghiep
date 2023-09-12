@@ -20,8 +20,9 @@ public class Cart {
     int id;
     @Column(name = "code")
     String code;
-    @OneToMany(mappedBy = "id_customer" )
-    private List<Customer> customer;
+    @ManyToOne
+    @JoinColumn(name = "id_customer" )
+    private Customer customer;
     @Column(name = "start_time")
     private LocalDateTime start_time;
     @Column(name = "end_time")

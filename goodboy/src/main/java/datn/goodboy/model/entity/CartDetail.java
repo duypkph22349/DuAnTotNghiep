@@ -18,10 +18,15 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @OneToMany(mappedBy = "id_cart" )
-    private List<Cart> carts;
-    @OneToMany(mappedBy = "id_product_detail" )
-    private List<ProductDetail> productDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cart" )
+    private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "id_product_detail" )
+    private ProductDetail productDetail;
+    
     @Column(name = "status")
     private int status;
 }
