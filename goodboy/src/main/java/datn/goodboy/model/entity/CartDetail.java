@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,12 +18,15 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @OneToMany
-    @JoinColumn(name = "id_cart")
-    private Cart id_cart;
-    @OneToMany
-    @JoinColumn(name = "id_product_detail")
-    private ProductDetail id_product_detail;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cart" )
+    private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "id_product_detail" )
+    private ProductDetail productDetail;
+    
     @Column(name = "status")
     private int status;
 }

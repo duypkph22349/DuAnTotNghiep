@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,8 +20,8 @@ public class Cart {
     int id;
     @Column(name = "code")
     String code;
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "id_customer" )
     private Customer customer;
     @Column(name = "start_time")
     private LocalDateTime start_time;
