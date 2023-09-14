@@ -1,6 +1,7 @@
 package datn.goodboy.service;
 
 
+import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.repository.SizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,31 +17,19 @@ public class SizeService {
     @Autowired
     private SizeRepository sizeRepository;
 
-    @Autowired
-    public SizeService(SizeRepository sizeRepository) {
-        this.sizeRepository = sizeRepository;
+    public Page<Size> findAll(Pageable pageable) {
+        return sizeRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-
-    public Page<Size> getPage(Pageable pageable){
-        return sizeRepository.findAll(pageable);
+    public Size add(Size origin) {
+        return sizeRepository.save(origin);
     }
 
-    public ArrayList<Size> getAll(){
-        return (ArrayList<Size>) sizeRepository.findAll();
-    }
-
-
-    public Size saveSize(Size size) {
-
-        return sizeRepository.save(size);
-    }
-
-    public void deleteSize(int id) {
-        sizeRepository.deleteById(id);
-    }
-
-    public Optional<Size> findByIdSize(int id) {
-        return sizeRepository.findById(id);
+    public Size update(Integer id, Size color) {
+        Size color1 = sizeRepository.findById(id).get();
+        color1.setName(color.getName());
+        color1.setUpdatedAt(color.getUpdatedAt());
+        color1.setStatus(color.getStatus());
+        return sizeRepository.save(color1);
     }
 }

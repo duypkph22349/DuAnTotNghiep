@@ -1,7 +1,5 @@
 package datn.goodboy.service;
 
-
-
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,39 +7,34 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class BrandService {
     @Autowired
     private BrandRepository brandRepository;
 
-    @Autowired
-    public BrandService(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
+    public Page<Brand> findAllBrand(Pageable pageable) {
+        return brandRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-
-    public Page<Brand> getPage(Pageable pageable){
-        return brandRepository.findAll(pageable);
+    public Brand add(Brand br) {
+        return brandRepository.save(br);
     }
 
-    public ArrayList<Brand> getAll(){
-        return (ArrayList<Brand>) brandRepository.findAll();
+    public Brand update(Integer id, Brand brand) {
+        Brand brand1 = brandRepository.findById(id).get();
+        brand1.setName(brand.getName());
+        brand1.setUpdatedAt(brand.getUpdatedAt());
+        brand1.setStatus(brand.getStatus());
+        return brandRepository.save(brand1);
+    }
+    public Brand getById(Integer id) {
+        return brandRepository.findById(id).get();
     }
 
-
-    public Brand saveBrand(Brand brand) {
-
-        return brandRepository.save(brand);
+    public void delete(Integer id) {
+        Brand brand = brandRepository.findById(id).get();
+        brandRepository.delete(brand);
     }
 
-    public void deleteBrand(int id) {
-        brandRepository.deleteById(id);
-    }
-
-    public Optional<Brand> findByIdBrand(int id) {
-        return brandRepository.findById(id);
-    }
 }

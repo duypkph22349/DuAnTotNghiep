@@ -3,6 +3,7 @@ package datn.goodboy.service;
 
 
 
+import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,31 +19,19 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-
-    public Page<Product> getPage(Pageable pageable){
-        return productRepository.findAll(pageable);
+    public Product add(Product origin) {
+        return productRepository.save(origin);
     }
 
-    public ArrayList<Product> getAll(){
-        return (ArrayList<Product>) productRepository.findAll();
-    }
-
-
-    public Product saveProduct(Product product) {
-
-        return productRepository.save(product);
-    }
-
-    public void deleteProduct(int id) {
-        productRepository.deleteById(id);
-    }
-
-    public Optional<Product> findByIdProduct(int id) {
-        return productRepository.findById(id);
+    public Product update(Integer id, Product color) {
+        Product color1 = productRepository.findById(id).get();
+        color1.setName(color.getName());
+        color1.setUpdatedAt(color.getUpdatedAt());
+        color1.setStatus(color.getStatus());
+        return productRepository.save(color1);
     }
 }

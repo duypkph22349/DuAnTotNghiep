@@ -1,7 +1,5 @@
 package datn.goodboy.service;
 
-
-
 import datn.goodboy.model.entity.Color;
 import datn.goodboy.repository.ColorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,39 +7,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class ColorService {
     @Autowired
     private ColorRepository colorRepository;
 
-    @Autowired
-    public ColorService(ColorRepository colorRepository) {
-        this.colorRepository = colorRepository;
+    public Page<Color> findAllColor(Pageable pageable) {
+        return colorRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-
-    public Page<Color> getPage(Pageable pageable){
-        return colorRepository.findAll(pageable);
-    }
-
-    public ArrayList<Color> getAll(){
-        return (ArrayList<Color>) colorRepository.findAll();
-    }
-
-
-    public Color saveColor(Color color) {
-
+    public Color add(Color color) {
         return colorRepository.save(color);
     }
 
-    public void deleteColor(int id) {
-        colorRepository.deleteById(id);
-    }
-
-    public Optional<Color> findByIdColor(int id) {
-        return colorRepository.findById(id);
+    public Color update(Integer id, Color color) {
+        Color color1 = colorRepository.findById(id).get();
+        color1.setName(color.getName());
+        color1.setUpdatedAt(color.getUpdatedAt());
+        color1.setStatus(color.getStatus());
+        return colorRepository.save(color1);
     }
 }

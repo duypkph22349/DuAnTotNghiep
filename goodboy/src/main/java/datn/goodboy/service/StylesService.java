@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.repository.StylesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,31 +16,19 @@ public class StylesService {
     @Autowired
     private StylesRepository stylesRepository;
 
-    @Autowired
-    public StylesService(StylesRepository stylesRepository) {
-        this.stylesRepository = stylesRepository;
+    public Page<Styles> findAll(Pageable pageable) {
+        return stylesRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-
-    public Page<Styles> getPage(Pageable pageable){
-        return stylesRepository.findAll(pageable);
+    public Styles add(Styles origin) {
+        return stylesRepository.save(origin);
     }
 
-    public ArrayList<Styles> getAll(){
-        return (ArrayList<Styles>) stylesRepository.findAll();
-    }
-
-
-    public Styles saveStyles(Styles styles) {
-
-        return stylesRepository.save(styles);
-    }
-
-    public void deleteStyles(int id) {
-        stylesRepository.deleteById(id);
-    }
-
-    public Optional<Styles> findByIdStyles(int id) {
-        return stylesRepository.findById(id);
+    public Styles update(Integer id, Styles color) {
+        Styles color1 = stylesRepository.findById(id).get();
+        color1.setName(color.getName());
+        color1.setUpdatedAt(color.getUpdatedAt());
+        color1.setStatus(color.getStatus());
+        return stylesRepository.save(color1);
     }
 }
