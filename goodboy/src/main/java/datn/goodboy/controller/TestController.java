@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.model.response.CustomerResponse;
 import datn.goodboy.service.AccountService;
 import datn.goodboy.service.CustomerService;
@@ -12,6 +13,7 @@ import datn.goodboy.service.CustomerService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,13 @@ public class TestController {
   @GetMapping(value = "account/getall")
   public ResponseEntity<List<Account>> getAllAccounts() {
     return ResponseEntity.ok().body(accountService.getAllAccounts());
+  }
+
+  @GetMapping(value = "account/getpage")
+  public ResponseEntity<List<AccountResponse>> getPageAccount(@Param("pageno") int pageno,
+      @Param("sortby") String sortby,
+      @Param("sortdir") boolean sortDir) {
+    return ResponseEntity.ok().body(accountService.getPageNo(pageno, sortby, sortDir));
   }
 
   @GetMapping(value = "customer/getall")
