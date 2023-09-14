@@ -1,7 +1,5 @@
 package datn.goodboy.repository;
 
-
-import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.PatternType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

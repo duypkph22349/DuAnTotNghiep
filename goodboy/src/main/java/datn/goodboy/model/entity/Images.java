@@ -7,20 +7,22 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name="origin")
-public class Origin {
+@NoArgsConstructor
+@Entity
+@Table(name="image")
+public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
-    @Column(name="code")
-    private String code;
-    @Column(name="name")
-    private String name;
+
+    @JoinColumn(name="id_product_detail")
+    private ProductDetail idSP;
+
+    @Column(name="image")
+    private String img;
     @Column(name="created_at")
     private LocalDateTime createdAt;
     @Column(name="update_at")
@@ -29,4 +31,5 @@ public class Origin {
     private int status;
     @Column(name="deleted")
     private boolean deleted;
+
 }
