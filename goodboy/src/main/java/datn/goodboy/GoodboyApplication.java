@@ -9,5 +9,4 @@ public class GoodboyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GoodboyApplication.class, args);
 	}
-
 }
