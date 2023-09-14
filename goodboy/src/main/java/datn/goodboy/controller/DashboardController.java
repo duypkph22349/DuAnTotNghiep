@@ -21,4 +21,12 @@ public class DashboardController {
         return new ModelMap();
     }
 
+    @GetMapping("getform")
+    public String getFormElemet() {
+        return "redirect:form-elements";
+    }
+    @GetMapping("getform2")
+    public String getform() {
+        return "redirect:form-elements";
+    }
 }
