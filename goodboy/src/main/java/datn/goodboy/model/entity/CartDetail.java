@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,4 +30,13 @@ public class CartDetail {
     
     @Column(name = "status")
     private int status;
+
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name="update_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name="deleted")
+    private boolean deleted;
 }
