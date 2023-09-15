@@ -8,5 +8,4 @@ import org.springframework.stereotype.Service;
 public class ProductDetailService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
-
 }
