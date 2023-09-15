@@ -18,6 +18,7 @@ public class Images {
     @Column(name="id")
     private Integer id;
 
+    @ManyToOne
     @JoinColumn(name="id_product_detail")
     private ProductDetail idSP;
 
