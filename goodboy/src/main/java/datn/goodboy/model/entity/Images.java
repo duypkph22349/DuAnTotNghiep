@@ -18,11 +18,13 @@ public class Images {
     @Column(name="id")
     private Integer id;
 
+    @ManyToOne
     @JoinColumn(name="id_product_detail")
     private ProductDetail idSP;
 
     @Column(name="image")
     private String img;
+
     @Column(name="created_at")
     private LocalDateTime createdAt;
     @Column(name="update_at")
