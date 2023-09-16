@@ -12,7 +12,7 @@ public class ProductDetailService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
-    public Page<ProductDetail> findAll(Pageable pageable) {
+    public Page<ProductDetail> findAllProductDetail(Pageable pageable) {
         return productDetailRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
