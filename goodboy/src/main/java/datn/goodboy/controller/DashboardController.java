@@ -7,26 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "admin/pages")
+@RequestMapping
 public class DashboardController {
 
-    @GetMapping(value = "dashboard")
+    @GetMapping(value = "admin/pages/dashboard")
     public ModelMap mmDashboard(Model model) {
         model.addAttribute("message", "hello this is meessage form controller ");
         return new ModelMap();
-    }
-
-    @GetMapping(value = "form-elements")
-    public ModelMap mmFormElements() {
-        return new ModelMap();
-    }
-
-    @GetMapping("getform")
-    public String getFormElemet() {
-        return "redirect:form-elements";
-    }
-    @GetMapping("getform2")
-    public String getform() {
-        return "redirect:form-elements";
     }
 }

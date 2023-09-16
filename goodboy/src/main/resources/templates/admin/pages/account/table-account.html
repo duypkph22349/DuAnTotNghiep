@@ -9,6 +9,7 @@
 <body>
     <section layout:fragment="content">
         <div class="container my-4">
+            <a href="/admin/pages/account/create" class="btn btn-primary">New</a>
             <div class="text-lg-end">
                 <div class="text-lg-end">
                     <form action="#" th:action="@{/manager/account/getcountrow}" method="get">
@@ -27,27 +28,27 @@
                     <thead>
                         <tr>
                             <th scope="col">Tên Khách Hàng
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=true)}"><i
                                         class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=false)}"><i
                                         class="fa-solid fa-sort-down fa-xs"></i></a>
                             </th>
                             <th scope="col">Email
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=true)}"><i
                                         class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=false)}"><i
                                         class="fa-solid fa-sort-down fa-xs"></i></a>
                             </th>
                             <th scope="col">Số điện thoại
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=true)}"><i
                                         class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=false)}"><i
                                         class="fa-solid fa-sort-down fa-xs"></i></a>
                             </th>
                             <th scope="col">Trạng thái
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=true)}"><i
                                         class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=false)}"><i
                                         class="fa-solid fa-sort-down fa-xs"></i></a>
                             </th>
                             <th scope="col">Action</th>
@@ -70,13 +71,17 @@
                     </tbody>
                 </table>
                 <div class="text-center">
-                    <a href="/admin/pages/account/first" class="btn btn-primary">first</a>
+                    <a href="/admin/pages/account/first" class="btn btn-primary"><i
+                            class="fa-solid fa-backward-step"></i></a>
+                    <a href="/admin/pages/account/first" class="btn btn-primary"><i
+                            class="fa-solid fa-backward"></i></a>
                     <tr th:each="page : ${pagenumber}">
                         <a th:href="@{/admin/pages/account/page(pageno=${page})}" th:text="${page}"></a>
                     </tr>
-                    <a href="/admin/pages/account/last" class="btn btn-primary">last</a>
+                    <a href="/admin/pages/account/last" class="btn btn-primary"><i class="fa-solid fa-forward"></i></a>
+                    <a href="/admin/pages/account/last" class="btn btn-primary"><i
+                            class="fa-solid fa-forward-step"></i></a>
                 </div>
-                <a href="/admin/pages/account/create" class="btn btn-primary">New</a>
             </div>
         </div>
     </section>
