@@ -16,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class AccountResponse {
   UUID idCustomer;
+  String name;
+  String phoneNumber;
   String email;
   int status;
 }

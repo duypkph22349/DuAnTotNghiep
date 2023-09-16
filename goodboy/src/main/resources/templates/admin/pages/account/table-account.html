@@ -1,14 +1,85 @@
 <!DOCTYPE html>
-<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Account</title>
+    <title>Account</title>
 </head>
 
 <body>
-  <section layout:fragment="content">
-    <div>this is form -table  </div>
-  </section>
+    <section layout:fragment="content">
+        <div class="container my-4">
+            <div class="text-lg-end">
+                <div class="text-lg-end">
+                    <form action="#" th:action="@{/manager/account/getcountrow}" method="get">
+                        Number of rows
+                        <select name="selectedValue">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="ALL">ALL</option>
+                        </select>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tên Khách Hàng
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Email
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Số điện thoại
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Trạng thái
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=asc)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/manager/account/sort(sortBy=giaBan ,sortDir=desc)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="account : ${list}">
+                            <td th:text="${account.name}"></td>
+                            <td th:text="${account.email}"></td>
+                            <td th:text="${account.phoneNumber}"></td>
+                            <td th:text="${account.status}"></td>
+                            <td>
+                                <a th:href="@{/admin/pages/account/delete(id=${account.idCustomer})}"
+                                    class="btn btn-danger">Delete</a>
+                                <a th:href="@{/admin/pages/account/edit(id=${account.idCustomer})}"
+                                    class="btn btn-success">Update</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <a href="/admin/pages/account/first" class="btn btn-primary">first</a>
+                    <tr th:each="page : ${pagenumber}">
+                        <a th:href="@{/admin/pages/account/page(pageno=${page})}" th:text="${page}"></a>
+                    </tr>
+                    <a href="/admin/pages/account/last" class="btn btn-primary">last</a>
+                </div>
+                <a href="/admin/pages/account/create" class="btn btn-primary">New</a>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>

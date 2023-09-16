@@ -48,7 +48,4 @@ public class Customer {
   String country;
   @Column(name = "status")
   int status;
-  @OneToOne(cascade = CascadeType.ALL)
-  @PrimaryKeyJoinColumn
-  private Account account;
 }
