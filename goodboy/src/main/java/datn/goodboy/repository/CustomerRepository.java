@@ -19,7 +19,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
   @Query(value = "SELECT new datn.goodboy.model.response.CustomerResponse(c.id, c.code, c.name, c.gender, c.birth_date, c.phone, c.address, c.city, c.country, c.status) FROM Customer c")
   public List<CustomerResponse> getAllResponse();
 
-  @Query(value = "SELECT new datn.goodboy.model.response.CustomerComboboxResponse(c.id, c.name) FROM Customer c")
+  @Query(value = "SELECT new datn.goodboy.model.response.CustomerComboboxResponse(c.id, c.name + ' - '+ c.phone) FROM Customer c")
   public List<CustomerComboboxResponse> getCombobox();
 
 }

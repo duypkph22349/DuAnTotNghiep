@@ -108,6 +108,7 @@ public class AccountController {
   @GetMapping("create")
   public String goToCreateForm(Model model) {
     accountRequest = new AccountRequest();
+    accountRequest.setStatus(1);
     model.addAttribute("listCustomer", customerService.getComboBox());
     model.addAttribute("accountRequest", accountRequest);
     return "/admin/pages/account/form-account.html";
