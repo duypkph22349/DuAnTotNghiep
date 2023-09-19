@@ -1,8 +1,11 @@
 package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Cart;
+import datn.goodboy.model.entity.Employee;
 import datn.goodboy.service.CartService;
 import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.EmployeeService;
+import datn.goodboy.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,34 +20,36 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-@RequestMapping("/api/cart")
+@RequestMapping("/api/employee")
 @Controller
-public class CartController {
+public class EmployeeController {
     @Autowired
-    private CartService cartService;
+    private EmployeeService employeeService;
 
     @Autowired
-    private CustomerService customerService;
+    private RolesService rolesService;
+
     private int currentProductCode = 1;
     @GetMapping("/show")
     public String show(){
-        return "/admin/pages/cart/cart";
+        return "/admin/pages/employee/employee";
     }
 
     @GetMapping("/get-all")
-    public List<Cart> getAll(){
-        return cartService.getAllCart();
+    public List<Employee> getAll(){
+        return employeeService.getAllEmployee();
     }
 
     @GetMapping("/get-page")
-    public ResponseEntity<Page<Cart>> getPage(@RequestParam(defaultValue = "1") int page) {
+    public ResponseEntity<Page<Employee>> getPage(@RequestParam(defaultValue = "1") int page) {
         Pageable pageable = PageRequest.of(page - 1, 5);
-        return ResponseEntity.ok().body(cartService.getPage(pageable));
+        return ResponseEntity.ok().body(employeeService.getPage(pageable));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody Cart b, BindingResult result) {
+    public ResponseEntity<?> add(@RequestBody Employee b, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> objectErrorList = result.getAllErrors();
             return ResponseEntity.ok(objectErrorList);
@@ -55,27 +60,25 @@ public class CartController {
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);
         currentProductCode++;
-        return ResponseEntity.ok(cartService.saveCart(b));
+        return ResponseEntity.ok(employeeService.saveEmployee(b));
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> update1(Model model, @PathVariable("id") Integer id,@RequestBody Cart cart) {
-        Optional<Cart> cartOptional = cartService.findByIdCart(id);
-        if (cartOptional.isPresent()) {
-            model.addAttribute("detail", cartOptional.get());
-            model.addAttribute("showCustomer", customerService.getAllCustomers());
+    public ResponseEntity<?> update1(Model model, @PathVariable("id") UUID id, @RequestBody Employee employee) {
+        Optional<Employee> employeeOptional = employeeService.findByIdEmployee(id);
+        if (employeeOptional.isPresent()) {
+            model.addAttribute("detail", employeeOptional.get());
+            model.addAttribute("showCustomer", rolesService.getAllRoles());
         } else {
             model.addAttribute("detail", null);
         }
-        return ResponseEntity.ok(cartService.saveCart(cart));
+        return ResponseEntity.ok(employeeService.saveEmployee(employee));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update2(@RequestBody Cart cart, @PathVariable("id")int id){
-        cart.setId(id);
-        cartService.saveCart(cart);
-        return ResponseEntity.ok(cart);
+    public ResponseEntity<?> update2(@RequestBody Employee employee, @PathVariable("id")UUID id){
+        employee.setId(id);
+        employeeService.saveEmployee(employee);
+        return ResponseEntity.ok(employee);
     }
-
 }
-
