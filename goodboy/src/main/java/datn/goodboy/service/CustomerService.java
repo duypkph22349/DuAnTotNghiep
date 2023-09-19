@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.response.CustomerComboboxResponse;
 import datn.goodboy.model.response.CustomerResponse;
 import datn.goodboy.repository.CustomerRepository;
 
@@ -26,6 +27,9 @@ public class CustomerService {
     return customerRepository.findAll();
   }
 
+  public List<CustomerComboboxResponse> getComboBox() {
+    return customerRepository.getCombobox();
+  }
   public Optional<Customer> getCustomerById(UUID id) {
     return customerRepository.findById(id);
   }

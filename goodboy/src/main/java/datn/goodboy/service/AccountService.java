@@ -83,17 +83,6 @@ public class AccountService implements PanigationInterface<AccountResponse> {
     }
   }
 
-  public List<AccountResponse> getPageNo(int pageno, String sortBy, boolean sortDir) {
-    Sort sort = Sort.by(sortBy);
-    if (sortDir) {
-      sort.ascending();
-    } else {
-      sort.descending();
-    }
-    Pageable page = PageRequest.of(pageno, 10, sort);
-    return accountRepository.getPageAccountRepose(page).getContent();
-  }
-
   public Account createAccout(AccountRequest request) {
     Account newAcc = new Account();
     newAcc.setEmail(request.email);
@@ -150,7 +139,7 @@ public class AccountService implements PanigationInterface<AccountResponse> {
       sort.descending();
     }
     // Pageable object
-    Pageable pageable = PageRequest.of(getPageNumber(pageSize).length - 1, pageSize, sort);
+    Pageable pageable = PageRequest.of(getPageNumber(pageSize) - 1, pageSize, sort);
     // findAll method and pass pageable instance
     Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
     ChiTietSanPhams = page.getContent();
@@ -161,13 +150,14 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
     List<AccountResponse> ChiTietSanPhams;
     ChiTietSanPhams = new ArrayList<>();
-    Sort sort = Sort.by(sortBy);
+    Sort sort;
     if (sortDir) {
-      sort.ascending();
+      sort = Sort.by(sortBy).ascending();
+      System.out.println("tang");
     } else {
-      sort.descending();
+      sort = Sort.by(sortBy).descending();
+      System.out.println("giam");
     }
-    // Pageable object
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     // findAll method and pass pageable instance
     Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
@@ -176,16 +166,43 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   }
 
   @Override
-  public int[] getPageNumber(int rowcount) {
+  public int getPageNumber(int rowcount) {
     Pageable pageable = PageRequest.of(1, rowcount);
     Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
     int totalPage = page.getTotalPages();
-    int[] nb = new int[totalPage];
-    for (int i = 0; i < totalPage; i++) {
-      nb[i] = i + 1;
-    }
-    return nb;
+    return totalPage;
   }
-  // panigation end
 
+  // panigation end
+  @Override
+  public int[] getPanigation(int rowcount, int pageno) {
+    Pageable pageable = PageRequest.of(1, rowcount);
+    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
+    int totalPage = page.getTotalPages();
+    int[] rs;
+    if (totalPage <= 3) {
+      rs = new int[totalPage];
+      for (int i = 1; i <= totalPage; i++) {
+        rs[i] = i;
+      }
+      return rs;
+    } else {
+      rs = new int[3];
+      if (pageno <= 2) {
+        int[] rs1 = { 1, 2, 3 };
+        rs = rs1;
+      }
+      if (pageno > 2) {
+        if (pageno < totalPage - 1) {
+          int[] rs1 = { pageno - 1, pageno, pageno + 1 };
+          rs = rs1;
+        }
+        if (pageno == totalPage - 1) {
+          int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
+          rs = rs1;
+        }
+      }
+      return rs;
+    }
+  }
 }

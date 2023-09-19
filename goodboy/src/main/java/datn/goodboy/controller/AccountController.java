@@ -35,54 +35,54 @@ public class AccountController {
   public int[] pagenumbers;
   public String sortBy = "email";
   public boolean sortDir = true;
+  public int pageno = 0;
+  public int totalpage = 0;
 
   // panigation and sort
   @GetMapping("/getcountrow")
   public String handleSubmit(Model model, @RequestParam("selectedValue") String selectedValue) {
     System.out.println(selectedValue);
-    if (selectedValue.equals("ALL")) {
-      rowcount = Integer.MAX_VALUE;
-    } else {
-      rowcount = Integer.parseInt(selectedValue);
-    }
-    pagenumbers = service.getPageNumber(rowcount);
+    rowcount = Integer.parseInt(selectedValue);
+    pagenumbers = service.getPanigation(rowcount, pageno);
     List<AccountResponse> list = service.getFirstPage(rowcount, sortBy, sortDir);
+    pageno = 1;
+    totalpage = service.getPageNumber(rowcount);
+    model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
     model.addAttribute("pagenumber", pagenumbers);
-    return "Redirect:index"; // Redirect back to the form page
-  }
-
-  @GetMapping("last")
-  public String getLastPage(Model model) {
-    List<AccountResponse> list = service.getLastPage(rowcount, sortBy, sortDir);
-    model.addAttribute("list", list);
-    return "/admin/pages/account/table-account.html";
+    model.addAttribute("crpage", pageno);
+    return "/admin/pages/account/table-account.html"; // Redirect back to the form page
   }
 
   @GetMapping("sort")
   public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
       @RequestParam("sortDir") boolean sordir) {
-    sortBy = sortby;
-    sortDir = sordir;
-    List<AccountResponse> list = service.getFirstPage(rowcount, sortBy, sortDir);
+    this.sortBy = sortby;
+    this.sortDir = sordir;
+    this.pageno = 1;
+    List<AccountResponse> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
+    totalpage = service.getPageNumber(rowcount);
+    pagenumbers = service.getPanigation(rowcount, pageno);
     model.addAttribute("list", list);
+    model.addAttribute("totalpage", totalpage);
     model.addAttribute("pagenumber", pagenumbers);
-    return "/admin/pages/account/table-account.html";
-  }
-
-  @GetMapping("first")
-  public String getFirstPages(Model model) {
-    List<AccountResponse> list = service.getFirstPage(rowcount, sortBy, sortDir);
-    pagenumbers = service.getPageNumber(rowcount);
-    model.addAttribute("pagenumber", pagenumbers);
-    model.addAttribute("list", list);
+    model.addAttribute("crpage", pageno);
     return "/admin/pages/account/table-account.html";
   }
 
   @GetMapping("/page")
   public String getPageNo(Model model, @RequestParam("pageno") int pageno) {
-    List<AccountResponse> list = service.getPageNo(pageno - 1, rowcount, sortBy, sortDir);
+    if (pageno <= 1) {
+      this.pageno = 1;
+      pageno = 1;
+    }
+    this.pageno = pageno;
+    List<AccountResponse> list = service.getPageNo(this.pageno - 1, rowcount, sortBy, sortDir);
+    totalpage = service.getPageNumber(rowcount);
+    model.addAttribute("totalpage", totalpage);
+    pagenumbers = service.getPanigation(rowcount, this.pageno);
     model.addAttribute("pagenumber", pagenumbers);
+    model.addAttribute("crpage", this.pageno);
     model.addAttribute("list", list);
     return "/admin/pages/account/table-account.html";
   }
@@ -91,7 +91,12 @@ public class AccountController {
   @GetMapping("index")
   public String getAccountIndexpages(Model model) {
     List<AccountResponse> list = service.getFirstPage(rowcount, sortBy, sortDir);
+    pagenumbers = service.getPanigation(rowcount, pageno);
+    totalpage = service.getPageNumber(rowcount);
+    model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
+    model.addAttribute("pagenumber", pagenumbers);
+    model.addAttribute("crpage", pageno);
     return "/admin/pages/account/table-account.html";
   }
 
@@ -103,7 +108,8 @@ public class AccountController {
   @GetMapping("create")
   public String goToCreateForm(Model model) {
     accountRequest = new AccountRequest();
-    model.addAttribute("listCustomer", customerService.getAllCustomers());
+    model.addAttribute("listCustomer", customerService.getComboBox());
+    model.addAttribute("accountRequest", accountRequest);
     return "/admin/pages/account/form-account.html";
   }
 
@@ -123,8 +129,8 @@ public class AccountController {
   @PostMapping("store")
   public String storeAccount(Model model, @Valid @ModelAttribute("accountRequest") AccountRequest accountRequest,
       BindingResult theBindingResult) {
-    System.out.println(accountRequest);
     if (theBindingResult.hasErrors()) {
+      model.addAttribute("listCustomer", customerService.getComboBox());
       return "/admin/pages/account/form-account.html";
     } else {
       service.saveAccount(accountRequest);

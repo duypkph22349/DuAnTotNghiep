@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.response.CustomerComboboxResponse;
 import datn.goodboy.model.response.CustomerResponse;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
@@ -17,6 +18,10 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
   @Query(value = "SELECT new datn.goodboy.model.response.CustomerResponse(c.id, c.code, c.name, c.gender, c.birth_date, c.phone, c.address, c.city, c.country, c.status) FROM Customer c")
   public List<CustomerResponse> getAllResponse();
+
+  @Query(value = "SELECT new datn.goodboy.model.response.CustomerComboboxResponse(c.id, c.name) FROM Customer c")
+  public List<CustomerComboboxResponse> getCombobox();
+
 }
 // UUID id;
 // String code;
