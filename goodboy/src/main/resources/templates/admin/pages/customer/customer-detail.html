@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+<h1 style="text-align: center">UPDATE CUSTOMER</h1>
+<form th:object="${detail}" th:action="@{/admin/customer/add}" action="#" method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label>Code:</label>
+        <input type="text" th:name="code" class="form-control" th:value="${detail.code}">
+    </div>
+    <div style="clear: both; display: block; height: 10px"  ></div>
+    <div>
+        <label>Name:</label>
+        <input type="text" th:name="name"  class="form-control" th:value="${detail.name}">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Gender:</label>
+        <input type="radio" th:name="gender"  class="form-control" th:value="false" th:text="Male" th:checked="${detail.gender==false}">
+        <input type="radio" th:name="gender"  class="form-control" th:value="true" th:text="Female" th:checked="${detail.gender==true}">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Birth Date:</label>
+        <input type="date" th:name="birth_date"  class="form-control" th:value="${detail.birth_date}">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Phone:</label>
+        <input type="text" th:name="phone"  class="form-control" th:value="${detail.phone}">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Address:</label>
+        <input type="text" th:name="address" class="form-control" th:value="${detail.address}">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div><div>
+    <label>City:</label>
+    <input type="text" th:name="city" class="form-control" th:value="${detail.city}">
+</div>
+    <div style="clear: both; display: block; height: 10px"></div><div>
+    <label>Country:</label>
+    <input type="text" th:name="country" class="form-control" th:value="${detail.country}">
+</div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <select th:name="status">
+            <option th:value="0" th:selected="${detail.status==0}">Active</option>
+            <option th:value="1" th:selected="${detail.status==1}">No longer active</option>
+        </select>
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <input type="submit" class="btn btn-success" value="ADD" />
+</form>
+</body>
+</html>

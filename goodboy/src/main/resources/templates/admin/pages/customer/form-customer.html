@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+<div class="container col-8">
+    <h1 style="text-align: center">ADD CUSTOMER</h1>
+    <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post">
+        <div>
+            <label>Code:</label>
+            <input type="text" th:name="code" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"  ></div>
+        <div>
+            <label>Name:</label>
+            <input type="text" th:name="name"  class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Gender:</label>
+            <input type="radio" th:name="gender"  class="form-control" th:value="false" th:text="Male" checked>
+            <input type="radio" th:name="gender"  class="form-control" th:value="true" th:text="Female">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Birth Date:</label>
+            <input type="date" th:name="birth_date"  class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Phone:</label>
+            <input type="text" th:name="phone"  class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Address:</label>
+            <input type="text" th:name="address" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div><div>
+            <label>City:</label>
+            <input type="text" th:name="city" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div><div>
+            <label>Country:</label>
+            <input type="text" th:name="country" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <select th:name="status">
+                <option th:value="0">Active</option>
+                <option th:value="1">No longer active</option>
+            </select>
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <input type="submit" class="btn btn-success" value="ADD" />
+    </form>
+    <h1 style="text-align: center">LIST CUSTOMER</h1>
+    <table class="table table-active">
+        <tr>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Birth_Date</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="customer, i :${list}">
+            <td th:text="${i.index+1}"></td>
+            <td th:text="${customer.code}"></td>
+            <td th:text="${customer.name}"></td>
+            <td th:text="${customer.gender}==false?'Male':'Female'"></td>
+            <td th:text="${customer.birth_date}"></td>
+            <td th:text="${customer.phone}"></td>
+            <td th:text="${customer.address}"></td>
+            <td th:text="${customer.city}"></td>
+            <td th:text="${customer.country}"></td>
+            <td th:text="${customer.status}==0?'Active':'No longer active'"></td>
+            <td>
+                <a th:href="@{'/admin/customer/detail/' + ${customer.id}}" class="btn btn-primary">Detail</a>
+                <a th:href="@{'/admin/customer/delete/' + ${customer.id}}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+    <ul class="pagination">
+        <th:block th:each="i: ${#numbers.sequence(1, totalPage)}">
+            <li class="page-item">
+                <a class="page-link"th:href="@{'/admin/customer/get-all?pageNum=' + ${i}}" th:text=${i}></a>
+            </li>
+        </th:block>
+    </ul>
+</div>
+</body>
+</html>

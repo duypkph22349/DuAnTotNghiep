@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Customer;
@@ -26,12 +28,15 @@ public class CustomerService {
     return customerRepository.findAll();
   }
 
+  public Page<Customer> getPage(Pageable pageable) {
+    return customerRepository.findAll(pageable);
+  }
   public Optional<Customer> getCustomerById(UUID id) {
     return customerRepository.findById(id);
   }
 
-  public Customer saveCustomer(Customer account) {
-    return customerRepository.save(account);
+  public Customer saveCustomer(Customer customer) {
+    return customerRepository.save(customer);
   }
 
   public void deleteCustomer(UUID id) {
