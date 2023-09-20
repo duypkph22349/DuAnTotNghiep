@@ -111,42 +111,6 @@ public class AccountService implements PanigationInterface<AccountResponse> {
 
   // panigation
   @Override
-  public List<AccountResponse> getFirstPage(int pageSize, String sortBy, boolean sortDir) {
-    List<AccountResponse> ChiTietSanPhams;
-    ChiTietSanPhams = new ArrayList<>();
-    Sort sort = Sort.by(sortBy);
-    if (sortDir) {
-      sort.ascending();
-    } else {
-      sort.descending();
-    }
-    // Pageable object
-    Pageable pageable = PageRequest.of(0, pageSize, sort);
-    // findAll method and pass pageable instance
-    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
-    ChiTietSanPhams = page.getContent();
-    return ChiTietSanPhams;
-  }
-
-  @Override
-  public List<AccountResponse> getLastPage(int pageSize, String sortBy, boolean sortDir) {
-    List<AccountResponse> ChiTietSanPhams;
-    ChiTietSanPhams = new ArrayList<>();
-    Sort sort = Sort.by(sortBy);
-    if (sortDir) {
-      sort.ascending();
-    } else {
-      sort.descending();
-    }
-    // Pageable object
-    Pageable pageable = PageRequest.of(getPageNumber(pageSize) - 1, pageSize, sort);
-    // findAll method and pass pageable instance
-    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
-    ChiTietSanPhams = page.getContent();
-    return ChiTietSanPhams;
-  }
-
-  @Override
   public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
     List<AccountResponse> ChiTietSanPhams;
     ChiTietSanPhams = new ArrayList<>();
@@ -197,7 +161,7 @@ public class AccountService implements PanigationInterface<AccountResponse> {
           int[] rs1 = { pageno - 1, pageno, pageno + 1 };
           rs = rs1;
         }
-        if (pageno == totalPage - 1) {
+        if (pageno >= totalPage - 1) {
           int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
           rs = rs1;
         }

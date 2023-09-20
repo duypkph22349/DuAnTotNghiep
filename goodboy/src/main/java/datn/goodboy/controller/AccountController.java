@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,7 @@ import datn.goodboy.service.CustomerService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("admin/pages/account")
+@RequestMapping("admin/account")
 public class AccountController {
 
   @Autowired
@@ -44,8 +45,8 @@ public class AccountController {
     System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
-    List<AccountResponse> list = service.getFirstPage(rowcount, sortBy, sortDir);
-    pageno = 1;
+    this.pageno = 1;
+    List<AccountResponse> list = service.getPageNo(1, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
@@ -90,7 +91,8 @@ public class AccountController {
   // end
   @GetMapping("index")
   public String getAccountIndexpages(Model model) {
-    List<AccountResponse> list = service.getFirstPage(rowcount, sortBy, sortDir);
+    this.pageno = 1;
+    List<AccountResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
@@ -147,5 +149,12 @@ public class AccountController {
     }
     service.updateAccount(accountRequest);
     return "redirect:table-account";
+  }
+
+  // manager
+  @GetMapping("manager/viewdetail/{idacc}")
+  public String allDetail(@PathVariable("idacc") String idAcc) {
+    System.out.println(idAcc);
+    return "/admin/pages/account/account-detail.html";
   }
 }
