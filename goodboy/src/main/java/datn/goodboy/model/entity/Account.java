@@ -7,6 +7,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class Account {
   private String password;
   @Column(name = "status")
   private int status;
-  // @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-  // private Customer customer;
+  @OneToOne
+  @JoinColumn(name = "id_customer")
+  private Customer customer;
 }

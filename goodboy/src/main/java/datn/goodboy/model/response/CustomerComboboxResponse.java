@@ -2,12 +2,12 @@ package datn.goodboy.model.response;
 
 import java.util.UUID;
 
-import groovy.transform.ToString;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @AllArgsConstructor
@@ -16,10 +16,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PUBLIC)
-public class AccountResponse {
-  UUID idCustomer;
+public class CustomerComboboxResponse {
+  UUID id;
   String name;
-  String phoneNumber;
-  String email;
-  int status;
 }
