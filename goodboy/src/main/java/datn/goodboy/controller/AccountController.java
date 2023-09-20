@@ -29,8 +29,10 @@ public class AccountController {
 
   @Autowired
   private CustomerService customerService;
+
   @Autowired
   private AccountRequest accountRequest;
+
   private AccountResponse accountResponse;
   public int rowcount = 10;
   public int[] pagenumbers;
