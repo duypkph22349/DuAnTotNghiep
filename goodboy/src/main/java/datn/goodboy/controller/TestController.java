@@ -30,14 +30,6 @@ public class TestController {
   public ResponseEntity<List<Account>> getAllAccounts() {
     return ResponseEntity.ok().body(accountService.getAllAccounts());
   }
-
-  @GetMapping(value = "account/getpage")
-  public ResponseEntity<List<AccountResponse>> getPageAccount(@Param("pageno") int pageno,
-      @Param("sortby") String sortby,
-      @Param("sortdir") boolean sortDir) {
-    return ResponseEntity.ok().body(accountService.getPageNo(pageno, sortby, sortDir));
-  }
-
   @GetMapping(value = "customer/getall")
   public ResponseEntity<List<Customer>> getAllCustomer() {
     return ResponseEntity.ok().body(customerService.getAllCustomers());

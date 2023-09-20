@@ -14,6 +14,6 @@ import datn.goodboy.model.response.AccountResponse;
  * AccountRepository
  */
 public interface AccountRepository extends JpaRepository<Account, UUID> {
-  @Query(value="SELECT new datn.goodboy.model.response.AccountResponse(acc.id, acc.email, acc.status) FROM Account acc")
+  @Query(value="SELECT new datn.goodboy.model.response.AccountResponse(acc.id,acc.customer.name ,acc.customer.phone, acc.email, acc.status) FROM Account acc")
   Page<AccountResponse> getPageAccountRepose(Pageable page); 
 }
