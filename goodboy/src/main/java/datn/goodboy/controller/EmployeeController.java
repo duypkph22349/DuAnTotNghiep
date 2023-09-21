@@ -4,9 +4,11 @@ import datn.goodboy.model.entity.Employee;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +21,6 @@ public class EmployeeController {
 
     @Autowired
     private RolesService rolesService;
-
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {
