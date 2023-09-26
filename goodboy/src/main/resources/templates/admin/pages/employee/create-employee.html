@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${employee}" th:action="@{/admin/employee/add}" action="#" method="post">
+
+    <div>
+        <label>Code:</label>
+        <input type="text" th:name="code" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Name:</label>
+        <input type="text" th:name="name" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>CCCD:</label>
+        <input type="text" th:name="cccd" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Gender:</label>
+        <input type="radio" th:name="gender" th:value="false" th:text="Male" checked>
+        <input type="radio" th:name="gender" th:value="true" th:text="Female">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Birth Date:</label>
+        <input type="date" th:name="birth_date" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Address:</label>
+        <!--            <input type="text" th:name="address" class="form-control">-->
+        <select th:name="address" id="province">
+            <option ></option>
+        </select>
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+    <label>City:</label>
+    <!--            <input type="text" th:name="city" class="form-control">-->
+    <select th:name="city" id="district">
+        <option >chọn quận</option>
+    </select>
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Country:</label>
+        <!--            <input type="text" th:name="country" class="form-control">-->
+        <select th:name="country" id="ward">
+            <option >chọn phường</option>
+        </select>
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Phone:</label>
+        <input type="text" th:name="phone" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>Email:</label>
+        <input type="text" th:name="email" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <label>PassWord:</label>
+        <input type="text" th:name="password" class="form-control">
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <div>
+        <select th:name="status">
+            <option th:value="0">Active</option>
+            <option th:value="1">No longer active</option>
+        </select>
+    </div>
+    <div style="clear: both; display: block; height: 10px"></div>
+    <input type="submit" class="btn btn-success" value="ADD"/>
+</form>
+</body>
+</html>
