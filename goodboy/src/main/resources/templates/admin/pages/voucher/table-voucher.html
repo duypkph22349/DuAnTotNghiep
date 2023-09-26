@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Account</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container-fluid">
+            <a href="/admin/voucher/create" class="btn btn-primary">New</a>
+            <div class="text-lg-end">
+                <div class="text-lg-end">
+                    <form action="#" th:action="@{/admin/voucher/getcountrow}" method="get">
+                        Number of rows
+                        <select name="selectedValue">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+                <div style="height: 500px; overflow: auto;">
+                    <table class="table table-hover">
+                        <thead class="position-sticky top-0">
+                            <tr>
+                                <th scope="col">Name
+                                    <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Code
+                                    <a th:href="@{/admin/voucher/sort(sortBy=code ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=code ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Ngày bắt đầu
+                                    <a th:href="@{/admin/voucher/sort(sortBy=start_time ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=start_time ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Ngày kết thúc
+                                    <a th:href="@{/admin/voucher/sort(sortBy=end_time ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=end_time ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Số Lượng
+                                    <a th:href="@{/admin/voucher/sort(sortBy=quantily ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=quantily ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Giảm
+                                    <a th:href="@{/admin/voucher/sort(sortBy=discount ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=discount ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Trạng thái
+                                    <a th:href="@{/admin/voucher/sort(sortBy=status ,sortDir=true)}"><i
+                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                    <a th:href="@{/admin/voucher/sort(sortBy=status ,sortDir=false)}"><i
+                                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                                </th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="voucher : ${list}">
+                                <td th:text="${voucher.name}"></td>
+                                <td th:text="${voucher.code}"></td>
+                                <td th:text="${#temporals.format(voucher?.start_time, 'HH:mm dd-MM-yyyy')}"></td>
+                                <td th:text="${#temporals.format(voucher?.end_time, 'HH:mm dd-MM-yyyy')}"></td>
+                                <td th:text="${voucher?.quantily}"></td>
+                                <td th:text="${voucher?.discount}"></td>
+                                <td th:text="${convert.convertTrangThai(voucher.status)}"></td>
+                                <td>
+                                    <a th:href="@{/admin/voucher/delete(id=${voucher.id})}"
+                                        class="btn btn-danger">Delete</a>
+                                    <a th:href="@{/admin/voucher/edit(id=${voucher.id})}"
+                                        class="btn btn-success">Update</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-start">This page is <span th:text="${crpage}"></span> of <span
+                        th:text="${totalpage}"></span> </div>
+                <div class="text-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <div th:if="${crpage-1 < 1}">
+                                <li class="page-item disabled">
+                                    <a class="page-link" th:href="@{/admin/voucher/page(pageno=${crpage-1})}"
+                                        tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                            </div>
+                            <div th:unless="${crpage-1 < 1}">
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        th:href="@{/admin/voucher/page(pageno=${crpage-1})}">Previous</a>
+                                </li>
+                            </div>
+                            <div th:each="page : ${pagenumber}">
+                                <div th:if="${crpage == page}">
+                                    <li class="page-item disabled"><a class="page-link"
+                                            th:href="@{/admin/voucher/page(pageno=${page})}" th:text="${page}"
+                                            tabindex="-1" aria-disabled="true"></a>
+                                    </li>
+                                </div>
+                                <div th:unless="${crpage == page}">
+                                    <li class="page-item"><a class="page-link"
+                                            th:href="@{/admin/voucher/page(pageno=${page})}" th:text="${page}"></a>
+                                    </li>
+                                </div>
+                            </div>
+                            <div th:if="${crpage == totalpage}">
+                                <li class="page-item disabled">
+                                    <a class="page-link" th:href="@{/admin/voucher/page(pageno=${crpage+1})}"
+                                        tabindex="-1" aria-disabled="true">Next</a>
+                                </li>
+                            </div>
+                            <div th:unless="${crpage == totalpage}">
+                                <li class="page-item">
+                                    <a class="page-link" th:href="@{/admin/voucher/page(pageno=${crpage+1})}">Next</a>
+                                </li>
+                            </div>
+                        </ul>
+                    </nav><!-- End Centered Pagination -->
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

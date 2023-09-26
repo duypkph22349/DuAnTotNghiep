@@ -2,9 +2,19 @@ package datn.goodboy.model.request;
 
 import java.time.LocalDateTime;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Component
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class VoucherRequest {
   int status;
