@@ -1,4 +1,4 @@
-package savit.group2.sockstore.config;
+package datn.goodboy.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,5 @@
-package savit.group2.sockstore.security.service;
+package datn.goodboy.security.service;
+
 
 import java.util.Optional;
 
@@ -9,11 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import datn.goodboy.security.UserInfo;
+import datn.goodboy.security.UserInfoUserDetails;
+import datn.goodboy.security.repo.EmployeeInfoRepository;
 import lombok.RequiredArgsConstructor;
-import savit.group2.sockstore.model.entity.Employee;
-import savit.group2.sockstore.model.security.UserInfo;
-import savit.group2.sockstore.model.security.UserInfoUserDetails;
-import savit.group2.sockstore.security.repo.EmployeeInfoRepository;
+
 
 @Component
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package savit.group2.sockstore.config;
+package datn.goodboy.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import savit.group2.sockstore.security.repo.AccountInforRepository;
-import savit.group2.sockstore.security.repo.EmployeeInfoRepository;
-import savit.group2.sockstore.security.service.AccountInforService;
-import savit.group2.sockstore.security.service.EmployeInfoService;
+import datn.goodboy.security.repo.AccountInforRepository;
+import datn.goodboy.security.repo.EmployeeInfoRepository;
+import datn.goodboy.security.service.AccountInforService;
+import datn.goodboy.security.service.EmployeInfoService;
+
 
 @Configuration
 @EnableMethodSecurity
