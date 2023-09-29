@@ -29,6 +29,11 @@ public class EmployeeController {
         return "admin/pages/employee/table-employee";
     }
 
+    @GetMapping("/form-add")
+    public String add() {
+        return "admin/pages/employee/create-employee";
+    }
+
     @PostMapping("/add")
     public String add(@ModelAttribute Employee employee) {
         employeeService.saveEmployee(employee);

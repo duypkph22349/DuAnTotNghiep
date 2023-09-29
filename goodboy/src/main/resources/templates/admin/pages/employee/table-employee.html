@@ -136,7 +136,7 @@
     <i class="fa fa-search" aria-hidden="true"></i>
     <Br>
 
-    <a href="/admin/employee/create-employee" class="btn btn-primary">New</a>
+    <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
 
 </div>
 <!-- Table -->
@@ -149,6 +149,7 @@
             <th>#</th>
             <th>Mã Nhân Viên</th>
             <th width="auto">Tên Nhân Viên</th>
+            <th>Image</th>
             <th width="auto">CCCD</th>
             <th width="auto">Giới Tính</th>
             <th>Ngày Sinh</th>
@@ -166,6 +167,9 @@
             <!--            <td th:text="${employee.roles.id}"></td>-->
             <td th:text="${employee.code}"></td>
             <td th:text="${employee.name}"></td>
+
+            <td ><img th:src="@{'/images/faces/' + ${employee.image}}"
+                     width="60px" height="50px"></td>
             <td th:text="${employee.cccd}"></td>
             <td th:text="${employee.gender} == true? 'Male':'Female'"></td>
             <td th:text="${employee.birth_date}"></td>
