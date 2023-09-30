@@ -1,10 +1,14 @@
 package datn.goodboy.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,17 +25,17 @@ import datn.goodboy.security.repo.EmployeeInfoRepository;
 import datn.goodboy.security.service.AccountInforService;
 import datn.goodboy.security.service.EmployeInfoService;
 
-
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SpringSecurityConfig {
   @Bean
-  AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-    return http.getSharedObject(AuthenticationManagerBuilder.class)
-        .authenticationProvider(authenticationNVProvider())
-        .authenticationProvider(authenticationKHProvider())
-        .build();
+  AuthenticationManager authenticationManager() {
+    List<AuthenticationProvider> listProviders = new ArrayList<>();
+    listProviders.add(authenticationNVProvider());
+    listProviders.add(authenticationKHProvider());
+    ProviderManager providerManagers = new ProviderManager(listProviders);
+    return providerManagers;
   }
 
   @Autowired
@@ -78,11 +82,9 @@ public class SpringSecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
-    http.
-
-        authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("khach-hang/singin").permitAll();
-        })
+    http.authorizeHttpRequests((authorize) -> {
+      authorize.requestMatchers("khach-hang/singin").permitAll();
+    })
         .authorizeHttpRequests((authorize) -> {
           authorize.anyRequest().permitAll();
         })

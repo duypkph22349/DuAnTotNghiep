@@ -30,8 +30,8 @@ public class Employee {
     @Column(name = "name")
     String name;
 
-    @Column(name = "cccd")
-    String cccd;
+    // @Column(name = "cccd")
+    // String cccd;
 
     @Column(name = "gender")
     boolean gender;

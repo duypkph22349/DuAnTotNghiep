@@ -24,12 +24,14 @@ public class AccountInforService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
+    System.out.println(username);
     Optional<Account> account = repository.getuser(username);
     if (!account.isPresent() || account == null) {
       throw new UsernameNotFoundException("can not find nhan vien with username khachhang");
+    }else{
+      String Roles = "USER";
+      UserInfo UserInfo = new UserInfo(account.get().getEmail(), account.get().getPassword(), Roles);
+      return new UserInfoUserDetails(UserInfo);
     }
-    String Roles = "USER";
-    UserInfo UserInfo = new UserInfo(account.get().getEmail(), account.get().getPassword(), Roles);
-    return new UserInfoUserDetails(UserInfo);
   }
 }
