@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import datn.goodboy.security.repo.AccountInforRepository;
 import datn.goodboy.security.repo.EmployeeInfoRepository;
@@ -91,10 +91,10 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
-            .failureUrl("/login?error")
             .defaultSuccessUrl("/homepage")
             .usernameParameter("username")
             .passwordParameter("password")
+            .failureHandler(authenticationFailureHandler())
             .permitAll())
         .logout(
             formLogin -> formLogin
@@ -107,4 +107,8 @@ public class SpringSecurityConfig {
     return http.build();
   }
 
+  @Bean
+   AuthenticationFailureHandler authenticationFailureHandler() {
+    return new CustomerLoginFailhander();
+  }
 }

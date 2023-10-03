@@ -80,7 +80,7 @@ public class AccountController {
       pageno = 1;
     }
     this.pageno = pageno;
-    List<AccountResponse> list = service.getPageNo(this.pageno - 1, rowcount, sortBy, sortDir);
+    List<AccountResponse> list = service.getPageNo(this.pageno , rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     pagenumbers = service.getPanigation(rowcount, this.pageno);

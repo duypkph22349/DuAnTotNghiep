@@ -131,19 +131,21 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   // panigation
   @Override
   public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
+    if(pageNo > getPageNumber(pageSize)){
+    return null;
+    }
     List<AccountResponse> ChiTietSanPhams;
     ChiTietSanPhams = new ArrayList<>();
     Sort sort;
     if (sortDir) {
-      sort = Sort.by(sortBy).ascending();
-      System.out.println("tang");
+    sort = Sort.by(sortBy).ascending();
     } else {
-      sort = Sort.by(sortBy).descending();
-      System.out.println("giam");
+    sort = Sort.by(sortBy).descending();
     }
-    Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+    Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
+    Page<AccountResponse> page =
+    accountRepository.getPageAccountRepose(pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
@@ -158,11 +160,14 @@ public class AccountService implements PanigationInterface<AccountResponse> {
 
   @Override
   public int[] getPanigation(int rowcount, int pageno) {
-    Pageable pageable = PageRequest.of(1, rowcount);
+    Pageable pageable = PageRequest.of(0, rowcount);
     Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
     int totalPage = page.getTotalPages();
     int[] rs;
-    if (totalPage <= 3) {
+    if (totalPage <= 1) {
+      int[] rs1 = {};
+      return rs1;
+    } else if (totalPage <= 3) {
       rs = new int[totalPage];
       for (int i = 1; i <= totalPage; i++) {
         rs[i] = i;
@@ -187,5 +192,4 @@ public class AccountService implements PanigationInterface<AccountResponse> {
       return rs;
     }
   }
-  // panigation end
 }
