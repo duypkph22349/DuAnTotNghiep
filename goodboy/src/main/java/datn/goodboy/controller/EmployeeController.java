@@ -30,7 +30,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/form-add")
-    public String add() {
+    public String add(Model model) {
+        model.addAttribute("roles", rolesService.getAllRoles());
         return "admin/pages/employee/create-employee";
     }
 
@@ -50,10 +51,11 @@ public class EmployeeController {
         Optional<Employee> customer = employeeService.findByIdEmployee(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
+            model.addAttribute("roles", rolesService.getAllRoles());
         } else {
             model.addAttribute("detail", null);
         }
-        return "";
+        return "admin/pages/employee/detail-employee";
     }
 
 }
