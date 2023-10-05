@@ -72,6 +72,9 @@
                       <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <input type="email" name="username" class="form-control" id="yourUsername" required>
+                        <div class="text-center text-danger mb-2" th:if="${usernotfounmessage}">
+                          <span th:text="${usernotfounmessage}"></span>
+                        </div>
                         <div class="invalid-feedback">Please enter your Email.</div>
                       </div>
                     </div>

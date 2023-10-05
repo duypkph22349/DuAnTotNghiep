@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import datn.goodboy.model.request.LoginRequest;
@@ -24,7 +23,6 @@ public class SecurityController {
   public String loginPage(Model model) {
     loginRequest = new LoginRequest();
     model.addAttribute("loginRequest", loginRequest);
-
     return "login.html";
   }
 
