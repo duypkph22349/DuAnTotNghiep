@@ -58,6 +58,12 @@ public class CartController {
         return "";
     }
 
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<?> update2(@RequestBody Cart cart, @PathVariable("id")int id){
+//        cart.setId(id);
+//        cartService.saveCart(cart);
+//        return ResponseEntity.ok(cart);
+//    }
 
 }
 
