@@ -65,6 +65,9 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
   // panigation start
   @Override
   public List<VoucherResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
+    if (pageNo > getPageNumber(pageSize)) {
+      return null;
+    }
     List<VoucherResponse> listrs;
     listrs = new ArrayList<>();
     Sort sort;
@@ -94,6 +97,10 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
     Page<VoucherResponse> page = voucherRepository.getResponsePage(pageable);
     int totalPage = page.getTotalPages();
     int[] rs;
+    if (totalPage <= 1) {
+      int[] rs1 = {};
+      return rs1;
+    }
     if (totalPage <= 3) {
       rs = new int[totalPage];
       for (int i = 1; i <= totalPage; i++) {

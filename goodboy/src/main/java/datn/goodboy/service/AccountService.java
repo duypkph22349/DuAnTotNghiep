@@ -16,18 +16,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import datn.goodboy.model.entity.Account;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.request.AccountFillter;
 import datn.goodboy.model.request.AccountRequest;
+import datn.goodboy.model.request.SingupRequest;
 import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.repository.AccountRepository;
+import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
 @Service
 public class AccountService implements PanigationInterface<AccountResponse> {
   @Autowired
   PasswordEncoder encoder;
+  @Autowired
+  CustomerRepository cusrepository;
   // Declare the repository as final to ensure its immutability
-  private final AccountRepository accountRepository;
+  @Autowired
+  AccountRepository accountRepository;
 
   // Use constructor-based dependency injection
   public AccountService(AccountRepository accountRepository) {
@@ -70,103 +76,120 @@ public class AccountService implements PanigationInterface<AccountResponse> {
 
   }
 
-    // admin
-    public Account updateAccount(AccountRequest account) {
-      Optional<Account> accountupdate = accountRepository.findById(account.idCustomer);
-      if (accountupdate.isPresent()) {
-        Account account2 = accountupdate.get();
-        account2.setId(account.idCustomer);
-        account2.setEmail(account.email);
-        return accountRepository.save(account2);
-      } else {
-        throw new RuntimeException();
-      }
+  public Account singup(SingupRequest request) {
+    Optional<Customer> customer = cusrepository.findById(request.getId_customer());
+    if (!customer.isPresent() || customer == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
+    Account account = new Account();
+    account.setCustomer(customer.get());
+    account.setEmail(request.getEmail());
+    account.setPassword(encoder.encode(request.getPassword()));
+    account.setStatus(0);
+    return accountRepository.save(account);
+  }
 
-    public Account createAccout(AccountRequest request) {
-      Account newAcc = new Account();
-      newAcc.setEmail(request.email);
+  // admin
+  public Account updateAccount(AccountRequest account) {
+    Optional<Account> accountupdate = accountRepository.findById(account.idCustomer);
+    if (accountupdate.isPresent()) {
+      Account account2 = accountupdate.get();
+      account2.setId(account.idCustomer);
+      account2.setEmail(account.email);
+      return accountRepository.save(account2);
+    } else {
+      throw new RuntimeException();
+    }
+  }
+
+  public Account createAccout(AccountRequest request) {
+    Account newAcc = new Account();
+    newAcc.setEmail(request.email);
+    newAcc.setPassword(encoder.encode(request.password));
+    newAcc.setStatus(0);
+    Account saveAccout = accountRepository.save(newAcc);
+    return saveAccout;
+  }
+
+  public Account changePassword(AccountRequest request) {
+    Optional<Account> accountExits = accountRepository.findById(request.idCustomer);
+    if (accountExits.isPresent()) {
+      Account newAcc = accountExits.get();
       newAcc.setPassword(encoder.encode(request.password));
-      newAcc.setStatus(0);
       Account saveAccout = accountRepository.save(newAcc);
       return saveAccout;
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not find Account with id ");
     }
+  }
 
-    public Account changePassword(AccountRequest request) {
-      Optional<Account> accountExits = accountRepository.findById(request.idCustomer);
-      if (accountExits.isPresent()) {
-        Account newAcc = accountExits.get();
-        newAcc.setPassword(encoder.encode(request.password));
-        Account saveAccout = accountRepository.save(newAcc);
-        return saveAccout;
-      } else {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not find Account with id ");
+  // fillter
+  public List<AccountResponse> fillter(AccountFillter fillter) {
+    return null;
+  }
+
+  // panigation
+  @Override
+  public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
+    if(pageNo > getPageNumber(pageSize)){
+    return null;
+    }
+    List<AccountResponse> ChiTietSanPhams;
+    ChiTietSanPhams = new ArrayList<>();
+    Sort sort;
+    if (sortDir) {
+    sort = Sort.by(sortBy).ascending();
+    } else {
+    sort = Sort.by(sortBy).descending();
+    }
+    Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
+    // findAll method and pass pageable instance
+    Page<AccountResponse> page =
+    accountRepository.getPageAccountRepose(pageable);
+    ChiTietSanPhams = page.getContent();
+    return ChiTietSanPhams;
+  }
+
+  @Override
+  public int getPageNumber(int rowcount) {
+    Pageable pageable = PageRequest.of(1, rowcount);
+    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
+    int totalPage = page.getTotalPages();
+    return totalPage;
+  }
+
+  @Override
+  public int[] getPanigation(int rowcount, int pageno) {
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
+    int totalPage = page.getTotalPages();
+    int[] rs;
+    if (totalPage <= 1) {
+      int[] rs1 = {};
+      return rs1;
+    } else if (totalPage <= 3) {
+      rs = new int[totalPage];
+      for (int i = 1; i <= totalPage; i++) {
+        rs[i] = i;
       }
-    }
-
-    // fillter
-    public List<AccountResponse> fillter(AccountFillter fillter) {
-      return null;
-    }
-
-    // panigation
-    @Override
-    public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
-      List<AccountResponse> ChiTietSanPhams;
-      ChiTietSanPhams = new ArrayList<>();
-      Sort sort;
-      if (sortDir) {
-        sort = Sort.by(sortBy).ascending();
-        System.out.println("tang");
-      } else {
-        sort = Sort.by(sortBy).descending();
-        System.out.println("giam");
+      return rs;
+    } else {
+      rs = new int[3];
+      if (pageno <= 2) {
+        int[] rs1 = { 1, 2, 3 };
+        rs = rs1;
       }
-      Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-      // findAll method and pass pageable instance
-      Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
-      ChiTietSanPhams = page.getContent();
-      return ChiTietSanPhams;
-    }
-
-    @Override
-    public int getPageNumber(int rowcount) {
-      Pageable pageable = PageRequest.of(1, rowcount);
-      Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
-      int totalPage = page.getTotalPages();
-      return totalPage;
-    }
-
-    @Override
-    public int[] getPanigation(int rowcount, int pageno) {
-      Pageable pageable = PageRequest.of(1, rowcount);
-      Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
-      int totalPage = page.getTotalPages();
-      int[] rs;
-      if (totalPage <= 3) {
-        rs = new int[totalPage];
-        for (int i = 1; i <= totalPage; i++) {
-          rs[i] = i;
-        }
-        return rs;
-      } else {
-        rs = new int[3];
-        if (pageno <= 2) {
-          int[] rs1 = { 1, 2, 3 };
+      if (pageno > 2) {
+        if (pageno < totalPage - 1) {
+          int[] rs1 = { pageno - 1, pageno, pageno + 1 };
           rs = rs1;
         }
-        if (pageno > 2) {
-          if (pageno < totalPage - 1) {
-            int[] rs1 = { pageno - 1, pageno, pageno + 1 };
-            rs = rs1;
-          }
-          if (pageno >= totalPage - 1) {
-            int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
-            rs = rs1;
-          }
+        if (pageno >= totalPage - 1) {
+          int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
+          rs = rs1;
         }
-        return rs;
       }
+      return rs;
     }
-    // panigation end
+  }
 }
