@@ -34,7 +34,7 @@ public class PatternController {
             List<ObjectError> objectErrorList = result.getAllErrors();
             return ResponseEntity.ok(objectErrorList);
         }
-        String newProductCode = "BR" + String.format("%d", currentProductCode);
+        String newProductCode = "PT" + String.format("%d", currentProductCode);
         b.setCode(newProductCode);
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());

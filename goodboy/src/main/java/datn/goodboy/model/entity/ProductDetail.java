@@ -1,10 +1,11 @@
 package datn.goodboy.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,15 +22,24 @@ public class ProductDetail {
     @Column(name="code")
     private String code;
 
+    @NotNull
+    @NotBlank
     @Column(name="name")
     private String name;
 
+    @NotNull
+    @NotBlank
     @Column(name="price")
     private Float price;
 
+
+    @NotNull
+    @NotBlank
     @Column(name="quantity")
     private int quantity;
 
+    @NotNull
+    @NotBlank
     @Column(name="description")
     private String description;
 
@@ -65,6 +75,7 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name="id_styles")
     private Styles idStyles;
+
 
     @Column(name="status")
     private int status;
