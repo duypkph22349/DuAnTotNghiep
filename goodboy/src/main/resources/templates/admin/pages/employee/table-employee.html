@@ -129,9 +129,20 @@
     <!--</script>-->
 
     <div class="container-fluid al">
-        <b>TÌM KIẾM NHÂN VIÊN:</b>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Nhập tên nhân viên cần tìm...">
-        <i class="fa fa-search" aria-hidden="true"></i>
+        <div class="input-group mb-3">
+            <button type="button" class="btn btn-outline-info">Filter All</button>
+            <button type="button" class="btn btn-outline-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a> </li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="#">Separated link</a></li>
+            </ul>
+            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, CCCD, Địa chỉ....">
+        </div>
+
         <Br>
 
         <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
@@ -151,7 +162,7 @@
                 <th width="auto">CCCD</th>
                 <th width="auto">Giới Tính</th>
                 <th>Ngày Sinh</th>
-                <th>Địa Chỉ</th>
+                <th>Địa Chỉ Cụ Thể</th>
                 <th>Số Điện Thoại</th>
                 <th>Email</th>
                 <th>PassWord</th>
@@ -201,10 +212,10 @@
 
     <script src="jquery.min.js"></script>
     <script type="text/javascript">
-        //Tìm kiếm
+        // Tìm kiếm
         function myFunction() {
             var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
+            input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
             tr = table.getElementsByTagName("tr");
@@ -220,6 +231,37 @@
                 }
             }
         }
+
+        //Tìm kiếm 2
+        // function myFunction() {
+        //     var input, filter, table, tr, td, i, j, txtValue;
+        //     input = document.getElementById("searchInput");
+        //     filter = input.value.toUpperCase();
+        //     table = document.getElementById("myTable");
+        //     tr = table.getElementsByTagName("tr");
+        //
+        //     for (i = 0; i < tr.length; i++) {
+        //         var match = false;
+        //
+        //         for (j = 1; j < tr[i].cells.length; j++) {
+        //             td = tr[i].cells[j];
+        //             if (td) {
+        //                 txtValue = td.textContent || td.innerText;
+        //                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //                     match = true;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //
+        //         if (match) {
+        //             tr[i].style.display = "";
+        //         } else {
+        //             tr[i].style.display = "none";
+        //         }
+        //     }
+        // }
+
 
         //Thời Gian
         // function time() {
