@@ -4,6 +4,7 @@ package datn.goodboy.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public class Employee {
     boolean gender;
 
     @Column(name = "birth_date")
-    LocalDateTime birth_date;
+    Date birth_date;
 
     @Column(name = "address")
     String address;
@@ -53,6 +54,9 @@ public class Employee {
 
     @Column(name = "status")
     int status;
+
+    @Column(name = "image")
+    String image;
 
     @Column(name="created_at")
     private LocalDateTime createdAt;

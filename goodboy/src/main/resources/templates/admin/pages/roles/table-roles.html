@@ -11,7 +11,7 @@
     <meta name="author" content="Bin-It">
     <meta property="og:url"/>
 
-    <title>Nhân Viên</title>
+    <title>Roles</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <!--===============================================================================================-->
@@ -109,11 +109,11 @@
                 var element = document.getElementById(positionId);
 
                 var pagerHtml = '<span onclick="' + pagerName +
-                    '.prev();" class="pg-normal">Trước</span> | ';
+                    '.prev();" class="pg-normal">&#171</span> | ';
                 for (var page = 1; page <= this.pages; page++)
                     pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName +
                         '.showPage(' + page + ');">' + page + '</span> | ';
-                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">Sau</span>';
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">&#187;</span>';
 
                 element.innerHTML = pagerHtml;
             }
@@ -121,31 +121,17 @@
     </script>
 </head>
 
-<h1>Quản lý nhân viên</h1>
+<h1>Quản lý Roles</h1>
 <body onload="time()">
 <section layout:fragment="content">
-    <!--<script>-->
-    <!--    swal("Xin Chào Admin", "Chúc Bạn 1 Ngày Tốt Lành Nhé", "");-->
-    <!--</script>-->
 
     <div class="container-fluid al">
-        <div class="input-group mb-3">
-            <button type="button" class="btn btn-outline-info">Filter All</button>
-            <button type="button" class="btn btn-outline-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a> </li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, CCCD, Địa chỉ....">
-        </div>
-
+        <b>TÌM KIẾM CHỨC VỤ:</b></p>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Nhập chức vụ cần tìm...">
+        <i class="fa fa-search" aria-hidden="true"></i>
         <Br>
 
-        <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
+        <a href="/admin/roles/create-roles" class="btn btn-primary">New</a>
 
     </div>
     <!-- Table -->
@@ -156,45 +142,23 @@
 
             <tr class="ex">
                 <th>#</th>
-                <th>Mã Nhân Viên</th>
-                <th width="auto">Tên Nhân Viên</th>
-                <th>Image</th>
-                <th width="auto">CCCD</th>
-                <th width="auto">Giới Tính</th>
-                <th>Ngày Sinh</th>
-                <th>Địa Chỉ Cụ Thể</th>
-                <th>Số Điện Thoại</th>
-                <th>Email</th>
-                <th>PassWord</th>
-                <th>Chức Vụ</th>
+                <th>Tên Chức Vụ</th>
+                <th width="auto">Roles</th>
                 <th>Trạng Thái</th>
                 <th width="5px; !important">Tính Năng</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="employee, i : ${list}">
+            <tr th:each="roles, i : ${list}">
                 <td th:text="${i.index+1}"></td>
-                <!--            <td th:text="${employee.roles.id}"></td>-->
-                <td th:text="${employee.code}"></td>
-                <td th:text="${employee.name}"></td>
-
-                <td><img th:src="@{'/images/faces/' + ${employee.image}}"
-                         width="60px" height="50px"></td>
-                <td th:text="${employee.cccd}"></td>
-                <td th:text="${employee.gender} == true? 'Nam':'Nữ'"></td>
-                <td th:text="${employee.birth_date}"></td>
-                <td th:text="${employee.address}"></td>
-                <td th:text="${employee.phone}"></td>
-                <td th:text="${employee.email}"></td>
-                <td th:text="${employee.password}"></td>
-                <td th:text="${employee.roles.name}"></td>
-                <td th:text="${employee.status} == 0 ? 'Nghỉ Việc' : 'Đang Làm'"></td>
+                <td th:text="${roles.name}"></td>
+                <td th:text="${roles.role}"></td>
+                <td th:text="${roles.status} == 0 ? '000' : '111'"></td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a th:href="@{'/admin/employee/detail/' + ${employee.id}}" class="btn btn-danger">Detail</a>
-                        <a th:href="@{'/admin/employee/delete/' + ${employee.id}}" class="btn btn-warning">Delete</a>
+                        <a th:href="@{'/roles/detail/' + ${roles.id}}" class="btn btn-danger">Detail</a>
+                        <a th:href="@{'/roles/delete/' + ${roles.id}}" class="btn btn-warning">Delete</a>
                     </div>
-
                 </td>
             </tr>
             </tbody>
@@ -203,7 +167,7 @@
     </div>
     <div id="pageNavPosition" class="text-right"></div>
     <script type="text/javascript">
-        var pager = new Pager('myTable', 7);
+        var pager = new Pager('myTable', 3);
         pager.init();
         pager.showPageNav('pager', 'pageNavPosition');
         pager.showPage(1);
@@ -212,10 +176,10 @@
 
     <script src="jquery.min.js"></script>
     <script type="text/javascript">
-        // Tìm kiếm
+        //Tìm kiếm
         function myFunction() {
             var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
+            input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
             tr = table.getElementsByTagName("tr");
@@ -232,79 +196,7 @@
             }
         }
 
-        //Tìm kiếm 2
-        // function myFunction() {
-        //     var input, filter, table, tr, td, i, j, txtValue;
-        //     input = document.getElementById("searchInput");
-        //     filter = input.value.toUpperCase();
-        //     table = document.getElementById("myTable");
-        //     tr = table.getElementsByTagName("tr");
-        //
-        //     for (i = 0; i < tr.length; i++) {
-        //         var match = false;
-        //
-        //         for (j = 1; j < tr[i].cells.length; j++) {
-        //             td = tr[i].cells[j];
-        //             if (td) {
-        //                 txtValue = td.textContent || td.innerText;
-        //                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //                     match = true;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //
-        //         if (match) {
-        //             tr[i].style.display = "";
-        //         } else {
-        //             tr[i].style.display = "none";
-        //         }
-        //     }
-        // }
-
-
-        //Thời Gian
-        // function time() {
-        //     var today = new Date();
-        //     var weekday = new Array(7);
-        //     weekday[0] = "Chủ Nhật";
-        //     weekday[1] = "Thứ Hai";
-        //     weekday[2] = "Thứ Ba";
-        //     weekday[3] = "Thứ Tư";
-        //     weekday[4] = "Thứ Năm";
-        //     weekday[5] = "Thứ Sáu";
-        //     weekday[6] = "Thứ Bảy";
-        //     var day = weekday[today.getDay()];
-        //     var dd = today.getDate();
-        //     var mm = today.getMonth() + 1;
-        //     var yyyy = today.getFullYear();
-        //     var h = today.getHours();
-        //     var m = today.getMinutes();
-        //     var s = today.getSeconds();
-        //     m = checkTime(m);
-        //     s = checkTime(s);
-        //     nowTime = h + ":" + m + ":" + s;
-        //     if (dd < 10) {
-        //         dd = '0' + dd
-        //     }
-        //     if (mm < 10) {
-        //         mm = '0' + mm
-        //     }
-        //     today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-        //     tmp = '<i class="fa fa-clock-o" aria-hidden="true"></i> <span class="date">' + today + ' | ' + nowTime +
-        //         '</span>';
-        //     document.getElementById("clock").innerHTML = tmp;
-        //     clocktime = setTimeout("time()", "1000", "Javascript");
-        //
-        //     function checkTime(i) {
-        //         if (i < 10) {
-        //             i = "0" + i;
-        //         }
-        //         return i;
-        //     }
-        // }
     </script>
-
 </section>
 </body>
 </html>
