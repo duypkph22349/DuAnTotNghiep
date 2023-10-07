@@ -43,7 +43,7 @@ public class AccountController {
 
   // panigation and sort
   @GetMapping("/getcountrow")
-  public String handleSubmit(Model model, @RequestParam("selectedValue") String selectedValue) {
+  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
     System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
