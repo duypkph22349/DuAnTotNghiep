@@ -22,11 +22,9 @@ public class Product {
     @NotBlank
     @Column(name="name")
     private String name;
-    @Column(name="description")
-    private String description;
     @Column(name="created_at")
     private LocalDateTime createdAt;
-    @Column(name="update_at")
+    @Column(name="updated_at")
     private LocalDateTime updatedAt;
     @Column(name="status")
     private int status;

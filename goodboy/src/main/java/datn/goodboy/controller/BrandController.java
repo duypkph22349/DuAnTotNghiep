@@ -48,7 +48,6 @@ public class BrandController {
         model.addAttribute("totalPage", brandPage.getTotalPages());
         model.addAttribute("brandPage", brandPage.getContent());
         model.addAttribute("keyword", keyword); // Truyền từ khóa để hiển thị lại trên giao diện
-
         return "admin/pages/brand/brand";
     }
 

@@ -27,4 +27,11 @@ public class ProductService {
         color1.setStatus(color.getStatus());
         return productRepository.save(color1);
     }
+    public Product getById(Integer id) {
+        return productRepository.findById(id).get();
+    }
+
+    public Page<Product> searchProductByKeyword(String keyword, Pageable pageable) {
+        return productRepository.searchByKeyword(keyword, pageable);
+    }
 }
