@@ -1,9 +1,7 @@
 package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Color;
-import datn.goodboy.model.entity.Product;
 import datn.goodboy.service.ColorService;
-import datn.goodboy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +31,7 @@ public class ColorController {
             List<ObjectError> objectErrorList = result.getAllErrors();
             return ResponseEntity.ok(objectErrorList);
         }
-        String newProductCode = "BR" + String.format("%d", currentProductCode);
+        String newProductCode = "CL" + String.format("%d", currentProductCode);
         b.setCode(newProductCode);
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());

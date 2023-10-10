@@ -16,22 +16,22 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-//    @Autowired
-//    private ProductRepository productRepository;
-//
-//    public Page<Product> findAll(Pageable pageable) {
-//        return productRepository.findAllByOrderByCreatedAtDesc(pageable);
-//    }
-//
-//    public Product add(Product origin) {
-//        return productRepository.save(origin);
-//    }
-//
-//    public Product update(Integer id, Product color) {
-//        Product color1 = productRepository.findById(id).get();
-//        color1.setName(color.getName());
-//        color1.setUpdatedAt(color.getUpdatedAt());
-//        color1.setStatus(color.getStatus());
-//        return productRepository.save(color1);
-//    }
+    @Autowired
+    private ProductRepository productRepository;
+
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
+
+    public Product add(Product origin) {
+        return productRepository.save(origin);
+    }
+
+    public Product update(Integer id, Product color) {
+        Product color1 = productRepository.findById(id).get();
+        color1.setName(color.getName());
+        color1.setUpdatedAt(color.getUpdatedAt());
+        color1.setStatus(color.getStatus());
+        return productRepository.save(color1);
+    }
 }

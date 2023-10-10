@@ -12,73 +12,72 @@
 </head>
 <body class="container">
 <div class="container col-8">
-<!--    <h1 style="text-align: center">ADD CUSTOMER</h1>-->
-<!--    <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post">-->
+    <h1 style="text-align: center">ADD CUSTOMER</h1>
+    <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post">
 
-<!--        <div>-->
-<!--            <label>Code:</label>-->
-<!--            <input type="text" th:name="code" class="form-control">-->
-<!--        </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <div>-->
-<!--            <label>Name:</label>-->
-<!--            <input type="text" th:name="name" class="form-control">-->
-<!--        </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <div>-->
-<!--            <label>Gender:</label>-->
-<!--            <input type="radio" th:name="gender" th:value="false" th:text="Male" checked>-->
-<!--            <input type="radio" th:name="gender" th:value="true" th:text="Female">-->
-<!--        </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <div>-->
-<!--            <label>Birth Date:</label>-->
-<!--            <input type="date" th:name="birth_date" class="form-control">-->
-<!--        </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <div>-->
-<!--            <label>Phone:</label>-->
-<!--            <input type="text" th:name="phone" class="form-control">-->
-<!--        </div>-->
-
-
-
-<!--           <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <div>-->
-<!--            <label>Address:</label>-->
-<!--            &lt;!&ndash;            <input type="text" th:name="address" class="form-control">&ndash;&gt;-->
-<!--            <select th:name="address" id="province">-->
-<!--                <option ></option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div><div>-->
-<!--        <label>City:</label>-->
-<!--        &lt;!&ndash;            <input type="text" th:name="city" class="form-control">&ndash;&gt;-->
-<!--        <select th:name="city" id="district">-->
-<!--            <option >chọn quận</option>-->
-<!--        </select>-->
-<!--    </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div><div>-->
-<!--        <label>Country:</label>-->
-<!--        &lt;!&ndash;            <input type="text" th:name="country" class="form-control">&ndash;&gt;-->
-<!--        <select th:name="country" id="ward">-->
-<!--            <option >chọn quận</option>-->
-<!--        </select>-->
-<!--    </div>-->
+        <div>
+            <label>Code:</label>
+            <input type="text" th:name="code" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Name:</label>
+            <input type="text" th:name="name" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Gender:</label>
+            <input type="radio" th:name="gender" th:value="false" th:text="Male" checked>
+            <input type="radio" th:name="gender" th:value="true" th:text="Female">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Birth Date:</label>
+            <input type="date" th:name="birth_date" class="form-control">
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Phone:</label>
+            <input type="text" th:name="phone" class="form-control">
+        </div>
 
 
 
-<!--        <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <div>-->
-<!--            <select th:name="status">-->
-<!--                <option th:value="0">Active</option>-->
-<!--                <option th:value="1">No longer active</option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--        <div style="clear: both; display: block; height: 10px"></div>-->
-<!--        <input type="submit" class="btn btn-success" value="ADD"/>-->
-<!--    </form>-->
-    <a href="/admin/customer/view-add">New</a>
+           <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <label>Address:</label>
+            <!--            <input type="text" th:name="address" class="form-control">-->
+            <select th:name="address" id="province">
+                <option ></option>
+            </select>
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div><div>
+        <label>City:</label>
+        <!--            <input type="text" th:name="city" class="form-control">-->
+        <select th:name="city" id="district">
+            <option >chọn quận</option>
+        </select>
+    </div>
+        <div style="clear: both; display: block; height: 10px"></div><div>
+        <label>Country:</label>
+        <!--            <input type="text" th:name="country" class="form-control">-->
+        <select th:name="country" id="ward">
+            <option >chọn quận</option>
+        </select>
+    </div>
+
+
+
+        <div style="clear: both; display: block; height: 10px"></div>
+        <div>
+            <select th:name="status">
+                <option th:value="0">Active</option>
+                <option th:value="1">No longer active</option>
+            </select>
+        </div>
+        <div style="clear: both; display: block; height: 10px"></div>
+        <input type="submit" class="btn btn-success" value="ADD"/>
+    </form>
     <h1 style="text-align: center">LIST CUSTOMER</h1>
     <table class="table table-active">
         <tr>
@@ -125,64 +124,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
         integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!--<script>-->
-<!--    // 1. what is API-->
-<!--    // 2. How do I call API-->
-<!--    // 3. Explain code-->
-
-
-<!--    // var renderData = (array, select) => {-->
-<!--    //     let row = ' <option disable value="">chọn</option>';-->
-<!--    //     array.forEach(element => {-->
-<!--    //         row += `<option value="${element.code}">${element.name}</option>`-->
-<!--    //     });-->
-<!--    //     document.querySelector("#" + select).innerHTML = row-->
-<!--    // }-->
-
-<!--    $("#province").change(() => {-->
-<!--        callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");-->
-<!--        printResult();-->
-<!--    });-->
-<!--    $("#district").change(() => {-->
-<!--        callApiWard(host + "d/" + $("#district").val() + "?depth=2");-->
-<!--        printResult();-->
-<!--    });-->
-<!--    $("#ward").change(() => {-->
-<!--        printResult();-->
-<!--    })-->
-
-<!--    var printResult = () => {-->
-<!--        if ($("#district").val() != "" && $("#province").val() != "" &&-->
-<!--            $("#ward").val() != "") {-->
-<!--            let result = $("#province option:selected").text() +-->
-<!--                " | " + $("#district option:selected").text() + " | " +-->
-<!--                $("#ward option:selected").text();-->
-<!--            $("#result").text(result)-->
-<!--        }-->
-
-<!--    }-->
-<!--    var renderData = (array, select) => {-->
-<!--        let row = ' <option disable value="">chọn</option>';-->
-<!--        array.forEach(element => {-->
-<!--            row += `<option value="${element.name}" data-name="${element.code}">${element.name}</option>`-->
-<!--        });-->
-<!--        document.querySelector("#" + select).innerHTML = row-->
-<!--    }-->
-<!--    var getCodeToName = (selectId, code) => {-->
-<!--        var select = document.getElementById(selectId);-->
-<!--        var options = select.getElementsByTagName("option");-->
-<!--        for (var i = 0; i < options.length; i++) {-->
-<!--            if (options[i].value === code) {-->
-<!--                return options[i].getAttribute("data-name");-->
-<!--            }-->
-<!--        }-->
-<!--        return "";-->
-<!--    }-->
-<!--    var selectedName = getCodeToName("province", $("#province").val());-->
-<!--    console.log(selectedName); // In tên tương ứng của tỉnh thành được chọn-->
-<!--</script>-->
 <script>
-    // Modify the renderData function to use the data-name attribute for value and text
+    // 1. what is API
+    // 2. How do I call API
+    // 3. Explain code
     const host = "https://provinces.open-api.vn/api/";
     var callAPI = (api) => {
         return axios.get(api)
@@ -203,51 +148,56 @@
                 renderData(response.data.wards, "ward");
             });
     }
-    var renderData = (array, select) => {
-        let row = ' <option disable value="">chọn</option>';
-        array.forEach(element => {
-            row += `<option value="${element.code}" data-name="${element.code}">${element.name}</option>`
-        });
-        document.querySelector("#" + select).innerHTML = row;
-    };
 
-    // Modify the getCodeToName function to filter options based on data-name attribute
-    var getCodeToName = (selectId, code) => {
-        var select = document.getElementById(selectId);
-        var options = select.getElementsByTagName("option");
-        for (var i = 0; i < options.length; i++) {
-            if (options[i].getAttribute("data-name") === code) {
-                return options[i].value;
-            }
-        }
-        return "";
-    };
+    // var renderData = (array, select) => {
+    //     let row = ' <option disable value="">chọn</option>';
+    //     array.forEach(element => {
+    //         row += `<option value="${element.code}">${element.name}</option>`
+    //     });
+    //     document.querySelector("#" + select).innerHTML = row
+    // }
 
     $("#province").change(() => {
         callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
         printResult();
     });
-
     $("#district").change(() => {
         callApiWard(host + "d/" + $("#district").val() + "?depth=2");
         printResult();
     });
-
     $("#ward").change(() => {
         printResult();
-    });
+    })
 
     var printResult = () => {
-        if ($("#district").val() !== "" && $("#province").val() !== "" &&
-            $("#ward").val() !== "") {
-            let provinceName = getCodeToName("province", $("#province").val());
-            let districtName = getCodeToName("district", $("#district").val());
-            let wardName = getCodeToName("ward", $("#ward").val());
-
-            let result = provinceName + " | " + districtName + " | " + wardName;
-            $("#result").text(result);
+        if ($("#district").val() != "" && $("#province").val() != "" &&
+            $("#ward").val() != "") {
+            let result = $("#province option:selected").text() +
+                " | " + $("#district option:selected").text() + " | " +
+                $("#ward option:selected").text();
+            $("#result").text(result)
         }
-    };
+
+    }
+    var renderData = (array, select) => {
+        let row = ' <option disable value="">chọn</option>';
+        array.forEach(element => {
+            row += `<option value="${element.code}" data-name="${element.name}">${element.name}</option>`
+        });
+        document.querySelector("#" + select).innerHTML = row
+    }
+    var getCodeToName = (selectId, code) => {
+        var select = document.getElementById(selectId);
+        var options = select.getElementsByTagName("option");
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value === code) {
+                return options[i].getAttribute("data-name");
+            }
+        }
+        return "";
+    }
+    var selectedName = getCodeToName("province", $("#province").val());
+    console.log(selectedName);
 </script>
 </body>
 </html>
