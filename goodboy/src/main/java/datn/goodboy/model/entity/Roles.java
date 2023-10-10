@@ -21,7 +21,7 @@ public class Roles {
     @Column(name = "name")
     String name;
     @Column(name = "role")
-    int role;
+    String role;
     @Column(name = "status")
     int status;
 
