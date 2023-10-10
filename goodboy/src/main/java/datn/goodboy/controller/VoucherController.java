@@ -1,6 +1,7 @@
 package datn.goodboy.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,9 +46,14 @@ public class VoucherController {
   public int pageno = 0;
   public int totalpage = 0;
 
+  @ModelAttribute("rowcount")
+  public int rowcount() {
+    return rowcount;
+  }
+
   // panigation and sort
   @GetMapping("/getcountrow")
-  public String handleSubmit(Model model, @RequestParam("selectedValue") String selectedValue) {
+  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
     System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
@@ -58,6 +64,7 @@ public class VoucherController {
     model.addAttribute("list", list);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/voucher/table-voucher.html"; // Redirect back to the form page
   }
 
@@ -74,6 +81,7 @@ public class VoucherController {
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/voucher/table-voucher.html";
   }
 
@@ -84,13 +92,14 @@ public class VoucherController {
       pageno = 1;
     }
     this.pageno = pageno;
-    List<VoucherResponse> list = service.getPageNo(this.pageno - 1, rowcount, sortBy, sortDir);
+    List<VoucherResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     pagenumbers = service.getPanigation(rowcount, this.pageno);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", this.pageno);
     model.addAttribute("list", list);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/voucher/table-voucher.html";
   }
 
@@ -105,6 +114,8 @@ public class VoucherController {
     model.addAttribute("list", list);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
+    model.addAttribute("rowcount", rowcount);
+
     return "/admin/pages/voucher/table-voucher.html";
   }
 
@@ -116,7 +127,6 @@ public class VoucherController {
   @GetMapping("create")
   public String goToCreateForm(Model model) {
     voucherRequest = new VoucherRequest();
-    voucherRequest.setStatus(1);
     model.addAttribute("listCustomer", customerService.getComboBox());
     model.addAttribute("voucherRequest", voucherRequest);
     return "/admin/pages/voucher/form-voucher.html";
@@ -125,26 +135,29 @@ public class VoucherController {
   @GetMapping("delete")
   public String deleteVoucher(Model model, @RequestParam("id") String id) {
     // service.deleteVoucher(UUID.fromString(id));
-    return "redirect:table-voucher";
+    return "redirect:index";
   }
 
-  @GetMapping("edit")
-  public String editVoucher(Model model, @RequestParam("id") String id) {
-    // model.addAttribute("voucherRequest",
-    // service.getVoucherRequetById(UUID.fromString(id)));
-    model.addAttribute("listCustomer", customerService.getAllCustomers());
-    return "/admin/pages/voucher/form-voucher.html";
+  // @GetMapping("edit")
+  // public String editVoucher(Model model, @RequestParam("id") UUID id) {
+  //   model.addAttribute("voucherRequest",
+  //       service.getVoucherRequetById(id));
+  //   return "/admin/pages/voucher/form-voucher.html";
+  // }
+@GetMapping("edit")
+  public String editVoucher(Model model, @RequestParam("id") int id) {
+    model.addAttribute("voucherRequest",
+        service.getVoucherRequetById(id));
+    return "/admin/pages/voucher/update-voucher.html";
   }
-
   @PostMapping("store")
   public String storeVoucher(Model model, @Valid @ModelAttribute("voucherRequest") VoucherRequest voucherRequest,
       BindingResult theBindingResult) {
     if (theBindingResult.hasErrors()) {
-      model.addAttribute("listCustomer", customerService.getComboBox());
       return "/admin/pages/voucher/form-voucher.html";
     } else {
-      // service.saveVoucher(voucherRequest);
-      return "redirect:table-voucher";
+      service.saveVoucher(voucherRequest);
+      return "redirect:index";
     }
   }
 
@@ -152,9 +165,9 @@ public class VoucherController {
   public String update(@Valid @ModelAttribute("voucherRequest") VoucherRequest voucherRequest,
       BindingResult theBindingResult, Model model) {
     if (theBindingResult.hasErrors()) {
-      return "/admin/pages/voucher/form-voucher.html";
+      return "/admin/pages/voucher/update-voucher.html";
     }
-    // service.updateVoucher(voucherRequest);
-    return "redirect:table-voucher";
+    service.updateVoucher(voucherRequest);
+    return "redirect:index";
   }
 }

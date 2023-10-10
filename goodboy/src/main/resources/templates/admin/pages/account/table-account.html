@@ -5,70 +5,58 @@
 <head>
     <title>Account</title>
 </head>
-
 <body>
     <section layout:fragment="content">
         <div class="container-fluid">
             <a href="/admin/account/create" class="btn btn-primary">New</a>
-            <div class="text-lg-end">
-                <div class="text-lg-end">
-                    <form action="#" th:action="@{/admin/account/getcountrow}" method="get">
-                        Number of rows
-                        <select name="selectedValue">
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                        </select>
-                        <input type="submit" value="Submit">
-                    </form>
-                </div>
-                <div style="height: 500px; overflow: auto;">
-                    <table class="table table-hover">
-                        <thead class="position-sticky top-0">
-                            <tr>
-                                <th scope="col">Tên Khách Hàng
-                                    <a th:href="@{/admin/account/sort(sortBy=customer.name ,sortDir=true)}"><i
-                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                    <a th:href="@{/admin/account/sort(sortBy=customer.name ,sortDir=false)}"><i
-                                            class="fa-solid fa-sort-down fa-xs"></i></a>
-                                </th>
-                                <th scope="col">Email
-                                    <a th:href="@{/admin/account/sort(sortBy=email ,sortDir=true)}"><i
-                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                    <a th:href="@{/admin/account/sort(sortBy=email ,sortDir=false)}"><i
-                                            class="fa-solid fa-sort-down fa-xs"></i></a>
-                                </th>
-                                <th scope="col">Số điện thoại
-                                    <a th:href="@{/admin/account/sort(sortBy=customer.phone ,sortDir=true)}"><i
-                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                    <a th:href="@{/admin/account/sort(sortBy=customer.phone ,sortDir=false)}"><i
-                                            class="fa-solid fa-sort-down fa-xs"></i></a>
-                                </th>
-                                <th scope="col">Trạng thái
-                                    <a th:href="@{/admin/account/sort(sortBy=status ,sortDir=true)}"><i
-                                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                                    <a th:href="@{/admin/account/sort(sortBy=status ,sortDir=false)}"><i
-                                            class="fa-solid fa-sort-down fa-xs"></i></a>
-                                </th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="account : ${list}">
-                                <td th:text="${account.name}"></td>
-                                <td th:text="${account.email}"></td>
-                                <td th:text="${account.phoneNumber}"></td>
-                                <td th:text="${account.status}"></td>
-                                <td>
-                                    <a th:href="@{/admin/account/delete(id=${account.idCustomer})}"
-                                        class="btn btn-danger">Delete</a>
-                                    <a th:href="@{/admin/account/edit(id=${account.idCustomer})}"
-                                        class="btn btn-success">Update</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div style="height: 500px; overflow: auto;">
+                <table class="table table-hover">
+                    <thead class="position-sticky top-0">
+                        <tr>
+                            <th scope="col">Tên Khách Hàng
+                                <a th:href="@{/admin/account/sort(sortBy=customer.name ,sortDir=true)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/admin/account/sort(sortBy=customer.name ,sortDir=false)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Email
+                                <a th:href="@{/admin/account/sort(sortBy=email ,sortDir=true)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/admin/account/sort(sortBy=email ,sortDir=false)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Số điện thoại
+                                <a th:href="@{/admin/account/sort(sortBy=customer.phone ,sortDir=true)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/admin/account/sort(sortBy=customer.phone ,sortDir=false)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Trạng thái
+                                <a th:href="@{/admin/account/sort(sortBy=status ,sortDir=true)}"><i
+                                        class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                                <a th:href="@{/admin/account/sort(sortBy=status ,sortDir=false)}"><i
+                                        class="fa-solid fa-sort-down fa-xs"></i></a>
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="account : ${list}">
+                            <td th:text="${account.name}"></td>
+                            <td th:text="${account.email}"></td>
+                            <td th:text="${account.phoneNumber}"></td>
+                            <td th:text="${account.status}"></td>
+                            <td>
+                                <a th:href="@{/admin/account/delete(id=${account.idCustomer})}"
+                                    class="btn btn-danger">Delete</a>
+                                <a th:href="@{/admin/account/edit(id=${account.idCustomer})}"
+                                    class="btn btn-success">Update</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer d-flex justify-content-between">
                 <div class="text-start">This page is <span th:text="${crpage}"></span> of <span
                         th:text="${totalpage}"></span> </div>
                 <div class="text-center">
@@ -113,8 +101,16 @@
                         </ul>
                     </nav><!-- End Centered Pagination -->
                 </div>
+                <form action="#" th:action="@{/admin/account/getcountrow}" method="get">
+                    Number of rows
+                    <select name="selectedValue">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                    <input type="submit" value="Submit">
+                </form>
             </div>
-        </div>
     </section>
 </body>
 

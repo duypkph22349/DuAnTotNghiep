@@ -165,12 +165,12 @@ public class AccountService implements PanigationInterface<AccountResponse> {
     int totalPage = page.getTotalPages();
     int[] rs;
     if (totalPage <= 1) {
-      int[] rs1 = {};
+      int[] rs1 = {1};
       return rs1;
     } else if (totalPage <= 3) {
       rs = new int[totalPage];
       for (int i = 1; i <= totalPage; i++) {
-        rs[i] = i;
+        rs[i-1] = i;
       }
       return rs;
     } else {
