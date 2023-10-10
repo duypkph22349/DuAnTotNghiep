@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import datn.goodboy.controller.RestController.OpenApiClient;
 import datn.goodboy.model.entity.DiaChi.District;
 import datn.goodboy.model.entity.DiaChi.Province;
 import datn.goodboy.model.entity.DiaChi.Ward;
@@ -24,12 +23,11 @@ public class CustomerService {
     // Declare the repository as final to ensure its immutability
     private final CustomerRepository customerRepository;
 
-    @Autowired
-    private final OpenApiClient openApiClient;
 
-    public CustomerService(CustomerRepository customerRepository, OpenApiClient openApiClient) {
+
+    public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.openApiClient = openApiClient;
+
     }
 
     public List<Customer> getAllCustomers() {

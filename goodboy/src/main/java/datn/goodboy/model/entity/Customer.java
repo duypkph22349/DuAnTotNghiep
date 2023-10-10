@@ -27,32 +27,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    UUID id;
-    @Column(name = "code")
-    String code;
-    @Column(name = "name")
-    String name;
-    @Column(name = "gender")
-    boolean gender;
-    @Column(name = "birth_date")
-    Date birth_date;
-    @Column(name = "address")
-    String address;
-    @Column(name = "addressName")
-    String addressName;
-    @Column(name = "phone")
-    String phone;
-    @Column(name = "city")
-    String city;
-    @Column(name = "cityName")
-    String cityName;
-    @Column(name = "country")
-    String country;
-    @Column(name = "countryName")
-    String countryName;
-    @Column(name = "status")
-    int status;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
+  UUID id;
+  @Column(name = "code")
+  String code;
+  @Column(name = "name")
+  String name;
+  @Column(name = "gender")
+  boolean gender;
+  @Column(name = "birth_date")
+  Date birth_date;
+  @Column(name = "address")
+  String address;
+  @Column(name = "phone")
+  String phone;
+  @Column(name = "city")
+  String city;
+  @Column(name = "country")
+  String country;
+  @Column(name = "status")
+  int status;
 }

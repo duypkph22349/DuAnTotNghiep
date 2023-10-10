@@ -1,8 +1,6 @@
 package datn.goodboy.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +18,6 @@ public class PatternType {
     private Integer id;
     @Column(name="code")
     private String code;
-    @NotNull
-    @NotBlank
     @Column(name="name")
     private String name;
     @Column(name="created_at")
