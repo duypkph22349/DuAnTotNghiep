@@ -29,8 +29,10 @@ public class AccountController {
 
   @Autowired
   private CustomerService customerService;
+
   @Autowired
   private AccountRequest accountRequest;
+
   private AccountResponse accountResponse;
   public int rowcount = 10;
   public int[] pagenumbers;
@@ -41,7 +43,7 @@ public class AccountController {
 
   // panigation and sort
   @GetMapping("/getcountrow")
-  public String handleSubmit(Model model, @RequestParam("selectedValue") String selectedValue) {
+  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
     System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
@@ -78,7 +80,7 @@ public class AccountController {
       pageno = 1;
     }
     this.pageno = pageno;
-    List<AccountResponse> list = service.getPageNo(this.pageno - 1, rowcount, sortBy, sortDir);
+    List<AccountResponse> list = service.getPageNo(this.pageno , rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     pagenumbers = service.getPanigation(rowcount, this.pageno);

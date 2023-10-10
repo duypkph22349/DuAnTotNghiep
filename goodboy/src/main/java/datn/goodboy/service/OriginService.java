@@ -1,8 +1,10 @@
 package datn.goodboy.service;
 
 
+import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.repository.OriginRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,5 +30,12 @@ public class OriginService {
         color1.setUpdatedAt(color.getUpdatedAt());
         color1.setStatus(color.getStatus());
         return originRepository.save(color1);
+    }
+    public Origin getById(Integer id) {
+        return originRepository.findById(id).get();
+    }
+
+    public Page<Origin> searchOriginByKeyword(String keyword, Pageable pageable) {
+        return originRepository.searchByKeyword(keyword, pageable);
     }
 }
