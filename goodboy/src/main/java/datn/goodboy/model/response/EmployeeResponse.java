@@ -1,6 +1,7 @@
 package datn.goodboy.model.response;
 
 import datn.goodboy.model.entity.Roles;
+import groovy.transform.ToString;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,34 +14,18 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class EmployeeResponse {
     UUID id;
-
-    private Roles roles;
-
+    Integer idRoles;
     String code;
-
     String name;
-
-    String cccd;
-
     boolean gender;
-
     LocalDateTime birth_date;
-
-    String address;
-
     String phone;
-
     String email;
-
-    String password;
-
     int status;
+    String image;
 
-    LocalDateTime createdAt;
 
-    LocalDateTime updatedAt;
-
-    boolean deleted;
 }

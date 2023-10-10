@@ -14,42 +14,23 @@
     <title>Nhân Viên</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Latest compiled and minified CSS -->
-    <!--===============================================================================================-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <!--===============================================================================================-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <!--===============================================================================================-->
-    <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
-            integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--===============================================================================================-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
-    <!--===============================================================================================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
-    <!--===============================================================================================-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
-    <!--===============================================================================================-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!--===============================================================================================-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-          rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-
+    //Phân Trang Cho Table
     <script type="text/javascript" style="text-align: center">
-        //Phân Trang Cho Table
         function Pager(tableName, itemsPerPage) {
             this.tableName = tableName;
             this.itemsPerPage = itemsPerPage;
@@ -109,11 +90,11 @@
                 var element = document.getElementById(positionId);
 
                 var pagerHtml = '<span onclick="' + pagerName +
-                    '.prev();" class="pg-normal">&#171</span> | ';
+                    '.prev();" class="pg-normal">Trước</span> | ';
                 for (var page = 1; page <= this.pages; page++)
                     pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName +
                         '.showPage(' + page + ');">' + page + '</span> | ';
-                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">&#187;</span>';
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">Sau</span>';
 
                 element.innerHTML = pagerHtml;
             }
@@ -122,312 +103,264 @@
 </head>
 
 <h1>Quản lý nhân viên</h1>
-<body onload="time()">
+<body>
 <section layout:fragment="content">
-<script>
-    swal("Xin Chào Admin", "Chúc Bạn 1 Ngày Tốt Lành Nhé", "");
-</script>
+    <!--<script>-->
+    <!--    swal("Xin Chào Admin", "Chúc Bạn 1 Ngày Tốt Lành Nhé", "");-->
+    <!--</script>-->
 
-<div class="container-fluid al">
-    <div id="clock"></div>
+    <style type="text/css">
+        .dropdown-menu li {
+            position: relative;
+        }
+
+        .dropdown-menu .dropdown-submenu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: -7px;
+        }
+
+        .dropdown-menu .dropdown-submenu-left {
+            right: 100%;
+            left: auto;
+        }
+
+        .dropdown-menu > li:hover > .dropdown-submenu {
+            display: block;
+        }
+    </style>
+
+
     <Br>
-    <p class="timkiemnhanvien"><b>TÌM KIẾM NHÂN VIÊN:</b></p><Br><Br>
-    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Nhập tên nhân viên cần tìm...">
-    <i class="fa fa-search" aria-hidden="true"></i>
+    <div class="input-group mb-3">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Dropdown
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Giới Tính &raquo;</a>
+                <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#">Nam</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Nữ</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    Submenu &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 1</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 2</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+                        <ul class="dropdown-menu dropdown-submenu">
+                            <li>
+                                <a class="dropdown-item" href="#">Multi level 1</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Multi level 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 4</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 5</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
+               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, CCCD, Địa chỉ....">
+    </div>
+
     <Br>
 
-    <a href="/admin/employee/create-employee" class="btn btn-primary">New</a>
+    <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
 
-</div>
-<!-- Table -->
-<div style="height: 500px; overflow: auto;">
+
+    <!-- Table -->
+    <div style="height: 500px; overflow: auto;">
 
         <table class="table table-hover" id="myTable">
             <thead class="position-sticky top-0">
 
-        <tr class="ex">
-            <th>#</th>
-            <th>Mã Nhân Viên</th>
-            <th width="auto">Tên Nhân Viên</th>
-            <th width="auto">CCCD</th>
-            <th width="auto">Giới Tính</th>
-            <th>Ngày Sinh</th>
-            <th>Địa Chỉ</th>
-            <th>Số Điện Thoại</th>
-            <th>Email</th>
-            <th>PassWord</th>
-            <th>Trạng Thái</th>
-            <th width="5px; !important">Tính Năng</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="employee, i : ${list}">
-            <td th:text="${i.index+1}"></td>
-            <!--            <td th:text="${employee.roles.id}"></td>-->
-            <td th:text="${employee.code}"></td>
-            <td th:text="${employee.name}"></td>
-            <td th:text="${employee.cccd}"></td>
-            <td th:text="${employee.gender} == true? 'Male':'Female'"></td>
-            <td th:text="${employee.birth_date}"></td>
-            <td th:text="${employee.address}"></td>
-            <td th:text="${employee.phone}"></td>
-            <td th:text="${employee.email}"></td>
-            <td th:text="${employee.password}"></td>
-            <td th:text="${employee.status} == 0 ? 'Nghỉ Việc' : 'Đang Làm'"></td>
-            <td>
-                <a th:href="@{'/employee/detail/' + ${employee.id}}" class="btn btn-primary">Detail</a>--
-                <br>
-                <a th:href="@{'/employee/delete/' + ${employee.id}}" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-        </tbody>
+            <tr class="ex">
+                <th>#</th>
+                <th scope="col">Mã Nhân Viên
+                    <a href="#" onclick="sortTable('asc')"><i
+                            class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc')"><i
+                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th scope="col">Tên Nhân Viên
+                    <a href="#" onclick="sortTable('asc')"><i
+                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                    <a href="#" onclick="sortTable('desc')"><i
+                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Image</th>
+                <th>CCCD</th>
+                <th>Giới Tính</th>
+                <th>Ngày Sinh</th>
+                <th>Số Điện Thoại</th>
+                <th>Email</th>
+                <th>Chức Vụ</th>
+                <th>Trạng Thái</th>
+                <th>Tính Năng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee, i : ${list}">
+                <td th:text="${i.index+1}"></td>
+                <!--            <td th:text="${employee.roles.id}"></td>-->
+                <td th:text="${employee.code}"></td>
+                <td th:text="${employee.name}"></td>
+
+                <td><img th:src="@{'/images/faces/' + ${employee.image}}"
+                         width="60px" height="50px"></td>
+                <td th:text="${employee.cccd}"></td>
+                <td th:text="${employee.gender} == true? 'Nam':'Nữ'"></td>
+                <td th:text="${employee.birth_date}"></td>
+                <td th:text="${employee.phone}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.roles.name}"></td>
+                <td th:text="${employee.status} == 0 ? 'Nghỉ Việc' : 'Đang Làm'"></td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        <a th:href="@{'/admin/employee/detail/' + ${employee.id}}" class="btn btn-danger">Detail</a>
+                        <a th:href="@{'/admin/employee/delete/' + ${employee.id}}" class="btn btn-warning">Delete</a>
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--  Page-->
+    </div>
 
 
-    </table>
-    <!--  Page-->
-</div>
-<div id="pageNavPosition" class="text-right"></div>
-<script type="text/javascript">
-    var pager = new Pager('myTable', 7);
-    pager.init();
-    pager.showPageNav('pager', 'pageNavPosition');
-    pager.showPage(1);
-</script>
-</div>
-<!--<hr class="hr1">-->
-<!--<div class="container-fluid end">-->
-<!--    <div class="row text-center">-->
-<!--        <div class="col-lg-12 link">-->
-<!--            <i class="fab fa-facebook-f"></i>-->
-<!--            <i class="fab fa-instagram"></i>-->
-<!--            <i class="fab fa-youtube"></i>-->
-<!--            <i class="fab fa-google"></i>-->
-<!--        </div>-->
-<!--        <div class="col-lg-12">-->
-<!--            Phan mem code nhom goodboy | Design-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<script src="jquery.min.js"></script>
-<script type="text/javascript">
-    //Tìm kiếm
-    function myFunction() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[2];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+    <div id="pageNavPosition" class="text-right"></div>
+    <script type="text/javascript">
+        var pager = new Pager('myTable', 7);
+        pager.init();
+        pager.showPageNav('pager', 'pageNavPosition');
+        pager.showPage(1);
+    </script>
+    </div>
+
+    <script src="jquery.min.js"></script>
+    <script type="text/javascript">
+        // Tìm kiếm
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
             }
         }
-    }
 
-    //Lọc bảng
-    function sortTable() {
-        var table, rows, switching, i, x, y, shouldSwitch;
-        table = document.getElementById("myTable");
-        switching = true;
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("TD")[0];
-                y = rows[i + 1].getElementsByTagName("TD")[0];
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
+
+        //Sắp xếp
+        function sortTable(order) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("tr");
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[1]; // Index 1 represents the Employee Code column
+                    y = rows[i + 1].getElementsByTagName("td")[1];
+
+                    if (order === 'asc') {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === 'desc') {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
                 }
             }
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                swal("Thành Công!", "Bạn Đã Lọc Thành Công", "success");
-            }
-        }
-    }
-
-    //Thời Gian
-    function time() {
-        var today = new Date();
-        var weekday = new Array(7);
-        weekday[0] = "Chủ Nhật";
-        weekday[1] = "Thứ Hai";
-        weekday[2] = "Thứ Ba";
-        weekday[3] = "Thứ Tư";
-        weekday[4] = "Thứ Năm";
-        weekday[5] = "Thứ Sáu";
-        weekday[6] = "Thứ Bảy";
-        var day = weekday[today.getDay()];
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1;
-        var yyyy = today.getFullYear();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        nowTime = h + ":" + m + ":" + s;
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-        tmp = '<i class="fa fa-clock-o" aria-hidden="true"></i> <span class="date">' + today + ' | ' + nowTime +
-            '</span>';
-        document.getElementById("clock").innerHTML = tmp;
-        clocktime = setTimeout("time()", "1000", "Javascript");
-
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i;
-            }
-            return i;
-        }
-    }
-
-    //Thêm
-    // $(document).ready(function () {
-    //   $('[data-toggle="tooltip"]').tooltip();
-    //   var actions = $("table td:last-child").html();
-    //   $(".add-new").click(function () {
-    //     $(this).attr("disabled", "disabled");
-    //     var index = $("table tbody tr:last-child").index();
-    //     var row = '<tr>' +
-    //             '<td><input type="text" class="form-control" name="name" id="name" placeholder="Nhập Tên"></td>' +
-    //             '<td><input type="text" class="form-control" name="gioitinh" id="gioitinh" placeholder="Nhập Giới Tính"></td>' +
-    //             '<td><input type="text" class="form-control" name="namsinh" id="namsinh" value="" placeholder="Nhập Ngày Sinh"></td>' +
-    //             '<td><input type="text" class="form-control" name="diachi" id="diachi" value="" placeholder="Nhập Địa Chỉ"></td>' +
-    //             '<td><input type="text" class="form-control" name="chucvu" id="chucvu" value="" placeholder="Nhập Chức Vụ"></td>' +
-    //             '<td>' + actions + '</td>' +
-    //             '</tr>';
-    //     $("table").append(row);
-    //     $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-    //     $('[data-toggle="tooltip"]').tooltip();
-    //   });
-    //   //Kiểm tra rỗng
-    //   $(document).on("click", ".add", function () {
-    //     var empty = false;
-    //     var input = $(this).parents("tr").find('input[type="text"]');
-    //     input.each(function () {
-    //       if (!$(this).val()) {
-    //         $(this).addClass("error");
-    //         swal("Thông Báo!", "Dữ Liệu Trống Vui Lòng Kiểm Tra", "error");
-    //         empty = true;
-    //       } else {
-    //         $(this).removeClass("error");
-    //         swal("Thông Báo!", "Bạn Chưa Nhập Dữ Liệu", "warning");
-    //       }
-    //     });
-    //     $(this).parents("tr").find(".error").first().focus();
-    //     if (!empty) {
-    //       input.each(function () {
-    //         $(this).parent("td").html($(this).val());
-    //         swal("Thành Công", "Bạn Đã Cập Nhật Thành Công", "success");
-    //       });
-    //       $(this).parents("tr").find(".add, .edit").toggle();
-    //       $(".add-new").removeAttr("disabled");
-    //     }
-    //   });
-    //   // Sửa
-    //   $(document).on("click", ".edit", function () {
-    //     $(this).parents("tr").find("td:not(:last-child)").each(function () {
-    //       $(this).html('<input type="text" class="form-control" value="' + $(this)
-    //               .text() + '">');
-    //     });
-    //     $(this).parents("tr").find(".add, .edit").toggle();
-    //     $(".add-new").attr("disabled", "disabled");
-    //   });
-    //   jQuery(function () {
-    //     jQuery(".add").click(function () {
-    //       swal("Thành Công!", "Bạn Đã Sửa Thành Công", "success");
-    //     });
-    //   });
-    //   // Xóa
-    //   $(document).on("click", ".delete", function () {
-    //     $(this).parents("tr").remove();
-    //     swal("Thành Công!", "Bạn Đã Xóa Thành Công", "success");
-    //     $(".add-new").removeAttr("disabled");
-    //   });
-    // });
-    //Not use
-    jQuery(function () {
-        jQuery(".cog").click(function () {
-            swal("Sorry!", "Tính Năng Này Chưa Có", "error");
-        });
-    });
-    //Tool tip
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
-
-<script>
-    // 1. what is API
-    // 2. How do I call API
-    // 3. Explain code
-    const host = "https://provinces.open-api.vn/api/";
-    var callAPI = (api) => {
-        return axios.get(api)
-            .then((response) => {
-                renderData(response.data, "province");
-            });
-    }
-    callAPI('https://provinces.open-api.vn/api/?depth=1');
-    var callApiDistrict = (api) => {
-        return axios.get(api)
-            .then((response) => {
-                renderData(response.data.districts, "district");
-            });
-    }
-    var callApiWard = (api) => {
-        return axios.get(api)
-            .then((response) => {
-                renderData(response.data.wards, "ward");
-            });
-    }
-
-    var renderData = (array, select) => {
-        let row = ' <option disable value="">chọn</option>';
-        array.forEach(element => {
-            row += `<option value="${element.code}">${element.name}</option>`
-        });
-        document.querySelector("#" + select).innerHTML = row
-    }
-
-    $("#province").change(() => {
-        callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
-        printResult();
-    });
-    $("#district").change(() => {
-        callApiWard(host + "d/" + $("#district").val() + "?depth=2");
-        printResult();
-    });
-    $("#ward").change(() => {
-        printResult();
-    })
-
-    var printResult = () => {
-        if ($("#district").val() != "" && $("#province").val() != "" &&
-            $("#ward").val() != "") {
-            let result = $("#province option:selected").text() +
-                " | " + $("#district option:selected").text() + " | " +
-                $("#ward option:selected").text();
-            $("#result").text(result)
         }
 
-    }
-</script>
+        //Thời Gian
+        // function time() {
+        //     var today = new Date();
+        //     var weekday = new Array(7);
+        //     weekday[0] = "Chủ Nhật";
+        //     weekday[1] = "Thứ Hai";
+        //     weekday[2] = "Thứ Ba";
+        //     weekday[3] = "Thứ Tư";
+        //     weekday[4] = "Thứ Năm";
+        //     weekday[5] = "Thứ Sáu";
+        //     weekday[6] = "Thứ Bảy";
+        //     var day = weekday[today.getDay()];
+        //     var dd = today.getDate();
+        //     var mm = today.getMonth() + 1;
+        //     var yyyy = today.getFullYear();
+        //     var h = today.getHours();
+        //     var m = today.getMinutes();
+        //     var s = today.getSeconds();
+        //     m = checkTime(m);
+        //     s = checkTime(s);
+        //     nowTime = h + ":" + m + ":" + s;
+        //     if (dd < 10) {
+        //         dd = '0' + dd
+        //     }
+        //     if (mm < 10) {
+        //         mm = '0' + mm
+        //     }
+        //     today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        //     tmp = '<i class="fa fa-clock-o" aria-hidden="true"></i> <span class="date">' + today + ' | ' + nowTime +
+        //         '</span>';
+        //     document.getElementById("clock").innerHTML = tmp;
+        //     clocktime = setTimeout("time()", "1000", "Javascript");
+        //
+        //     function checkTime(i) {
+        //         if (i < 10) {
+        //             i = "0" + i;
+        //         }
+        //         return i;
+        //     }
+        // }
+    </script>
+
 </section>
 </body>
 </html>
