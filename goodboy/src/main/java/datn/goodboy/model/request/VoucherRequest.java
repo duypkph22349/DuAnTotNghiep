@@ -22,15 +22,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Component
 @FieldDefaults(level = AccessLevel.PUBLIC)
-@StartBeforeEnd(message = "start must befor end")
 public class VoucherRequest {
   int id;
   @NotNull
   @NotBlank
   String name;
-  @NotNull
-  @NotBlank
-  String code;
   @NotNull
   LocalDateTime start_time;
   @NotNull

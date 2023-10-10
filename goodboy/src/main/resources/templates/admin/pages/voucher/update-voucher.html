@@ -17,13 +17,8 @@
       <div th:if="${#fields.hasErrors('name')}" class="text-danger form-text" th:errors="*{name}"></div>
     </div>
     <div class="form-group">
-      <label for="code">Code:</label>
-      <input type="text" class="form-control" id="code" th:field="*{code}" />
-      <div th:if="${#fields.hasErrors('code')}" class="text-danger form-text" th:errors="*{code}"></div>
-    </div>
-    <div class="form-group">
       <label for="start_time">Start Time:</label>
-      <input type="datetime-local" class="form-control" id="start_time" th:field="*{start_time}" />
+      <input type="datetime-local" pattern="dd/mm/yyyy " class="form-control" id="start_time" th:field="*{start_time}" />
       <div th:if="${#fields.hasErrors('start_time')}" class="text-danger form-text" th:errors="*{start_time}"></div>
     </div>
     <div class="form-group">
