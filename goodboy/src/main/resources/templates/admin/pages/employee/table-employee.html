@@ -200,15 +200,10 @@
             <tr class="ex">
                 <th>#</th>
                 <th scope="col">Mã Nhân Viên
-
-<!--                    <a href="#" onclick="sortTable('asc')"><i-->
-<!--                            class="fa-solid fa-sort-up fa-xs"></i></a>-->
-<!--                    <a href="#" onclick="sortTable('desc')"><i-->
-<!--                            class="fa-solid fa-sort-down fa-xs"></i></a>-->
-                    <a th:href="@{/admin/employees(sort='asc')}" >
-                        <i class="fa-solid fa-sort-up fa-xs"></i></a>
-                    <a  th:href="@{/admin/employees(sort='desc')}" >
-                        <i class="fa-solid fa-sort-down fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('asc')"><i
+                            class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc')"><i
+                            class="fa-solid fa-sort-down fa-xs"></i></a>
                 </th>
                 <th scope="col">Tên Nhân Viên
                     <a href="#" onclick="sortTable('asc')"><i
@@ -255,50 +250,6 @@
         </table>
         <!--  Page-->
     </div>
-<!--    <div class="text-start">This page is <span th:text="${crpage}"></span> of <span-->
-<!--            th:text="${totalpage}"></span> </div>-->
-<!--    <div class="text-center">-->
-<!--        <nav aria-label="Page navigation example">-->
-<!--            <ul class="pagination justify-content-center">-->
-<!--                <div th:if="${crpage-1 < 1}">-->
-<!--                    <li class="page-item disabled">-->
-<!--                        <a class="page-link" th:href="@{/admin/employee/page(pageno=${crpage-1})}"-->
-<!--                           tabindex="-1" aria-disabled="true">Previous</a>-->
-<!--                    </li>-->
-<!--                </div>-->
-<!--                <div th:unless="${crpage-1 < 1}">-->
-<!--                    <li class="page-item">-->
-<!--                        <a class="page-link"-->
-<!--                           th:href="@{/admin/employee/page(pageno=${crpage-1})}">Previous</a>-->
-<!--                    </li>-->
-<!--                </div>-->
-<!--                <div th:each="page : ${pagenumber}">-->
-<!--                    <div th:if="${crpage == page}">-->
-<!--                        <li class="page-item disabled"><a class="page-link"-->
-<!--                                                          th:href="@{/admin/employee/page(pageno=${page})}" th:text="${page}"-->
-<!--                                                          tabindex="-1" aria-disabled="true"></a>-->
-<!--                        </li>-->
-<!--                    </div>-->
-<!--                    <div th:unless="${crpage == page}">-->
-<!--                        <li class="page-item"><a class="page-link"-->
-<!--                                                 th:href="@{/admin/employee/page(pageno=${page})}" th:text="${page}"></a>-->
-<!--                        </li>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div th:if="${crpage == totalpage}">-->
-<!--                    <li class="page-item disabled">-->
-<!--                        <a class="page-link" th:href="@{/admin/employee/page(pageno=${crpage+1})}"-->
-<!--                           tabindex="-1" aria-disabled="true">Next</a>-->
-<!--                    </li>-->
-<!--                </div>-->
-<!--                <div th:unless="${crpage == totalpage}">-->
-<!--                    <li class="page-item">-->
-<!--                        <a class="page-link" th:href="@{/admin/employee/page(pageno=${crpage+1})}">Next</a>-->
-<!--                    </li>-->
-<!--                </div>-->
-<!--            </ul>-->
-<!--        </nav>&lt;!&ndash; End Centered Pagination &ndash;&gt;-->
-<!--    </div>-->
 
 
     <div id="pageNavPosition" class="text-right"></div>
@@ -332,35 +283,6 @@
             }
         }
 
-        //Tìm kiếm 2
-        // function myFunction() {
-        //     var input, filter, table, tr, td, i, j, txtValue;
-        //     input = document.getElementById("searchInput");
-        //     filter = input.value.toUpperCase();
-        //     table = document.getElementById("myTable");
-        //     tr = table.getElementsByTagName("tr");
-        //
-        //     for (i = 0; i < tr.length; i++) {
-        //         var match = false;
-        //
-        //         for (j = 1; j < tr[i].cells.length; j++) {
-        //             td = tr[i].cells[j];
-        //             if (td) {
-        //                 txtValue = td.textContent || td.innerText;
-        //                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //                     match = true;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //
-        //         if (match) {
-        //             tr[i].style.display = "";
-        //         } else {
-        //             tr[i].style.display = "none";
-        //         }
-        //     }
-        // }
 
         //Sắp xếp
         function sortTable(order) {

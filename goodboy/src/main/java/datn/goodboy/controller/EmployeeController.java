@@ -19,12 +19,6 @@ import java.util.UUID;
 @RequestMapping("admin/employee")
 @Controller
 public class EmployeeController {
-    public int rowcount = 10;
-    public int[] pagenumbers;
-    public String sortBy = "email";
-    public boolean sortDir = true;
-    public int pageno = 0;
-    public int totalpage = 0;
 
     @Autowired
     private EmployeeService employeeService;
@@ -67,20 +61,6 @@ public class EmployeeController {
             model.addAttribute("detail", null);
         }
         return "admin/pages/employee/detail-employee";
-    }
-
-    @GetMapping("/employees")
-    public String getEmployeeList(@RequestParam(value = "sort", defaultValue = "asc") String sort, Model model) {
-        List<Employee> employees;
-
-        if (sort.equals("asc")) {
-            employees = employeeService.getEmployeesSortedByCodeAsc();
-        } else {
-            employees = employeeService.getEmployeesSortedByCodeDesc();
-        }
-
-        model.addAttribute("employees", employees);
-        return "admin/pages/employee/table-employee";
     }
 
 
