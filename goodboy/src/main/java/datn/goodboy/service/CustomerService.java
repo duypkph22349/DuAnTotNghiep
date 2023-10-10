@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 import datn.goodboy.controller.RestController.OpenApiClient;
 import datn.goodboy.model.entity.DiaChi.District;
 import datn.goodboy.model.entity.DiaChi.Province;
 import datn.goodboy.model.entity.DiaChi.Ward;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -108,4 +110,35 @@ public class CustomerService {
 //    public List<Ward> getAllWards() {
 //        return openApiClient.getAllWards();
 //    }
+
+  // Declare the repository as final to ensure its immutability
+  private final CustomerRepository customerRepository;
+
+  // Use constructor-based dependency injection
+  public CustomerService(CustomerRepository customerRepository) {
+    this.customerRepository = customerRepository;
+  }
+
+  public List<Customer> getAllCustomers() {
+    return customerRepository.findAll();
+  }
+
+  public Page<Customer> getPage(Pageable pageable) {
+    return customerRepository.findAll(pageable);
+  }
+  public Optional<Customer> getCustomerById(UUID id) {
+    return customerRepository.findById(id);
+  }
+
+  public Customer saveCustomer(Customer customer) {
+    return customerRepository.save(customer);
+  }
+
+  public void deleteCustomer(UUID id) {
+    customerRepository.deleteById(id);
+  }
+
+  public List<CustomerResponse> getPageNo(int pageNo) {
+    return customerRepository.getPageNo(PageRequest.of(pageNo, 3)).getContent();
+  }
 }

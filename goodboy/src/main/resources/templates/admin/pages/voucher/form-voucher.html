@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Account Form</title>
+</head>
+
+<body layout:fragment="content">
+  <!-- Form to store new cuahang -->
+  <form enctype="multipart/form-data" th:action="@{/admin/voucher/store}" th:object="${voucherRequest}"
+    method="post" class="form container">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" th:field="*{name}" />
+      <div th:if="${#fields.hasErrors('name')}" class="text-danger form-text" th:errors="*{name}"></div>
+    </div>
+    <div class="form-group">
+      <label for="start_time">Start Time:</label>
+      <input type="datetime-local" class="form-control" id="start_time" th:field="*{start_time}" />
+      <div th:if="${#fields.hasErrors('start_time')}" class="text-danger form-text" th:errors="*{start_time}"></div>
+    </div>
+    <div class="form-group">
+      <label for="end_time">End Time:</label>
+      <input type="datetime-local" class="form-control" id="end_time" th:field="*{end_time}" />
+      <div th:if="${#fields.hasErrors('end_time')}" class="text-danger form-text" th:errors="*{end_time}"></div>
+    </div>
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      <input type="number" class="form-control" id="quantity" th:field="*{quantity}" />
+      <div th:if="${#fields.hasErrors('quantity')}" class="text-danger form-text" th:errors="*{quantity}"></div>
+    </div>
+    <div class="form-group">
+      <label for="discount">Discount:</label>
+      <input type="number" class="form-control" id="discount" th:field="*{discount}" />
+      <div th:if="${#fields.hasErrors('discount')}" class="text-danger form-text" th:errors="*{discount}"></div>
+    </div>
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <input type="text" class="form-control" id="status" th:field="*{status}" />
+      <div th:if="${#fields.hasErrors('status')}" class="text-danger form-text" th:errors="*{status}"></div>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </form>
+</body>
+
+</html>
