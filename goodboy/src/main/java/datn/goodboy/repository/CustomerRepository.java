@@ -6,7 +6,6 @@ import java.util.UUID;
 import datn.goodboy.model.entity.DiaChi.District;
 import datn.goodboy.model.entity.DiaChi.Province;
 import datn.goodboy.model.entity.DiaChi.Ward;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

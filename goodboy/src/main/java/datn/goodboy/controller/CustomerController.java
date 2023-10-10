@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,10 +56,20 @@ public class CustomerController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute Customer customer) {
+        String thanhPhoCode = customer.getAddress();
+        Customer province = customerService.getAllProvinces(thanhPhoCode);
+        if (Objects.nonNull(province)){
+            customer.setAddressName(province.getName());
+        }
         customerService.saveCustomer(customer);
+
         return "redirect:/admin/customer/get-all";
     }
 
+    @GetMapping("view-add")
+    public String viewAdd(){
+        return "/admin/pages/customer/customer-add";
+    }
     @GetMapping("delete/{id}")
     public String delete(@PathVariable("id") UUID id) {
         customerService.deleteCustomer(id);

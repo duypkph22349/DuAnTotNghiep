@@ -4,11 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import datn.goodboy.controller.RestController.OpenApiClient;
-import datn.goodboy.model.entity.DiaChi.District;
-import datn.goodboy.model.entity.DiaChi.Province;
-import datn.goodboy.model.entity.DiaChi.Ward;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,19 +12,18 @@ import org.springframework.stereotype.Service;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.response.CustomerResponse;
 import datn.goodboy.repository.CustomerRepository;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class CustomerService {
 
     // Declare the repository as final to ensure its immutability
     private final CustomerRepository customerRepository;
+    RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
-    private final OpenApiClient openApiClient;
 
-    public CustomerService(CustomerRepository customerRepository, OpenApiClient openApiClient) {
+    public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.openApiClient = openApiClient;
     }
 
     public List<Customer> getAllCustomers() {
@@ -60,18 +54,14 @@ public class CustomerService {
     // }
     // manager
 
-//  public List<Province> getAllProvinces() {
-//    String apiUrl = "https://provinces.open-api.vn/api/p/";
-//    ResponseEntity<List<Province>> response = restTemplate.exchange(
-//            apiUrl,
-//            HttpMethod.GET,
-//            null,
-//            new ParameterizedTypeReference<List<Province>>() {}
-//    );
-//    System.out.println("Service"+response.getBody());
-//
-//    return response.getBody();
-//  }
+    public Customer getAllProvinces(String code) {
+        String apiUrl = "https://provinces.open-api.vn/api/p/";
+        Customer response = restTemplate.getForObject(apiUrl, Customer.class, code
+        );
+        System.out.println("Service" + response);
+
+        return response;
+    }
 //
 //  public List<District> getDistrictsByProvinceId(String provinceId) {
 //    String apiUrl = "https://provinces.open-api.vn/api/d/";
