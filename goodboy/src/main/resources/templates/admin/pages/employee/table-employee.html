@@ -107,8 +107,8 @@
 
 
     <div class="input-group mb-3">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Dropdown
+        <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Filter
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Giới Tính &raquo;</a>
@@ -122,7 +122,15 @@
                 </ul>
             </li>
             <li>
-                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Trạng Thái &raquo;</a>
+                <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="filterAcction('Đang Làm')">Đang Làm</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="filterAcction('Nghỉ Việc')">Nghỉ Việc</a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a class="dropdown-item" href="#">
@@ -168,31 +176,44 @@
     <div style="height: 500px; overflow: auto;">
 
         <table class="table table-hover" id="myTable">
-            <thead class="position-sticky top-0" >
+            <thead class="position-sticky top-0">
 
             <tr>
                 <th>#</th>
                 <th scope="col">Mã Nhân Viên
-                    <a href="#" onclick="sortTable('asc')"><i
-                            class="fa-solid fa-sort-up fa-xs"></i></a>
-                    <a href="#" onclick="sortTable('desc')"><i
-                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                    <a href="#" onclick="sortTableCode('asc', 1)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableCode('desc', 1)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                 </th>
                 <th scope="col">Tên Nhân Viên
-                    <a href="#" onclick="sortTable('asc')"><i
-                            class="fa-solid fa-sort-up fa-xs"></i></i></a>
-                    <a href="#" onclick="sortTable('desc')"><i
-                            class="fa-solid fa-sort-down fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('asc', 2)"><i class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                    <a href="#" onclick="sortTable('desc', 2)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                 </th>
                 <th>Image</th>
-
-                <th>Giới Tính</th>
-                <th>Ngày Sinh</th>
-                <th>Số Điện Thoại</th>
-                <th>Email</th>
-                <th>Chức Vụ</th>
-                <th>Trạng Thái</th>
-                <th>Tính Năng</th>
+                <th>Giới Tính
+                    <a href="#" onclick="sortTable('asc', 4)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 4)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Ngày Sinh
+                    <a href="#" onclick="sortTableDate('asc', 5)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableDate('desc', 5)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Số Điện Thoại
+                    <a href="#" onclick="sortTable('asc', 6)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 6)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Email
+                    <a href="#" onclick="sortTable('asc', 7)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 7)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Chức Vụ
+                    <a href="#" onclick="sortTableCode('asc', 8)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableCode('desc', 8)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Trạng Thái
+                    <a href="#" onclick="sortTable('asc', 9)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 9)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -208,7 +229,7 @@
                 <td th:text="${employee.phone}"></td>
                 <td th:text="${employee.email}"></td>
                 <td th:text="${employee.roles.name}"></td>
-                <td th:text="${employee.status} == 0 ? 'Nghỉ Việc' : 'Đang Làm'"></td>
+                <td th:text="${employee.status} == 0 ? 'Đang Làm' : 'Nghỉ Việc'"></td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                         <a th:href="@{'/admin/employee/detail/' + ${employee.id}}" class="btn btn-danger">Detail</a>
@@ -221,6 +242,9 @@
         </table>
         <!--  Page-->
     </div>
+
+
+    </script>
 
 
     <div id="pageNavPosition" class="text-right"></div>
@@ -256,27 +280,27 @@
 
 
         //Sắp xếp
-        function sortTable(order) {
+        function sortTable(order, columnIndex) {
             var table, rows, switching, i, x, y, shouldSwitch;
             table = document.getElementById("myTable");
             switching = true;
 
             while (switching) {
                 switching = false;
-                rows = table.getElementsByTagName("tr");
+                rows = table.rows;
 
                 for (i = 1; i < (rows.length - 1); i++) {
                     shouldSwitch = false;
-                    x = rows[i].getElementsByTagName("td")[1]; // Index 1 represents the Employee Code column
-                    y = rows[i + 1].getElementsByTagName("td")[1];
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
 
-                    if (order === 'asc') {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    if (order === "asc") {
+                        if (x.textContent.toLowerCase() > y.textContent.toLowerCase()) {
                             shouldSwitch = true;
                             break;
                         }
-                    } else if (order === 'desc') {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    } else if (order === "desc") {
+                        if (x.textContent.toLowerCase() < y.textContent.toLowerCase()) {
                             shouldSwitch = true;
                             break;
                         }
@@ -290,19 +314,117 @@
             }
         }
 
-        //Lọc
+        //Sắp xếp ngày sinh
 
+        function sortTableDate(order, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    if (order === "asc") {
+                        if (getDateValue(x.textContent) > getDateValue(y.textContent)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (getDateValue(x.textContent) < getDateValue(y.textContent)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        function getDateValue(dateString) {
+            var parts = dateString.split("/");
+            var date = new Date(parts[2], parts[1] - 1, parts[0]);
+            return date.getTime();
+        }
+
+
+        //Sắp xếp mã nhân viên
+        function sortTableCode(order, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    var xValue = parseInt(x.textContent.replace(/\D/g, ''));
+                    var yValue = parseInt(y.textContent.replace(/\D/g, ''));
+
+                    if (order === "asc") {
+                        if (xValue > yValue) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (xValue < yValue) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        //Lọc Nam Nữ
         function filterGender(gender) {
-            var employees = document.getElementsByClassName('employee');
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
 
-            for (var i = 0; i < employees.length; i++) {
-                var employee = employees[i];
-                var employeeGender = employee.getAttribute('data-gender');
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var genderCell = cells[4];
 
-                if (employeeGender === gender) {
-                    employee.style.display = 'block';
+                if (gender === '' || genderCell.textContent.trim() === gender) {
+                    rows[i].style.display = "";
                 } else {
-                    employee.style.display = 'none';
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+        //Lọc Trạng Thái
+        function filterAcction(gender) {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var genderCell = cells[9];
+
+                if (gender === '' || genderCell.textContent.trim() === gender) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
                 }
             }
         }
