@@ -63,8 +63,8 @@
                         <tr th:each="voucher : ${list}">
                             <td th:text="${voucher.name}"></td>
                             <td th:text="${voucher.code}"></td>
-                            <td th:text="${#temporals.format(voucher?.start_time, 'HH:mm dd-MM-yyyy')}"></td>
-                            <td th:text="${#temporals.format(voucher?.end_time, 'HH:mm dd-MM-yyyy')}"></td>
+                            <td th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td th:text="${#temporals.format(voucher?.end_time, 'dd-MM-yyyy HH:mm')}"></td>
                             <td th:text="${voucher?.quantily}"></td>
                             <td th:text="${voucher?.discount}"></td>
                             <td th:text="${convert.convertTrangThai(voucher.status)}"></td>

@@ -161,6 +161,7 @@ public class VoucherController {
         model.addAttribute("validateerrors", voucherRequest.ValidateError());
         return "/admin/pages/voucher/form-voucher.html";
       }
+      System.out.println(voucherRequest.toString());
       service.saveVoucher(voucherRequest);
       return "redirect:index";
     }

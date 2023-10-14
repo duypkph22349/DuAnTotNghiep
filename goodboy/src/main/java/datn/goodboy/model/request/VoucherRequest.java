@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -19,8 +20,14 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Component
 @FieldDefaults(level = AccessLevel.PUBLIC)
+@ToString
 public class VoucherRequest {
+  
+  
   int id;
+
+
+
   @NotNull(message = "trường này không thể để trống")
   @NotBlank(message = "Trường này không thể để trống")
   String name;
@@ -48,7 +55,7 @@ public class VoucherRequest {
   @Min(value = 0, message = "max discount không thể nhỏ hơn 0 ")
   Double minOrder;
 
- public String ValidateError() {
+  public String ValidateError() {
     String errors = "";
     if (startTime.isAfter(endTime)) {
       errors += "Thời gian kết thúc phải sau thời gian bắt đầu \n";
