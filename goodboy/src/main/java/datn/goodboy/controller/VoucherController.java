@@ -146,6 +146,7 @@ public class VoucherController {
   // }
   @GetMapping("edit")
   public String editVoucher(Model model, @RequestParam("id") int id) {
+    VoucherRequest voucherRequest = service.getVoucherRequetById(id);
     model.addAttribute("voucherRequest",
         service.getVoucherRequetById(id));
     return "/admin/pages/voucher/update-voucher.html";
@@ -173,6 +174,7 @@ public class VoucherController {
     if (theBindingResult.hasErrors()) {
       return "/admin/pages/voucher/update-voucher.html";
     }
+    System.out.println(voucherRequest);
     service.updateVoucher(voucherRequest);
     return "redirect:index";
   }

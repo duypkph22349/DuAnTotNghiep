@@ -20,6 +20,6 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
   // @Query(value = "SELECT new datn.goodboy.model.request.VoucherRequest(voucher.id ,voucher.name ,voucher.start_time ,voucher.end_time ,voucher.quantily ,voucher.discount ,voucher.status) FROM Voucher voucher where voucher.id = :id")
   // Optional<VoucherRequest> getResponse(@Param("id") UUID id);
   
-  @Query(value = "SELECT new datn.goodboy.model.request.VoucherRequest(voucher.id ,voucher.name ,voucher.code ,voucher.start_time ,voucher.end_time ,voucher.quantily ,voucher.discount ,voucher.status) FROM Voucher voucher where voucher.id = :id")
+  @Query(value = "SELECT new datn.goodboy.model.request.VoucherRequest(voucher.id ,voucher.name,voucher.start_time ,voucher.end_time ,voucher.quantily ,voucher.discount ,voucher.status ,voucher.types ,voucher.max_discount ,voucher.min_order) FROM Voucher voucher where voucher.id = :id")
   Optional<VoucherRequest> getResponse(@Param("id") int id);
 }

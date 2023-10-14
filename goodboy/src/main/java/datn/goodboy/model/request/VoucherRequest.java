@@ -1,6 +1,8 @@
 package datn.goodboy.model.request;
 
 import java.time.LocalDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import jakarta.validation.constraints.Min;
@@ -22,19 +24,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
 public class VoucherRequest {
-  
-  
+
   int id;
-
-
 
   @NotNull(message = "trường này không thể để trống")
   @NotBlank(message = "Trường này không thể để trống")
   String name;
   @NotNull(message = "trường này không thể để trống")
   // @FutureOrPresent(message = "Ngày bắt đầu không được ở trong quá khứ")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   LocalDateTime startTime;
   @NotNull(message = "trường này không thể để trống")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   LocalDateTime endTime;
   @NotNull(message = "trường này không thể để trống")
   @Min(0)
