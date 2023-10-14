@@ -140,22 +140,27 @@ public class VoucherController {
 
   // @GetMapping("edit")
   // public String editVoucher(Model model, @RequestParam("id") UUID id) {
-  //   model.addAttribute("voucherRequest",
-  //       service.getVoucherRequetById(id));
-  //   return "/admin/pages/voucher/form-voucher.html";
+  // model.addAttribute("voucherRequest",
+  // service.getVoucherRequetById(id));
+  // return "/admin/pages/voucher/form-voucher.html";
   // }
-@GetMapping("edit")
+  @GetMapping("edit")
   public String editVoucher(Model model, @RequestParam("id") int id) {
     model.addAttribute("voucherRequest",
         service.getVoucherRequetById(id));
     return "/admin/pages/voucher/update-voucher.html";
   }
+
   @PostMapping("store")
   public String storeVoucher(Model model, @Valid @ModelAttribute("voucherRequest") VoucherRequest voucherRequest,
       BindingResult theBindingResult) {
     if (theBindingResult.hasErrors()) {
       return "/admin/pages/voucher/form-voucher.html";
     } else {
+      if (voucherRequest.validateHasError()) {
+        model.addAttribute("validateerrors", voucherRequest.ValidateError());
+        return "/admin/pages/voucher/form-voucher.html";
+      }
       service.saveVoucher(voucherRequest);
       return "redirect:index";
     }

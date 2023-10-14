@@ -17,6 +17,7 @@ import datn.goodboy.model.response.VoucherResponse;
 import datn.goodboy.repository.VoucherRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,12 +42,19 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
 
   public Voucher saveVoucher(VoucherRequest voucher) {
     Voucher voucher1 = new Voucher();
+    voucher1.setId(1);
     voucher1.setName(voucher.getName());
     voucher1.setQuantily(voucher.getQuantity());
-    voucher1.setStart_time(voucher.getStart_time());
-    voucher1.setEnd_time(voucher.getEnd_time());
+    voucher1.setStart_time(voucher.getStartTime());
+    voucher1.setEnd_time(voucher.getEndTime());
     voucher1.setDiscount(voucher.getDiscount());
     voucher1.setStatus(voucher.getStatus());
+    voucher1.setTypes(voucher.isTypes());
+    voucher1.setMax_discount(voucher.getMaxDiscount());
+    voucher1.setMin_order(voucher.getMinOrder());
+    voucher1.setCreated_at(LocalDateTime.now());
+    voucher1.setDeleted(false); 
+    System.out.println(voucher1.toString());
     return voucherRepository.save(voucher1);
   }
 
@@ -61,10 +69,14 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
       Voucher voucher1 = voucher.get();
       voucher1.setName(request.getName());
       voucher1.setQuantily(request.getQuantity());
-      voucher1.setStart_time(request.getStart_time());
-      voucher1.setEnd_time(request.getEnd_time());
+      voucher1.setStart_time(request.getStartTime());
+      voucher1.setEnd_time(request.getEndTime());
       voucher1.setDiscount(request.getDiscount());
       voucher1.setStatus(request.getStatus());
+      voucher1.setTypes(request.isTypes());
+      voucher1.setMax_discount(request.getMaxDiscount());
+      voucher1.setMin_order(request.getMinOrder());
+      voucher1.setUpdate_at(LocalDateTime.now());
       return voucherRepository.save(voucher1);
     } else {
       return null;
