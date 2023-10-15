@@ -3,7 +3,7 @@
 Trigger for code Voucher
 **USE DUANTN
 GO
-
+```sql
 -- Tạo trigger
 CREATE TRIGGER trg_generate_voucher_code
 ON dbo.voucher
