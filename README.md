@@ -1,4 +1,6 @@
 # DuAnTotNghiep
+
+## Usage
 Trigger for code Voucher
 **USE DUANTN
 GO
