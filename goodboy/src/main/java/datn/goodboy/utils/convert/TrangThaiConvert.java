@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 public class TrangThaiConvert {
   public static String convertTrangThai(int status) {
     if (status == 0) {
-      return "Enable";
+      return "Kích hoạt";
     }
     if (status == 1) {
-      return "Disable";
+      return "Ngừng kích hoạt";
     }
     if(status == 2){
 

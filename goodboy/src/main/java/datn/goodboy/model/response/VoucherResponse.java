@@ -26,4 +26,8 @@ public class VoucherResponse {
   int quantily;
   float discount;
   int status;
+  boolean types;
+  Double max_discount;
+  Double min_order;
+  boolean deleted;
 }

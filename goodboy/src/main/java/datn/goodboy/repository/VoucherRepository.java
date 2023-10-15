@@ -14,7 +14,7 @@ import datn.goodboy.model.request.VoucherRequest;
 import datn.goodboy.model.response.VoucherResponse;
 
 public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
-  @Query(value = "SELECT new datn.goodboy.model.response.VoucherResponse(voucher.id ,voucher.code ,voucher.name ,voucher.start_time ,voucher.end_time ,voucher.quantily ,voucher.discount ,voucher.status) FROM Voucher voucher")
+  @Query(value = "SELECT new datn.goodboy.model.response.VoucherResponse(voucher.id ,voucher.code ,voucher.name ,voucher.start_time ,voucher.end_time ,voucher.quantily ,voucher.discount ,voucher.status,voucher.types ,voucher.max_discount ,voucher.min_order,voucher.deleted) FROM Voucher voucher")
   Page<VoucherResponse> getResponsePage(Pageable pageable);
 
   // @Query(value = "SELECT new datn.goodboy.model.request.VoucherRequest(voucher.id ,voucher.name ,voucher.start_time ,voucher.end_time ,voucher.quantily ,voucher.discount ,voucher.status) FROM Voucher voucher where voucher.id = :id")
