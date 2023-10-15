@@ -130,7 +130,7 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
 
   @Override
   public int getPageNumber(int rowcount) {
-    Pageable pageable = PageRequest.of(1, rowcount);
+    Pageable pageable = PageRequest.of(0, rowcount);
     Page<VoucherResponse> page = voucherRepository.getResponsePage(pageable);
     int totalPage = page.getTotalPages();
     return totalPage;
