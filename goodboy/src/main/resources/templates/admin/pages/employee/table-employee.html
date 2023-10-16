@@ -3,15 +3,8 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="author" content="Bin-It">
-    <meta property="og:url"/>
-
     <title>Nhân Viên</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <!--===============================================================================================-->
@@ -48,6 +41,9 @@
           crossorigin="anonymous">
 
 
+=======
+    //Phân Trang Cho Table
+>>>>>>> f2080df9fba4c464bc7bbdd1995beb0dc248baed
     <script type="text/javascript" style="text-align: center">
         //Phân Trang Cho Table
         function Pager(tableName, itemsPerPage) {
@@ -121,8 +117,12 @@
     </script>
 </head>
 
+<<<<<<< HEAD
 <h1>Quản lý nhân viên</h1>
 <body onload="time()">
+=======
+<body>
+>>>>>>> f2080df9fba4c464bc7bbdd1995beb0dc248baed
 <section layout:fragment="content">
     <!--<script>-->
     <!--    swal("Xin Chào Admin", "Chúc Bạn 1 Ngày Tốt Lành Nhé", "");-->
@@ -147,15 +147,91 @@
 
         <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
 
+<<<<<<< HEAD
     </div>
+=======
+        .dropdown-menu > li:hover > .dropdown-submenu {
+            display: block;
+        }
+    </style>
+
+
+    <div class="input-group mb-3">
+        <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Filter
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Giới Tính &raquo;</a>
+                <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="filterGender('Nam')">Nam</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="filterGender('Nữ')">Nữ</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Trạng Thái &raquo;</a>
+                <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="filterAcction('Đang Làm')">Đang Làm</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="filterAcction('Nghỉ Việc')">Nghỉ Việc</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    Submenu &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 1</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 2</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+                        <ul class="dropdown-menu dropdown-submenu">
+                            <li>
+                                <a class="dropdown-item" href="#">Multi level 1</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Multi level 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 4</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Submenu item 5</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
+               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, CCCD, Địa chỉ....">
+    </div>
+
+    <Br>
+
+    <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
+    <a href="/admin/employee/hien-thi" class="btn btn-warning">Reload</a>
+
+>>>>>>> f2080df9fba4c464bc7bbdd1995beb0dc248baed
     <!-- Table -->
     <div style="height: 500px; overflow: auto;">
 
         <table class="table table-hover" id="myTable">
             <thead class="position-sticky top-0">
 
-            <tr class="ex">
+            <tr>
                 <th>#</th>
+<<<<<<< HEAD
                 <th>Mã Nhân Viên</th>
                 <th width="auto">Tên Nhân Viên</th>
                 <th>Image</th>
@@ -169,6 +245,42 @@
                 <th>Chức Vụ</th>
                 <th>Trạng Thái</th>
                 <th width="5px; !important">Tính Năng</th>
+=======
+                <th scope="col">Mã Nhân Viên
+                    <a href="#" onclick="sortTableCode('asc', 1)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableCode('desc', 1)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th scope="col">Tên Nhân Viên
+                    <a href="#" onclick="sortTable('asc', 2)"><i class="fa-solid fa-sort-up fa-xs"></i></i></a>
+                    <a href="#" onclick="sortTable('desc', 2)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Image</th>
+                <th>Giới Tính
+                    <a href="#" onclick="sortTable('asc', 4)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 4)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Ngày Sinh
+                    <a href="#" onclick="sortTableDate('asc', 5)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableDate('desc', 5)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Số Điện Thoại
+                    <a href="#" onclick="sortTable('asc', 6)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 6)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Email
+                    <a href="#" onclick="sortTable('asc', 7)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 7)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Chức Vụ
+                    <a href="#" onclick="sortTableCode('asc', 8)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableCode('desc', 8)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Trạng Thái
+                    <a href="#" onclick="sortTable('asc', 9)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 9)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Action</th>
+>>>>>>> f2080df9fba4c464bc7bbdd1995beb0dc248baed
             </tr>
             </thead>
             <tbody>
@@ -177,10 +289,8 @@
                 <!--            <td th:text="${employee.roles.id}"></td>-->
                 <td th:text="${employee.code}"></td>
                 <td th:text="${employee.name}"></td>
-
                 <td><img th:src="@{'/images/faces/' + ${employee.image}}"
                          width="60px" height="50px"></td>
-                <td th:text="${employee.cccd}"></td>
                 <td th:text="${employee.gender} == true? 'Nam':'Nữ'"></td>
                 <td th:text="${employee.birth_date}"></td>
                 <td th:text="${employee.address}"></td>
@@ -188,7 +298,7 @@
                 <td th:text="${employee.email}"></td>
                 <td th:text="${employee.password}"></td>
                 <td th:text="${employee.roles.name}"></td>
-                <td th:text="${employee.status} == 0 ? 'Nghỉ Việc' : 'Đang Làm'"></td>
+                <td th:text="${employee.status} == 0 ? 'Đang Làm' : 'Nghỉ Việc'"></td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                         <a th:href="@{'/admin/employee/detail/' + ${employee.id}}" class="btn btn-danger">Detail</a>
@@ -201,6 +311,11 @@
         </table>
         <!--  Page-->
     </div>
+
+
+    </script>
+
+
     <div id="pageNavPosition" class="text-right"></div>
     <script type="text/javascript">
         var pager = new Pager('myTable', 7);
@@ -232,35 +347,156 @@
             }
         }
 
-        //Tìm kiếm 2
-        // function myFunction() {
-        //     var input, filter, table, tr, td, i, j, txtValue;
-        //     input = document.getElementById("searchInput");
-        //     filter = input.value.toUpperCase();
-        //     table = document.getElementById("myTable");
-        //     tr = table.getElementsByTagName("tr");
-        //
-        //     for (i = 0; i < tr.length; i++) {
-        //         var match = false;
-        //
-        //         for (j = 1; j < tr[i].cells.length; j++) {
-        //             td = tr[i].cells[j];
-        //             if (td) {
-        //                 txtValue = td.textContent || td.innerText;
-        //                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //                     match = true;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //
-        //         if (match) {
-        //             tr[i].style.display = "";
-        //         } else {
-        //             tr[i].style.display = "none";
-        //         }
-        //     }
-        // }
+
+        //Sắp xếp
+        function sortTable(order, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    if (order === "asc") {
+                        if (x.textContent.toLowerCase() > y.textContent.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (x.textContent.toLowerCase() < y.textContent.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        //Sắp xếp ngày sinh
+
+        function sortTableDate(order, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    if (order === "asc") {
+                        if (getDateValue(x.textContent) > getDateValue(y.textContent)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (getDateValue(x.textContent) < getDateValue(y.textContent)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        function getDateValue(dateString) {
+            var parts = dateString.split("/");
+            var date = new Date(parts[2], parts[1] - 1, parts[0]);
+            return date.getTime();
+        }
+
+
+        //Sắp xếp mã nhân viên
+        function sortTableCode(order, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    var xValue = parseInt(x.textContent.replace(/\D/g, ''));
+                    var yValue = parseInt(y.textContent.replace(/\D/g, ''));
+
+                    if (order === "asc") {
+                        if (xValue > yValue) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (xValue < yValue) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        //Lọc Nam Nữ
+        function filterGender(gender) {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var genderCell = cells[4];
+
+                if (gender === '' || genderCell.textContent.trim() === gender) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+        //Lọc Trạng Thái
+        function filterAcction(gender) {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var genderCell = cells[9];
+
+                if (gender === '' || genderCell.textContent.trim() === gender) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
 
 
         //Thời Gian

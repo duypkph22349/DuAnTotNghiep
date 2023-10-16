@@ -21,7 +21,7 @@ public class Employee {
     @Column(name = "id")
     UUID id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_roles" )
     private Roles roles;
 

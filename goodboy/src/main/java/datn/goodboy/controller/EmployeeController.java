@@ -1,6 +1,8 @@
 package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Employee;
+import datn.goodboy.model.response.AccountResponse;
+import datn.goodboy.model.response.EmployeeResponse;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RequestMapping("admin/employee")
 @Controller
 public class EmployeeController {
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -29,6 +33,7 @@ public class EmployeeController {
         return "admin/pages/employee/table-employee";
     }
 
+
     @GetMapping("/form-add")
     public String add(Model model) {
         model.addAttribute("roles", rolesService.getAllRoles());
@@ -41,12 +46,12 @@ public class EmployeeController {
         return "redirect:/admin/employee/hien-thi";
     }
 
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") UUID id) {
         employeeService.deleteEmployee(id);
         return "redirect:/admin/employee/hien-thi";
     }
-    @GetMapping("detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") UUID id){
         Optional<Employee> customer = employeeService.findByIdEmployee(id);
         if (customer.isPresent()) {
@@ -64,5 +69,6 @@ public class EmployeeController {
 //        employeeService.saveEmployee(employee);
 //        return ResponseEntity.ok(employee);
 //    }
+
 
 }
