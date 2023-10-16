@@ -104,7 +104,7 @@ public class VoucherController {
   }
 
   // end
-  @GetMapping("index")
+  @GetMapping({"index",""})
   public String getVoucherIndexpages(Model model) {
     this.pageno = 1;
     List<VoucherResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);

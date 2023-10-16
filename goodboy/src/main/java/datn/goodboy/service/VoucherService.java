@@ -42,7 +42,6 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
 
   public Voucher saveVoucher(VoucherRequest voucher) {
     Voucher voucher1 = new Voucher();
-    voucher1.setId(1);
     voucher1.setName(voucher.getName());
     voucher1.setQuantily(voucher.getQuantity());
     voucher1.setStart_time(voucher.getStartTime());
