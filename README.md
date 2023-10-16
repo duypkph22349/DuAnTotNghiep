@@ -36,3 +36,27 @@ BEGIN
     SET code = @GeneratedCode
     WHERE id = @InsertedID
 END**
+``` 
+Update Product Detail;
+```sql
+CREATE TABLE [dbo].[product_detail](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[code] [nchar](25) NULL,
+	[name] [nvarchar](50) NULL,
+	[price] [decimal](20, 3) NULL,
+	[quantity] [int] NULL,
+	[description] [nvarchar](500) NULL,
+	[id_pattern] [bigint] NULL,
+	[id_color] [bigint] NULL,
+	[id_origin] [bigint] NULL,
+	[id_brand] [bigint] NULL,
+	[id_material] [bigint] NULL,
+	[id_size] [bigint] NULL,
+	[id_styles] [bigint] NULL,
+	[status] [int] NULL,
+	[created_at] [datetime] NULL,
+	[update_at] [datetime] NULL,
+	[deleted] [bit] NULL,
+	[id_product] [bigint] NULL
+) ON [PRIMARY]
+```
