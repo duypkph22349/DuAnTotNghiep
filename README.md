@@ -41,7 +41,7 @@ Update Product Detail;
 ```sql
 CREATE TABLE [dbo].[product_detail](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
-	[code] [nchar](25) NULL,
+	[code] [nvarchar](50) NULL,
 	[name] [nvarchar](50) NULL,
 	[price] [decimal](20, 3) NULL,
 	[quantity] [int] NULL,
