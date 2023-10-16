@@ -16,24 +16,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import datn.goodboy.model.entity.Account;
-import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.request.AccountFillter;
 import datn.goodboy.model.request.AccountRequest;
-import datn.goodboy.model.request.SingupRequest;
 import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.repository.AccountRepository;
-import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
 @Service
 public class AccountService implements PanigationInterface<AccountResponse> {
   @Autowired
   PasswordEncoder encoder;
-  @Autowired
-  CustomerRepository cusrepository;
   // Declare the repository as final to ensure its immutability
-  @Autowired
-  AccountRepository accountRepository;
+  private final AccountRepository accountRepository;
 
   // Use constructor-based dependency injection
   public AccountService(AccountRepository accountRepository) {
@@ -74,19 +68,6 @@ public class AccountService implements PanigationInterface<AccountResponse> {
       throw new RuntimeException();
     }
 
-  }
-
-  public Account singup(SingupRequest request) {
-    Optional<Customer> customer = cusrepository.findById(request.getId_customer());
-    if (!customer.isPresent() || customer == null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
-    Account account = new Account();
-    account.setCustomer(customer.get());
-    account.setEmail(request.getEmail());
-    account.setPassword(encoder.encode(request.getPassword()));
-    account.setStatus(0);
-    return accountRepository.save(account);
   }
 
   // admin
@@ -131,21 +112,19 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   // panigation
   @Override
   public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
-    if(pageNo > getPageNumber(pageSize)){
-    return null;
-    }
     List<AccountResponse> ChiTietSanPhams;
     ChiTietSanPhams = new ArrayList<>();
     Sort sort;
     if (sortDir) {
-    sort = Sort.by(sortBy).ascending();
+      sort = Sort.by(sortBy).ascending();
+      System.out.println("tang");
     } else {
-    sort = Sort.by(sortBy).descending();
+      sort = Sort.by(sortBy).descending();
+      System.out.println("giam");
     }
-    Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
+    Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<AccountResponse> page =
-    accountRepository.getPageAccountRepose(pageable);
+    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
@@ -158,19 +137,17 @@ public class AccountService implements PanigationInterface<AccountResponse> {
     return totalPage;
   }
 
+  // panigation end
   @Override
   public int[] getPanigation(int rowcount, int pageno) {
-    Pageable pageable = PageRequest.of(0, rowcount);
+    Pageable pageable = PageRequest.of(1, rowcount);
     Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
     int totalPage = page.getTotalPages();
     int[] rs;
-    if (totalPage <= 1) {
-      int[] rs1 = {1};
-      return rs1;
-    } else if (totalPage <= 3) {
+    if (totalPage <= 3) {
       rs = new int[totalPage];
       for (int i = 1; i <= totalPage; i++) {
-        rs[i-1] = i;
+        rs[i] = i;
       }
       return rs;
     } else {

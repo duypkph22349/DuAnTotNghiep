@@ -20,18 +20,15 @@ public class CartService {
 
     @Autowired
     public CartService(CartRepository cartRepository) {
-
         this.cartRepository = cartRepository;
     }
 
 
     public Page<Cart> getPage(Pageable pageable){
-
         return cartRepository.findAll(pageable);
     }
 
     public ArrayList<Cart> getAllCart(){
-
         return (ArrayList<Cart>) cartRepository.findAll();
     }
 

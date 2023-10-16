@@ -34,11 +34,4 @@ public class PatternTypeService {
         color1.setStatus(color.getStatus());
         return patternTypeRepository.save(color1);
     }
-    public PatternType getById(Integer id) {
-        return patternTypeRepository.findById(id).get();
-    }
-
-    public Page<PatternType> searchPatternByKeyword(String keyword, Pageable pageable) {
-        return patternTypeRepository.searchByKeyword(keyword, pageable);
-    }
 }

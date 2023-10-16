@@ -1,6 +1,5 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.repository.StylesRepository;
@@ -31,13 +30,5 @@ public class StylesService {
         color1.setUpdatedAt(color.getUpdatedAt());
         color1.setStatus(color.getStatus());
         return stylesRepository.save(color1);
-    }
-
-    public Styles getById(Integer id) {
-        return stylesRepository.findById(id).get();
-    }
-
-    public Page<Styles> searchStylesByKeyword(String keyword, Pageable pageable) {
-        return stylesRepository.searchByKeyword(keyword, pageable);
     }
 }

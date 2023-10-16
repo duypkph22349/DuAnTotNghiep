@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class BrandService {
     @Autowired
@@ -14,10 +15,6 @@ public class BrandService {
 
     public Page<Brand> findAllBrand(Pageable pageable) {
         return brandRepository.findAllByOrderByCreatedAtDesc(pageable);
-    }
-
-    public Page<Brand> searchBrandsByKeyword(String keyword, Pageable pageable) {
-        return brandRepository.searchByKeyword(keyword, pageable);
     }
 
     public Brand add(Brand br) {

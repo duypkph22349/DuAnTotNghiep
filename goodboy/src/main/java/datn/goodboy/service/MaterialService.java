@@ -30,12 +30,4 @@ public class MaterialService {
         material1.setStatus(material.getStatus());
         return materialRepository.save(material1);
     }
-
-    public Material getById(Integer id) {
-        return materialRepository.findById(id).get();
-    }
-
-    public Page<Material> searchMaterialByKeyword(String keyword, Pageable pageable) {
-        return materialRepository.searchByKeyword(keyword, pageable);
-    }
 }

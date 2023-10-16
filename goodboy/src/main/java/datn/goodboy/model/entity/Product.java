@@ -1,7 +1,5 @@
 package datn.goodboy.model.entity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,13 +16,13 @@ public class Product {
     private Integer id;
     @Column(name="code")
     private String code;
-    @NotNull
-    @NotBlank
     @Column(name="name")
     private String name;
+    @Column(name="description")
+    private String description;
     @Column(name="created_at")
     private LocalDateTime createdAt;
-    @Column(name="updated_at")
+    @Column(name="update_at")
     private LocalDateTime updatedAt;
     @Column(name="status")
     private int status;

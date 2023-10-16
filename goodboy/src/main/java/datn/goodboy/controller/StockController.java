@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value = "user")
 public class StockController {
-
+  
     @GetMapping(value = "index")
     public ModelMap mmDashboard() {
         return new ModelMap();
-    }
+    } 
 }
