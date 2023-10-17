@@ -12,5 +12,9 @@ public class StockController {
     @GetMapping(value = "index")
     public ModelMap mmDashboard() {
         return new ModelMap();
+<<<<<<< HEAD
     } 
+=======
+    }
+>>>>>>> 4910e2f486bfd3cf157ffe4f529c246ca1b2134f
 }

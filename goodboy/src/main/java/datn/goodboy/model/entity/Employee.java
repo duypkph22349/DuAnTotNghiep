@@ -8,6 +8,20 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +30,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee {
+<<<<<<< HEAD
     @Id
+=======
+@Id
+>>>>>>> 4910e2f486bfd3cf157ffe4f529c246ca1b2134f
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     UUID id;
@@ -31,8 +49,13 @@ public class Employee {
     @Column(name = "name")
     String name;
 
+<<<<<<< HEAD
     @Column(name = "cccd")
     String cccd;
+=======
+    // @Column(name = "cccd")
+    // String cccd;
+>>>>>>> 4910e2f486bfd3cf157ffe4f529c246ca1b2134f
 
     @Column(name = "gender")
     boolean gender;
