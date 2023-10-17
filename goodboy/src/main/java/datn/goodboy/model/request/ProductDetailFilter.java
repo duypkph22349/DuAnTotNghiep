@@ -2,20 +2,22 @@ package datn.goodboy.model.request;
 
 import org.springframework.stereotype.Component;
 
-import groovy.transform.ToString;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Component
+@ToString
+@FieldDefaults(level = AccessLevel.PUBLIC)
 public class ProductDetailFilter {
-  String txtSearch;
   int idProduct;
   int idPattern;
   int idColor;

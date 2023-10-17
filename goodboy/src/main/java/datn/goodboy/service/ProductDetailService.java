@@ -1,9 +1,11 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.response.ProductDetailResponse;
+import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
+import datn.goodboy.service.serviceinterface.PanigationWithSearch;
+import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductDetailService implements PanigationInterface<ProductDetail> {
+public class ProductDetailService implements PanigationInterface<ProductDetail>,IPanigationWithFIllter<ProductDetail,ProductDetailFilter>,PanigationWithSearch<ProductDetail> {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
@@ -46,7 +48,8 @@ public class ProductDetailService implements PanigationInterface<ProductDetail> 
         color1.setUpdatedAt(color.getUpdatedAt());
         return productDetailRepository.save(color1);
     }
-@Override
+    // panigation no fillter
+    @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
     if (pageNo > getPageNumber(pageSize)) {
       return null;
@@ -111,72 +114,141 @@ public class ProductDetailService implements PanigationInterface<ProductDetail> 
       return rs;
     }
   }
+    // panigation no fillter end
+    // panigation no with Seach end
+    // panigation no with Seach 
+    
+    // panigation no with fillter 
+  @Override
+  public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
+      ProductDetailFilter filter) {
+    // TODO Auto-generated method stub
+    if (pageNo > getPageNumber(pageSize,filter)) {
+      return null;
+    }
+    List<ProductDetail> ChiTietSanPhams;
+    ChiTietSanPhams = new ArrayList<>();
+    Sort sort;
+    if (sortDir) {
+      sort = Sort.by(sortBy).ascending();
+    } else {
+      sort = Sort.by(sortBy).descending();
+    }
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    // findAll method and pass pageable instance
+    Page<ProductDetail> page = productDetailRepository.filter(filter,pageable);
+    ChiTietSanPhams = page.getContent();
+    return ChiTietSanPhams;
+  }
 
-    // panigation start
-  // panigation
-  // @Override
-  // public List<ProductDetailResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
-  //   if (pageNo > getPageNumber(pageSize)) {
-  //     return null;
-  //   }
-  //   List<ProductDetailResponse> ChiTietSanPhams;
-  //   ChiTietSanPhams = new ArrayList<>();
-  //   Sort sort;
-  //   if (sortDir) {
-  //     sort = Sort.by(sortBy).ascending();
-  //   } else {
-  //     sort = Sort.by(sortBy).descending();
-  //   }
-  //   Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-  //   // findAll method and pass pageable instance
-  //   Page<ProductDetailResponse> page = productDetailRepository.getResponsePage(pageable);
-  //   ChiTietSanPhams = page.getContent();
-  //   return ChiTietSanPhams;
-  // }
+  @Override
+  public int getPageNumber(int rowcount, ProductDetailFilter filter) {
+  Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.filter(filter,pageable);
+    int totalPage = page.getTotalPages();
+    return totalPage;
+  }
 
-  // @Override
-  // public int getPageNumber(int rowcount) {
-  //   Pageable pageable = PageRequest.of(0, rowcount);
-  //   Page<ProductDetailResponse> page = productDetailRepository.getResponsePage(pageable);
-  //   int totalPage = page.getTotalPages();
-  //   // if(totalPage <=1){
-  //   //   totalPage =1;
-  //   // }
-  //   return totalPage;
-  // }
+  @Override
+  public int[] getPanigation(int rowcount, int pageno, ProductDetailFilter filter) {
+Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.filter(filter,pageable); // findAll()
+    int totalPage = page.getTotalPages();
+    int[] rs;
+    if (totalPage <= 1) {
+      int[] rs1 = { 1 };
+      return rs1;
+    } else if (totalPage <= 3) {
+      rs = new int[totalPage];
+      for (int i = 1; i <= totalPage; i++) {
+        rs[i - 1] = i;
+      }
+      return rs;
+    } else {
+      rs = new int[3];
+      if (pageno <= 2) {
+        int[] rs1 = { 1, 2, 3 };
+        rs = rs1;
+      }
+      if (pageno > 2) {
+        if (pageno < totalPage - 1) {
+          int[] rs1 = { pageno - 1, pageno, pageno + 1 };
+          rs = rs1;
+        }
+        if (pageno >= totalPage - 1) {
+          int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
+          rs = rs1;
+        }
+      }
+      return rs;
+    }
+  }
+    // panigation no with fillter end
 
-  // @Override
-  // public int[] getPanigation(int rowcount, int pageno) {
-  //   Pageable pageable = PageRequest.of(0, rowcount);
-  //   Page<ProductDetailResponse> page = productDetailRepository.getResponsePage(pageable); // findAll()
-  //   int totalPage = page.getTotalPages();
-  //   int[] rs;
-  //   if (totalPage <= 1) {
-  //     int[] rs1 = { 1 };
-  //     return rs1;
-  //   } else if (totalPage <= 3) {
-  //     rs = new int[totalPage];
-  //     for (int i = 1; i <= totalPage; i++) {
-  //       rs[i - 1] = i;
-  //     }
-  //     return rs;
-  //   } else {
-  //     rs = new int[3];
-  //     if (pageno <= 2) {
-  //       int[] rs1 = { 1, 2, 3 };
-  //       rs = rs1;
-  //     }
-  //     if (pageno > 2) {
-  //       if (pageno < totalPage - 1) {
-  //         int[] rs1 = { pageno - 1, pageno, pageno + 1 };
-  //         rs = rs1;
-  //       }
-  //       if (pageno >= totalPage - 1) {
-  //         int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
-  //         rs = rs1;
-  //       }
-  //     }
-  //     return rs;
-  //   }
-  // }
+  @Override
+  public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir, String txtSearch) {
+    // TODO Auto-generated method stub
+    if (pageNo > getPageNumber(pageSize,txtSearch)) {
+      return null;
+    }
+    List<ProductDetail> ChiTietSanPhams;
+    ChiTietSanPhams = new ArrayList<>();
+    Sort sort;
+    if (sortDir) {
+      sort = Sort.by(sortBy).ascending();
+    } else {
+      sort = Sort.by(sortBy).descending();
+    }
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    // findAll method and pass pageable instance
+    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch,pageable);
+    ChiTietSanPhams = page.getContent();
+    return ChiTietSanPhams;
+  }
+
+  @Override
+  public int getPageNumber(int rowcount, String txtSearch) {
+     Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch,pageable);
+    int totalPage = page.getTotalPages();
+    return totalPage;
+  }
+  @Override
+  public int[] getPanigation(int rowcount, int pageno, String txtSearch) {
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch,pageable); // findAll()
+    int totalPage = page.getTotalPages();
+    return Panigation(pageno, totalPage);
+  }
+ public int[] Panigation(int pageno, int totalPage){
+      int[] rs;
+    if (totalPage <= 1) {
+      int[] rs1 = { 1 };
+      return rs1;
+    } else if (totalPage <= 3) {
+      rs = new int[totalPage];
+      for (int i = 1; i <= totalPage; i++) {
+        rs[i - 1] = i;
+      }
+      return rs;
+    } else {
+      rs = new int[3];
+      if (pageno <= 2) {
+        int[] rs1 = { 1, 2, 3 };
+        rs = rs1;
+      }
+      if (pageno > 2) {
+        if (pageno < totalPage - 1) {
+          int[] rs1 = { pageno - 1, pageno, pageno + 1 };
+          rs = rs1;
+        }
+        if (pageno >= totalPage - 1) {
+          int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
+          rs = rs1;
+        }
+      }
+      return rs;
+    }
+  }  
 }
+

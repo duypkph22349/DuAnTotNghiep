@@ -75,7 +75,7 @@ public class ProductDetailController {
   @GetMapping("sort")
   public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
       @RequestParam("sortDir") boolean sordir) {
-    this.sortBy = sortby;
+    this.sortBy = sortby; 
     this.sortDir = sordir;
     this.pageno = 1;
     List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
@@ -121,7 +121,11 @@ public class ProductDetailController {
     model.addAttribute("rowcount", rowcount);
     return "/admin/pages/productdetail/table-productdetail.html";
   }
-
+  @GetMapping({"filter"})
+  public String searchAndFillter()
+  {
+    return "/admin/pages/productdetail/table-productdetail.html";
+  }
   @ModelAttribute("voucherRequest")
   public ProductDetailRequest setSignUpForm() {
     return voucherRequest;
@@ -142,21 +146,10 @@ public class ProductDetailController {
   }
 
   @PostMapping("filter")
-  public String storeProductDetail(Model model,
-      @Valid @ModelAttribute("voucherRequest") ProductDetailRequest voucherRequest,
-      BindingResult theBindingResult) {
-    if (theBindingResult.hasErrors()) {
-      return "/admin/pages/productdetail/form-voucher.html";
-    } else {
-      if (voucherRequest.validateHasError()) {
-        model.addAttribute("validateerrors", voucherRequest.ValidateError());
-        return "/admin/pages/productdetail/form-voucher.html";
-      }
-      System.out.println(voucherRequest.toString());
-      service.saveProductDetail(voucherRequest);
+  public String storeProductDetail(Model model,@ModelAttribute("fillter") ProductDetailFilter fillter) {
+        System.out.println(fillter.toString());
       return "redirect:index";
     }
-  }
   // @GetMapping("edit")
   // public String editProductDetail(Model model, @RequestParam("id") UUID id) {
   // model.addAttribute("voucherRequest",

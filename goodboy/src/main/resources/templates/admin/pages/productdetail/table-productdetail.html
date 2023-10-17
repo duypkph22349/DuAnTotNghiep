@@ -34,12 +34,6 @@
             <form th:action="@{/admin/productdetail/filter}" th:object="${fillter}" method="post">
                 <div class="d-flex mt-3 mb-4">
                     <h2 class="mx-3">Filter</h2>
-                    <div>
-                        <div class="input-group">
-                            <input type="search" class="form-control rounded" th:field="*{txtSearch}"
-                                placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                        </div>
-                    </div>
                     <button type="submit" class="btn "><i class="fas fa-filter fa-lg"></i></button>
                     <button type="reset" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></button>
                 </div>

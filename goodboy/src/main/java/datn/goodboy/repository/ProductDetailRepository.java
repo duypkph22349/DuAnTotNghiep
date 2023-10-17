@@ -19,7 +19,15 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
     @Query("SELECT new  datn.goodboy.model.response.ProductDetailResponse(entity.id,entity.code ,entity.name ,entity.price ,entity.quantity ,entity.description ,entity.idProduct.name ,entity.idPattern.name , entity.idColor.name , entity.idOrigin.name , entity.idBrand.name , entity.idMaterial.name , entity.idSize.name , entity.idStyles.name ,entity.status,entity.deleted) FROM ProductDetail entity")
     Page<ProductDetailResponse> getResponsePage(Pageable pageable);
 
-    @Query("SELECT entity FROM ProductDetail entity")
+    @Query("SELECT entity FROM ProductDetail entity WHERE (entity.name LIKE CONCAT('%', :txt, '%') "
+    +" OR  (entity.idProduct.name LIKE CONCAT('%',:txt,'%')) "+
+    "OR  (entity.idPattern.name LIKE CONCAT('%',:txt,'%'))"
+    +" OR  (entity.idColor.name LIKE CONCAT('%',:txt,'%'))"+
+    "OR  (entity.idOrigin.name LIKE CONCAT('%',:txt,'%')) "
+    +"OR  (entity.idBrand.name LIKE CONCAT('%',:txt,'%'))"+
+    "OR  (entity.idMaterial.name LIKE CONCAT('%',:txt,'%'))"
+    +" OR  (entity.idSize.name LIKE CONCAT('%',:txt,'%')) "+
+    "OR  (entity.idStyles.name LIKE CONCAT('%',:txt,'%')) ")
     Page<ProductDetail> searchByText(@Param("txt") String txtSearch, Pageable pageable);
 
     @Query("SELECT pd FROM ProductDetail pd WHERE " +
