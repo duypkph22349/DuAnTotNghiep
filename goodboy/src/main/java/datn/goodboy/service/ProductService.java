@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-<<<<<<< HEAD
 //    @Autowired
 //    private ProductRepository productRepository;
 //
@@ -35,7 +34,6 @@ public class ProductService {
 //        color1.setStatus(color.getStatus());
 //        return productRepository.save(color1);
 //    }
-=======
     @Autowired
     private ProductRepository productRepository;
 
@@ -61,5 +59,4 @@ public class ProductService {
     public Page<Product> searchProductByKeyword(String keyword, Pageable pageable) {
         return productRepository.searchByKeyword(keyword, pageable);
     }
->>>>>>> 4910e2f486bfd3cf157ffe4f529c246ca1b2134f
 }

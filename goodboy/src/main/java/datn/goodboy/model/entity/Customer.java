@@ -39,13 +39,13 @@ public class Customer {
   boolean gender;
   @Column(name = "birth_date")
   Date birth_date;
-  @Column(name = "address")
+  @Column(name = "thanh_pho")
   String address;
   @Column(name = "phone")
   String phone;
-  @Column(name = "city")
+  @Column(name = "huyen")
   String city;
-  @Column(name = "country")
+  @Column(name = "xa")
   String country;
   @Column(name = "status")
   int status;
