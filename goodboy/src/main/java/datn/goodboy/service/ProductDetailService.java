@@ -51,7 +51,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     // panigation no fillter
     @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
-    if (pageNo > getPageNumber(pageSize)) {
+    if (pageNo > getPageNumber(pageSize) || pageNo < 1) {
       return null;
     }
     List<ProductDetail> ChiTietSanPhams;
@@ -123,7 +123,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
       ProductDetailFilter filter) {
     // TODO Auto-generated method stub
-    if (pageNo > getPageNumber(pageSize,filter)) {
+    if (pageNo > getPageNumber(pageSize,filter) || pageNo < 1) {
       return null;
     }
     List<ProductDetail> ChiTietSanPhams;
@@ -188,7 +188,7 @@ Pageable pageable = PageRequest.of(0, rowcount);
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir, String txtSearch) {
     // TODO Auto-generated method stub
-    if (pageNo > getPageNumber(pageSize,txtSearch)) {
+    if (pageNo > getPageNumber(pageSize,txtSearch) || pageNo < 1) {
       return null;
     }
     List<ProductDetail> ChiTietSanPhams;
@@ -205,7 +205,6 @@ Pageable pageable = PageRequest.of(0, rowcount);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
-
   @Override
   public int getPageNumber(int rowcount, String txtSearch) {
      Pageable pageable = PageRequest.of(0, rowcount);
