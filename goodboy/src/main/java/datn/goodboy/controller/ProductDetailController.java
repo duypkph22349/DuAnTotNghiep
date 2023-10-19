@@ -1,18 +1,23 @@
 package datn.goodboy.controller;
 
+import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
-import datn.goodboy.model.response.ProductDetailResponse;
+import datn.goodboy.service.BrandService;
+import datn.goodboy.service.ColorService;
 import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.MaterialService;
+import datn.goodboy.service.OriginService;
+import datn.goodboy.service.PatternTypeService;
 import datn.goodboy.service.ProductDetailService;
+import datn.goodboy.service.ProductService;
+import datn.goodboy.service.SizeService;
+import datn.goodboy.service.StylesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
-import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +28,36 @@ public class ProductDetailController {
 
   @Autowired
   private ProductDetailService service;
+
+  @Autowired
+  private BrandService brandService;
+
+  @Autowired
+  private ColorService colorService;
+
+  @Autowired
+  private MaterialService materialService;
+
+  @Autowired
+  private OriginService originService;
+
+  @Autowired
+  private PatternTypeService patternTypeService;
+
+  @Autowired
+  private ProductService productService;
+
+  @Autowired
+  private SizeService sizeService;
+
+  @Autowired
+  private StylesService stylesService;
+
+  // @ModelAttribute("brand-combobox")
+  // public ProductDetailFilter fillter() {
+  //   return filter;
+  // }
+
   @Autowired
   TrangThaiConvert convert;
 
@@ -57,9 +92,23 @@ public class ProductDetailController {
 
   // panigation and sort
   @GetMapping("/getcountrow")
-  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
+  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue,
+      @ModelAttribute("fillter") ProductDetailFilter fillter) {
     System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/table-productdetail.html";
+      }
+    }
     pagenumbers = service.getPanigation(rowcount, pageno);
     this.pageno = 1;
     List<ProductDetail> list = service.getPageNo(1, rowcount, sortBy, sortDir);
@@ -74,10 +123,24 @@ public class ProductDetailController {
 
   @GetMapping("sort")
   public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
-      @RequestParam("sortDir") boolean sordir) {
-    this.sortBy = sortby; 
+      @RequestParam("sortDir") boolean sordir,
+      @ModelAttribute("fillter") ProductDetailFilter fillter) {
+    this.sortBy = sortby;
     this.sortDir = sordir;
     this.pageno = 1;
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/table-productdetail.html";
+      }
+    }
     List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
     totalpage = service.getPageNumber(rowcount);
     pagenumbers = service.getPanigation(rowcount, pageno);
@@ -90,12 +153,26 @@ public class ProductDetailController {
   }
 
   @GetMapping("/page")
-  public String getPageNo(Model model, @RequestParam("pageno") int pageno) {
+  public String getPageNo(Model model, @RequestParam("pageno") int pageno,
+      @ModelAttribute("fillter") ProductDetailFilter fillter) {
     if (pageno <= 1) {
       this.pageno = 1;
       pageno = 1;
     }
     this.pageno = pageno;
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/table-productdetail.html";
+      }
+    }
     List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
@@ -109,7 +186,21 @@ public class ProductDetailController {
 
   // end
   @GetMapping({ "index", "" })
-  public String getProductDetailIndexpages(Model model) {
+  public String getProductDetailIndexpages(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        this.pageno = 1;
+        List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/table-productdetail.html";
+      }
+    }
     this.pageno = 1;
     List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
@@ -121,11 +212,12 @@ public class ProductDetailController {
     model.addAttribute("rowcount", rowcount);
     return "/admin/pages/productdetail/table-productdetail.html";
   }
-  @GetMapping({"filter"})
-  public String searchAndFillter()
-  {
-    return "/admin/pages/productdetail/table-productdetail.html";
-  }
+
+  // @GetMapping({ "filter" })
+  // public String searchAndFillter() {
+  // return "/admin/pages/productdetail/table-productdetail.html";
+  // }
+
   @ModelAttribute("voucherRequest")
   public ProductDetailRequest setSignUpForm() {
     return voucherRequest;
@@ -145,11 +237,20 @@ public class ProductDetailController {
     return "redirect:index";
   }
 
-  @PostMapping("filter")
-  public String storeProductDetail(Model model,@ModelAttribute("fillter") ProductDetailFilter fillter) {
-        System.out.println(fillter.toString());
-      return "redirect:index";
-    }
+  @GetMapping("filter")
+  public String storeProductDetail(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
+    System.out.println(fillter.toString());
+    return "redirect:index";
+  }
+
+  @GetMapping("resetfilter")
+  public String resetFilter(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
+    fillter.resetFilter();
+    model.addAttribute("fillter", fillter);
+    System.out.println(fillter.toString());
+    return "redirect:index";
+  }
+
   // @GetMapping("edit")
   // public String editProductDetail(Model model, @RequestParam("id") UUID id) {
   // model.addAttribute("voucherRequest",

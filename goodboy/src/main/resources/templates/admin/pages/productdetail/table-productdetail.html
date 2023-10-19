@@ -31,11 +31,15 @@
                     </div>
                 </div>
             </div>
-            <form th:action="@{/admin/productdetail/filter}" th:object="${fillter}" method="post">
+            <form th:action="@{/admin/productdetail/filter}" th:object="${fillter}" method="get">
                 <div class="d-flex mt-3 mb-4">
                     <h2 class="mx-3">Filter</h2>
+                    <div>
+                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                            aria-describedby="search-addon" th:field="*{txtSearch}" />
+                    </div>
                     <button type="submit" class="btn "><i class="fas fa-filter fa-lg"></i></button>
-                    <button type="reset" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></button>
+                    <a href="/admin/productdetail/resetfilter" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></a>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex d-flex ">
@@ -136,7 +140,6 @@
                             <a th:href="@{/admin/productdetail/sort(sortBy=quantity ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
-
                         <th scope="col">Tên sản phẩm
                             <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
@@ -162,6 +165,12 @@
                                     class="fas fa-arrow-down"></i></a>
                         </th>
                         <th scope="col">Thương hiệu
+                            <a th:href="@{/admin/productdetail/sort(sortBy=idBrand.name ,sortDir=true)}"><i
+                                    class="fas fa-arrow-up"></i></a>
+                            <a th:href="@{/admin/productdetail/sort(sortBy=idBrand.name ,sortDir=false)}"><i
+                                    class="fas fa-arrow-down"></i></a>
+                        </th>
+                        <th scope="col">Chất liệu
                             <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
                             <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=false)}"><i
@@ -209,11 +218,19 @@
                         <td th:text="${productdetail.idSize?.name}"></td>
                         <td th:text="${productdetail.idStyles?.name}"></td>
                         <td th:text="${productdetail.description}"></td>
-                        <td th:unless="${productdetail.deleted}"
-                            th:text="${convert.convertTrangThai(productdetail.status)}">
+                        <td th:unless="${productdetail.deleted}" class="text-center">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                                    th:checked="${productdetail.status}"
+                                    th:onclick="'window.location.href=/admin/productdetail/setactive/' + ${productdetail.id}"
+                                    th:attr="data-productdetail-id=${productdetail.id}">
+                            </div>
                         </td>
-                        <td th:if="${productdetail.deleted}" class="text-decoration-line-through"
-                            th:text="${convert.convertTrangThai(productdetail.status)}">
+                        <td th:if="${productdetail.deleted}">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                                    th:checked="${productdetail.status}" onclick="window.location.href='/index'">
+                            </div>
                         </td>
                         <td>
                             <a th:unless="${productdetail.deleted}"
@@ -224,13 +241,10 @@
                                 class="btn btn-secondary"><i class="fas fa-undo-alt"></i></a>
                             <a th:href="@{/admin/productdetail/edit(id=${productdetail.id})}" class="btn btn-success"><i
                                     class="fas fa-edit"></i></a>
-
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop">
                                 <i class="far fa-eye"></i>
                             </button>
-
-
                             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
                                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                 aria-hidden="true">
