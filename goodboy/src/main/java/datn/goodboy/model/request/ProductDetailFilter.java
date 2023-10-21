@@ -1,7 +1,9 @@
 package datn.goodboy.model.request;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import datn.goodboy.model.entity.ProductDetail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +20,13 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class ProductDetailFilter {
+  @Bean("filternew")
+  public ProductDetailFilter getProductDetailNew() {
+    ProductDetailFilter filter = new ProductDetailFilter();
+    filter.resetFilter();
+    return filter;
+  }
+
   String txtSearch;
   int idProduct;
   int idPattern;

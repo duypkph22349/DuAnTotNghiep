@@ -2,6 +2,10 @@ package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.repository.BrandRepository;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +35,7 @@ public class BrandService {
         brand1.setStatus(brand.getStatus());
         return brandRepository.save(brand1);
     }
+
     public Brand getById(Integer id) {
         return brandRepository.findById(id).get();
     }
@@ -40,4 +45,7 @@ public class BrandService {
         brandRepository.delete(brand);
     }
 
+    public List<Map<Integer, String>> getCombobox() {
+        return brandRepository.getComboBoxMap();
+    }
 }

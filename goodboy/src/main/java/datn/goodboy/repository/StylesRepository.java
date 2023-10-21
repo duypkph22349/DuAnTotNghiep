@@ -4,6 +4,10 @@ package datn.goodboy.repository;
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Styles;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +21,8 @@ public interface StylesRepository extends JpaRepository<Styles, Integer> {
     Page<Styles> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Styles> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Origin e")
+    List<Map<Integer, String>> getComboBoxMap();
+
 }

@@ -1,7 +1,10 @@
 package datn.goodboy.repository;
 
-import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Origin;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +18,7 @@ public interface OriginRepository extends JpaRepository<Origin, Integer> {
     Page<Origin> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Origin> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Origin e")
+    List<Map<Integer, String>> getComboBoxMap();
 }

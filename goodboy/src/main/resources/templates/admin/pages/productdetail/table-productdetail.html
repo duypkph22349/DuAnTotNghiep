@@ -48,6 +48,8 @@
                             th:field="*{idProduct}" name="idProduct">
                             <option value="-1"> Chọn Product</option>
                             <!-- Add options for product selection -->
+                            <option th:each="option : ${productCbb}" th:value="${option.key}" th:text="${option.value}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -56,6 +58,8 @@
                             th:field="*{idPattern}">
                             <option value="-1"> Chọn Pattern </option>
                             <!-- Add options for pattern selection -->
+                            <option th:each="option : ${pattenCbb}" th:value="${option.key}" th:text="${option.value}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -64,6 +68,8 @@
                             th:field="*{idColor}">
                             <option value="-1"> Chọn Color </option>
                             <!-- Add options for pattern selection -->
+                            <option th:each="option : ${colorCbb}" th:value="${option.key}" th:text="${option.value}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -72,6 +78,8 @@
                             th:field="*{idOrigin}">
                             <option value="-1"> Chọn Origin </option>
                             <!-- Add options for pattern selection -->
+                            <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
+                            </option>
                         </select>
                     </div>
 
@@ -81,14 +89,19 @@
                             th:field="*{idBrand}">
                             <option value="-1"> Chọn Brand </option>
                             <!-- Add options for pattern selection -->
+                            <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="" class="m-auto fw-bold">Brand</label>
+                        <label for="" class="m-auto fw-bold">MeTerial</label>
                         <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
                             th:field="*{idMaterial}">
-                            <option value="-1"> Chọn Brand </option>
+                            <option value="-1"> Chọn MeTerial </option>
                             <!-- Add options for pattern selection -->
+                            <option th:each="option : ${materialCbb}" th:value="${option.key}"
+                                th:text="${option.value}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -96,6 +109,9 @@
                         <select class="form-control   form-group-0 text-center" id="idSize" name="idSize"
                             th:field="*{idSize}">
                             <option value="-1"> Chọn Size </option>
+                            <option th:each="option : ${sizeCbb}" th:value="${option.key}"
+                                th:text="${option.value}">
+                            </option>
                             <!-- Add options for pattern selection -->
                         </select>
                     </div>
@@ -104,6 +120,9 @@
                         <select class="form-control   form-group-0 text-center" id="idStyles" name="idStyles"
                             th:field="*{idStyles}">
                             <option value="-1"> Chọn Styles </option>
+                            <option th:each="option : ${stylesCbb}" th:value="${option.key}"
+                                th:text="${option.value}">
+                            </option>
                             <!-- Add options for pattern selection -->
                         </select>
                     </div>

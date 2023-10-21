@@ -1,16 +1,15 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Color;
-import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.repository.StylesRepository;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class StylesService {
@@ -39,5 +38,8 @@ public class StylesService {
 
     public Page<Styles> searchStylesByKeyword(String keyword, Pageable pageable) {
         return stylesRepository.searchByKeyword(keyword, pageable);
+    }
+    public List<Map<Integer, String>> getCombobox() {
+        return stylesRepository.getComboBoxMap();
     }
 }
