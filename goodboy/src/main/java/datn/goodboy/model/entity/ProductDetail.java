@@ -24,8 +24,11 @@ public class ProductDetail {
     @Column(name="name")
     private String name;
 
-    @Column(name="price")
-    private Float price;
+    @Column(name="import_price")
+    private Float imprice;
+
+    @Column(name="export_price")
+    private Float exprice;
 
     @Column(name="quantity")
     private int quantity;
