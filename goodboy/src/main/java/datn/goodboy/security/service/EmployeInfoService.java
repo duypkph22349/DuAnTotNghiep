@@ -1,0 +1,38 @@
+package datn.goodboy.security.service;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import datn.goodboy.model.entity.Employee;
+import datn.goodboy.security.UserInfo;
+import datn.goodboy.security.UserInfoUserDetails;
+import datn.goodboy.security.repo.EmployeeInfoRepository;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class EmployeInfoService implements UserDetailsService {
+  private final EmployeeInfoRepository repository;
+  @Autowired
+  PasswordEncoder encoder;
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    System.out.println(username);
+    Optional<Employee> employee = repository.getuser(username);
+    if (!employee.isPresent() || employee == null) {
+      throw new UsernameNotFoundException("Not found user with username is" + username);
+    }else{
+      String Roles = "ADMIN";
+      UserInfo userinfo = new UserInfo(employee.get().getEmail(), employee.get().getPassword(), Roles);
+      return new UserInfoUserDetails(userinfo);
+    }
+    // String Roles = employee.get().getRoles().getRole(); 
+  }
+}

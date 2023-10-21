@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Brand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
+    <style>
+        .add-button {
+            float: right;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content">
+    <div>
+        <h1 style="text-align: center">LIST ORIGIN</h1>
+
+        <form class="search-form d-flex align-items-center" method="get" th:action="@{'/admin/origin/search'}">
+            <input type="text" name="keyword" placeholder="Search" title="Enter search keyword" th:value="${keyword}">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+        <button type="button" class="btn btn-success add-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="bi bi-plus"></i>
+        </button>
+        <table class="table mt-2 table-responsive">
+
+            <thead class="table-primary text-center m-5">
+            <tr>
+                <th>#</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            <tr th:each="b, i : ${brandPage}">
+                <td th:text="${i.index + 1}"></td>
+                <td th:text="${b.code}"></td>
+                <td th:text="${b.name}"></td>
+                <td th:text="${b.status == 1 ? 'active' : 'unactive'}"></td>
+                <td>
+                    <button class="btn btn-primary" id="view-update-button">Update</button>
+                    <a th:href="@{'/admin/origin/delete/' + ${b.id}}" class="btn btn-danger">delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li th:class="${pageNum == 1} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/admin/origin/dsOrigin(pageNum=1)}">Previous</a>
+                </li>
+                <li class="page-item" th:each="page,iterStat : ${#numbers.sequence(1, totalPage)}">
+                    <a class="page-link" th:class="${pageNum == iterStat.index + 1} ? 'page-link active' : 'page-link'"
+                       th:href="@{/admin/origin/dsOrigin(pageNum=${iterStat.index + 1})}"
+                       th:text="${iterStat.index + 1}"></a>
+                </li>
+                <li class="page-item" th:class="${pageNum == totalPage} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/admin/origin/dsOrigin(pageNum=${totalPage})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!--    add-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form th:action="@{/admin/origin/add}" action="#" method="post">
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm thương hiệu</h5>
+                        <div>
+                            <label>Name:</label>
+                            <input type="text" th:name="name" class="form-control">
+                        </div>
+                        </br>
+                        <input type="submit" class="btn btn-success" value="ADD"/>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>
