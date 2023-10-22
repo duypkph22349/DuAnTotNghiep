@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Getter
@@ -51,15 +50,6 @@ public class Cart {
     @Column(name="deleted")
     private boolean deleted;
 
-    private static List<ProductDetail> cartItems = new ArrayList<>();
-
-    public static void addToCart(ProductDetail productDetail) {
-        cartItems.add(productDetail);
-    }
-
-    public static List<ProductDetail> getCartItems() {
-        return cartItems;
-    }
 
 
 }

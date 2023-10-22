@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestMapping("/cart")
+@RequestMapping("admin/cart")
 @Controller
 public class CartController {
     @Autowired
@@ -31,21 +32,21 @@ public class CartController {
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {
-        model.addAttribute("list", cartService.getAllCart());
+        model.addAttribute("cart", cartService.getAllCart());
         model.addAttribute("roles", customerService.getAllCustomers());
-        return " ";
+        return "admin/pages/cartcounter/table-counter";
     }
 
     @PostMapping("/add")
     public String add(@ModelAttribute Cart cart) {
         cartService.saveCart(cart);
-        return "redirect:/admin/employee/hien-thi";
+        return "redirect:/admin/cartcounter/hien-thi";
     }
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
         cartService.deleteCart(id);
-        return "redirect:/admin/employee/hien-thi";
+        return "redirect:/admin/cartcounter/hien-thi";
     }
     @GetMapping("detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id){
@@ -55,9 +56,15 @@ public class CartController {
         } else {
             model.addAttribute("detail", null);
         }
-        return "";
+        return "redirect:/admin/cartcounter/hien-thi";
     }
 
 
+
 }
+
+
+
+
+
 
