@@ -224,8 +224,11 @@
                 <tbody>
                     <tr th:each="productdetail, index  : ${list}">
                         <td class="fw-bold" th:text="${index.index + 1}"></td>
-                        <td>
-                            <!-- <img th:src="${productdetail.images[0]?.img}"> -->
+                        <td class="text-center" th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
+                            <img th:src="${productdetail.imageProducts[0].img}" />
+                        </td>
+                        <td th:unless="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
+                            <img src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
                         </td>
                         <td th:text="${productdetail.name}"></td>
                         <td th:text="${productdetail.code}"></td>
