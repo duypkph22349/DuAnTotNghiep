@@ -31,4 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/java/datn/goodboy/controller/CounterController.java

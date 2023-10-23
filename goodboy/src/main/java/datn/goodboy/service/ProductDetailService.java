@@ -2,6 +2,7 @@ package datn.goodboy.service;
 
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductDetailFilter;
+import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 import datn.goodboy.service.serviceinterface.PanigationWithSearch;
@@ -18,38 +19,42 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductDetailService implements PanigationInterface<ProductDetail>,IPanigationWithFIllter<ProductDetail,ProductDetailFilter>,PanigationWithSearch<ProductDetail> {
-    @Autowired
-    private ProductDetailRepository productDetailRepository;
+public class ProductDetailService implements PanigationInterface<ProductDetail>,
+    IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
+  @Autowired
+  private ProductDetailRepository productDetailRepository;
 
-    public Page<ProductDetail> findAllProductDetail(Pageable pageable) {
-        return productDetailRepository.findAllByOrderByCreatedAtDesc(pageable);
-    }
+  public Page<ProductDetail> findAllProductDetail(Pageable pageable) {
+    return productDetailRepository.findAllByOrderByCreatedAtDesc(pageable);
+  }
 
-    public ProductDetail add(ProductDetail origin) {
-        return productDetailRepository.save(origin);
-    }
+  public ProductDetail add(ProductDetail entity) {
+    return productDetailRepository.save(entity);
+  }
+  public ProductDetail add(ProductDetailRequest entity) {
+    return null;
+  }
+  public ProductDetail update(Integer id, ProductDetail color) {
+    ProductDetail color1 = productDetailRepository.findById(id).get();
+    color1.setName(color.getName());
+    color1.setPrice(color.getPrice());
+    color1.setQuantity(color.getQuantity());
+    color1.setDescription(color.getDescription());
+    color1.setIdProduct(color.getIdProduct());
+    color1.setIdPattern(color.getIdPattern());
+    color1.setIdColor(color.getIdColor());
+    color1.setIdOrigin(color.getIdOrigin());
+    color1.setIdBrand(color.getIdBrand());
+    color1.setIdMaterial(color.getIdMaterial());
+    color1.setIdSize(color.getIdSize());
+    color1.setIdStyles(color.getIdStyles());
+    color1.setStatus(color.getStatus());
+    color1.setUpdatedAt(color.getUpdatedAt());
+    return productDetailRepository.save(color1);
+  }
 
-    public ProductDetail update(Integer id, ProductDetail color) {
-        ProductDetail color1 = productDetailRepository.findById(id).get();
-        color1.setName(color.getName());
-        color1.setPrice(color.getPrice());
-        color1.setQuantity(color.getQuantity());
-        color1.setDescription(color.getDescription());
-        color1.setIdProduct(color.getIdProduct());
-        color1.setIdPattern(color.getIdPattern());
-        color1.setIdColor(color.getIdColor());
-        color1.setIdOrigin(color.getIdOrigin());
-        color1.setIdBrand(color.getIdBrand());
-        color1.setIdMaterial(color.getIdMaterial());
-        color1.setIdSize(color.getIdSize());
-        color1.setIdStyles(color.getIdStyles());
-        color1.setStatus(color.getStatus());
-        color1.setUpdatedAt(color.getUpdatedAt());
-        return productDetailRepository.save(color1);
-    }
-    // panigation no fillter
-    @Override
+  // panigation no fillter
+  @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
     if (pageNo > getPageNumber(pageSize) || pageNo < 1) {
       return null;
@@ -75,7 +80,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     Page<ProductDetail> page = productDetailRepository.findAll(pageable);
     int totalPage = page.getTotalPages();
     // if(totalPage <=1){
-    //   totalPage =1;
+    // totalPage =1;
     // }
     return totalPage;
   }
@@ -114,16 +119,16 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       return rs;
     }
   }
-    // panigation no fillter end
-    // panigation no with Seach end
-    // panigation no with Seach 
-    
-    // panigation no with fillter 
+  // panigation no fillter end
+  // panigation no with Seach end
+  // panigation no with Seach
+
+  // panigation no with fillter
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
       ProductDetailFilter filter) {
     // TODO Auto-generated method stub
-    if (pageNo > getPageNumber(pageSize,filter) || pageNo < 1) {
+    if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
       return null;
     }
     List<ProductDetail> ChiTietSanPhams;
@@ -136,23 +141,23 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<ProductDetail> page = productDetailRepository.filter(filter,pageable);
+    Page<ProductDetail> page = productDetailRepository.filter(filter, pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
 
   @Override
   public int getPageNumber(int rowcount, ProductDetailFilter filter) {
-  Pageable pageable = PageRequest.of(0, rowcount);
-    Page<ProductDetail> page = productDetailRepository.filter(filter,pageable);
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.filter(filter, pageable);
     int totalPage = page.getTotalPages();
     return totalPage;
   }
 
   @Override
   public int[] getPanigation(int rowcount, int pageno, ProductDetailFilter filter) {
-Pageable pageable = PageRequest.of(0, rowcount);
-    Page<ProductDetail> page = productDetailRepository.filter(filter,pageable); // findAll()
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.filter(filter, pageable); // findAll()
     int totalPage = page.getTotalPages();
     int[] rs;
     if (totalPage <= 1) {
@@ -183,12 +188,12 @@ Pageable pageable = PageRequest.of(0, rowcount);
       return rs;
     }
   }
-    // panigation no with fillter end
+  // panigation no with fillter end
 
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir, String txtSearch) {
     // TODO Auto-generated method stub
-    if (pageNo > getPageNumber(pageSize,txtSearch) || pageNo < 1) {
+    if (pageNo > getPageNumber(pageSize, txtSearch) || pageNo < 1) {
       return null;
     }
     List<ProductDetail> ChiTietSanPhams;
@@ -201,26 +206,29 @@ Pageable pageable = PageRequest.of(0, rowcount);
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch,pageable);
+    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch, pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
+
   @Override
   public int getPageNumber(int rowcount, String txtSearch) {
-     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch,pageable);
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch, pageable);
     int totalPage = page.getTotalPages();
     return totalPage;
   }
+
   @Override
   public int[] getPanigation(int rowcount, int pageno, String txtSearch) {
     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch,pageable); // findAll()
+    Page<ProductDetail> page = productDetailRepository.searchByText(txtSearch, pageable); // findAll()
     int totalPage = page.getTotalPages();
     return Panigation(pageno, totalPage);
   }
- public int[] Panigation(int pageno, int totalPage){
-      int[] rs;
+
+  public int[] Panigation(int pageno, int totalPage) {
+    int[] rs;
     if (totalPage <= 1) {
       int[] rs1 = { 1 };
       return rs1;
@@ -248,6 +256,9 @@ Pageable pageable = PageRequest.of(0, rowcount);
       }
       return rs;
     }
-  }  
-}
+  }
 
+  public Object getAllProductDetail() {
+    return null;
+  }
+}

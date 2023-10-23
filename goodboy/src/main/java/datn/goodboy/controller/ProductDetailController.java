@@ -15,10 +15,13 @@ import datn.goodboy.service.ProductService;
 import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -120,7 +123,8 @@ public class ProductDetailController {
   @Autowired
   private CustomerService customerService;
   @Autowired
-  private ProductDetailRequest voucherRequest;
+  @Qualifier("newrequest")
+  private ProductDetailRequest productDetailRequest;
   public int rowcount = 10;
   public int[] pagenumbers;
   public String sortBy = "name";
@@ -261,17 +265,18 @@ public class ProductDetailController {
   // return "/admin/pages/productdetail/table-productdetail.html";
   // }
 
-  @ModelAttribute("voucherRequest")
-  public ProductDetailRequest setSignUpForm() {
-    return voucherRequest;
+  @ModelAttribute("productDetailRequest")
+  public ProductDetailRequest setproductDetailForm() {
+    return productDetailRequest;
   }
 
   @GetMapping("create")
   public String goToCreateForm(Model model) {
-    voucherRequest = new ProductDetailRequest();
+    productDetailRequest = new ProductDetailRequest();
     model.addAttribute("listCustomer", customerService.getComboBox());
-    model.addAttribute("voucherRequest", voucherRequest);
-    return "/admin/pages/productdetail/form-voucher.html";
+    productDetailRequest.resetRequest();
+    model.addAttribute("productDetailRequest", productDetailRequest);
+    return "/admin/pages/productdetail/form-productdetail.html";
   }
 
   @GetMapping("delete")
@@ -296,44 +301,45 @@ public class ProductDetailController {
 
   // @GetMapping("edit")
   // public String editProductDetail(Model model, @RequestParam("id") UUID id) {
-  // model.addAttribute("voucherRequest",
+  // model.addAttribute("productDetailRequest",
   // service.getProductDetailRequetById(id));
   // return "/admin/pages/productdetail/form-voucher.html";
   // }
   // @GetMapping("edit")
   // public String editProductDetail(Model model, @RequestParam("id") int id) {
-  // ProductDetailRequest voucherRequest = service.getProductDetailRequetById(id);
-  // model.addAttribute("voucherRequest",
+  // ProductDetailRequest productDetailRequest =
+  // service.getProductDetailRequetById(id);
+  // model.addAttribute("productDetailRequest",
   // service.getProductDetailRequetById(id));
   // return "/admin/pages/productdetail/update-voucher.html";
   // }
 
-  // @PostMapping("store")
-  // public String storeProductDetail(Model model, @Valid
-  // @ModelAttribute("voucherRequest") ProductDetailRequest voucherRequest,
-  // BindingResult theBindingResult) {
-  // if (theBindingResult.hasErrors()) {
-  // return "/admin/pages/productdetail/form-voucher.html";
-  // } else {
-  // if (voucherRequest.validateHasError()) {
-  // model.addAttribute("validateerrors", voucherRequest.ValidateError());
-  // return "/admin/pages/productdetail/form-voucher.html";
-  // }
-  // System.out.println(voucherRequest.toString());
-  // service.saveProductDetail(voucherRequest);
-  // return "redirect:index";
-  // }
-  // }
+  @PostMapping("store")
+  public String storeProductDetail(Model model,
+      @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
+      BindingResult theBindingResult) {
+    if (theBindingResult.hasErrors()) {
+      return "/admin/pages/productdetail/form-voucher.html";
+    } else {
+      // if (productDetailRequest.validateHasError()) {
+      // model.addAttribute("validateerrors", productDetailRequest.ValidateError());
+      // return "/admin/pages/productdetail/form-voucher.html";
+      // }
+      System.out.println(productDetailRequest.toString());
+      service.add(productDetailRequest);
+      return "redirect:index";
+    }
+  }
 
   // @PostMapping("update")
-  // public String update(@Valid @ModelAttribute("voucherRequest")
-  // ProductDetailRequest voucherRequest,
+  // public String update(@Valid @ModelAttribute("productDetailRequest")
+  // ProductDetailRequest productDetailRequest,
   // BindingResult theBindingResult, Model model) {
   // if (theBindingResult.hasErrors()) {
   // return "/admin/pages/productdetail/update-voucher.html";
   // }
-  // System.out.println(voucherRequest);
-  // service.updateProductDetail(voucherRequest);
+  // System.out.println(productDetailRequest);
+  // service.updateProductDetail(productDetailRequest);
   // return "redirect:index";
   // }
 }
