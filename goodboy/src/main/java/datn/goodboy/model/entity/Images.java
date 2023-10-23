@@ -4,34 +4,33 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="image")
+@Table(name = "image")
 public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name="id_product_detail")
-    private ProductDetail idSP;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_product_detail")
+    private ProductDetail idProductDetail;
 
-    @Column(name="image")
+    @Column(name = "image")
     private String img;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name="update_at")
+    @Column(name = "update_at")
     private LocalDateTime updatedAt;
-    @Column(name="status")
+    @Column(name = "status")
     private int status;
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
 
 }

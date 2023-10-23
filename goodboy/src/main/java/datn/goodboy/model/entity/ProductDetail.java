@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -88,4 +89,7 @@ public class ProductDetail {
 
     @Column(name="deleted")
     private boolean deleted;
+
+        @OneToMany(mappedBy = "idProductDetail" ) // Define the relationship with Images
+    private List<Images> imageProducts;
 }
