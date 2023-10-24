@@ -1,0 +1,41 @@
+ Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument
+  [1] in public java.lang.String datn.goodboy.controller.ProductDetailController.storeProductDetail
+  (org.springframework.ui.Model,datn.goodboy.model.request.ProductDetailRequest,
+  java.util.List<org.springframework.web.multipart.MultipartFile>,
+  org.springframework.validation.BindingResult) throws java.io.IOException with 8 errors:
+   [Field error in object 'productDetailRequest' on field 'idSize': rejected value [-1];
+    codes [Min.productDetailRequest.idSize,Min.idSize,Min.int,Min];
+    arguments [org.springframework.context.support.DefaultMessageSourceResolvable:
+    codes [productDetailRequest.idSize,idSize]; arguments []; default message [idSize],0];
+     default message [Vui l≥ng ch?n]]
+      [Field error in object 'productDetailRequest' on field 'idColor':
+      rejected value [-1]; codes [Min.productDetailRequest.idColor,Min.idColor,Min.int,Min];
+      arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes
+      [productDetailRequest.idColor,idColor]; arguments []; default message [idColor],0];
+       default message [Vui l≥ng ch?n]] [Field error in object 'productDetailRequest'
+        on field 'idMaterial': rejected value [-1]; codes [Min.productDetailRequest.idMaterial,
+        Min.idMaterial,Min.int,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable:
+        codes [productDetailRequest.idMaterial,idMaterial]; arguments []; default message [idMaterial],0];
+         default message [Vui l≥ng ch?n]] [Field error in object 'productDetailRequest' on field 'idPattern':
+         rejected value [-1]; codes [Min.productDetailRequest.idPattern,Min.idPattern,Min.int,Min];
+          arguments [org.springframework.context.support.DefaultMessageSourceResolvable:
+          codes [productDetailRequest.idPattern,idPattern]; arguments [];
+           default message [idPattern],0]; default message [Vui l≥ng ch?n]]
+           [Field error in object 'productDetailRequest' on field 'idBrand':
+           rejected value [-1]; codes [Min.productDetailRequest.idBrand,Min.idBrand,Min.int,Min];
+            arguments [org.springframework.context.support.DefaultMessageSourceResolvable:
+            codes [productDetailRequest.idBrand,idBrand]; arguments []; default message [idBrand],0];
+             default message [Vui l≥ng ch?n]] [Field error in object 'productDetailRequest' on field 'idProduct':
+              rejected value [-1]; codes [Min.productDetailRequest.idProduct,Min.idProduct,Min.int,Min];
+               arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes
+                [productDetailRequest.idProduct,idProduct]; arguments []; default message [idProduct],0];
+                 default message [Vui l≥ng ch?n]] [Field error in object 'productDetailRequest' on field
+                 'idOrigin': rejected value [-1]; codes [Min.productDetailRequest.idOrigin,Min.idOrigin,Min.int,Min];
+                  arguments [org.springframework.context.support.DefaultMessageSourceResolvable:
+                  codes [productDetailRequest.idOrigin,idOrigin]; arguments []; default message [idOrigin],0];
+                  default message [Vui l≥ng ch?n]] [Field error in object 'productDetailRequest' on field 'idStyles':
+                   rejected value [-1]; codes [Min.productDetailRequest.idStyles,Min.idStyles,Min.int,Min];
+                    arguments [org.springframework.context.support.DefaultMessageSourceResolvable:
+                     codes [productDetailRequest.idStyles,idStyles]; arguments [];
+                      default message [idStyles],0]; default message [Vui l≥ng ch?n]] ]
+2023-10-27T23:04:27.858+07:00 ERROR 4712 --- [nio-8080-exec-2] org.thymeleaf.TemplateEngine             : [THYMELEAF][http-nio-8080-exec-2] Exception processing template "error": Error resolving template [error], template might not exist or might not be accessible by any of the configured Template Resolvers

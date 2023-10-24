@@ -131,7 +131,7 @@
         <div style="overflow: auto" class="mt-4">
             <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
                 <thead class="position-sticky top-0">
-                    <tr>
+                    <tr class="text-center">
                         <th class="fw-bold">STT</th>
                         <th class="fw-bold"></th>
                         <th scope="col">Name
@@ -188,12 +188,13 @@
                             <a th:href="@{/admin/productdetail/sort(sortBy=idBrand.name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
+                    -->
                         <th scope="col">Chất liệu
                             <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
                             <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
-                        </th> -->
+                        </th>
                         <th scope="col">Kích thước
                             <a th:href="@{/admin/productdetail/sort(sortBy=idSize.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
@@ -212,7 +213,7 @@
                             <a th:href="@{/admin/productdetail/sort(sortBy=description ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
-                        <th scope="col">Trạng thái
+                        <th scope="col" class="text-center">Trạng thái
                             <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
                             <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=false)}"><i
@@ -224,11 +225,14 @@
                 <tbody>
                     <tr th:each="productdetail, index  : ${list}">
                         <td class="fw-bold" th:text="${index.index + 1}"></td>
-                        <td class="text-center" th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
-                            <img th:src="${productdetail.imageProducts[0].img}" />
+                        <td class="text-center"
+                            th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
+                            <img th:src="${productdetail.imageProducts[0].img}" class="image-fluid"
+                                style="height: 60px;" />
                         </td>
                         <td th:unless="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
-                            <img src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
+                            <img
+                                src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
                         </td>
                         <td th:text="${productdetail.name}"></td>
                         <td th:text="${productdetail.code}"></td>

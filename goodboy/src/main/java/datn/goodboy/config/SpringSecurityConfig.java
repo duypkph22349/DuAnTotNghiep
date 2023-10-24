@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
 
 import datn.goodboy.security.repo.AccountInforRepository;
 import datn.goodboy.security.repo.EmployeeInfoRepository;
@@ -82,9 +83,17 @@ public class SpringSecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
-    http.authorizeHttpRequests((authorize) -> {
-      authorize.requestMatchers("khach-hang/singin").permitAll();
-    })
+    http
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/login").permitAll();
+        })
+
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/test/login/signup").permitAll();
+        })
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/admin/**").permitAll();
+        })
         .authorizeHttpRequests((authorize) -> {
           authorize.anyRequest().permitAll();
         })
@@ -101,6 +110,8 @@ public class SpringSecurityConfig {
                 .logoutUrl("/signOut")
                 .logoutSuccessUrl("/login")
                 .permitAll())
+        // .rememberMe((remember) -> remember
+        //     .rememberMeServices(rememberMeConfig()))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(Customizer.withDefaults())
         .authenticationManager(authManager);
@@ -108,7 +119,22 @@ public class SpringSecurityConfig {
   }
 
   @Bean
-   AuthenticationFailureHandler authenticationFailureHandler() {
+  AuthenticationFailureHandler authenticationFailureHandler() {
     return new CustomerLoginFailhander();
   }
+
+  // @Bean
+  // RememberMeServices rememberMeConfig() {
+  //   return new RememberMeConfig();
+  // }
+
+  // @Bean
+  // public SavedRequestAwareAuthenticationSuccessHandler
+  // savedRequestAwareAuthenticationSuccessHandler() {
+
+  // SavedRequestAwareAuthenticationSuccessHandler auth = new
+  // SavedRequestAwareAuthenticationSuccessHandler();
+  // auth.setTargetUrlParameter("targetUrl");
+  // return auth;
+  // }
 }

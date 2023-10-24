@@ -1,9 +1,12 @@
 package datn.goodboy.config;
 
 import java.util.Date;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 /**
  * JwtTokenProvider
  */
@@ -29,9 +32,11 @@ public class JwtTokenProvider {
     Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
     // Tạo chuỗi json web token từ id của user.
     return Jwts.builder()
-        .setSubject("authentication.getName()")
+        .setSubject(authentication.getName())
         .setIssuedAt(now)
         .setExpiration(expiryDate)
+        .claim("roles",
+            authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
         .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
         .compact();
   }

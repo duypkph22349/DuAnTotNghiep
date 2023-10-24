@@ -1,15 +1,28 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Color;
+import datn.goodboy.model.entity.Material;
+import datn.goodboy.model.entity.Origin;
+import datn.goodboy.model.entity.PatternType;
+import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.entity.Size;
+import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 import datn.goodboy.service.serviceinterface.PanigationWithSearch;
+import datn.goodboy.service.cloud.CloudinaryImageService;
 import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,12 +30,149 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductDetailService implements PanigationInterface<ProductDetail>,
     IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
+
+  @Autowired
+  private BrandService brandService;
+
+  @Autowired
+  private ColorService colorService;
+
+  @Autowired
+  private MaterialService materialService;
+
+  @Autowired
+  private OriginService originService;
+
+  @Autowired
+  private PatternTypeService patternTypeService;
+
+  @Autowired
+  private ProductService productService;
+
+  @Autowired
+  private SizeService sizeService;
+
+  @Autowired
+  private StylesService stylesService;
+
+  @Autowired
+  private ImageService imageService;
   @Autowired
   private ProductDetailRepository productDetailRepository;
+
+  @Autowired
+  CloudinaryImageService cloudService;
+
+  public ProductDetailRequest getUpdateProductDetailForm(Integer id) {
+
+    return null;
+  }
+
+  public ProductDetail saveProdudct(ProductDetailRequest request, List<MultipartFile> listImage) throws IOException {
+    ProductDetail productDetail = new ProductDetail();
+    mapRequestToEntity(request, productDetail);
+    productDetail.setId(-1);
+    productDetail.setCreatedAt(LocalDateTime.now());
+    ProductDetail savDetail = productDetailRepository.save(productDetail);
+    int idProduct = savDetail.getId();
+    List<String> listURL = new ArrayList<>();
+    for (MultipartFile multipartFile : listImage) {
+      String url = cloudService.saveImage(multipartFile);
+      listURL.add(url);
+    }
+    imageService.saveImageForNewProductDetail(listURL, idProduct);
+    return savDetail;
+  }
+
+  public ProductDetail updateProductDetail(ProductDetailRequest request, List<MultipartFile> listImage)
+      throws IOException {
+    Optional<ProductDetail> productDetail = productDetailRepository.findById(request.getId());
+    if (productDetail.isPresent()) {
+      ProductDetail exitproductDetail = productDetail.get();
+      mapRequestToEntity(request, exitproductDetail);
+      exitproductDetail.setUpdatedAt(LocalDateTime.now());
+      ProductDetail savDetail = productDetailRepository.save(exitproductDetail);
+      int idProduct = savDetail.getId();
+      List<String> listURL = new ArrayList<>();
+      if (listImage.isEmpty() | listImage == null) {
+      } else {
+        for (MultipartFile multipartFile : listImage) {
+          if (!multipartFile.isEmpty()) {
+            String url = cloudService.saveImage(multipartFile);
+            listURL.add(url);
+          } else {
+            // thows exeption
+          }
+        }
+        imageService.saveImageForNewProductDetail(listURL, idProduct);
+      }
+      return savDetail;
+    } else {
+      // throws exeption
+      return null;
+    }
+  }
+
+  public Object getAllProductDetail() {
+    return null;
+  }
+
+  public ProductDetailRequest getProductDetailRequetById(Integer id) {
+    ProductDetailRequest request = new ProductDetailRequest();
+    Optional<ProductDetail> productDetail = productDetailRepository.findById(id);
+    if (productDetail.isPresent()) {
+      mapEntitytoRequest(productDetail.get(), request);
+    } else {
+      // thowre exeption
+    }
+    return request;
+  }
+
+  public void mapEntitytoRequest(ProductDetail productDetail, ProductDetailRequest productDetailRequest) {
+    productDetailRequest.setId(productDetail.getId());
+    productDetailRequest.setDescription(productDetail.getDescription());
+    productDetailRequest.setDeleted(productDetail.isDeleted());
+    productDetailRequest.setIdBrand(productDetail.getIdBrand().getId());
+    productDetailRequest.setIdMaterial(productDetail.getIdMaterial().getId());
+    productDetailRequest.setIdColor(productDetail.getIdColor().getId());
+    productDetailRequest.setIdOrigin(productDetail.getIdOrigin().getId());
+    productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
+    productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
+    productDetailRequest.setQuantity(productDetail.getQuantity());
+    productDetailRequest.setPrice(productDetail.getPrice());
+    productDetailRequest.setStatus(productDetail.getQuantity());
+    productDetailRequest.setName(productDetail.getName());
+    productDetailRequest.setImage(productDetail.getImageProducts());
+  }
+
+  public void mapRequestToEntity(ProductDetailRequest request, ProductDetail entity) {
+    Brand brand = brandService.getById(request.getIdBrand());
+    Color color = colorService.getById(request.getIdColor());
+    Material material = materialService.getById(request.getIdMaterial());
+    Origin origin = originService.getById(request.getIdOrigin());
+    PatternType pattern = patternTypeService.getById(request.getIdPattern());
+    Product product = productService.getById(request.getIdProduct());
+    Size size = sizeService.getById(request.getIdSize());
+    Styles styles = stylesService.getById(request.getIdStyles());
+    entity.setIdBrand(brand);
+    entity.setIdColor(color);
+    entity.setIdMaterial(material);
+    entity.setIdOrigin(origin);
+    entity.setIdPattern(pattern);
+    entity.setIdProduct(product);
+    entity.setIdSize(size);
+    entity.setIdStyles(styles);
+    entity.setDeleted(request.isDeleted());
+    entity.setName(request.getName());
+    entity.setPrice(request.getPrice());
+    entity.setStatus(request.getStatus());
+    entity.setId(request.getId());
+  }
 
   public Page<ProductDetail> findAllProductDetail(Pageable pageable) {
     return productDetailRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -31,9 +181,11 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   public ProductDetail add(ProductDetail entity) {
     return productDetailRepository.save(entity);
   }
+
   public ProductDetail add(ProductDetailRequest entity) {
     return null;
   }
+
   public ProductDetail update(Integer id, ProductDetail color) {
     ProductDetail color1 = productDetailRepository.findById(id).get();
     color1.setName(color.getName());
@@ -258,7 +410,4 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     }
   }
 
-  public Object getAllProductDetail() {
-    return null;
-  }
 }

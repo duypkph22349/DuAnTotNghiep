@@ -9,14 +9,27 @@
 <body layout:fragment="content">
   <div th:if="${validateerrors}" class="alert alert-danger" role="alert" th:text="${validateerrors}">
   </div>
-  <form enctype="multipart/form-data" th:action="@{/admin/productdetail/store}" th:object="${productDetailRequest}"
+  <form enctype="multipart/form-data" th:action="@{/admin/productdetail/update}" th:object="${productDetailRequest}"
     method="post" class="form container-fluid">
     <input type="hidden" name="" th:field="*{id}">
     <div class="row">
       <div class="text-center col-1 col-md-4 col-sm-12">
-        <img th:src="${productDetailRequest.noImage}" alt="" class="image-fluid mb-3" style="max-width: 400px;">
+        <div th:if="${productDetailRequest?.image.size != 0}">
+          <div class="row">
+            <div class="position-relative col-3" th:each="image : ${productDetailRequest.image}">
+              <img class="p-1" th:src="${image?.img}" alt="ảnh sản phẩm">
+              <a th:href="@{'/admin/productdetail/remove/'+ ${productDetailRequest.id} +'/image/'+${image.id}}"
+                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
+                <i class="fas fa-times fa-xs"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div th:unless="${productDetailRequest?.image.size != 0}">
+          <img th:src="${productDetailRequest.noImage}" alt="" class="image-fluid mb-3" style="max-width: 400px;">
+        </div>
         <div class="form-group">
-          <input class="form-control" type="file" id="formFile" name="listimage" multiple required>
+          <input class="form-control" type="file" id="formFile" name="listimage" multiple>
         </div>
       </div>
       <div class="col-11  col-md-8 col-sm-12">
