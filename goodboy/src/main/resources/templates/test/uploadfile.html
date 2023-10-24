@@ -9,9 +9,8 @@
 
 <body>
   <h2>Url file jsut posting</h2>
-  <img th:if="${filename}" th:src="${filename}">File just upload</a>
   <form action="uploadfile" method="post" enctype="multipart/form-data" >
-    <input type="file" name="imageFile" id="">
+    <input type="file" name="imageFile" id="" multiple>
     <input type="submit" value="Submit">
   </form>
 </body>

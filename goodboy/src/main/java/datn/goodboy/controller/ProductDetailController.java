@@ -2,11 +2,13 @@ package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.request.AccountRequest;
 import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.ColorService;
 import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.ImageService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.PatternTypeService;
@@ -14,6 +16,7 @@ import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.ProductService;
 import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
+import datn.goodboy.service.cloud.CloudinaryImageService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 
@@ -23,7 +26,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -127,8 +133,8 @@ public class ProductDetailController {
   private ProductDetailRequest productDetailRequest;
   public int rowcount = 10;
   public int[] pagenumbers;
-  public String sortBy = "name";
-  public boolean sortDir = true;
+  public String sortBy = "createdAt";
+  public boolean sortDir = false;
   public int pageno = 0;
   public int totalpage = 0;
 
@@ -299,12 +305,37 @@ public class ProductDetailController {
     return "redirect:index";
   }
 
-  // @GetMapping("edit")
-  // public String editProductDetail(Model model, @RequestParam("id") UUID id) {
-  // model.addAttribute("productDetailRequest",
-  // service.getProductDetailRequetById(id));
-  // return "/admin/pages/productdetail/form-voucher.html";
-  // }
+  @GetMapping("edit/{id}")
+  public String editProductDetail(Model model, @RequestParam("id") Integer id) {
+    model.addAttribute("productDetailRequest",
+        service.getProductDetailRequetById(id));
+    return "/admin/pages/productdetail/update-productdetail.html";
+  }
+
+  @PostMapping("update")
+  public String updateProduct(Model model,
+      @RequestParam("listimage") List<MultipartFile> listimage,
+      @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
+      BindingResult theBindingResult) throws IOException {
+    System.out.println(productDetailRequest);
+    if (theBindingResult.hasErrors()) {
+      return "/admin/pages/productdetail/update-productdetail.html";
+    } else {
+      // if (productDetailRequest.validateHasError()) {
+      // model.addAttribute("validateerrors", productDetailRequest.ValidateError());
+      // return "/admin/pages/productdetail/form-voucher.html";
+      // }
+      service.updateProductDetail(productDetailRequest, listimage);
+      return "redirect:index";
+    }
+  }
+
+  @GetMapping("remove/{idproductdetail}/image/{idiamge}")
+  public String removeImage(@PathVariable("idproductdetail") Integer idproductdetail,
+      @PathVariable("id") Integer idiamge) {
+    return "redirect:edit/" + idproductdetail;
+  }
+
   // @GetMapping("edit")
   // public String editProductDetail(Model model, @RequestParam("id") int id) {
   // ProductDetailRequest productDetailRequest =
@@ -313,20 +344,19 @@ public class ProductDetailController {
   // service.getProductDetailRequetById(id));
   // return "/admin/pages/productdetail/update-voucher.html";
   // }
-
+  // Model model, @Valid @ModelAttribute("accountRequest") AccountRequest
+  // accountRequest,
+  // BindingResult theBindingResult
   @PostMapping("store")
   public String storeProductDetail(Model model,
+      @RequestParam("listimage") List<MultipartFile> listimage,
       @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
-      BindingResult theBindingResult) {
+      BindingResult theBindingResult) throws IOException {
     if (theBindingResult.hasErrors()) {
-      return "/admin/pages/productdetail/form-voucher.html";
+      return "/admin/pages/productdetail/form-productdetail.html";
     } else {
-      // if (productDetailRequest.validateHasError()) {
-      // model.addAttribute("validateerrors", productDetailRequest.ValidateError());
-      // return "/admin/pages/productdetail/form-voucher.html";
-      // }
-      System.out.println(productDetailRequest.toString());
-      service.add(productDetailRequest);
+
+      service.saveProdudct(productDetailRequest, listimage);
       return "redirect:index";
     }
   }
