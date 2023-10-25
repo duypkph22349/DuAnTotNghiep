@@ -15,21 +15,21 @@ public class RestProductDetailController {
     @Autowired
     private ProductDetailService productDetailService;
 
-    @GetMapping("/hien-thi")
-    public ResponseEntity<List<ProductDetail>> hienThi(@RequestParam(name = "pageno", defaultValue = "1") int page) {
-        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true));
-    }
-
-    @PostMapping("/filter")
-    public ResponseEntity<List<ProductDetail>> getFilter(@RequestBody ProductDetailFilter filter,
-            @RequestParam(name = "pageno", defaultValue = "1") int page) {
-        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true, filter));
-    }
-
-    @GetMapping("search")
-    public ResponseEntity<List<ProductDetail>> search(
-            @RequestParam(name = "search", defaultValue = "") String txtS,
-            @RequestParam(name = "pageno", defaultValue = "1") int page) {
-        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true, txtS));
-    } 
+//    @GetMapping("/hien-thi")
+//    public ResponseEntity<List<ProductDetail>> hienThi(@RequestParam(name = "pageno", defaultValue = "1") int page) {
+//        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true));
+//    }
+//
+//    @PostMapping("/filter")
+//    public ResponseEntity<List<ProductDetail>> getFilter(@RequestBody ProductDetailFilter filter,
+//            @RequestParam(name = "pageno", defaultValue = "1") int page) {
+//        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true, filter));
+//    }
+//
+//    @GetMapping("search")
+//    public ResponseEntity<List<ProductDetail>> search(
+//            @RequestParam(name = "search", defaultValue = "") String txtS,
+//            @RequestParam(name = "pageno", defaultValue = "1") int page) {
+//        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true, txtS));
+//    }
 }
