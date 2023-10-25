@@ -36,7 +36,7 @@ public class Cart {
     private int quantily;
 
     @Column(name = "total_money")
-    private long discount;
+    private long money;
 
     @Column(name = "status")
     private int status;

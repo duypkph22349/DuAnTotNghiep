@@ -1,9 +1,7 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.entity.Cart;
 import datn.goodboy.repository.BillRepository;
-import datn.goodboy.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

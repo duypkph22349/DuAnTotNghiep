@@ -1,8 +1,6 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.Roles;
-import datn.goodboy.repository.CartRepository;
 import datn.goodboy.repository.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
