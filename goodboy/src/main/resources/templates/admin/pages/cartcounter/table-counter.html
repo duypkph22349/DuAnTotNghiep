@@ -120,10 +120,10 @@
                 display: flex;
                 justify-content: space-between;
                 right: 0px;
-                min-height: 66px;
+                min-height: 65px;
                 padding: 0 16px;
                 align-items: center;
-                z-index: 1000
+                z-index: 100
             }
             .box-order-status .ant-btn {
                 height: 40px;
@@ -536,6 +536,9 @@
             .box-payment-proof .box-input input {
                 padding-left: 120px;
                 font-size: 16px
+            }
+            .box-order-status {
+                overflow: hidden;
             }
         </style>
         <div class="ant-tabs-content-holder">
@@ -967,7 +970,7 @@
                                                                         d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.
                                                                         5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5Zm0 1H7.5v3h-6l2.25-3ZM8.5 4V1h3.75l2.25
                                                                          3h-6ZM15 5v10H1V5h14Z"/> </svg> Giảm giá đơn hàng </span>
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control" id="giamgia"
                                                                            placeholder="0₫" oninput="updateDiscountAmount(this.value)"></div>
                                                             </div>
 
@@ -983,25 +986,11 @@
                                                             </svg>
                                                             Tiền chuyển khoản
                                                          </span>
-                                                                    <input type="text" class="form-control"  th:id="transfer-amount"
+                                                                    <input type="text" class="form-control"  id="transfer-amount"
                                                                            placeholder="0₫">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-12">
-                                                                <div class="input-wrapper">
-                                                         <span class="currency-symbol">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                 height="16" fill="currentColor"
-                                                                 class="bi bi-wallet2" viewBox="0 0 16 16">
-                                                               <path
-                                                                       d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-                                                            </svg>
-                                                            Tiền quẹt
-                                                         </span>
-                                                                    <input type="text" class="form-control"  th:id="payment-amount"
-                                                                           placeholder="0 ₫">
-                                                                </div>
-                                                            </div>
+
                                                             <div class="col-12">
                                                                 <div class="input-wrapper">
                                                          <span class="currency-symbol">
@@ -1015,9 +1004,9 @@
                                                                <path
                                                                        d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                                             </svg>
-                                                            Phụ thu
+                                                            Phụ thu tiền mặt
                                                          </span>
-                                                                    <input type="text" class="form-control"  th:id="surcharge-amount"
+                                                                    <input type="text" class="form-control"  id="surcharge-amount"
                                                                            placeholder="0 ₫">
                                                                 </div>
                                                             </div>
@@ -1040,27 +1029,25 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="box-money-section s3">
-                                                                            <div class="box-monney"><span class="title">Cần thanh toán</span>
-                                                                                <span class="fw-500" th:id="finalAmount">0 ₫</span>
-                                                                            </div>
-
                                                                             <div class="box-monney"><span class="title">Tiền khách đưa</span>
                                                                                 <span class="fw-500 blue"
-                                                                                      th:id="final-price">0 ₫</span>
+                                                                                      id="final-price">0 ₫</span>
                                                                             </div>
 
-                                                                            <div class="box-monney"><span class="title">Trả lại</span>
-                                                                                <span class="fw-500" th:id="changeAmount">0 ₫</span>
+                                                                            <div class="box-monney"><span class="title">Cần thanh toán</span>
+                                                                                <span class="fw-500" id="finalAmount">0 ₫</span>
                                                                             </div>
 
+                                                                            <div class="box-monney"><span class="title">Còn thiếu</span>
+                                                                                <span class="fw-500" id="changeAmount">0 ₫</span>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="box-monney"
-                                                                             style="padding-bottom: 0px;"><span
-                                                                                class="title">Còn thiếu</span>
+                                                                        <div class="box-monney" style="padding-bottom: 0px;">
+                                                                            <span class="title">Trả lại</span>
                                                                             <span class="fw-500 red" id="remain-price">0₫</span>
-                                                                            <span id="origin-remain-price"
-                                                                                  style="display: none;">0</span>
+                                                                            <span id="origin-remain-price" style="display: none;">0</span>
                                                                         </div>
+
                                                                     </div>
                                                                 </div>
                                                                 <div class="ant-alert-description"></div>
@@ -1069,6 +1056,7 @@
                                                     </div>
                                                 </section>
                                                 <section>
+
                                                     <div class="ant-tabs ant-tabs-top box-note-tabs">
                                                         <div role="tablist" class="ant-tabs-nav">
                                                             <div class="ant-tabs-nav-wrap">
@@ -1086,30 +1074,6 @@
                                                                     <div class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
                                                                          style="left: 0px; width: 77px;"></div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden">
-                                                                <button type="button" class="ant-tabs-nav-more"
-                                                                        tabindex="-1" aria-hidden="true"
-                                                                        aria-haspopup="listbox"
-                                                                        aria-controls="rc-tabs-2-more-popup"
-                                                                        id="rc-tabs-2-more"
-                                                                        aria-expanded="false"
-                                                                        style="visibility: hidden; order: 1;">
-                                                         <span
-                                                                 role="img"
-                                                                 aria-label="ellipsis"
-                                                                 class="anticon anticon-ellipsis">
-                                                            <svg
-                                                                    viewBox="64 64 896 896" focusable="false"
-                                                                    data-icon="ellipsis" width="1em"
-                                                                    height="1em" fill="currentColor"
-                                                                    aria-hidden="true">
-                                                               <path
-                                                                       d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z">
-                                                               </path>
-                                                            </svg>
-                                                         </span>
-                                                                </button>
                                                             </div>
                                                         </div>
                                                         <div class="ant-tabs-content-holder">
@@ -1168,7 +1132,7 @@
                             </div>
                         </div>
                         <div class="box-order-status">
-                            <div style="font-size: 16px;">
+                            <div style="font-size: 16px; ">
                             </div>
                             <div style="display: flex;">
                                 <div class="status-info"
@@ -1467,31 +1431,87 @@
         }
     </script>
 
-<!--    Tiền giảm giá-->
+
     <script>
+        //Chuyển đổi tiền VN
+
+        // Tiền Giảm Giá
         function updateDiscountAmount(value) {
             const discountAmountElement = document.getElementById('discount-amount');
             const formattedValue = formatCurrency(value);
             discountAmountElement.textContent = formattedValue;
         }
+
         function formatCurrency(value) {
+            if (!value || isNaN(value)) {
+                value = 0;
+            }
             const numericValue = parseFloat(value.replace(/[^\d]/g, ''));
             const formattedValue = numericValue.toLocaleString("vi-VN");
             return formattedValue + ' ₫';
         }
+
+        //Tiền cần thanh toán
         function updateFinalAmount() {
             const totalAmountElement = document.getElementById('totalAmount');
             const discountAmountElement = document.getElementById('discount-amount');
             const finalAmountElement = document.getElementById('finalAmount');
-
             const totalAmount = parseFloat(totalAmountElement.textContent.replace(/[^\d.]/g, '').replace(/\./g, ''));
             const discountAmount = parseFloat(discountAmountElement.textContent.replace(/[^\d.]/g, '').replace(/\./g, ''));
-
             const finalAmount = totalAmount - discountAmount;
-
             const formattedAmount = formatCurrency2(finalAmount);
-
             finalAmountElement.textContent = formattedAmount + ' ₫';
+
+            calculateRemainPrice();
+            calculateRemainPrice2();
+
+        }
+
+        //Tiền Khách Đưa
+        function calculateTotal() {
+            var transferAmount = parseInt(document.getElementById("transfer-amount").value) || 0;
+            var surchargeAmount = parseInt(document.getElementById("surcharge-amount").value) || 0;
+            var totalAmount = transferAmount + surchargeAmount;
+            var formattedAmount = totalAmount.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+            document.getElementById("final-price").textContent = formattedAmount;
+
+            calculateRemainPrice();
+            calculateRemainPrice2();
+        }
+        //Tiền còn thiếu
+        function calculateRemainPrice2() {
+            const finalAmountElement = document.getElementById('finalAmount');
+            const finalPriceElement = document.getElementById('final-price');
+            const changeAmountElement = document.getElementById('changeAmount');
+
+            const finalAmount = parseFloat(finalAmountElement.textContent.replace(/[^\d.]/g, '').replace(/\./g, ''));
+            const finalPrice = parseFloat(finalPriceElement.textContent.replace(/[^\d.]/g, '').replace(/\./g, ''));
+
+            let changeAmount = finalAmount - finalPrice ;
+            if (changeAmount < 0) {
+                changeAmount = 0;
+            }
+
+            const formattedRemainPrice = formatCurrency2(changeAmount);
+            changeAmountElement.textContent = formattedRemainPrice + '₫';
+        }
+
+        //Tiền trả lại
+        function calculateRemainPrice() {
+            const finalAmountElement = document.getElementById('finalAmount');
+            const finalPriceElement = document.getElementById('final-price');
+            const remainPriceElement = document.getElementById('remain-price');
+
+            const finalAmount = parseFloat(finalAmountElement.textContent.replace(/[^\d.]/g, '').replace(/\./g, ''));
+            const finalPrice = parseFloat(finalPriceElement.textContent.replace(/[^\d.]/g, '').replace(/\./g, ''));
+
+            let remainPrice = finalPrice - finalAmount;
+            if (remainPrice < 0) {
+                remainPrice = 0;
+            }
+
+            const formattedRemainPrice = formatCurrency2(remainPrice);
+            remainPriceElement.textContent = formattedRemainPrice + '₫';
         }
 
         function formatCurrency2(value) {
@@ -1499,54 +1519,15 @@
             return formattedValue.replace(/,/g, '.');
         }
 
-        // Tiền Giảm Giá
         document.getElementById('totalAmount').addEventListener('DOMSubtreeModified', updateFinalAmount);
         document.getElementById('discount-amount').addEventListener('DOMSubtreeModified', updateFinalAmount);
-
-        // Gọi hàm updateFinalAmount khi trang web tải xong
+        document.getElementById('transfer-amount').addEventListener('input', calculateTotal);
+        document.getElementById('surcharge-amount').addEventListener('input', calculateTotal);
         window.addEventListener('load', updateFinalAmount);
-
-        //Tổng tiền khách đưa
-        document.getElementById("transfer-amount").addEventListener("input", calculateTotal);
-        document.getElementById("payment-amount").addEventListener("input", calculateTotal);
-        document.getElementById("surcharge-amount").addEventListener("input", calculateTotal);
-        function calculateTotal() {
-            // Lấy giá trị từ các input
-            var transferAmount = parseInt(document.getElementById("transfer-amount").value) || 0;
-            var paymentAmount = parseInt(document.getElementById("payment-amount").value) || 0;
-            var surchargeAmount = parseInt(document.getElementById("surcharge-amount").value) || 0;
-
-            // Tính tổng giá trị
-            var totalAmount = transferAmount + paymentAmount + surchargeAmount;
-
-            // Cập nhật giá trị tổng vào phần tử "Tiền khách đưa"
-            var formattedAmount = totalAmount.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-
-            // Cập nhật giá trị tổng vào phần tử "Tiền khách đưa"
-            document.getElementById("final-price").textContent = formattedAmount;
-        }
-
-        //Tiền trả lại
-        document.getElementById("final-price").addEventListener("input", calculateChange);
-
-        function calculateChange() {
-            var finalAmountElement = document.getElementById('finalAmount');
-            var customerAmountElement = document.getElementById('final-price');
-            var changeAmountElement = document.getElementById('changeAmount');
-
-            var finalAmount = parseFloat(finalAmountElement.textContent.replace(/[^\d.]/g, ''));
-            var customerAmount = parseFloat(customerAmountElement.textContent.replace(/[^\d.]/g, ''));
-
-            var changeAmount = customerAmount - finalAmount;
-            changeAmountElement.textContent = formattedChangeAmount + '₫';
-        }
-
-        // Gọi hàm calculateChange khi trang web tải xong
-        window.addEventListener('load', calculateChange);
-
-
-
     </script>
+
+
+
 </section>
 </body>
 </html>

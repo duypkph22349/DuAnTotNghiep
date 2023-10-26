@@ -12,9 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/khanchoang/productdetail")
 public class RestProductDetailController {
-    @Autowired
-    private ProductDetailService productDetailService;
-
+//    @Autowired
+//    private ProductDetailService productDetailService;
 //    @GetMapping("/hien-thi")
 //    public ResponseEntity<List<ProductDetail>> hienThi(@RequestParam(name = "pageno", defaultValue = "1") int page) {
 //        return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true));
