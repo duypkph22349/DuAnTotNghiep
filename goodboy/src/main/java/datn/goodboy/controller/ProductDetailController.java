@@ -68,6 +68,8 @@ public class ProductDetailController {
   // public ProductDetailFilter fillter() {
   // return filter;
   // }
+  @Autowired
+  private ImageService imageService;
 
   @ModelAttribute("brandCbb")
   public List<Map<Integer, String>> getComboboxBrand() {
@@ -306,7 +308,7 @@ public class ProductDetailController {
   }
 
   @GetMapping("edit/{id}")
-  public String editProductDetail(Model model, @RequestParam("id") Integer id) {
+  public String editProductDetail(Model model, @PathVariable("id") Integer id) {
     model.addAttribute("productDetailRequest",
         service.getProductDetailRequetById(id));
     return "/admin/pages/productdetail/update-productdetail.html";
@@ -332,8 +334,9 @@ public class ProductDetailController {
 
   @GetMapping("remove/{idproductdetail}/image/{idiamge}")
   public String removeImage(@PathVariable("idproductdetail") Integer idproductdetail,
-      @PathVariable("id") Integer idiamge) {
-    return "redirect:edit/" + idproductdetail;
+      @PathVariable("idiamge") Integer idiamge) {
+    imageService.deleted(idiamge);
+    return "redirect:/admin/productdetail/edit/" + idproductdetail;
   }
 
   // @GetMapping("edit")

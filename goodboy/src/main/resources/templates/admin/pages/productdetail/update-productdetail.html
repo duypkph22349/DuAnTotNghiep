@@ -16,8 +16,9 @@
       <div class="text-center col-1 col-md-4 col-sm-12">
         <div th:if="${productDetailRequest?.image.size != 0}">
           <div class="row">
-            <div class="position-relative col-3" th:each="image : ${productDetailRequest.image}">
-              <img class="p-1" th:src="${image?.img}" alt="ảnh sản phẩm">
+            <div class="position-relative col-3" th:each="image : ${productDetailRequest.image}"
+              th:if="${image.deleted == false}">
+              <img class="p-1 image-fluid w-100" th:src="${image?.img}" alt="ảnh sản phẩm">
               <a th:href="@{'/admin/productdetail/remove/'+ ${productDetailRequest.id} +'/image/'+${image.id}}"
                 class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
                 <i class="fas fa-times fa-xs"></i>
@@ -148,10 +149,11 @@
 
           <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-3">
             <label for="" class="m-auto fw-bold">Status: </label>
-            <input type="radio" name="" id="statusactive" class="" value="0" th:field="*{status}"> <label
-              for="statusactive">Active</label>
-            <input type="radio" name="" id="statusdisable" class="" value="1" th:field="*{status}"> <label
-              for="statusdisable">Disable</label>
+            <input type="radio" name="" id="statusdisable" class="" value="1"
+              th:checked="${productDetailRequest.status == 1}" th:field="*{status}"> <label
+              for="statusdisable">Active</label>
+            <input type="radio" name="" id="statusactive" class="" th:checked="${productDetailRequest.status != 1}"
+              value="0" th:field="*{status}"> <label for="statusactive">Disable</label>
             <div th:if="${#fields.hasErrors('status')}" class="text-danger form-text" th:errors="*{status}">
             </div>
           </div>
