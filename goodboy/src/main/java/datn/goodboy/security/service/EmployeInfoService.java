@@ -24,7 +24,7 @@ public class EmployeInfoService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    System.out.println(username);
+    // System.out.println(username);
     Optional<Employee> employee = repository.getuser(username);
     if (!employee.isPresent() || employee == null) {
       throw new UsernameNotFoundException("Not found user with username is" + username);
@@ -33,6 +33,6 @@ public class EmployeInfoService implements UserDetailsService {
       UserInfo userinfo = new UserInfo(employee.get().getEmail(), employee.get().getPassword(), Roles);
       return new UserInfoUserDetails(userinfo);
     }
-    // String Roles = employee.get().getRoles().getRole(); 
+    // String Roles = employee.get().getRoles().getRole();
   }
 }

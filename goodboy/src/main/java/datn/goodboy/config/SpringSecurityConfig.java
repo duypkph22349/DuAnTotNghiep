@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,10 @@ import datn.goodboy.security.service.EmployeInfoService;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SpringSecurityConfig {
+
+  @Value("${max-age-token-cookie}")
+  private int maxAge;
+
   @Bean
   AuthenticationManager authenticationManager() {
     List<AuthenticationProvider> listProviders = new ArrayList<>();
@@ -92,7 +97,7 @@ public class SpringSecurityConfig {
           authorize.requestMatchers("/test/login/signup").permitAll();
         })
         .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/admin/**").permitAll();
+          authorize.requestMatchers("/admin/**").authenticated();
         })
         .authorizeHttpRequests((authorize) -> {
           authorize.anyRequest().permitAll();
@@ -110,8 +115,11 @@ public class SpringSecurityConfig {
                 .logoutUrl("/signOut")
                 .logoutSuccessUrl("/login")
                 .permitAll())
-        // .rememberMe((remember) -> remember
-        //     .rememberMeServices(rememberMeConfig()))
+        .rememberMe((remember) -> remember.key("fefe").tokenValiditySeconds(maxAge)
+            .userDetailsService(nhanVienServer())
+            .userDetailsService(KhachHangServer()))
+        .rememberMe((remember) -> remember.key("faewfaewf").tokenValiditySeconds(maxAge)
+            .userDetailsService(nhanVienServer()))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(Customizer.withDefaults())
         .authenticationManager(authManager);
@@ -123,18 +131,4 @@ public class SpringSecurityConfig {
     return new CustomerLoginFailhander();
   }
 
-  // @Bean
-  // RememberMeServices rememberMeConfig() {
-  //   return new RememberMeConfig();
-  // }
-
-  // @Bean
-  // public SavedRequestAwareAuthenticationSuccessHandler
-  // savedRequestAwareAuthenticationSuccessHandler() {
-
-  // SavedRequestAwareAuthenticationSuccessHandler auth = new
-  // SavedRequestAwareAuthenticationSuccessHandler();
-  // auth.setTargetUrlParameter("targetUrl");
-  // return auth;
-  // }
 }

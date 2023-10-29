@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/productdetail")
@@ -339,17 +341,6 @@ public class ProductDetailController {
     return "redirect:/admin/productdetail/edit/" + idproductdetail;
   }
 
-  // @GetMapping("edit")
-  // public String editProductDetail(Model model, @RequestParam("id") int id) {
-  // ProductDetailRequest productDetailRequest =
-  // service.getProductDetailRequetById(id);
-  // model.addAttribute("productDetailRequest",
-  // service.getProductDetailRequetById(id));
-  // return "/admin/pages/productdetail/update-voucher.html";
-  // }
-  // Model model, @Valid @ModelAttribute("accountRequest") AccountRequest
-  // accountRequest,
-  // BindingResult theBindingResult
   @PostMapping("store")
   public String storeProductDetail(Model model,
       @RequestParam("listimage") List<MultipartFile> listimage,
@@ -364,15 +355,9 @@ public class ProductDetailController {
     }
   }
 
-  // @PostMapping("update")
-  // public String update(@Valid @ModelAttribute("productDetailRequest")
-  // ProductDetailRequest productDetailRequest,
-  // BindingResult theBindingResult, Model model) {
-  // if (theBindingResult.hasErrors()) {
-  // return "/admin/pages/productdetail/update-voucher.html";
-  // }
-  // System.out.println(productDetailRequest);
-  // service.updateProductDetail(productDetailRequest);
-  // return "redirect:index";
-  // }
+  @GetMapping(value = "viewdetail/{id}")
+  public String getMethodName(@RequestParam String param) {
+    return "/admin/pages/productdetail/view-productdetail.html";
+  }
+
 }
