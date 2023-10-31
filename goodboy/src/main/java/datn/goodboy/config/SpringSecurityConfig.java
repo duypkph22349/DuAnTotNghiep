@@ -105,7 +105,7 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
-            .defaultSuccessUrl("/homepage")
+            .successHandler(new CustomAuthenticationSuccessHandler())
             .usernameParameter("username")
             .passwordParameter("password")
             .failureHandler(authenticationFailureHandler())
@@ -115,11 +115,9 @@ public class SpringSecurityConfig {
                 .logoutUrl("/signOut")
                 .logoutSuccessUrl("/login")
                 .permitAll())
-        .rememberMe((remember) -> remember.key("fefe").tokenValiditySeconds(maxAge)
+        .rememberMe((remember) -> remember.key("feaef").tokenValiditySeconds(maxAge)
             .userDetailsService(nhanVienServer())
             .userDetailsService(KhachHangServer()))
-        .rememberMe((remember) -> remember.key("faewfaewf").tokenValiditySeconds(maxAge)
-            .userDetailsService(nhanVienServer()))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(Customizer.withDefaults())
         .authenticationManager(authManager);
