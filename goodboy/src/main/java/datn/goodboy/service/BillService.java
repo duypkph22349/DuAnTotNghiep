@@ -1,11 +1,11 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Bill;
-<<<<<<< HEAD
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.request.BillRequest;
+import datn.goodboy.model.response.BillResponse;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
@@ -14,44 +14,32 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-=======
 import datn.goodboy.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
->>>>>>> 016da72d15c0a7b87ac48e4830853cc361787361
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.List;
-=======
->>>>>>> 016da72d15c0a7b87ac48e4830853cc361787361
 import java.util.Optional;
 
 @Service
 public class BillService {
     @Autowired
     private BillRepository billRepository;
-<<<<<<< HEAD
     @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
-=======
->>>>>>> 016da72d15c0a7b87ac48e4830853cc361787361
 
-    @Autowired
-    public BillService(BillRepository billRepository) {
-
+    public BillService(){
         this.billRepository = billRepository;
     }
 
 
     public Page<Bill> getPage(Pageable pageable){
-<<<<<<< HEAD
         return billRepository.findByDeletedFalse(pageable);
     }
 
@@ -63,35 +51,25 @@ public class BillService {
         return billRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found"));
     }
-=======
-        return billRepository.findAll(pageable);
-    }
 
-    public ArrayList<Bill> getAllBill(){
-        return (ArrayList<Bill>) billRepository.findAll();
-    }
 
->>>>>>> 016da72d15c0a7b87ac48e4830853cc361787361
+
 
     public Bill saveBill(Bill bill) {
 
         return billRepository.save(bill);
     }
 
-<<<<<<< HEAD
-=======
     public void deleteBill(int id) {
 
         billRepository.deleteById(id);
     }
 
->>>>>>> 016da72d15c0a7b87ac48e4830853cc361787361
     public Optional<Bill> findByIdBill(int id) {
 
         return billRepository.findById(id);
     }
 
-<<<<<<< HEAD
     public void createBill(BillRequest billRequest) throws NotFoundException {
         if(billRequest!=null){
             Customer customer = customerRepository.findById(billRequest.getId_customer())
@@ -143,6 +121,4 @@ public class BillService {
         bill.setStatus(status);
         billRepository.save(bill);
     }
-=======
->>>>>>> 016da72d15c0a7b87ac48e4830853cc361787361
 }
