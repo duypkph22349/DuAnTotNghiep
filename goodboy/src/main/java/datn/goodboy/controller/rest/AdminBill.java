@@ -1,0 +1,147 @@
+package datn.goodboy.Controller.rest;
+
+import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.request.BillRequest;
+import datn.goodboy.service.BillService;
+import javassist.NotFoundException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+@RestController
+@RequestMapping("/admin/bill")
+public class AdminBill {
+
+    @Autowired
+    BillService billService;
+
+    @GetMapping("all-bill")
+    public Page<Bill> getAllBill(@RequestParam(name = "pageNumber",defaultValue = "0") int pageNumber){
+        Pageable pageable = PageRequest.of(pageNumber, 5);
+        return billService.getPage(pageable);
+    }
+
+    @PostMapping("create-bill")
+    public ResponseEntity<?> createBill(@RequestBody BillRequest billRequest){
+        try{
+            billService.createBill(billRequest);
+            return ResponseEntity.ok("succ");
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().body(e.toString());
+        }
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateBill(@RequestBody BillRequest billRequest){
+        try{
+            System.out.println(billRequest.getPhone());
+            billService.updateBill(billRequest);
+            return ResponseEntity.ok("succ");
+        }catch(Exception e) {
+            return ResponseEntity.badRequest().body(e.toString());
+        }
+    }
+
+    @GetMapping("/search-by-code")
+    public ResponseEntity<?> search(@RequestParam(name="code",defaultValue = "null") String code,
+                                    @RequestParam(name="pageNumber",defaultValue = "0") Integer pageNumber
+    ){
+        try{
+            return ResponseEntity.ok(billService.searchBillByCode(pageNumber,code));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.toString());
+        }
+    }
+    @GetMapping("/filter-by-month")
+    public ResponseEntity<?> filterByMonth( @RequestParam(name="month",defaultValue = "1")
+                                            Integer month,
+                                            @RequestParam(name="pageNumber",defaultValue = "0")
+                                            Integer pageNumber)
+    {
+        try{
+            return ResponseEntity.ok(billService.filerByMonth(month,pageNumber));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.toString());
+        }
+    }
+
+    @GetMapping("/get-file-excel")
+    public ResponseEntity<?> getFileExcel() throws IOException {
+        try {
+            List<Bill> billList = billService.getAllBill();
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Thông tin billl");
+            String[] headersSheet = {"Mã hóa đơn", "Khách hàng", "Nhân viên", "Phương thức thanh toán",
+                    "Ngày xác nhận", "Ngày giao hàng", "Ngày nhận hàng", "Ngày hoàn thành",
+                    "Tên khách hàng", "Số điện thoại", "Địa chỉ", "Phí vận chuyển", "Tổng tiền",
+                    "Số tiền giảm giá", "Tiền đặt cọc", "Ghi chú", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headersSheet.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headersSheet[i]);
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            int rowNum = 1;
+            for (Bill bill : billList) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(bill.getCode());
+                row.createCell(1).setCellValue(bill.getCustomer().getName());
+                row.createCell(2).setCellValue(bill.getEmployee().getName());
+                row.createCell(3).setCellValue(bill.getPay().getPayment_method());
+                row.createCell(4).setCellValue(bill.getCompletion_date().format(formatter));
+                row.createCell(5).setCellValue(bill.getDelivery_date().format(formatter));
+                row.createCell(6).setCellValue(bill.getReceived_date().format(formatter));
+                row.createCell(7).setCellValue(bill.getCompletion_date().format(formatter));
+                row.createCell(8).setCellValue(bill.getCustomer_name());
+                row.createCell(9).setCellValue(bill.getPhone());
+                row.createCell(10).setCellValue(bill.getAddress());
+                row.createCell(11).setCellValue(bill.getMoney_ship());
+                row.createCell(12).setCellValue(bill.getTotal_money());
+                row.createCell(13).setCellValue(bill.getReduction_amount());
+                row.createCell(14).setCellValue(bill.getDeposit());
+                row.createCell(15).setCellValue(bill.getNote());
+                row.createCell(16).setCellValue(bill.getStatus());
+                row.createCell(17).setCellValue(bill.getCreatedAt().format(formatter));
+                row.createCell(18).setCellValue(bill.getUpdatedAt().format(formatter));
+            }
+
+            // Tạo luồng dữ liệu để ghi workbook vào
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
+
+            // Tạo InputStreamResource từ luồng dữ liệu
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            InputStreamResource resource = new InputStreamResource(inputStream);
+
+            // Thiết lập thông tin phản hồi HTTP
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bills.xlsx");
+
+            // Trả về phản hồi HTTP với file Excel
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .body(resource);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.toString());
+        }
+    }
+
+}
