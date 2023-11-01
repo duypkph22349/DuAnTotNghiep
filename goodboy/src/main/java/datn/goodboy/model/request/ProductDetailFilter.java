@@ -3,7 +3,6 @@ package datn.goodboy.model.request;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import datn.goodboy.model.entity.ProductDetail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

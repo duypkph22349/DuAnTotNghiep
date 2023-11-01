@@ -121,9 +121,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     }
   }
 
-  public Object getAllProductDetail() {
-    return null;
-  }
+
 
   public ProductDetailRequest getProductDetailRequetById(Integer id) {
     ProductDetailRequest request = new ProductDetailRequest();
