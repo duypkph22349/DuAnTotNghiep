@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -37,7 +38,7 @@ public class Cart {
     private int quantily;
 
     @Column(name = "total_money")
-    private long discount;
+    private long money;
 
     @Column(name = "status")
     private int status;
@@ -60,6 +61,7 @@ public class Cart {
     public static List<ProductDetail> getCartItems() {
         return cartItems;
     }
+
 
 
 }

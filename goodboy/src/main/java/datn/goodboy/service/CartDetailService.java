@@ -3,7 +3,6 @@ package datn.goodboy.service;
 
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.repository.CartDetailRepository;
-import datn.goodboy.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -31,6 +31,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ProductDetailService implements PanigationInterface<ProductDetail>,
     IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
@@ -408,5 +412,13 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       return rs;
     }
   }
+
+    public ArrayList<ProductDetail> getAllProductDetail(){
+        return (ArrayList<ProductDetail>) productDetailRepository.findAll();
+    }
+
+    public Optional<ProductDetail> getProductDetailById(Integer id){
+        return productDetailRepository.findById(id);
+    }
 
 }
