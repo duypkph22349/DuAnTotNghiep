@@ -11,9 +11,9 @@ import lombok.Data;
 
 public class BillRequest {
   @NotNull
-  Long id_customer;
+  UUID id_customer;
   @NotNull
-  Long id_employee;
+  UUID id_employee;
   @NotNull
   int id_pay;
   @NotNull
