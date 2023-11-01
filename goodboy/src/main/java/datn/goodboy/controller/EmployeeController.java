@@ -63,6 +63,12 @@ public class EmployeeController {
         return "admin/pages/employee/detail-employee";
     }
 
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<?> update2(@RequestBody Employee employee, @PathVariable("id")UUID id){
+//        employee.setId(id);
+//        employeeService.saveEmployee(employee);
+//        return ResponseEntity.ok(employee);
+//    }
 
 
 }
