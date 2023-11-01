@@ -3,13 +3,17 @@ package datn.goodboy.model.request;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
 
 public class BillRequest {
   @NotNull
-  UUID id_customer;
+  Long id_customer;
   @NotNull
-  UUID id_employee;
+  Long id_employee;
   @NotNull
   int id_pay;
   @NotNull

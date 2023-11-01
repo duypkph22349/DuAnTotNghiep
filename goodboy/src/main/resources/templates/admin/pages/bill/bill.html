@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Bin-It">
+    <meta property="og:url"/>
+
+    <title>Nhân Viên</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    //Phân Trang Cho Table
+    <script type="text/javascript" style="text-align: center">
+        function Pager(tableName, itemsPerPage) {
+            this.tableName = tableName;
+            this.itemsPerPage = itemsPerPage;
+            this.currentPage = 1;
+            this.pages = 0;
+            this.inited = false;
+
+            this.showRecords = function (from, to) {
+                var rows = document.getElementById(tableName).rows;
+                for (var i = 1; i < rows.length; i++) {
+                    if (i < from || i > to)
+                        rows[i].style.display = 'none';
+                    else
+                        rows[i].style.display = '';
+                }
+            }
+
+            this.showPage = function (pageNumber) {
+                if (!this.inited) {
+                    alert("not inited");
+                    return;
+                }
+                var oldPageAnchor = document.getElementById('pg' + this.currentPage);
+                oldPageAnchor.className = 'pg-normal';
+
+                this.currentPage = pageNumber;
+                var newPageAnchor = document.getElementById('pg' + this.currentPage);
+                newPageAnchor.className = 'pg-selected';
+
+                var from = (pageNumber - 1) * itemsPerPage + 1;
+                var to = from + itemsPerPage - 1;
+                this.showRecords(from, to);
+            }
+
+            this.prev = function () {
+                if (this.currentPage > 1)
+                    this.showPage(this.currentPage - 1);
+            }
+
+            this.next = function () {
+                if (this.currentPage < this.pages) {
+                    this.showPage(this.currentPage + 1);
+                }
+            }
+
+            this.init = function () {
+                var rows = document.getElementById(tableName).rows;
+                var records = (rows.length - 1);
+                this.pages = Math.ceil(records / itemsPerPage);
+                this.inited = true;
+            }
+            this.showPageNav = function (pagerName, positionId) {
+                if (!this.inited) {
+                    alert("not inited");
+                    return;
+                }
+                var element = document.getElementById(positionId);
+
+                var pagerHtml = '<span onclick="' + pagerName +
+                    '.prev();" class="pg-normal">Trước</span> | ';
+                for (var page = 1; page <= this.pages; page++)
+                    pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName +
+                        '.showPage(' + page + ');">' + page + '</span> | ';
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">Sau</span>';
+
+                element.innerHTML = pagerHtml;
+            }
+        }
+    </script>
+</head>
+
+<h1>Quản lý nhân viên</h1>
+<body>
+<section layout:fragment="content">
+    <style type="text/css">
+        .dropdown-menu li {
+            position: relative;
+        }
+
+        .dropdown-menu .dropdown-submenu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: -7px;
+        }
+
+        .dropdown-menu .dropdown-submenu-left {
+            right: 100%;
+            left: auto;
+        }
+
+        .dropdown-menu > li:hover > .dropdown-submenu {
+            display: block;
+        }
+        .month{
+            cursor: pointer;
+        }
+        .month:hover{
+            background-color: #e3e3e3;
+        }
+        .updatebtn:hover{
+            transform: scale(1.2);
+        }
+    </style>
+
+
+    <Br>
+    <div class="input-group mb-3">
+        <button data-value="0" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Chọn loại tìm kiếm
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a data-value="1" style="cursor: pointer" class="dropdown-item">Tất cả</a>
+            </li>
+            <li>
+                <a data-value="2" style="cursor: pointer" class="dropdown-item">Trong bảng</a>
+            </li>
+        </ul>
+        <script>
+            let cbbSelect = document.querySelector(".cbbSelect");
+            let dropdownMenu = document.querySelector(".dropdown-menu");
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    reset();
+                    cbbSelect.innerText = item.innerText;
+                    cbbSelect.setAttribute("data-value",item.getAttribute("data-value"));
+                });
+            });
+            function reset (){
+                if( document.getElementById("pagination_wrapper")){
+                    paginationWrapper =document.getElementById("pagination_wrapper");
+                }
+                if(paginationWrapper.querySelector(".active")){
+                    getPage(paginationWrapper.querySelector(".active"))
+                }else{
+                    let url = "/admin/bill/all-bill";
+                    fillTable(url);
+                }
+            }
+        </script>
+        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
+               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã hóa đơn...">
+    </div>
+
+    <Br>
+
+    <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
+    <a href="/admin/bill/get-file-excel" class="btn bg-body-secondary">Tải File Excel</a>
+
+
+    <!-- Table -->
+    <div style="height: 500px; overflow: auto;">
+
+        <table class="table table-hover" id="myTable">
+            <thead class="position-sticky top-0">
+
+            <tr class="ex">
+                <th>#</th>
+                <th>Mã hóa đơn</th>
+                <th>Khách hàng</th>
+                <th>Địa chỉ</th>
+                <th>Phương thức thanh toán</th>
+                <th>Ngày giao hàng</th>
+                <th>Ngày nhận hàng</th>
+                <th>Số điện thoại</th>
+                <th>Phí vận chuyển</th>
+                <th>Số tiền giảm giá</th>
+                <th>Trạng thái</th>
+                <th>
+                    <div class="btn-group">
+                        <button type="button" class="btn p-0 m-0"><p class="p-0 m-0 fw-bold">Ngày tạo</p></button>
+                        <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <ul  class="dropdown-menu">
+                            <div class="container">
+                                <div class="row" id="fillter_month">
+
+                                </div>
+                        </ul>
+                    </div>
+                </th>
+                <th>Ngày cập nhật</th>
+                <th>Ghi chú</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="info_bill">
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul id="pagination_wrapper" class="pagination justify-content-center">
+            </ul>
+        </nav>
+        <div id="pageNavPosition" class="text-right"></div>
+        <script type="text/javascript">
+            var pager = new Pager('myTable', 7);
+            pager.init();
+            pager.showPageNav('pager', 'pageNavPosition');
+            pager.showPage(1);
+        </script>
+    </div>
+
+    <script type="text/javascript">
+        // Tìm kiếm
+
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue,td2,txtValue2;
+            let value = document.querySelector(".cbbSelect").getAttribute("data-value");
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            if(!filter) reset();
+            if(value === "2" ){
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[1];
+                    td2 = tr[i].getElementsByTagName("td")[2];
+                    if (td || td2) {
+                        txtValue = td.textContent || td.innerText;
+                        txtValue2 = td2.textContent || td2.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }else if(value ==="1"){
+                let url =`/admin/bill/search-by-code?code=${filter}`
+                fillTable(url);
+            }
+        }
+
+
+        //Sắp xếp
+        function sortTable(order) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("tr");
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[1]; // Index 1 represents the Employee Code column
+                    y = rows[i + 1].getElementsByTagName("td")[1];
+
+                    if (order === 'asc') {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === 'desc') {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+        // upadate
+        function btnUpdateHandle(e) {
+            let index = e.getAttribute('data-index');
+            let row = document.querySelector(`.trTb${index}`);
+            var rows = row.querySelectorAll("td");
+            let formUpdate = document.querySelector("#form_update");
+            let inputs = formUpdate.querySelectorAll("input");
+            console.log(rows);
+            let data=[];
+            rows.forEach((item, index) =>{
+                data.push(item.innerText);
+            })
+            data.shift();
+            inputs.forEach((item, index) =>{
+                item.style.fontSize="16px";
+                item.style.fontWeight="bold";
+                item.value = data[index];
+            })
+            let note = document.querySelector("#noteText");
+            note.innerText = data[data.length-1];
+
+        }
+        function update(){
+            let phoneNumber =document.querySelector('#phoneNumber');
+            let address = document.querySelector('#address');
+            let code=   document.querySelector('#code');
+            if(!phoneNumber.value && !address.value){
+                alert('Vui lòng nhập đầy đủ thông tin địa chỉ hoặc số điện thoại!')
+                return;
+            }
+
+            var phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phoneNumber.value)) {
+                alert("Số điện thoại không hợp lệ!");
+                return;
+            }
+            let dataForm ={
+                phone : phoneNumber.value,
+                address : address.value,
+                code : code.value,
+            }
+
+            $.ajax({
+                url: "/admin/bill/update",
+                method: "POST",
+                data: JSON.stringify(dataForm),
+                contentType: "application/json",
+                success: function(response) {
+                    alert("Cập nhật thành công!");
+                    reset();
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    alert("Cập nhật thất bại!");
+                }
+            });
+        }
+
+
+    </script>
+
+    <script>
+        let fiiterMounth = document.getElementById("fillter_month");
+        let tableInfoBill = document.querySelector(".info_bill");
+        let paginationWrapper = document.getElementById("pagination_wrapper");
+        let currentUrl ="/admin/bill/all-bill";
+        let isStus =true;
+        let urlAllBill ="/admin/bill/all-bill";
+        fillTable(urlAllBill);
+        let fillterByMonth =(element,pageNumber=0)=>{
+            let mounth = element.innerText;
+            let urlFillter =`/admin/bill/filter-by-month?month=${mounth}&pageNumber=${pageNumber}`
+            currentUrl =`/admin/bill/filter-by-month?month=${mounth}`;
+            isStus=false;
+            fillTable(urlFillter);
+        }
+        for (let i =1; i<=12 ; i++){
+            let html =`<div onclick="fillterByMonth(this)"  class="col-md-3 month">${i}</div>`
+            fiiterMounth.innerHTML +=html;
+        }
+        function fillTable(url){
+            $.getJSON(url, function(response) {
+                let data = response.content;
+                let totalPages = response.totalPages;
+                let currentPage = response.number;
+                let size = response.size;
+                let numberI = size*currentPage ;
+                console.log(size, numberI,currentPage)
+                tableInfoBill.innerHTML="";
+                data.forEach((item,index)=>{
+                    let customer = item.customer;
+                    let employee = item.employee;
+                    let pay = item.pay;
+                    let html=
+                        `
+                        <tr class="trTb${index+1}">
+
+                            <td>${index+1+numberI}</td>
+                            <td >${item.code}</td>
+                            <td>${customer.name}</td>
+                            <td>${item.address}</td>
+                            <td >${pay.payment_method}</td>
+                            <td >${item.delivery_date}</td>
+                            <td>${item.received_date}</td>
+                            <td>${item.phone}</td>
+                            <td>${item.money_ship}</td>
+                            <td>${item.reduction_amount}</td>
+                            <td>${item.status}</td>
+                            <td>${item.createdAt}</td>
+                            <td>${item.updatedAt}</td>
+                            <td>${item.note}</td>
+                            <th>
+                               <a href="/bill/bill-detail?id=${item.id}">
+                                     <button
+                                        type="button" class="btn btn-primary"
+                                     >
+                                        Chi tiết
+                                    </button>
+                               </a>
+                             </th>
+                         </tr>
+                    `
+                    tableInfoBill.innerHTML +=html;
+                })
+                paginationWrapper.innerHTML="";
+                for (let i= 0; i<totalPages; i++){
+                    let active ="";
+                    if(i===currentPage)active ="active";
+                    else{
+                        active ="";
+                    }
+                    let html =`<li class="page-item ${active}"><a class="page-link" onclick="getPage(this)">${i+1}</a></li>`
+                    paginationWrapper.innerHTML+=html;
+                }
+            })
+        }
+        var currentNumber ;
+        function getPage(element){
+            let number = Number(element.innerText) -1;
+            let url;
+            if(isStus){
+                url = currentUrl + `?pageNumber=${number}`
+            }else{
+                url=currentUrl + `&pageNumber=${number}`
+            }
+            fillTable(url);
+        }
+
+    </script>
+
+</section>
+</body>
+</html>
