@@ -40,9 +40,9 @@ public class CustomerController {
                           @RequestParam(name = "selectedProvinceId", required = false) String selectedProvinceId,
                           @RequestParam(name = "selectedDistrictId", required = false) String selectedDistrictId) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-//        Page<Customer> page = customerService.getPage(pageable);
-//        model.addAttribute("totalPage", page.getTotalPages());
-//        model.addAttribute("list", page.getContent());
+        Page<Customer> page = customerService.getPage(pageable);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("list", page.getContent());
 
 //        List<Province> provinces = customerService.getAllProvinces();
 //        List<District> districts = customerService.getAllDistricts();
@@ -51,6 +51,12 @@ public class CustomerController {
 //        model.addAttribute("districts", districts);
 //        model.addAttribute("wards", wards);
         return "/admin/pages/customer/form-customer";
+    }
+
+    @GetMapping("/view-add")
+    public String viewAdd() {
+        return "/admin/pages/customer/customer-add";
+
     }
 
     @PostMapping("/add")
