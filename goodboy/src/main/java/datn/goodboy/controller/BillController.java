@@ -1,4 +1,4 @@
-package datn.goodboy.Controller;
+package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.service.BillService;

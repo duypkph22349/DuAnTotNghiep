@@ -1,6 +1,7 @@
 package datn.goodboy.model.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class Customer {
   @Column(name = "gender")
   boolean gender;
   @Column(name = "birth_date")
-  Date birth_date;
+  LocalDate birth_date;
   @Column(name = "thanh_pho")
   String address;
   @Column(name = "phone")

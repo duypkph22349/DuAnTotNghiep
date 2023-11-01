@@ -1,4 +1,4 @@
-package datn.goodboy.Controller.rest;
+package datn.goodboy.controller.rest;
 
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
