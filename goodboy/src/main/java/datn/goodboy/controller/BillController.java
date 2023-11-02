@@ -18,27 +18,26 @@ public class BillController {
     @Autowired
     private BillService billService;
 
-
-
-    @GetMapping("/hien-thi")
-    public String hienThi(Model model,@RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+    @GetMapping({ "/hien-thi", "" })
+    public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
+            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Bill> bill = billService.getPage(pageable);
         model.addAttribute("totalPage", bill.getTotalPages());
         model.addAttribute("billPage", bill.getContent());
-//        model.addAttribute("customer", customerService.getAllCustomers());
-//        model.addAttribute("employee", employeeService.getAllEmployee());
-//        model.addAttribute("pay", payService.getAllPay());
+        // model.addAttribute("customer", customerService.getAllCustomers());
+        // model.addAttribute("employee", employeeService.getAllEmployee());
+        // model.addAttribute("pay", payService.getAllPay());
 
         return "/admin/pages/bill/bill";
     }
+
     @GetMapping("/bill-detail")
-    public String getBillDetail(@RequestParam("id") Integer id,Model model){
-        try{
-            model.addAttribute("bill",billService.getBillById(id));
-        }catch (Exception e){
+    public String getBillDetail(@RequestParam("id") Integer id, Model model) {
+        try {
+            model.addAttribute("bill", billService.getBillById(id));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "/admin/pages/bill/bill2";
@@ -46,18 +45,13 @@ public class BillController {
 
     @GetMapping("/bill-detail-update-status")
     public String updateStatusBillDetail(@RequestParam("id") Integer id,
-                                         @RequestParam("status") Integer status){
-        try{
-            billService.updateStatus(id,status);
-        }catch (Exception e){
+            @RequestParam("status") Integer status) {
+        try {
+            billService.updateStatus(id, status);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/bill/bill-detail?id=" + id;
     }
-
-
-
-
-
 
 }
