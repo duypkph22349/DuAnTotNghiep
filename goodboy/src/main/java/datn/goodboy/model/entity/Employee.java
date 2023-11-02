@@ -1,10 +1,6 @@
 package datn.goodboy.model.entity;
 
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,7 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,6 +53,12 @@ public class Employee {
 
     @Column(name = "address")
     String address;
+    @Column(name = "districtcode")
+    String city;
+    @Column(name = "wardcode")
+    String country;
+    @Column(name = "fulladdress")
+    String fulladdress;
 
     @Column(name = "phone")
     String phone;
