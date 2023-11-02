@@ -58,6 +58,10 @@ public class CustomerService {
     // }
     // manager
 
+    public Object getComboBox() {
+      return null;
+    }
+
 //  public List<Province> getAllProvinces() {
 //    String apiUrl = "https://provinces.open-api.vn/api/p/";
 //    ResponseEntity<List<Province>> response = restTemplate.exchange(
