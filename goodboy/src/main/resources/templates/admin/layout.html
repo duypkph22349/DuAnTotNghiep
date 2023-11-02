@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,6 @@
     <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
     <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
     <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
-
     <link th:href="@{/assets/css/style.css}" rel="stylesheet">
     <title>Document</title>
 </head>
@@ -293,7 +292,7 @@
                 </a>
                 <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a th:href="@{form-elements}">
+                        <a th:href="@{/form-elements}">
                             <i class="bi bi-circle"></i><span>Order</span>
                         </a>
                     </li>
@@ -378,37 +377,32 @@
                 </a>
                 <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="charts-chartjs.html">
+                        <a th:href="@{/admin/product}">
                             <i class="bi bi-circle"></i><span>Product</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-chartjs.html">
+                        <a th:href="@{/admin/productdetail}">
                             <i class="bi bi-circle"></i><span>Product Detail </span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-apexcharts.html">
+                        <a th:href="@{/admin/color/dsColor}">
                             <i class="bi bi-circle"></i><span>Color</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
-                            <i class="bi bi-circle"></i><span>Image</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="charts-echarts.html">
+                        <a th:href="@{/admin/style/dsStyle}">
                             <i class="bi bi-circle"></i><span>Style</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
+                        <a th:href="@{/admin/material/dsMaterial}">
                             <i class="bi bi-circle"></i><span>Material</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
+                        <a th:href="@{/admin/brand/dsBrand}">
                             <i class="bi bi-circle"></i><span>Brand</span>
                         </a>
                     </li>
