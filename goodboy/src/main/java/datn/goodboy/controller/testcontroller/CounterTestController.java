@@ -1,4 +1,4 @@
-package datn.goodboy.controller;
+package datn.goodboy.controller.testcontroller;
 
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.ProductDetail;
@@ -32,7 +32,7 @@ public class CounterTestController {
   @Autowired
   private CartDetailService icartService;
 
-  @GetMapping("/hien-thi")
+  @GetMapping({"/hien-thi",""})
   public String hienThi(Model model) {
     model.addAttribute("productDetailList", productDetailService.getAllProductDetail());
     model.addAttribute("employee", employeeService.getAllEmployee());
