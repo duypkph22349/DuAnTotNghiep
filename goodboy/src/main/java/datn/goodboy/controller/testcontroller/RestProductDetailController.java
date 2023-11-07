@@ -31,5 +31,5 @@ public class RestProductDetailController {
             @RequestParam(name = "search", defaultValue = "") String txtS,
             @RequestParam(name = "pageno", defaultValue = "1") int page) {
         return ResponseEntity.ok().body(productDetailService.getPageNo(page, 5, "code", true, txtS));
-    } 
+    }
 }

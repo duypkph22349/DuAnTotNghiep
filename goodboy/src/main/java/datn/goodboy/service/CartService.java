@@ -1,42 +1,36 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Cart;
-import datn.goodboy.model.entity.Voucher;
-import datn.goodboy.repository.CartRepository;
-import datn.goodboy.repository.VoucherRepository;
+import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.repository.CartDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class CartService {
     @Autowired
-    private CartRepository cartRepository;
+    private CartDetailRepository cartRepository;
 
     @Autowired
-    public CartService(CartRepository cartRepository) {
-
+    public CartService(CartDetailRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
 
 
-    public Page<Cart> getPage(Pageable pageable){
-
+    public Page<CartDetail> getPage(Pageable pageable){
         return cartRepository.findAll(pageable);
     }
 
-    public ArrayList<Cart> getAllCart(){
-
-        return (ArrayList<Cart>) cartRepository.findAll();
+    public ArrayList<CartDetail> getAllCart(){
+        return (ArrayList<CartDetail>) cartRepository.findAll();
     }
 
 
-    public Cart saveCart(Cart cart) {
+    public CartDetail saveCart(CartDetail cart) {
 
         return cartRepository.save(cart);
     }
@@ -46,10 +40,11 @@ public class CartService {
         cartRepository.deleteById(id);
     }
 
-    public Optional<Cart> findByIdCart(int id) {
+    public Optional<CartDetail> findByIdCart(int id) {
 
         return cartRepository.findById(id);
     }
+
 
 
 

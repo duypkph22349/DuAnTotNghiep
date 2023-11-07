@@ -3,6 +3,9 @@ package datn.goodboy.model.response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.entity.Employee;
+import datn.goodboy.model.entity.Pay;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,11 +20,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class BillResponse {
 
-  UUID id_customer;
+  Customer customer;
 
-  UUID id_employee;
+  Employee employee;
 
-  int id_pay;
+  Pay pay;
 
   String code;
 

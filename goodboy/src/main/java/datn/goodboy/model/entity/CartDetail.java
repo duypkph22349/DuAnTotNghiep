@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,6 +17,9 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "id_cart" )
@@ -39,4 +40,5 @@ public class CartDetail {
 
     @Column(name="deleted")
     private boolean deleted;
+
 }

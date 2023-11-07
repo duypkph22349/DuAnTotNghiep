@@ -3,7 +3,11 @@ package datn.goodboy.model.request;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
 
 public class BillRequest {
   @NotNull

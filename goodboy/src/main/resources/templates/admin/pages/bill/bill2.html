@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Bin-It">
+    <meta property="og:url"/>
+
+    <title>Nhân Viên</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    //Phân Trang Cho Table
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+
+            .item label {
+                display: inline-block;
+                min-width: 300px;
+                padding: 12px 0;
+                font-size: 16px;
+            }
+
+            .lf .item span {
+                padding: 4px 8px;
+                border-radius: 12px;
+                text-align: center;
+            }
+            .item span, .item input {
+                font-size: 16px;
+            }
+
+            .tabs {
+                display: flex;
+                position: relative;
+            }
+
+            .tabs .line {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 6px;
+                border-radius: 15px;
+                background-color: #36d88d;
+                transition: all 0.2s ease;
+            }
+
+            .tab-item {
+                min-width: 80px;
+                padding: 16px 20px 11px 20px;
+                font-size: 20px;
+                text-align: center;
+                color: #146c43;
+                background-color: #fff;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                border-bottom: 5px solid transparent;
+                opacity: 0.6;
+                cursor: pointer;
+                transition: all 0.5s ease;
+            }
+
+            .tab-icon {
+                font-size: 24px;
+                width: 32px;
+                position: relative;
+                top: 2px;
+            }
+
+            .tab-item:hover {
+                opacity: 1;
+                background-color: rgba(194, 53, 100, 0.05);
+                border-color: rgba(194, 53, 100, 0.1);
+            }
+
+            .tab-item.active {
+                opacity: 1;
+                font-weight: 600;
+            }
+        </style>
+
+        <span id="status" th:data-value="${bill.status}"></span>
+        <span id="id" th:data-value="${bill.id}"></span>
+        <div class="container-md">
+            <div class="status  mt-2 p-4 " style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                <div class="top d-flex justify-content-center align-items-center">
+                    <div class="tabs">
+                        <div data-value="1" id="tab_1" class="tab-item">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            Tạo Đơn Hàng
+                        </div>
+                        <div data-value="2" id="tab_2" class="tab-item">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            Đang Giao
+                        </div>
+                        <div data-value="3" id="tab_3" class="tab-item">
+                            <i class="fa-solid fa-hand-holding-hand"></i>
+                            Đã Giao
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+                <hr>
+                <div style="display: none" class="bottom justify-content-between">
+                    <div class="lf">
+                        <a href="">
+                            <button class="btn btn-primary">Xác Nhận</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-danger">Hủy Đơn</button>
+                        </a>
+                    </div>
+                    <div class="rg">
+                        <a href="">
+                            <button class="btn btn-info">Chi Tiết</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                <div class="top d-flex justify-content-between">
+                    <h2>THÔNG TIN ĐƠN HÀNG</h2>
+                    <button onclick="update()" class="btn btn-primary" style="font-size: 16px">Update</button>
+                </div>
+                <hr>
+                <div class="info-order">
+                    <div class="row">
+                        <div class="col-6 lf">
+                            <div class="item code">
+                                <label>Mã Đơn Hàng</label>
+                                <span id="code" th:text="${bill.code}" style="background-color: rgb(206, 240, 240);"></span>
+                            </div>
+                            <div class="item type">
+                                <label>Loại Đơn Hàng</label>
+                                <span style="background-color: rgb(206, 240, 240);"></span>
+                            </div>
+                            <div class="item status">
+                                <label>Trạng Thái</label>
+                                <span style="background-color:gold" th:if="${bill.status == 1}">Đang tạo đơn</span>
+                                <span style="background-color:gold" th:if="${bill.status == 2}">Đang giao</span>
+                                <span style="background-color:gold" th:if="${bill.status == 3}">Đã Giao</span>
+                            </div>
+                            <div class="item dateOrder">
+                                <label>Ngày Đặt Hàng</label>
+                                <span th:text="${bill.delivery_date}" style="background-color: rgb(206, 240, 240);">00000</span>
+                            </div>
+                            <div class="item dateShip">
+                                <label>Ngày Giao Hàng</label>
+                                <span th:text="${bill.received_date}" style="background-color: rgb(206, 240, 240);">00000</span>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="item customerName">
+                                <label>Tên Khách Hàng</label>
+                                <span th:text="${bill.customer_name}"  >+00000</span>
+                            </div>
+                            <div class="item phone">
+                                <label>Số Điện Thoại</label>
+                                <input id="phoneNumber" style="border: none; outline: none;color: red" th:value="${bill.phone}" />
+                                <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
+                            </div>
+                            <div class="item email">
+                                <label>Email</label>
+                                <span></span>
+                            </div>
+                            <div class="item address">
+                                <label>Địa Chỉ</label>
+                                <input id="address" style="border: none; outline: none; color: red" th:value="${bill.address}" />
+                            </div>
+                            <div class="item note">
+                                <label>Ghi Chú</label>
+                                <span th:text="${bill.note}">+00000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        <script>
+            const $ = document.querySelector.bind(document);
+            const $$ = document.querySelectorAll.bind(document);
+
+            const tabs = $$(".tab-item");
+            console.log(tabs)
+
+            const tabActive = $(".tab-item.active");
+            const line = $(".tabs .line");
+
+            tabs.forEach((tab, index) => {
+                tab.onclick = function () {
+                    let status = this.getAttribute("data-value");
+                    let currentStatus = document.getElementById("status").getAttribute("data-value");
+                    if(currentStatus >= status) {
+                        return;
+                    }
+                    let id = document.getElementById("id").getAttribute("data-value");
+                    location.href=`/bill/bill-detail-update-status?id=${id}&status=${status}`;
+                };
+            });
+
+            // fill data
+            // Bắt các phần tử cần thiết trong HTML
+            // let codeElement = document.querySelector('.item.code span');
+            // let typeElement = document.querySelector('.item.type span');
+            // let statusElement = document.querySelector('.item.status span');
+            // let dateOrderElement = document.querySelector('.item.dateOrder span');
+            // let dateShipElement = document.querySelector('.item.dateShip span');
+            // let customerNameElement = document.querySelector('.item.customerName span');
+            // let phoneElement = document.querySelector('.item.phone span');
+            // let emailElement = document.querySelector('.item.email span');
+            // let addressElement = document.querySelector('.item.address span');
+            // let noteElement = document.querySelector('.item.note span');
+
+            let statusTpye ={
+                TD :"Tạo Đơn Hàng",
+                DG :"Đang Giao Hàng",
+                GX :"Đã Giao"
+            }
+
+            let typeOrder ={
+                store : "Lấy Tại Cửa Hàng",
+                ship :"Giao Hàng"
+            }
+
+            let statusElement = document.getElementById("status");
+            let status = Number(statusElement.getAttribute("data-value"));
+
+            for (let i = 1; i <= status; i++) {
+                let tabSelector = document.querySelector(`#tab_${i}`);
+                tabSelector.classList.add("active");
+                line.style.left = tabSelector.offsetLeft + "px";
+                line.style.width = tabSelector.offsetWidth + "px";
+            }
+
+            function update(){
+                let phoneNumber =document.querySelector('#phoneNumber');
+                let address = document.querySelector('#address');
+                let code=   document.querySelector('#code');
+                if(!phoneNumber.value && !address.value){
+                    alert('Vui lòng nhập đầy đủ thông tin địa chỉ hoặc số điện thoại!')
+                    return;
+                }
+
+                var phoneRegex = /^[0-9]{10}$/;
+                if (!phoneRegex.test(phoneNumber.value)) {
+                    alert("Số điện thoại không hợp lệ!");
+                    return;
+                }
+                let dataForm ={
+                    phone : phoneNumber.value,
+                    address : address.value,
+                    code : code.innerText,
+                }
+                console.log(dataForm);
+
+                fetch("/admin/bill/update", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dataForm)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Cập nhật thành công!");
+                        } else {
+                            throw new Error("Cập nhật thất bại!");
+                            location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert("Cập nhật thất bại!");
+                        location.reload();
+                    });
+            }
+        </script>
+    </section>
+</body>
+</html>

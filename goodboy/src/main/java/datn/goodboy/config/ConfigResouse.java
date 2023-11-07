@@ -14,5 +14,5 @@ public class ConfigResouse implements WebMvcConfigurer {
     // TODO Auto-generated method stub
     registry.addResourceHandler("/resources/static/**");
   }
-  
+
 }

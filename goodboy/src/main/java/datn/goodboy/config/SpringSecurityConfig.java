@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +30,10 @@ import datn.goodboy.security.service.EmployeInfoService;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SpringSecurityConfig {
+
+  @Value("${max-age-token-cookie}")
+  private int maxAge;
+
   @Bean
   AuthenticationManager authenticationManager() {
     List<AuthenticationProvider> listProviders = new ArrayList<>();
@@ -82,16 +87,24 @@ public class SpringSecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
-    http.authorizeHttpRequests((authorize) -> {
-      authorize.requestMatchers("khach-hang/singin").permitAll();
-    })
+    http
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/login").permitAll();
+        })
+
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/test/login/signup").permitAll();
+        })
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/admin/**").authenticated();
+        })
         .authorizeHttpRequests((authorize) -> {
           authorize.anyRequest().permitAll();
         })
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
-            .defaultSuccessUrl("/homepage")
+            .successHandler(new CustomAuthenticationSuccessHandler())
             .usernameParameter("username")
             .passwordParameter("password")
             .failureHandler(authenticationFailureHandler())
@@ -101,6 +114,9 @@ public class SpringSecurityConfig {
                 .logoutUrl("/signOut")
                 .logoutSuccessUrl("/login")
                 .permitAll())
+        .rememberMe((remember) -> remember.key("feaef").tokenValiditySeconds(maxAge)
+            .userDetailsService(nhanVienServer())
+            .userDetailsService(KhachHangServer()))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(Customizer.withDefaults())
         .authenticationManager(authManager);
@@ -108,7 +124,8 @@ public class SpringSecurityConfig {
   }
 
   @Bean
-   AuthenticationFailureHandler authenticationFailureHandler() {
+  AuthenticationFailureHandler authenticationFailureHandler() {
     return new CustomerLoginFailhander();
   }
+
 }

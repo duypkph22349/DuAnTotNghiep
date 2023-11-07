@@ -1,91 +1,96 @@
 package datn.goodboy.model.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import groovy.transform.ToString;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="product_detail")
+@Table(name = "product_detail")
+@ToString
 public class ProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name="code")
+    @Column(name = "code")
     private String code;
 
-    @NotNull
-    @NotBlank
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @NotNull
-    @NotBlank
-    @Column(name="price")
+    @Column(name = "price")
     private Float price;
 
-
-    @NotNull
-    @NotBlank
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private int quantity;
 
-    @NotNull
-    @NotBlank
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="id_product")
+    @JoinColumn(name = "id_product")
     private Product idProduct;
 
     @ManyToOne
-    @JoinColumn(name="id_pattern")
+    @JoinColumn(name = "id_pattern")
     private PatternType idPattern;
 
     @ManyToOne
-    @JoinColumn(name="id_color")
+    @JoinColumn(name = "id_color")
     private Color idColor;
 
     @ManyToOne
-    @JoinColumn(name="id_origin")
+    @JoinColumn(name = "id_origin")
     private Origin idOrigin;
 
     @ManyToOne
-    @JoinColumn(name="id_brand")
+    @JoinColumn(name = "id_brand")
     private Brand idBrand;
 
     @ManyToOne
-    @JoinColumn(name="id_material")
+    @JoinColumn(name = "id_material")
     private Material idMaterial;
 
-
     @ManyToOne
-    @JoinColumn(name="id_size")
+    @JoinColumn(name = "id_size")
     private Size idSize;
 
     @ManyToOne
-    @JoinColumn(name="id_styles")
+    @JoinColumn(name = "id_styles")
     private Styles idStyles;
 
-
-    @Column(name="status")
+    @Column(name = "status")
     private int status;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="update_at")
+    @Column(name = "update_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
+
+    @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
+    @JsonIgnore
+    private List<Images> imageProducts;
 }
