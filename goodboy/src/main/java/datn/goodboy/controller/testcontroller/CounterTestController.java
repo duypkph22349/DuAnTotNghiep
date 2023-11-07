@@ -4,16 +4,34 @@ import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/test/counter")
 @Controller
 public class CounterTestController {
+  // bean spring boot // -> luư trạng thái của 1 object -> DJ
+  List<CartDetail> cardetail = new ArrayList<CartDetail>();
+// CartDetail (Vd) -> chuyển thành 1 cái request order khác!
+  @ModelAttribute("orderlist") // vừa là bean + model .addtribue ( "orderlist" ,new ArrayList<CartDetail>()) --
+                               // all time app
+  public List<CartDetail> lisorder() {
+    return cardetail;
+  }
+  // thao tác trên cardetail ->>
+  // time tao
+  // time to pay ??
+  // id cartdetail
+  // view --
+  // nut thanh CartDetail -> luư vào db -> id db ra xong sang xác nhận thanh toan
+
   @Autowired
   private CartService cartService;
 
@@ -32,7 +50,7 @@ public class CounterTestController {
   @Autowired
   private CartDetailService icartService;
 
-  @GetMapping({"/hien-thi",""})
+  @GetMapping({ "/hien-thi", "" })
   public String hienThi(Model model) {
     model.addAttribute("productDetailList", productDetailService.getAllProductDetail());
     model.addAttribute("employee", employeeService.getAllEmployee());
@@ -95,9 +113,66 @@ public class CounterTestController {
   }
 
   @PostMapping("/update")
-  public String update(@RequestParam("id") Integer id, @RequestParam("qty") Integer qty) {
+  public String update(@ModelAttribute("list") List<CartDetail> listCart, @RequestParam("id") Integer id,
+      @RequestParam("qty") Integer qty) {
     cartService2.update(id, qty);
     return "redirect:admin/pages/cartcounter/test-counter";
+  }
+
+  public List<CartDetail> getCardetail() {
+    return cardetail;
+  }
+
+  public void setCardetail(List<CartDetail> cardetail) {
+    this.cardetail = cardetail;
+  }
+
+  public CartService getCartService() {
+    return cartService;
+  }
+
+  public void setCartService(CartService cartService) {
+    this.cartService = cartService;
+  }
+
+  public CustomerService getCustomerService() {
+    return customerService;
+  }
+
+  public void setCustomerService(CustomerService customerService) {
+    this.customerService = customerService;
+  }
+
+  public EmployeeService getEmployeeService() {
+    return employeeService;
+  }
+
+  public void setEmployeeService(EmployeeService employeeService) {
+    this.employeeService = employeeService;
+  }
+
+  public ProductDetailService getProductDetailService() {
+    return productDetailService;
+  }
+
+  public void setProductDetailService(ProductDetailService productDetailService) {
+    this.productDetailService = productDetailService;
+  }
+
+  public ShoppingCartService getCartService2() {
+    return cartService2;
+  }
+
+  public void setCartService2(ShoppingCartService cartService2) {
+    this.cartService2 = cartService2;
+  }
+
+  public CartDetailService getIcartService() {
+    return icartService;
+  }
+
+  public void setIcartService(CartDetailService icartService) {
+    this.icartService = icartService;
   }
 
 }

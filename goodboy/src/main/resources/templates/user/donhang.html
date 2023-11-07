@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+  <title>
+    Giftos
+  </title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <style>
+    .list-to-toggle {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- shop section -->
+  <section class="shop_section layout_padding">
+    <div class="">
+      <div class="row">
+        <!-- category Slider -->
+        <div class="col-lg-2 col-md-3 mt-5">
+          <div class="d-flex flex-column flex-shrink-0 py-2" style="
+        z-index: 2;
+        padding-left: 20px;
+        padding-top: 20px;
+        top :20px;
+        position: -webkit-sticky;
+        position: sticky;">
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li>
+                <div class="text-center">
+                  <img class="image-fluid" class="rounded mx-auto d-block" style="width: 100px;"
+                    src="https://down-vn.img.susercontent.com/file/ba697210724fcf9a75288aee1f883d03_tn" alt="" srcset="">
+                </div>
+                <p> That dep trai
+                  <a href="nav-link link-dark py-0 mt-3"><i class="fas fa-edit"></i> Update Info</a>
+                </p>
+              </li>
+              <li>
+                <a href="#" class="nav-link link-dark py-0 mt-3">
+                  <i class="fas fa-user"></i> Tài khoản của tôi
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link link-dark py-0 mt-3">
+                  <i class="fas fa-file-invoice"></i> Đơn mua
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link link-dark py-0 mt-3">
+                  <i class="fas fa-location-arrow"></i> Địa chỉ
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link link-dark py-0 mt-3">
+                  <i class="fas fa-ticket-alt"></i>
+                  Kho Voucher
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- end category Slider -->
+        <div class="col-lg-10 col-md-9">
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end shop section -->
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <script src="js/custom.js"></script>
+  <script>
+    // Get all toggle buttons and corresponding lists
+    var toggleButtons = document.querySelectorAll(".toggle-button");
+    var listsToToggle = document.querySelectorAll(".list-to-toggle");
+
+    // Add click event listeners to each button
+    toggleButtons.forEach(function (button, index) {
+      button.addEventListener("click", function () {
+        // Toggle the display property of the corresponding list
+        if (listsToToggle[index].style.display === "block") {
+          listsToToggle[index].style.display = "none";
+        } else {
+          listsToToggle[index].style.display = "block";
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
