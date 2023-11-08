@@ -89,11 +89,7 @@ public class SpringSecurityConfig {
       throws Exception {
     http
         .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/login").permitAll();
-        })
-
-        .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/test/**").permitAll();
+          authorize.requestMatchers("/test/**", "/user/**").permitAll();
         })
         .authorizeHttpRequests((authorize) -> {
           authorize.requestMatchers("/admin/**").authenticated();

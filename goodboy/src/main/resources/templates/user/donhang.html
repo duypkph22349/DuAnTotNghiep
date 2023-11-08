@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html layout:decorate="~{user/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+
 
 <head>
   <!-- Basic -->
@@ -32,7 +34,7 @@
   </style>
 </head>
 
-<body>
+<body layout:fragment="content">
   <!-- shop section -->
   <section class="shop_section layout_padding">
     <div class="">

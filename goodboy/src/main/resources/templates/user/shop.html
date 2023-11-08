@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html layout:decorate="~{user/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <!-- Basic -->
@@ -32,7 +33,7 @@
   </style>
 </head>
 
-<body>
+<body layout:fragment="content">
 
   <!-- shop section -->
   <section class="shop_section layout_padding">
@@ -45,93 +46,62 @@
       <div class="row">
         <!-- category Slider -->
         <div class="col-2 mt-5">
-          <div class="d-flex flex-column flex-shrink-0 py-2" style="
-z-index: 2;
-padding-left: 20px;
-padding-top: 10px;
-top :20px;
-position: -webkit-sticky;
-position: sticky;">
-
-            <!-- <div class="gJ98q"> 
-              <div class="_9xWFp">Giá</div>
-              <div class="y9-OE">
-                  <div class="_1lPeN"><input class="q9tZB" placeholder="Tối thiểu" type="number" min="0"
-                          pattern="[0-9]*" value="">
-                      <div class="n9LhC">-</div><input class="q9tZB" placeholder="Tối đa" type="number"
-                          min="0" pattern="[0-9]*" value=""><button type="button"
-                          class="ant-btn ant-btn-primary ant-btn-icon-only yUcnk"><span role="img"
-                              aria-label="caret-right" class="anticon anticon-caret-right"><svg></svg> -->
-            <!-- viewBox="0 0 1024 1024" focusable="false" d > -->
-            <!-- Thương hieu         -->
+          <form class="d-flex flex-column flex-shrink-0 py-2"
+            style="z-index: 2;padding-left: 20px; padding-top: 10px; top :20px; position: -webkit-sticky; position: sticky;"
+            method="get" th:action="@{/shop/product/fillter}">
             <p><b>Thương hiệu</b></p>
             <ul class="nav nav-pills flex-column mb-auto">
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">
-                Chanel
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Gucci
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">IEF
+              <li th:each="option : ${brandCbb}">
+                <label>
+                  <input class="form-check-input mx-1" name="brand" type="checkbox" th:value="${option.key}" />
+                  <span th:text="${option.value}"></span>
+                </label>
               </li>
             </ul>
-
             <hr>
-            <!-- chat lieu -->
             <p><b>Chất liệu</b></p>
             <ul class="nav nav-pills flex-column mb-auto">
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Nhung
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Len
-
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Lụa
-
+              <li th:each="option : ${materialCbb}">
+                <label>
+                  <input class="form-check-input mx-1" name="material" type="checkbox" th:value="${option.key}" />
+                  <span th:text="${option.value}"></span>
+                </label>
               </li>
               <hr>
             </ul>
-            <!-- Thể loai -->
             <p><b>Thể loại</b></p>
             <ul class="nav nav-pills flex-column mb-auto">
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Khăn quàng mỏng
+              <li th:each="option : ${stylesCbb}">
+                <label>
+                  <input class="form-check-input mx-1" name="style" type="checkbox" th:value="${option.key}" />
+                  <span th:text="${option.value}"></span>
+                </label>
               </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Khăn đi biển
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Khăn che nắng
-              </li>
-              <!-- </ul> -->
-              <!-- </a> -->
-              <!-- </li> -->
               <hr>
             </ul>
 
             <p><b>Kiểu hoa văn</b></p>
             <ul class="nav nav-pills flex-column mb-auto">
-
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Caro
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">In hoa
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Trơn
+              <li th:each="option : ${pattenCbb}">
+                <label>
+                  <input class="form-check-input mx-1" name="pattern" type="checkbox" th:value="${option.key}" />
+                  <span th:text="${option.value}"></span>
+                </label>
               </li>
               <hr>
             </ul>
-            <!-- xuat xu -->
             <p><b>Xuất sứ</b></p>
             <ul class="nav nav-pills flex-column mb-auto">
-
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Viet Nam
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Han Quoc
-              </li>
-              <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked">Pháp
+              <li th:each="option : ${originCbb}">
+                <label>
+                  <input class="form-check-input mx-1" name="origin" type="checkbox" th:value="${option.key}" />
+                  <span th:text="${option.value}"></span>
+                </label>
               </li>
               <hr>
             </ul>
-
-            <!-- gia -->
             <p><b>Khoảng giá</b></p>
             <ul class="nav nav-pills flex-column mb-auto">
-
               <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked"
                   style="font-size: 12px;">Dưới 500,000đ
               </li>
@@ -144,17 +114,13 @@ position: sticky;">
               <li><input class="form-check-input mx-1" type="checkbox" value="" id="flexCheckChecked"
                   style="font-size: 12px;">Trên 2,000,000đ
               </li>
-
-
             </ul>
-
-
-          </div>
+            <input type="submit" value="Filter">
+          </form>
         </div>
-        <!-- end category Slider -->
         <div class="col-10 border-2">
           <div class="row container">
-            <!-- fillter -->
+            <!-- fillter and other -->
             <div class="col-sm-8 col-md-10 col-lg-10">
               <div class="d-inline-block" style="max-width: 100%;">
                 <div>Sản phẩm hiện có:{sp.soLuong}</div>
@@ -191,186 +157,29 @@ position: sticky;">
                 </div>
               </div>
             </div>
-            <!-- end fillter -->
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
+            <!-- fillter and other -->
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4" th:each="product : ${products}">
               <div class="product-item bg-light mb-4">
                 <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
+                  <img th:if="${product.imageProducts !=null && product.imageProducts.size() > 0}"
+                    class="img-fluid w-100" th:src="${product.imageProducts[0].img}" alt="">
+                  <img th:unless="${product.imageProducts !=null && product.imageProducts.size() > 0}"
+                    class="img-fluid w-100"
+                    src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" alt="">
                   <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                    <a class="btn btn-outline-dark btn-square" th:href="@{'/shop/product/cart/'+${product.id}}"><i
+                        class="fa fa-shopping-cart"></i></a>
+                    <a class="btn btn-outline-dark btn-square" th:href="@{'/shop/product/show/'+${product.id}}"><i
+                        class="fa fa-solid fa-eye"></i></a>
                   </div>
                 </div>
                 <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                  <a class="h6 text-decoration-none text-truncate" th:href="@{'/shop/product/show/'+${product.id}}"
+                    th:text="${product.idProduct?.name}"></a>
                   <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>$123.00</h5>
-                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                    <h5><span th:text="${product.price}"></span> Vnđ</h5>
+                    <!-- <h6 class="text-muted ml-2"><del>$123.00</del></h6> -->
                   </div>
-
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
-              <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
-                  <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                  </div>
-                </div>
-                <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                  <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>150,000đ</h5>
-                    <h6 class="text-muted ml-2"><del>200,000đ</del></h6>
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star-half-alt text-primwwary mr-1"></small>
-                    <small>(99)</small>
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
-              <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
-                  <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                  </div>
-                </div>
-                <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                  <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>150,000đ</h5>
-                    <h6 class="text-muted ml-2"><del>200,000đ</del></h6>
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star-half-alt text-primwwary mr-1"></small>
-                    <small>(99)</small>
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
-              <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
-                  <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                  </div>
-                </div>
-                <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                  <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>150,000đ</h5>
-                    <h6 class="text-muted ml-2"><del>200,000đ</del></h6>
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star-half-alt text-primwwary mr-1"></small>
-                    <small>(99)</small>
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
-              <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
-                  <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                  </div>
-                </div>
-                <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                  <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>150,000đ</h5>
-                    <h6 class="text-muted ml-2"><del>200,000đ</del></h6>
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star-half-alt text-primwwary mr-1"></small>
-                    <small>(99)</small>
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
-              <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
-                  <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                  </div>
-                </div>
-                <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                  <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>150,000đ</h5>
-                    <h6 class="text-muted ml-2"><del>200,000đ</del></h6>
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star-half-alt text-primwwary mr-1"></small>
-                    <small>(99)</small>
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 py-4">
-              <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="images/anh1.jpg" alt="">
-                  <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-solid fa-eye"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                  </div>
-                </div>
-                <div class="text-center py-4">
-                  <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
-                  <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>150,000đ</h5>
-                    <h6 class="text-muted ml-2"><del>200,000đ</del></h6>
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star text-starts mr-1"></small>
-                    <small class="fa fa-star-half-alt text-primwwary mr-1"></small>
-                    <small>(99)</small>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -400,8 +209,8 @@ position: sticky;">
     var listsToToggle = document.querySelectorAll(".list-to-toggle");
 
     // Add click event listeners to each button
-    toggleButtons.forEach(function (button, index) {
-      button.addEventListener("click", function () {
+    toggleButtons.forEach(function (button,index) {
+      button.addEventListener("click",function () {
         // Toggle the display property of the corresponding list
         if (listsToToggle[index].style.display === "block") {
           listsToToggle[index].style.display = "none";

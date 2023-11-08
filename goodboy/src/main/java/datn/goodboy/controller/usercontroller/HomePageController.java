@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/user")
 public class HomePageController {
   @RequestMapping("index")
   public String getUserIndexPage(Model model) {
@@ -17,4 +17,20 @@ public class HomePageController {
   public String getShope(Model model) {
     return "/user/index.html";
   }
+
+  @GetMapping("cart")
+  public String getCart(Model model) {
+    return "/user/cart.html";
+  }
+
+  @GetMapping("login")
+  public String getlogin(Model model) {
+    return "/user/login.html";
+  }
+
+  @GetMapping("shop")
+  public String getshop(Model model) {
+    return "/user/shop.html";
+  }
+
 }
