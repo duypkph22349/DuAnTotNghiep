@@ -26,6 +26,4 @@ public class EmployeeResponse {
     String email;
     int status;
     String image;
-
-
 }

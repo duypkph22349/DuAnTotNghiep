@@ -1,6 +1,5 @@
 package datn.goodboy.model.entity;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,13 +26,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee {
-@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     UUID id;
 
     @OneToOne
-    @JoinColumn(name = "id_roles" )
+    @JoinColumn(name = "id_roles")
     private Roles roles;
 
     @Column(name = "code")
@@ -42,17 +41,11 @@ public class Employee {
     @Column(name = "name")
     String name;
 
-    // @Column(name = "cccd")
-    // String cccd;
-
     @Column(name = "gender")
     boolean gender;
 
     @Column(name = "birth_date")
     LocalDate birth_date;
-
-    @Column(name = "address")
-    String address;
 
     @Column(name = "phone")
     String phone;
@@ -60,21 +53,36 @@ public class Employee {
     @Column(name = "email")
     String email;
 
+    @Column(name = "cccd")
+    String cccd;
+
     @Column(name = "password")
     String password;
-
-    @Column(name = "status")
-    int status;
 
     @Column(name = "image")
     String image;
 
-    @Column(name="created_at")
+    @Column(name = "address")
+    String address;
+
+    @Column(name = "wardcode")
+    String wardcode;
+
+    @Column(name = "districtcode")
+    int districtcode;
+
+    @Column(name = "fulladdress")
+    String fulladdress;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="update_at")
+    @Column(name = "update_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
+
+    @Column(name = "status")
+    int status;
 }
