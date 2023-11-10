@@ -18,7 +18,6 @@ public class CustomerService {
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-
     }
 
     public List<Customer> getAllCustomers() {
@@ -42,7 +41,7 @@ public class CustomerService {
     }
 
     public List<Customer> getPageNo(int pageNo) {
-        return customerRepository.getPageNo(PageRequest.of(pageNo, 3)).getContent();
+        return customerRepository.findAll(PageRequest.of(pageNo, 3)).getContent();
     }
 
     public Object getComboBox() {

@@ -77,12 +77,10 @@ public class SecurityController {
       return "admin/pages-register.html";
     }
     if (emailHelper.isEmailExits(request.getEmail())) {
-      // TODO: process POST request
       model.addAttribute("message", "Email already exists");
       return "admin/pages-register.html";
     } else {
 
-      // return "redirect:/login";
       try {
         if (signUpService.signUpAsEmployee(request) == null) {
           model.addAttribute("message", "Đang có lỗi xẩy ra vui lòng thử lại sau");

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.request.AccountRequest;
-import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.service.AccountService;
 import datn.goodboy.service.CustomerService;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class AccountController {
   @Autowired
   private AccountRequest accountRequest;
 
-  private AccountResponse accountResponse;
+  private Account accountResponse;
   public int rowcount = 10;
   public int[] pagenumbers;
   public String sortBy = "email";
@@ -48,7 +48,7 @@ public class AccountController {
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
     this.pageno = 1;
-    List<AccountResponse> list = service.getPageNo(1, rowcount, sortBy, sortDir);
+    List<Account> list = service.getPageNo(1, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
@@ -63,7 +63,7 @@ public class AccountController {
     this.sortBy = sortby;
     this.sortDir = sordir;
     this.pageno = 1;
-    List<AccountResponse> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
+    List<Account> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
     totalpage = service.getPageNumber(rowcount);
     pagenumbers = service.getPanigation(rowcount, pageno);
     model.addAttribute("list", list);
@@ -80,7 +80,7 @@ public class AccountController {
       pageno = 1;
     }
     this.pageno = pageno;
-    List<AccountResponse> list = service.getPageNo(this.pageno , rowcount, sortBy, sortDir);
+    List<Account> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     pagenumbers = service.getPanigation(rowcount, this.pageno);
@@ -94,7 +94,7 @@ public class AccountController {
   @GetMapping("index")
   public String getAccountIndexpages(Model model) {
     this.pageno = 1;
-    List<AccountResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
+    List<Account> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);

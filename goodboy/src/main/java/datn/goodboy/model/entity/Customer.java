@@ -33,16 +33,18 @@ public class Customer {
   String name;
   @Column(name = "gender")
   boolean gender;
-  @Column(name = "birth_date")
-  LocalDate birth_date;
-  @Column(name = "thanh_pho")
-  String address;
   @Column(name = "phone")
   String phone;
-  @Column(name = "huyen")
-  String city;
-  @Column(name = "xa")
-  String country;
+  @Column(name = "birth_date")
+  LocalDate birth_date;
+  @Column(name = "address")
+  String address;
+  @Column(name = "wardcode")
+  String wardcode;
+  @Column(name = "districtcode")
+  int districtcode;
+  @Column(name = "fulladdress")
+  String fulladdress;
   @Column(name = "status")
   int status;
 }
