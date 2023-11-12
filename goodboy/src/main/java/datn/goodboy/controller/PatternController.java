@@ -79,8 +79,7 @@ public class PatternController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid PatternType b, BindingResult result) {
-        String newProductCode = "PT" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

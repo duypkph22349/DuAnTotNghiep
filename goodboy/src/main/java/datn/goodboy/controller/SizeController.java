@@ -79,8 +79,7 @@ public class SizeController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Size b, BindingResult result) {
-        String newProductCode = "SZ_" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

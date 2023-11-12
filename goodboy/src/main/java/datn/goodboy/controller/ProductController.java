@@ -77,8 +77,7 @@ public class ProductController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Product b, BindingResult result) {
-        String newProductCode = "SP" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);
