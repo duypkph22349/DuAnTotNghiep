@@ -11,12 +11,16 @@
 <body class="container">
 <section layout:fragment="content">
 <div class="container">
-    <a href="/admin/customer/view-add">New</a>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Mới
-    </button>
+
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Mới
+        </button>
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
+           id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm ....">
     <h1 style="text-align: center">LIST CUSTOMER</h1>
-    <table class="table table-active">
+    <table class="table table-active" id="myTable">
         <tr>
             <th>#</th>
             <th>Code</th>
@@ -55,52 +59,51 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">ADD Customer</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel"><strong>ADD Customer</strong></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     ...
-                    <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post" class="form">
+                    <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post" class="row g-3">
 
                         <div>
                             <label>Code:</label>
                             <input type="text" th:name="code" class="form-control">
                         </div>
-                        <div style="clear: both; display: block; height: 10px"></div>
+
                         <div>
                             <label>Name:</label>
                             <input type="text" th:name="name" class="form-control">
                         </div>
-                        <div style="clear: both; display: block; height: 10px"></div>
                         <div>
                             <label>Gender:</label>
                             <input type="radio" th:name="gender" th:value="false" th:text="Male" checked>
                             <input type="radio" th:name="gender" th:value="true" th:text="Female">
                         </div>
-                        <div style="clear: both; display: block; height: 10px"></div>
                         <div>
                             <label>Birth Date:</label>
                             <input type="date" th:name="birth_date" class="form-control">
                         </div>
-                        <div style="clear: both; display: block; height: 10px"></div>
                         <div>
                             <label>Phone:</label>
                             <input type="text" th:name="phone" class="form-control">
                         </div>
 
-                        <div>
-                            <label>Thành phố</label>
-                            <select id="Provinces" onchange="getDistricts()"></select>
-                        </div>
-                        <div>
-                            <label>Huyện</label>
-                            <select id="Districts" th:name="city" onchange="getWards()">Chọn Quận/ Huyện
-                            </select>
-                        </div>
-                        <div>
-                            <label>Xã</label>
-                            <select th:name="country" onchange="setFullAdress()" id="Wards">Chọn Thị trấn/ Xã/ Phường
-                            </select>
+                        <div class="form-control">
+                            <div class="col-md-4">
+                                <label>Thành phố</label>
+                                <select class="form-select" id="Provinces" onchange="getDistricts()"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Huyện</label>
+                                <select class="form-select" id="Districts" th:name="city" onchange="getWards()">Chọn Quận/ Huyện
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Xã</label>
+                                <select class="form-select" th:name="country" onchange="setFullAdress()" id="Wards">Chọn Thị trấn/ Xã/ Phường
+                                </select>
+                            </div>
                         </div>
                         <input type="hidden" id="FullAddress" th:name="fulladdress">
                         <input type="text" th:name="address">
@@ -108,14 +111,12 @@
                                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                                 crossorigin="anonymous"></script>
 
-                        <div style="clear: both; display: block; height: 10px"></div>
                         <div>
                             <select th:name="status">
                                 <option th:value="0">Active</option>
                                 <option th:value="1">No longer active</option>
                             </select>
                         </div>
-                        <div style="clear: both; display: block; height: 10px"></div>
 <!--                        <input type="submit" class="btn btn-success" value="ADD"/>-->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -127,7 +128,28 @@
             </div>
         </div>
     </div>
-
+        <script src="jquery.min.js"></script>
+        <script type="text/javascript">
+            // Tìm kiếm
+            function myFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("myTable");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[2];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        </script>
     <script>
         var myModal = document.getElementById('myModal')
         var myInput = document.getElementById('myInput')
