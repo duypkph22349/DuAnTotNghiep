@@ -29,13 +29,11 @@ public class CloudinaryImageService implements IFileManager {
 
   @Override
   public File getFile(String name) {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getFile'");
   }
 
   @Override
   public boolean deletedFile(String name) {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'deletedFile'");
   }
 

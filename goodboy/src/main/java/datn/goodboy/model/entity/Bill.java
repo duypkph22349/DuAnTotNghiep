@@ -86,6 +86,9 @@ public class Bill {
   @Column(name = "deleted")
   boolean deleted;
 
+  @Column(name = "order_type")
+  int loaiDon;
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();

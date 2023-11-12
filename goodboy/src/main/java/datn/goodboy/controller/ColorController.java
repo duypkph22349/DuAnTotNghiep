@@ -71,8 +71,7 @@ public class ColorController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Color b, BindingResult result) {
-        String newProductCode = "MS" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

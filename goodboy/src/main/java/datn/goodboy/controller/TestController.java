@@ -1,15 +1,5 @@
 package datn.goodboy.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import datn.goodboy.model.entity.Account;
-import datn.goodboy.model.entity.Customer;
-import datn.goodboy.model.request.SingupRequest;
-import datn.goodboy.model.response.CustomerResponse;
-import datn.goodboy.service.AccountService;
-import datn.goodboy.service.CustomerService;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import datn.goodboy.model.entity.Account;
+import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.request.SingupRequest;
+import datn.goodboy.service.AccountService;
+import datn.goodboy.service.CustomerService;
 
 @RestController
 @RequestMapping("api/test")
@@ -38,7 +36,7 @@ public class TestController {
   }
 
   @GetMapping(value = "customer/getpageno/{pageno}")
-  public ResponseEntity<List<CustomerResponse>> GetPageNo(@PathVariable("pageno") int pageno) {
+  public ResponseEntity<List<Customer>> GetPageNo(@PathVariable("pageno") int pageno) {
     return ResponseEntity.ok().body(customerService.getPageNo(pageno));
   }
 

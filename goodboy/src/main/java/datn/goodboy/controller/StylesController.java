@@ -66,8 +66,7 @@ public class StylesController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Styles b, BindingResult result) {
-        String newProductCode = "ST" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

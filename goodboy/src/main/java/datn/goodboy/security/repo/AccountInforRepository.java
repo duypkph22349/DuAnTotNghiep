@@ -1,5 +1,6 @@
 package datn.goodboy.security.repo;
 
+import java.util.List;
 /**
  * InnerAccountInforRepository
  */
@@ -18,4 +19,7 @@ import datn.goodboy.model.entity.Account;
 public interface AccountInforRepository extends JpaRepository<Account, UUID> {
   @Query("SELECT user from Account user WHERE user.email = :username")
   Optional<Account> getuser(@Param("username") String username);
+
+  @Query(value = "SELECT acc FROM Account acc WHERE acc.email LIKE :email")
+  List<Account> hasEmailis(@Param("email") String email);
 }
