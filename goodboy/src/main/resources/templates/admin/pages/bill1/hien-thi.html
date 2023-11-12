@@ -101,7 +101,7 @@
                 <td th:text="${b.total_money}"></td>
                 <td th:text="${b.createdAt}"></td>
                 <td th:text="${b.loaiDon== 1 ? 'Giao hàng' : 'Tại quầy'}"></td>
-                <td th:text="${b.status}"></td>
+                <td th:text="${b.status == 0 ? 'Chờ xác nhận' : (b.status == 1 ? 'Xác nhận' : (b.status == 2 ? 'Chờ vận chuyển' : (b.status == 3 ? 'Đang giao' : (b.status == 4 ? 'Đã thanh toán' : 'Thành công'))))}"></td>
                 <td><i
                         class="fas fa-edit"></i></td>
             </tr>
