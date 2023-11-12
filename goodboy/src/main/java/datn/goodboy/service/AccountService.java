@@ -20,13 +20,12 @@ import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.request.AccountFillter;
 import datn.goodboy.model.request.AccountRequest;
 import datn.goodboy.model.request.SingupRequest;
-import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.repository.AccountRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
 @Service
-public class AccountService implements PanigationInterface<AccountResponse> {
+public class AccountService implements PanigationInterface<Account> {
   @Autowired
   PasswordEncoder encoder;
   @Autowired
@@ -124,28 +123,27 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   }
 
   // fillter
-  public List<AccountResponse> fillter(AccountFillter fillter) {
+  public List<Account> fillter(AccountFillter fillter) {
     return null;
   }
 
   // panigation
   @Override
-  public List<AccountResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
-    if(pageNo > getPageNumber(pageSize)){
-    return null;
+  public List<Account> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
+    if (pageNo > getPageNumber(pageSize)) {
+      return null;
     }
-    List<AccountResponse> ChiTietSanPhams;
+    List<Account> ChiTietSanPhams;
     ChiTietSanPhams = new ArrayList<>();
     Sort sort;
     if (sortDir) {
-    sort = Sort.by(sortBy).ascending();
+      sort = Sort.by(sortBy).ascending();
     } else {
-    sort = Sort.by(sortBy).descending();
+      sort = Sort.by(sortBy).descending();
     }
-    Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<AccountResponse> page =
-    accountRepository.getPageAccountRepose(pageable);
+    Page<Account> page = accountRepository.findAll(pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
@@ -153,7 +151,7 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   @Override
   public int getPageNumber(int rowcount) {
     Pageable pageable = PageRequest.of(1, rowcount);
-    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
+    Page<Account> page = accountRepository.findAll(pageable);
     int totalPage = page.getTotalPages();
     return totalPage;
   }
@@ -161,16 +159,16 @@ public class AccountService implements PanigationInterface<AccountResponse> {
   @Override
   public int[] getPanigation(int rowcount, int pageno) {
     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<AccountResponse> page = accountRepository.getPageAccountRepose(pageable);
+    Page<Account> page = accountRepository.findAll(pageable);
     int totalPage = page.getTotalPages();
     int[] rs;
     if (totalPage <= 1) {
-      int[] rs1 = {1};
+      int[] rs1 = { 1 };
       return rs1;
     } else if (totalPage <= 3) {
       rs = new int[totalPage];
       for (int i = 1; i <= totalPage; i++) {
-        rs[i-1] = i;
+        rs[i - 1] = i;
       }
       return rs;
     } else {

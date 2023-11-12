@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.request.SingupRequest;
+import datn.goodboy.model.response.CustomerResponse;
 import datn.goodboy.service.AccountService;
 import datn.goodboy.service.CustomerService;
 
@@ -36,7 +37,7 @@ public class TestController {
   }
 
   @GetMapping(value = "customer/getpageno/{pageno}")
-  public ResponseEntity<List<Customer>> GetPageNo(@PathVariable("pageno") int pageno) {
+  public ResponseEntity<List<CustomerResponse>> GetPageNo(@PathVariable("pageno") int pageno) {
     return ResponseEntity.ok().body(customerService.getPageNo(pageno));
   }
 
