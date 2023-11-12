@@ -164,7 +164,7 @@
             </li>
         </ul>
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, CCCD, Địa chỉ....">
+               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm....">
     </div>
 
     <Br>
@@ -205,6 +205,10 @@
                     <a href="#" onclick="sortTable('asc', 7)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                     <a href="#" onclick="sortTable('desc', 7)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                 </th>
+                <th>Địa chỉ
+                    <a href="#" onclick="sortTable('asc', 7)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 7)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
                 <th>Chức Vụ
                     <a href="#" onclick="sortTableCode('asc', 8)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                     <a href="#" onclick="sortTableCode('desc', 8)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
@@ -227,6 +231,7 @@
                 <td th:text="${employee.birth_date}"></td>
                 <td th:text="${employee.phone}"></td>
                 <td th:text="${employee.email}"></td>
+                <td th:text="${employee.fulladdress}"></td>
                 <td th:text="${employee.roles.name}"></td>
                 <td th:text="${employee.status} == 0 ? 'Đang Làm' : 'Nghỉ Việc'"></td>
                 <td>

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,18 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT new map(e.id as key, e.name as value) FROM Product e")
     List<Map<Integer, String>> getComboBoxMap();
+
+
+    //User
+//    Product findBySlug(String slug);
+//
+//    List<Product> findByCategoryIsMale(boolean gender);
+//
+//    List<Product> findByCategoryId(Integer categoryId , Sort sort);
+
+
+    Page<Product> findAll(Pageable pageable);
+
+//    Page<Product> findByCategoryId(Integer categoryId, Pageable pageable);
+
 }

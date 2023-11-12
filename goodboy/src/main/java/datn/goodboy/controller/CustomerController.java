@@ -25,7 +25,7 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @GetMapping("/get-all")
+    @GetMapping({"/get-all",""})
     public String hienThi(Model model,
                           @RequestParam(name = "pageSize", defaultValue = "6") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
@@ -47,7 +47,7 @@ public class CustomerController {
 
     @GetMapping("/view-add")
     public String viewAdd() {
-        return "/admin/pages/customer/customer-add";
+        return "/admin/pages/customer/customer_modal";
 
     }
 
