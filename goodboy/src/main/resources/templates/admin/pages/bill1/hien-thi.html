@@ -8,19 +8,79 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
     <style>
-        /*.add-button {*/
-        /*    float: right;*/
-        /*    margin-bottom: 10px;*/
-        /*}*/
+        /* CSS cho container chứa form */
+        .filter-container {
+            border: 1px solid #ddd; /* Màu và độ rộng đường viền */
+            border-radius: 5px; /* Độ cong của các góc */
+            padding: 15px; /* Khoảng cách giữa nội dung và đường viền */
+            margin-bottom: 20px; /* Khoảng cách dưới cùng */
+        }
+
+        /* CSS cho các trường tìm kiếm và bộ lọc */
+        .filter-container label,
+        .filter-container input,
+        .filter-container select,
+        .filter-container button {
+            margin-bottom: 8px;
+        }
+
+        .filter-container input,
+        .filter-container select,
+        .filter-container button {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
 <section layout:fragment="content">
     <div>
         <h1 style="text-align: center">Danh sách bill</h1>
+        <div class="filter-container">
+            <form action="" method="get">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label >Mã đơn hàng:</label>
+                        <input type="text"  name="code" />
+                    </div>
 
+                    <div class="col-md-4">
+                        <label >Loại đơn:</label>
+                        <select  name="orderType">
+                            <option value="0" >Tất cả</option>
+                            <option value="1" >Tại quầy</option>
+                            <option value="2" >Giao hàng</option>
+                            <!-- Thêm các option khác nếu cần -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label >Trạng thái:</label>
+                        <select name="status">
+                            <option value="0" >Tất cả</option>
+                            <option value="1" >Chờ xác nhận</option>
+                            <option value="2" >Xác nhận</option>
+                            <option value="3">Chờ vận chuyển</option>
+                            <option value="4" >Đang giao</option>
+                            <option value="5" >Đã thanh toán</option>
+                            <option value="6" >Thành công</option>
+                            <!-- Thêm các option khác nếu cần -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <label >Từ ngày:</label>
+                        <input type="date" name="startDate" />
+
+                        <label >Đến ngày:</label>
+                        <input type="date" name="endDate" />
+                    </div>
+
+                </div>
+
+                <button type="submit">Lọc</button>
+            </form>
+        </div>
         <table class="table mt-2 table-responsive">
-
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -40,34 +100,20 @@
                 <td th:text="${b.customer.name}"></td>
                 <td th:text="${b.total_money}"></td>
                 <td th:text="${b.createdAt}"></td>
-                <td th:text="${b.loaiDon}"></td>
+                <td th:text="${b.loaiDon== 1 ? 'Giao hàng' : 'Tại quầy'}"></td>
                 <td th:text="${b.status}"></td>
-                <td ><i
+                <td><i
                         class="fas fa-edit"></i></td>
             </tr>
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li th:class="${pageNum == 1} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{/admin/size/dsSize(pageNum=1)}">Previous</a>
-                </li>
-                <li class="page-item" th:each="page,iterStat : ${#numbers.sequence(1, totalPage)}">
-                    <a class="page-link" th:class="${pageNum == iterStat.index + 1} ? 'page-link active' : 'page-link'"
-                       th:href="@{/admin/size/dsSize(pageNum=${iterStat.index + 1})}"
-                       th:text="${iterStat.index + 1}"></a>
-                </li>
-                <li class="page-item" th:class="${pageNum == totalPage} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{/admin/size/dsSize(pageNum=${totalPage})}">Next</a>
-                </li>
-            </ul>
-        </nav>
+
+
 
 
     </div>
 
     <!--    add-->
-
 
 
 </section>
