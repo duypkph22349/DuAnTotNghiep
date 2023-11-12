@@ -28,7 +28,7 @@ public class Pay {
     int id;
 
     @Column(name = "payment_method")
-    int payment_method;
+    String payment_method;
 
     @Column(name = "status")
     int status;

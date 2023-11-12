@@ -42,13 +42,13 @@ public class Admin {
     // return ResponseEntity.badRequest().body(e.toString());
     // }
     // }
-    @PostMapping("/add-pay")
-    public ResponseEntity<?> addPay(@RequestBody Pay pay) {
-        try {
-            payService.savePay(pay);
-            return ResponseEntity.ok("succ");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.toString());
-        }
-    }
+//    @PostMapping("/add-pay")
+//    public ResponseEntity<?> addPay(@RequestBody Pay pay) {
+//        try {
+//            payService.savePay(pay);
+//            return ResponseEntity.ok("succ");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.toString());
+//        }
+//    }
 }
