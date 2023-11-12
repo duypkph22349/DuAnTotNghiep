@@ -53,6 +53,12 @@ public class Employee {
 
     @Column(name = "address")
     String address;
+    @Column(name = "districtcode")
+    String city;
+    @Column(name = "wardcode")
+    String country;
+    @Column(name = "fulladdress")
+    String fulladdress;
 
     @Column(name = "phone")
     String phone;

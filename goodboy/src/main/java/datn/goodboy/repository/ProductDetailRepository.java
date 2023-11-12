@@ -1,15 +1,21 @@
 package datn.goodboy.repository;
 
+import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.response.ProductDetailResponse;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
         @Query("SELECT b FROM ProductDetail b WHERE b.code LIKE %:keyword% OR b.name LIKE %:keyword%")
         Page<ProductDetail> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
@@ -50,4 +56,17 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
         "AND (:#{#filter.idSize} = -1 OR pd.idSize.id = :#{#filter.idSize}) " +
         "AND (:#{#filter.idStyles} = -1 OR pd.idStyles.id = :#{#filter.idStyles})")
 Page<ProductDetail> filter(@Param("filter") ProductDetailFilter filter, Pageable pageable);
+
+
+
+//        ProductDetail findBySlug(String slug);
+
+//        List<ProductDetail> findByCategoryIsMale(boolean gender);
+//
+//        List<ProductDetail> findByCategoryId(Integer categoryId , Sort sort);
+
+
+        Page<ProductDetail> findAll(Pageable pageable);
+
+//        Page<ProductDetail> findByCategoryId(Integer categoryId, Pageable pageable);
 }

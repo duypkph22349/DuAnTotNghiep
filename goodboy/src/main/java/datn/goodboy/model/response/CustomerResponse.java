@@ -12,9 +12,9 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
-@FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PUBLIC)
 public class CustomerResponse {
   UUID id;
   String code;
@@ -22,8 +22,6 @@ public class CustomerResponse {
   boolean gender;
   LocalDateTime birth_date;
   String phone;
-  String address;
-  String city;
-  String country;
+  String fulladdress;
   int status;
 }
