@@ -1,23 +1,24 @@
 package datn.goodboy.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import datn.goodboy.model.request.ProductDetailRequest;
+import datn.goodboy.model.response.EmployeeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.RolesService;
 
-@RequestMapping("admin/employee")
 @Controller
+@RequestMapping("admin/employee")
+
 public class EmployeeController {
 
     @Autowired
@@ -25,6 +26,13 @@ public class EmployeeController {
 
     @Autowired
     private RolesService rolesService;
+    private EmployeeResponse employeeResponse;
+    public int rowcount = 10;
+    public int[] pagenumbers;
+    public String sortBy = "createdAt";
+    public boolean sortDir = false;
+    public int pageno = 0;
+    public int totalpage = 0;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {
@@ -63,12 +71,58 @@ public class EmployeeController {
         return "admin/pages/employee/detail-employee";
     }
 
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<?> update2(@RequestBody Employee employee, @PathVariable("id")UUID id){
-//        employee.setId(id);
-//        employeeService.saveEmployee(employee);
-//        return ResponseEntity.ok(employee);
-//    }
+
+
+    @GetMapping("/getcountrow")
+    public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
+        System.out.println(selectedValue);
+        rowcount = Integer.parseInt(selectedValue);
+        pagenumbers = employeeService.getPanigation(rowcount, pageno);
+        this.pageno = 1;
+        List<EmployeeResponse> list = employeeService.getPageNo(1, rowcount, sortBy, sortDir);
+        totalpage = employeeService.getPageNumber(rowcount);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/employee/table-employee.html"; // Redirect back to the form page
+    }
+
+    @GetMapping("sort")
+    public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
+                              @RequestParam("sortDir") boolean sordir) {
+        this.sortBy = sortby;
+        this.sortDir = sordir;
+        this.pageno = 1;
+        List<EmployeeResponse> list = employeeService.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
+        totalpage = employeeService.getPageNumber(rowcount);
+        pagenumbers = employeeService.getPanigation(rowcount, pageno);
+        model.addAttribute("list", list);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/employee/table-employee.html";
+    }
+
+    @GetMapping("/page")
+    public String getPageNo(Model model, @RequestParam("pageno") int pageno) {
+        if (pageno <= 1) {
+            this.pageno = 1;
+            pageno = 1;
+        }
+        this.pageno = pageno;
+        List<EmployeeResponse> list = employeeService.getPageNo(this.pageno, rowcount, sortBy, sortDir);
+        totalpage = employeeService.getPageNumber(rowcount);
+        model.addAttribute("totalpage", totalpage);
+        pagenumbers = employeeService.getPanigation(rowcount, this.pageno);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", this.pageno);
+        model.addAttribute("list", list);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/employee/table-employee.html";
+    }
 
 
 }
