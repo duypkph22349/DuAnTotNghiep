@@ -44,8 +44,9 @@
                 <td th:text="${b.name}"></td>
                 <td th:text="${b.status == 1 ? 'active' : 'unactive'}"></td>
                 <td>
-                    <button class="btn btn-primary" id="view-update-button">Update</button>
-                    <a th:href="@{'/admin/stype/delete/' + ${b.id}}" class="btn btn-danger">delete</a>
+                    <a th:href="@{'/admin/style/view-update/' + ${b.id}}" class="btn btn-info"><i
+                            class="fas fa-edit"></i></a>
+                    <a th:href="@{'/admin/style/delete/' + ${b.id}}" class="btn btn-danger">delete</a>
                 </td>
             </tr>
             </tbody>
@@ -53,7 +54,7 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li th:class="${pageNum == 1} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{/admin/styles/dsStyles(pageNum=1)}">Previous</a>
+                    <a class="page-link" th:href="@{/admin/style/dsStyles(pageNum=1)}">Previous</a>
                 </li>
                 <li class="page-item" th:each="page,iterStat : ${#numbers.sequence(1, totalPage)}">
                     <a class="page-link" th:class="${pageNum == iterStat.index + 1} ? 'page-link active' : 'page-link'"

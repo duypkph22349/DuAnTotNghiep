@@ -67,7 +67,7 @@ public class PatternController {
     @GetMapping("/view-update/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("brand",patternTypeService.getById(id));
-        return "admin/pages/pattern/update-pattern";
+        return "admin/pages/patterntype/update-pattern";
     }
 
     @PostMapping("/update/{id}")
