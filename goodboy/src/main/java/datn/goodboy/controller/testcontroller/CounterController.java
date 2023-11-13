@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller("countercarttest")
 @RequestMapping("test/counter")
 public class CounterController {
-  @Autowired
-  private CartService cartService;
+  // @Autowired
+  // private CartService cartService;
 
   @Autowired
   private CustomerService customerService;
@@ -36,21 +36,19 @@ public class CounterController {
   @Autowired
   private ProductDetailService productDetailService;
 
-  @Autowired
-  private CartDetailService icartService;
-
   @ModelAttribute("employees")
   public List<Employee> getAllEmp() {
     return employeeService.getAllEmployee();
   }
 
   @ModelAttribute("customers")
-  public List<CustomerResponse> getAllCustomer() {
-    return customerService.getPageNo(1);
+  public List<Customer> getAllCustomer() {
+    return customerService.getAllCustomers();
   }
+
   @ModelAttribute("productDetails")
   public List<ProductDetail> getAllProductDetails() {
-    return productDetailService.getPageNo(1,20,"createdAt",true);
+    return productDetailService.getPageNo(1, 20, "createdAt", true);
   }
 
   @GetMapping("")
