@@ -1,6 +1,7 @@
 package datn.goodboy.controller.testcontroller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -56,6 +57,7 @@ public class RestCounterController {
   @GetMapping("productDetails/{id}")
   public ResponseEntity<ProductDetail> getProduct(@PathVariable("id") int id) {
     System.out.println(id);
-    return ResponseEntity.ok().body(productDetailService.getPageNo(1, 20, "createdAt", true).get(0));
+    Optional<ProductDetail> proc = productDetailService.getProductDetailById(id);
+    return ResponseEntity.ok().body(productDetailService.getProductDetailById(id).get());
   }
 }

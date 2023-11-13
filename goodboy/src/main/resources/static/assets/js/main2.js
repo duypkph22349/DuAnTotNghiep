@@ -74,7 +74,6 @@ function formInOrder(id) {
                                           <table class="table table-hover" id="cartTable">
                                               <thead>
                                                   <tr>
-                                                      <th>#</th>
                                                       <th>Tên sản phẩm</th>
                                                       <th>Số lượng</th>
                                                       <th>Tổng tiền</th>
@@ -203,7 +202,7 @@ function formInOrder(id) {
                                   <div class="ant-radio-group ant-radio-group-solid">
                                       <label class="ant-radio-button-wrapper">
                                           <span class="ant-radio-button">
-                                              <input autocomplete="off" checked="" class="btn-check"
+                                              <input autocomplete="off" checked class="btn-check" value="0"
                                                   id="success-outlined" name="options-outlined" type="radio">
                                               <label class="btn btn-outline-success" for="success-outlined"><svg
                                                       class="bi bi-house-door" fill="currentColor" height="16"
@@ -213,7 +212,7 @@ function formInOrder(id) {
                                                           d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z">
                                                       </path>
                                                   </svg> Tại quầy</label>
-                                              <input type="radio" class="btn-check" name="options-outlined"
+                                              <input type="radio" class="btn-check" name="options-outlined"  value="1"
                                                   id="danger-outlined" autocomplete="off">
                                               <label class="btn btn-outline-danger" for="danger-outlined"><svg
                                                       xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -232,27 +231,27 @@ function formInOrder(id) {
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
                                       <div class="col-md-6">
-                                          <label for="inputEmail4" class="form-label">Tên
+                                          <label for="tenKhachHang" class="form-label">Tên
                                               Khách Hàng</label>
-                                          <input type="search" class="form-control" placeholder="Tên khách hàng"
-                                              id="inputEmail4">
+                                          <input type="text" class="form-control" placeholder="Tên khách hàng"
+                                              id="tenKhachHang">
                                       </div>
                                       <div class="col-md-6">
-                                          <label for="inputPassword4" class="form-label">Số
+                                          <label for="soDienThoai" class="form-label">Số
                                               Điện Thoại</label>
-                                          <input type="search" class="form-control" placeholder="Số điện thoại"
-                                              id="inputPassword4">
+                                          <input type="text" class="form-control" placeholder="Số điện thoại"
+                                              id="soDienThoai">
                                       </div>
                                       <div class="col-6">
-                                          <label for="inputAddress" class="form-label">Ngày
+                                          <label for="birtdays" class="form-label">Ngày
                                               Sinh</label>
-                                          <input type="date" class="form-control" id="inputAddress"
+                                          <input type="date" class="form-control" id="birtdays"
                                               placeholder="1234 Main St">
                                       </div>
                                       <div class="col-md-6">
-                                          <label for="inputAddress" class="form-label">Giới
+                                          <label for="gender" class="form-label">Giới
                                               Tính</label>
-                                          <select name="" id="" class="form-control">
+                                          <select name="gender" id="gender" class="form-control">
                                               <option value="0">Nam</option>
                                               <option value="1">Nữ</option>
                                           </select>
@@ -282,7 +281,7 @@ function formInOrder(id) {
                                       <div class="col-12">
                                           <label class="form-label">Địa
                                               Chỉ Cụ Thể</label>
-                                          <input type="text" class="form-control" placeholder="Địa chỉ cụ thể">
+                                          <input type="text" class="form-control" id="address" placeholder="Địa chỉ cụ thể">
                                       </div>
                                   </div>
                               </div>
@@ -611,86 +610,9 @@ function removeOrderPage(orderId) {
     }
   }
 }
-function addProductIntoOrder(idorderdetail, id) {
-  const productDetails = getProductDetails(id);
-  const productExits = findInExitOrder(idorderdetail, productDetails.stt);
 
-  if (productExits) {
-    // If row with the same stt already exists, update the existing row
-    increaseProduct(productExits);
-  } else {
-    // If row with the same stt doesn't exist, create a new row
-    const newProductRow = document.createElement("tr");
-    newProductRow.classList.add("table-body-row", "order-product");
-    newProductRow.innerHTML = `
-        <td>${productDetails.stt}</td>
-        <td>${productDetails.code}</td>
-        <td>${productDetails.gia}</td>
-        <td><input type="number" value=1></td>
-        <td>
-          <!-- Add any additional actions/buttons here -->
-        </td>
-      `;
-    const productsOnOrder = document.getElementById(idorderdetail);
-    productsOnOrder.appendChild(newProductRow);
-  }
-}
-function getProdcutDetailbyId(idorderdetail, stt) {
-  var product;
-  fetch(`/rest/data/counter/productDetails/${id}`, {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      product = data;
-      console.log(product);
-    });
-  const productsOnOrder = document.getElementById(idorderdetail);
-  const rows = productsOnOrder.getElementsByClassName("table-body-row");
-  for (const row of rows) {
-    const rowStt = row.querySelector("td:first-child").innerText;
-    if (rowStt === stt.toString()) {
-      return row;
-    }
-  }
-  return null;
-}
-function increaseProduct(productExits) {
-  const inputNumber = productExits.querySelector("td:nth-child(4) input");
-  if (inputNumber) {
-    const currentValue = parseInt(inputNumber.value, 10) || 0;
-    inputNumber.value = currentValue + 1;
-  }
-}
-function removeProduct(orderId) {}
-
-function getOrderDatailForm(formId) {
-  const form = document.getElementById(formId);
-  const carttable = form.querySelector("#cartTable");
-  const formData = {};
-  const tableRows = carttable.querySelectorAll("tr.order-product");
-  formData.products = [];
-  tableRows.forEach((row, index) => {
-    const product = {
-      stt: row.querySelector("td:nth-child(1)").textContent,
-      name: row.querySelector("td:nth-child(2)").textContent,
-      price: row.querySelector("td:nth-child(3)").textContent,
-      quantity: row.querySelector("td:nth-child(4) input").value,
-    };
-    formData.products.push(product);
-  });
-
-  return JSON.stringify(formData);
-}
 function findProdcut(orderId) {}
-function handleOrderSubmit(event) {
-  event.preventDefault();
-  console.log("insubmit");
-  const formId = event.currentTarget.id;
-  const formValuesJSON = getOrderDatailForm(formId);
-  console.log(formValuesJSON);
-  return false;
-}
+
 //calldata
 function getProductDetail(id) {
   const products = {
@@ -706,15 +628,7 @@ function updateProvice(orderId) {}
 function updateDistric(orderId) {}
 function updateWardcode(orderId) {}
 function getTotalShip(orderId) {}
-// window.addEventListener("beforeunload", function (e) {
-//   var confirmationMessage = "Are you sure you want to leave?";
 
-//   // Standard for most browsers
-//   e.returnValue = confirmationMessage;
-
-//   // For some older browsers
-//   return confirmationMessage;
-// });
 function getAllprovide(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   const selectCity = thisOrder.querySelector("#city");
@@ -851,7 +765,6 @@ function fillAllEmployee(orderId) {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       data.forEach(function (employee) {
         var option = document.createElement("option");
         option.value = employee.id;
@@ -870,11 +783,8 @@ function getFirstProductPage(orderId) {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       data.forEach(function (product) {
         var row = document.createElement("tr");
-
-        // Assuming the properties are in the order you want them displayed
         var cells = [
           `<img src="${
             product.imageUrl || defaultImage
@@ -886,7 +796,7 @@ function getFirstProductPage(orderId) {
           product.idPattern.name,
           product.idColor.name,
           `<button type="button" class="btn btn-primary"  onclick="openProductModal(${product.id})"><i class="far fa-eye"></i></button>
-          <button type="button" class="btn btn-primary"  onclick="addProductIntoOrder(${product.id},${orderId})"><i class="far fa-plus"></i></button>
+          <button type="button" class="btn btn-primary"  onclick="addProductIntoOrder(${orderId},${product.id})"><i class="far fa-plus"></i></button>
           `,
         ];
         cells.forEach(function (cellContent) {
@@ -907,7 +817,6 @@ function openProductModal(id) {
     .then((res) => res.json())
     .then((data) => {
       product = data;
-      console.log(product);
     });
   var modalTitle = document.getElementById("exampleModalLabel");
   var modalBody = document.querySelector(".modal-body");
@@ -935,3 +844,127 @@ function renderCounterPage() {
   addnewOrderPage();
 }
 renderCounterPage();
+async function addProductIntoOrder(idorderdetail, id) {
+  const form = document.getElementById(`hoaDon${idorderdetail}`);
+
+  try {
+    const product = await getProductDetails(id);
+    const productExists = await findInExitOrder(idorderdetail, product.id);
+
+    if (productExists !== null) {
+      increaseProductQuantity(productExists);
+    } else {
+      const productsOnOrder = form.querySelector("#cartTable tbody");
+      const newProductRow = createProductRow(product, idorderdetail);
+      productsOnOrder.appendChild(newProductRow);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function createProductRow(product, idorderdetail) {
+  const newProductRow = document.createElement("tr");
+  newProductRow.classList.add("table-body-row", "order-product");
+  newProductRow.setAttribute("idproduct", product.id);
+  newProductRow.innerHTML = `
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+        <td><input name="quantity" type="number" value=1 disabled></td>
+        <td>
+          <button type="button" class="btn btn-danger" onclick="removeProduct(${idorderdetail}, ${product.id})">Remove</button>
+        </td>
+      `;
+  return newProductRow;
+}
+
+function removeProduct(orderId, idproduct) {
+  const productsOnOrder = document.querySelector(
+    `#hoaDon${orderId} #cartTable tbody`
+  );
+  const rows = productsOnOrder.getElementsByClassName("table-body-row");
+  for (const row of rows) {
+    const rowProductId = row.getAttribute("idproduct");
+    if (rowProductId == idproduct) {
+      productsOnOrder.removeChild(row);
+    }
+  }
+}
+async function findInExitOrder(idorderdetail, productId) {
+  const productsOnOrder = document.querySelector(
+    `#hoaDon${idorderdetail} #cartTable tbody`
+  );
+  const rows = productsOnOrder.getElementsByClassName("table-body-row");
+
+  for (const row of rows) {
+    const rowProductId = row.getAttribute("idproduct");
+    if (rowProductId == productId) {
+      return row;
+    }
+  }
+  return null;
+}
+
+function increaseProductQuantity(productExists) {
+  if (productExists instanceof Element) {
+    const inputNumber = productExists.querySelector("td:nth-child(3) input");
+    if (inputNumber instanceof Element) {
+      const currentValue = parseInt(inputNumber.value, 10) || 0;
+      inputNumber.value = currentValue + 1;
+    } else {
+      console.error("Input number element not found.");
+    }
+  } else {
+    console.error("Product element not found.");
+  }
+}
+
+async function getProductDetails(id) {
+  try {
+    const response = await fetch(`/rest/data/counter/productDetails/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+function handleOrderSubmit(event) {
+  event.preventDefault();
+  const formId = event.currentTarget.id;
+  const formValuesJSON = getOrderDatailForm(formId);
+  console.log(formValuesJSON);
+  return false;
+}
+function getOrderDatailForm(formId) {
+  const formData = {};
+  const form = document.getElementById(formId);
+  const carttable = form.querySelector("#cartTable tbody");
+  const tableRows = carttable.querySelectorAll("tr.table-body-row");
+  formData.products = [];
+  tableRows.forEach((row) => {
+    const productId = row.getAttribute("idproduct");
+    const quantityElement = row.querySelector(`input[name="quantity"]`);
+    const productQuantity = quantityElement.value;
+    const productData = {
+      id: productId,
+      quantity: productQuantity,
+    };
+    formData.products.push(productData);
+  });
+  formData.customerName = form.querySelector("#tenKhachHang").value;
+  formData.employeeID = form.querySelector("select[name='employee']").value;
+  formData.orderTypes = form.querySelector(
+    "input[name='options-outlined']:checked"
+  ).value;
+  formData.phoneNumber = form.querySelector("#soDienThoai").value;
+  formData.birthdate = form.querySelector("#birtdays").value;
+  formData.gender = form.querySelector("#gender option:checked").value;
+  formData.city = form.querySelector("#city").value;
+  formData.district = form.querySelector("#district").value;
+  formData.ward = form.querySelector("#ward").value;
+  formData.fullAddress = form.querySelector("#FullAddress").value;
+  formData.specificAddress = form.querySelector("input#address").value;
+  return JSON.stringify(formData);
+}
