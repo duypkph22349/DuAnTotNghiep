@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,10 +23,10 @@ public class OrderCounterRequest {
   private String customerName;
 
   @JsonProperty("employeeID")
-  private String employeeID;
+  private UUID employeeID;
 
   @JsonProperty("orderTypes")
-  private String orderTypes;
+  private int orderTypes;
 
   @JsonProperty("phoneNumber")
   private String phoneNumber;
@@ -57,10 +58,10 @@ public class OrderCounterRequest {
   @NoArgsConstructor
   public static class Product {
     @JsonProperty("id")
-    private String id;
+    private int id;
 
     @JsonProperty("quantity")
-    private String quantity;
+    private int quantity;
 
   }
 }

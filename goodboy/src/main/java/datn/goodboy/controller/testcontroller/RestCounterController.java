@@ -23,6 +23,7 @@ import datn.goodboy.service.CartService;
 import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
+import datn.goodboy.service.test.TestConterService;
 
 @RestController("countercartresttest")
 @RequestMapping("rest/data/counter")
@@ -39,6 +40,8 @@ public class RestCounterController {
 
   @Autowired
   private ProductDetailService productDetailService;
+  @Autowired
+  private TestConterService countService;
 
   @Autowired
   private CartDetailService icartService;
@@ -67,7 +70,7 @@ public class RestCounterController {
 
   @PostMapping("checkout")
   public ResponseEntity<Bill> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
-
-    return null;
+    Bill bill = countService.saveBill(orderCounterRequest);
+    return ResponseEntity.ok().body(bill);
   }
 }

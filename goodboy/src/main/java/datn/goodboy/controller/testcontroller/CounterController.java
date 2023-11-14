@@ -11,6 +11,7 @@ import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.response.CustomerResponse;
+import datn.goodboy.service.BillService;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 import datn.goodboy.service.CustomerService;
@@ -19,6 +20,7 @@ import datn.goodboy.service.ProductDetailService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller("countercarttest")
@@ -35,6 +37,9 @@ public class CounterController {
 
   @Autowired
   private ProductDetailService productDetailService;
+
+  @Autowired
+  private BillService billService;
 
   @ModelAttribute("employees")
   public List<Employee> getAllEmp() {
@@ -56,8 +61,9 @@ public class CounterController {
     return "admin/pages/cartcounter/thatcc.html";
   }
 
-  @PostMapping("checkout")
-  public String checkOutOrder(Model model) {
-    return "admin/pages/cartcounter/thatcc.html";
+  @PostMapping("viewordetail/{id}")
+  public String checkOutOrder(@PathVariable("id") int id, Model model) {
+
+    return "admin/pages/cartcounter/order-detail.html";
   }
 }

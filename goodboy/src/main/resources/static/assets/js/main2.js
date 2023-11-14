@@ -934,8 +934,10 @@ function handleOrderSubmit(event) {
   event.preventDefault();
   const formId = event.currentTarget.id;
   const formValuesJSON = getOrderDatailForm(formId);
-  console.log(formValuesJSON);
   return false;
+}
+function thanhtoan(formValuesJSON){
+
 }
 function getOrderDatailForm(formId) {
   const formData = {};
