@@ -1,5 +1,6 @@
 package datn.goodboy.controller.testcontroller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,9 +69,19 @@ public class RestCounterController {
     return ResponseEntity.ok().body(productDetailService.getProductDetailById(id).get());
   }
 
+  @GetMapping("orderDetail")
+  public ResponseEntity<OrderCounterRequest> getOrderDetail() {
+    OrderCounterRequest.Product pr = new OrderCounterRequest.Product(1, 2);
+    OrderCounterRequest orderCounterRequest = new OrderCounterRequest();
+    orderCounterRequest.setProducts(Arrays.asList(pr));
+    ;
+    return ResponseEntity.ok().body(orderCounterRequest);
+  }
+
   @PostMapping("checkout")
-  public ResponseEntity<Bill> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
-    Bill bill = countService.saveBill(orderCounterRequest);
-    return ResponseEntity.ok().body(bill);
+  public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+    System.out.println(orderCounterRequest);
+    // Bill bill = countService.saveBill(orderCounterRequest);
+    return ResponseEntity.ok().body(orderCounterRequest);
   }
 }
