@@ -12,47 +12,8 @@
     <meta property="og:url"/>
 
     <title>Roles</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Latest compiled and minified CSS -->
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <!--===============================================================================================-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <!--===============================================================================================-->
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
-            integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
-    <!--===============================================================================================-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-          rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-          crossorigin="anonymous">
-
-
     <script type="text/javascript" style="text-align: center">
-        //Phân Trang Cho Table
         function Pager(tableName, itemsPerPage) {
-            this.tableName = tableName;
-            this.itemsPerPage = itemsPerPage;
             this.currentPage = 1;
             this.pages = 0;
             this.inited = false;
@@ -109,55 +70,148 @@
                 var element = document.getElementById(positionId);
 
                 var pagerHtml = '<span onclick="' + pagerName +
-                    '.prev();" class="pg-normal">&#171</span> | ';
+                    '.prev();" class="pg-normal">Trước</span> | ';
                 for (var page = 1; page <= this.pages; page++)
                     pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName +
                         '.showPage(' + page + ');">' + page + '</span> | ';
-                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">&#187;</span>';
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">Sau</span>';
 
                 element.innerHTML = pagerHtml;
             }
         }
     </script>
+    <style>
+        .dropdown-menu li {
+            position: relative;
+        }
+
+        th {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
-<h1>Quản lý Roles</h1>
-<body onload="time()">
 <section layout:fragment="content">
 
-    <div class="container-fluid al">
-        <b>TÌM KIẾM CHỨC VỤ:</b></p>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Nhập chức vụ cần tìm...">
-        <i class="fa fa-search" aria-hidden="true"></i>
-        <Br>
-
-        <a href="/admin/roles/create-roles" class="btn btn-primary">New</a>
-
+    <div class="input-group mb-3">
+        <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Search
+        </button>
+        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
+               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm....">
     </div>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Add Roles
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="mt-3" style="text-align: center">
+                    <label class="h3"><strong>Roles</strong></label>
+                </div>
+                <form th:object="${roles}" th:action="@{/admin/roles/add}" action="#" method="post">
+                    <div class="modal-body">
+                        <div class="modal-content p-3">
+                            <div class="modal-body">
+                                <div class="register-form">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Tên Chức Vụ</label>
+                                                <input th:name="name" type="text" class="form-control"
+                                                       placeholder="Hãy nhập name" required/>
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                                <label class="form-label font-weight-bold">Role</label>
+                                                <select class="form-control" th:name="role" id="role">
+                                                    <option value="Quản Lý">Quản Lý</option>
+                                                    <option value="Nhân Viên">Nhân Viên</option>
+                                                    <option value="Khách Hàng">Khách Hàng</option>
+                                                    <option value="Admin">Admin</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                                <label class="form-label font-weight-bold">Role</label>
+                                                <select class="form-control" th:name="status" id="satus">
+                                                    <option value="0">Hoạt Động</option>
+                                                    <option value="1">Không Hoạt Động</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <a href="/admin/roles/hien-thi" class="btn btn-warning">Reload</a>
+
+<!--    <form th:object="${roles}" th:action="@{'/admin/roles/add'}" action="#" method="post">-->
+<!--        <div class="col-12 col-sm-6 col-lg-6 mb-3">-->
+<!--            <label class="form-label font-weight-bold">Tên Chức Vụ</label>-->
+<!--            <input th:name="name" th:value="${detail.name}" type="text" class="form-control" placeholder="Hãy nhập name" required/>-->
+<!--        </div>-->
+<!--        <div class="col-12 col-sm-6 col-lg-3 mb-3">-->
+<!--            <label class="form-label font-weight-bold">Role</label>-->
+<!--            <select class="form-control" th:name="role">-->
+<!--                <option th:value="Quản Lý" th:selected="${detail.role == 'Quản Lý'}">Quản Lý</option>-->
+<!--                <option th:value="Nhân Viên" th:selected="${detail.role == 'Nhân Viên'}">Nhân Viên</option>-->
+<!--                <option th:value="Khách Hàng" th:selected="${detail.role == 'Khách Hàng'}">Khách Hàng</option>-->
+<!--                <option th:value="Admin" th:selected="${detail.role == 'Admin'}">Admin</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="col-12 col-sm-6 col-lg-3 mb-3">-->
+<!--            <label class="form-label font-weight-bold">Status</label>-->
+<!--            <select class="form-control" th:name="status">-->
+<!--                <option th:value="0" th:selected="${detail.status == 0}">Hoạt Động</option>-->
+<!--                <option th:value="1" th:selected="${detail.status == 1}">Không Hoạt Động</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="submit-btn" style="text-align: right; bottom: 1px">-->
+<!--            <button class="btn btn-primary" type="submit">Lưu</button>-->
+<!--        </div>-->
+<!--    </form>-->
     <!-- Table -->
     <div style="height: 500px; overflow: auto;">
 
-        <table class="table table-hover" id="myTable">
+        <table class="table table-hover">
             <thead class="position-sticky top-0">
-
             <tr class="ex">
                 <th>#</th>
-                <th>Tên Chức Vụ</th>
-                <th width="auto">Roles</th>
-                <th>Trạng Thái</th>
-                <th width="5px; !important">Tính Năng</th>
+                <th scope="col">Tên Chức Vụ
+                    <a href="#" onclick="sortTableCode('asc', 1)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTableCode('desc', 1)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Roles</th>
+                <th>Status
+                    <a href="#" onclick="sortTable('asc', 3)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 3)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="myTable">
             <tr th:each="roles, i : ${list}">
                 <td th:text="${i.index+1}"></td>
                 <td th:text="${roles.name}"></td>
                 <td th:text="${roles.role}"></td>
-                <td th:text="${roles.status} == 0 ? '000' : '111'"></td>
+                <td th:text="${roles.status} == 0 ? 'Hoạt Động' : 'Không Hoạt Động'"></td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a th:href="@{'/roles/detail/' + ${roles.id}}" class="btn btn-danger">Detail</a>
-                        <a th:href="@{'/roles/delete/' + ${roles.id}}" class="btn btn-warning">Delete</a>
+                        <a th:href="@{'/admin/roles/edit/' + ${roles.id}}" class="btn btn-danger">Detail</a>
+                        <a th:href="@{'/admin/roles/delete/' + ${roles.id}}" class="btn btn-warning">Delete</a>
                     </div>
                 </td>
             </tr>
@@ -167,7 +221,7 @@
     </div>
     <div id="pageNavPosition" class="text-right"></div>
     <script type="text/javascript">
-        var pager = new Pager('myTable', 3);
+        var pager = new Pager('myTable', 5);
         pager.init();
         pager.showPageNav('pager', 'pageNavPosition');
         pager.showPage(1);
@@ -178,25 +232,69 @@
     <script type="text/javascript">
         //Tìm kiếm
         function myFunction() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
             tr = table.getElementsByTagName("tr");
+
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[2];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
+                var found = false;
+                for (j = 0; j < 4; j++) {
+                    td = tr[i].getElementsByTagName("td")[j];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
                     }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        function sortTableCode(order, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 0; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    var xValue = parseInt(x.textContent.replace(/\D/g, ''));
+                    var yValue = parseInt(y.textContent.replace(/\D/g, ''));
+
+                    if (order === "asc") {
+                        if (xValue > yValue) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (xValue < yValue) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
                 }
             }
         }
 
     </script>
 </section>
-</body>
 </html>
