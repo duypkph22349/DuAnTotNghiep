@@ -1,0 +1,6 @@
+<p> <strong>Max Discount:</strong> <span
+    th:text="${#strings.replace(#numbers.formatDecimal(voucher?.max_discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+  </span></p>
+<p> <strong>Min Order:</strong> <span
+    th:text="${#strings.replace(#numbers.formatDecimal(voucher?.min_order, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+  </span></p>
