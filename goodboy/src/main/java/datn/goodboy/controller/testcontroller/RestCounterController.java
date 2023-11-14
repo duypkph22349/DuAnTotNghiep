@@ -8,12 +8,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.request.OrderCounterRequest;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 import datn.goodboy.service.CustomerService;
@@ -59,5 +63,11 @@ public class RestCounterController {
     System.out.println(id);
     Optional<ProductDetail> proc = productDetailService.getProductDetailById(id);
     return ResponseEntity.ok().body(productDetailService.getProductDetailById(id).get());
+  }
+
+  @PostMapping("checkout")
+  public ResponseEntity<Bill> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+
+    return null;
   }
 }
