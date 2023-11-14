@@ -1,5 +1,7 @@
 package datn.goodboy.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +27,7 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @GetMapping({"/get-all",""})
+    @GetMapping({"/get-all", ""})
     public String hienThi(Model model,
                           @RequestParam(name = "pageSize", defaultValue = "6") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
@@ -35,13 +37,6 @@ public class CustomerController {
         Page<Customer> page = customerService.getPage(pageable);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("list", page.getContent());
-
-//        List<Province> provinces = customerService.getAllProvinces();
-//        List<District> districts = customerService.getAllDistricts();
-//        List<Ward> wards = customerService.getAllWards();
-//        model.addAttribute("provinces", provinces);
-//        model.addAttribute("districts", districts);
-//        model.addAttribute("wards", wards);
         return "/admin/pages/customer/form-customer";
     }
 
@@ -53,13 +48,35 @@ public class CustomerController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute Customer customer) {
+        customer.setStatus(1);
+        customer.setCreatedAt(LocalDateTime.now());
+        customerService.saveCustomer(customer);
+        return "redirect:/admin/customer/get-all";
+    }
+    @PostMapping("/update")
+    public String update(@ModelAttribute Customer customer) {
+        customer.setUpdatedAt(LocalDateTime.now());
         customerService.saveCustomer(customer);
         return "redirect:/admin/customer/get-all";
     }
 
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable("id") UUID id) {
-        customerService.deleteCustomer(id);
+    public String delete(@PathVariable("id") UUID id, Model model) {
+
+        Customer customer = customerService.getCustomerById(id).get();
+        if (customer != null) {
+            // Chuyển đổi trạng thái
+            if (customer.getStatus() == 1) {
+                customer.setStatus(0); // Chuyển từ hoạt động sang không hoạt động
+            }
+
+            // Lưu cập nhật vào cơ sở dữ liệu
+            customerService.saveCustomer(customer);
+        }
+
+        // Cập nhật danh sách khách hàng
+        List<Customer> customerList = customerService.getAllCustomers();
+        model.addAttribute("list", customerList);
         return "redirect:/admin/customer/get-all";
     }
 
