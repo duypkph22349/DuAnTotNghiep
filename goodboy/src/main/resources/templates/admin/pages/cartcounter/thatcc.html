@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Counter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
+    <style>
+        .add-button {
+            float: right;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                <li class="breadcrumb-item active">Counter</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
+    <div>
+        <section class="section dashboard">
+            <section class="content-wrapper">
+                <div class="list-counter-cart">
+                    <div class="item-counter-cart">
+
+                        <div id="taborders" class="tab">
+                            <button onclick="addnewOrderPage()">
+                                Thêm Hóa Đơn
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus-circle" viewBox="0 0 16 16" onclick="addInvoices()">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z">
+                                    </path>
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z">
+                                    </path>
+                            </button>
+                            </svg>
+                        </div>
+                        <div id="formorders">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+    <script th:src="@{/assets/js/main2.js}"></script>
+</body>
+
+</html>

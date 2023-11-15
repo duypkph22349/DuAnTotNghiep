@@ -16,17 +16,11 @@ public class CartDetailService {
     @Autowired
     private CartDetailRepository cartDetailRepository;
 
-    @Autowired
-    public CartDetailService(CartDetailRepository cartDetailRepository) {
-        this.cartDetailRepository = cartDetailRepository;
-    }
-
-
     public Page<CartDetail> getPage(Pageable pageable){
         return cartDetailRepository.findAll(pageable);
     }
 
-    public ArrayList<CartDetail> getAllCart(){
+    public ArrayList<CartDetail> getAllCartDetail(){
         return (ArrayList<CartDetail>) cartDetailRepository.findAll();
     }
 

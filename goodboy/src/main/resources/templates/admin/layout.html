@@ -34,7 +34,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <img th:src="@{/assets/img/logo.png}" alt="">
-                <span class="d-none d-lg-block">NiceAdmin</span>
+                <span class="d-none d-lg-block">Wamercy</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -275,25 +275,19 @@
                 </a>
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="components-alerts.html">
+                        <a th:href="@{/admin/voucher}">
                             <i class="bi bi-circle"></i><span>Voucher</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="components-accordion.html">
-                            <i class="bi bi-circle"></i><span>Voucher Account</span>
                         </a>
                     </li>
                 </ul>
             </li><!-- End Components Nav -->
-
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-journal-text"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a th:href="@{form-elements}">
+                        <a th:href="@{/test/counter}">
                             <i class="bi bi-circle"></i><span>Order</span>
                         </a>
                     </li>
@@ -308,7 +302,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="forms-elements.html">
+                        <a th:href="@{/admin/bill/dsBill}">
                             <i class="bi bi-circle"></i><span>Order Detail</span>
                         </a>
                     </li>
@@ -316,24 +310,14 @@
             </li><!-- End Forms Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <a class="nav-link collapsed" data-bs-target="#Customer-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-layout-text-window-reverse"></i><span>Customer</span><i
                         class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="Customer-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="tables-general.html">
+                        <a th:href="@{/admin/customer/get-all}">
                             <i class="bi bi-circle"></i><span>Customer</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tables-data.html">
-                            <i class="bi bi-circle"></i><span>Customer Address</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tables-data.html">
-                            <i class="bi bi-circle"></i><span>Material</span>
                         </a>
                     </li>
                 </ul>
@@ -341,32 +325,19 @@
             <!-- End Forms Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <a class="nav-link collapsed" data-bs-target="#Employee-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-layout-text-window-reverse"></i><span>Employee</span><i
                         class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="Employee-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="/admin/employee/hien-thi">
+                        <a th:href="@{/admin/employee/hien-thi}">
                             <i class="bi bi-circle"></i><span>Employee</span>
                         </a>
-                        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                            <li>
-                                <a href="tables-general.html">
-                                    <i class="bi bi-circle"></i><span>Employee</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tables-data.html">
-                                    <i class="bi bi-circle"></i><span>Position</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li><!-- End Employee Nav -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-                            <i class="bi bi-bar-chart"></i><span>Product</span><i
-                                class="bi bi-chevron-down ms-auto"></i>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/roles/hien-thi}">
+                            <i class="bi bi-circle"></i><span>Position</span>
                         </a>
                     </li>
                 </ul>
@@ -378,37 +349,47 @@
                 </a>
                 <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="charts-chartjs.html">
+                        <a th:href="@{/admin/product/dsProduct}">
                             <i class="bi bi-circle"></i><span>Product</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-chartjs.html">
+                        <a th:href="@{/admin/productdetail}">
                             <i class="bi bi-circle"></i><span>Product Detail </span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-apexcharts.html">
+                        <a th:href="@{/admin/pattern/dsPattern}">
+                            <i class="bi bi-circle"></i><span>Pattern</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/color/dsColor}">
                             <i class="bi bi-circle"></i><span>Color</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
-                            <i class="bi bi-circle"></i><span>Image</span>
+                        <a th:href="@{/admin/origin/dsOrigin}">
+                            <i class="bi bi-circle"></i><span>Origin</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
+                        <a th:href="@{/admin/size/dsSize}">
+                            <i class="bi bi-circle"></i><span>Size</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/style/dsStyle}">
                             <i class="bi bi-circle"></i><span>Style</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
+                        <a th:href="@{/admin/material/dsMaterial}">
                             <i class="bi bi-circle"></i><span>Material</span>
                         </a>
                     </li>
                     <li>
-                        <a href="charts-echarts.html">
+                        <a th:href="@{/admin/brand/dsBrand}">
                             <i class="bi bi-circle"></i><span>Brand</span>
                         </a>
                     </li>
@@ -436,69 +417,17 @@
             <li class="nav-heading">Pages</li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{admin/pages/users-profile.html}">
-                    <i class="bi bi-person"></i>
-                    <span>Profile</span>
-                </a>
-            </li><!-- End Profile Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/pages/pages-faq.html}">
-                    <i class="bi bi-question-circle"></i>
-                    <span>F.A.Q</span>
-                </a>
-            </li><!-- End F.A.Q Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/pages/pages-contact.html}">
-                    <i class="bi bi-envelope"></i>
-                    <span>Contact</span>
-                </a>
-            </li><!-- End Contact Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/pages/pages-register.html}">
-                    <i class="bi bi-card-list"></i>
-                    <span>Register</span>
-                </a>
-            </li><!-- End Register Page Nav -->
-
-            <li class="nav-item">
                 <a class="nav-link collapsed" th:href="@{/pages/pages-login.html}">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>Login</span>
                 </a>
             </li><!-- End Login Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/pages/pages-error-404.html}">
-                    <i class="bi bi-dash-circle"></i>
-                    <span>Error 404</span>
-                </a>
-            </li><!-- End Error 404 Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/pages/pages-blank.html}">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>Blank</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
-
         </ul>
-
     </aside><!-- End Sidebar-->
 
     <main id="main" class="main">
 
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
+
 
         <section class="section dashboard">
             <div class="content-wrapper" layout:fragment="content">

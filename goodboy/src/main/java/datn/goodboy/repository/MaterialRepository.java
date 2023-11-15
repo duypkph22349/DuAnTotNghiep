@@ -21,6 +21,6 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
     Page<Material> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @Query("SELECT new map(e.id as key, e.name as value) FROM Origin e")
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Material e")
     List<Map<Integer, String>> getComboBoxMap();
 }

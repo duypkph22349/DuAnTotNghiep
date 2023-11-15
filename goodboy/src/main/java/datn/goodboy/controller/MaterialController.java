@@ -79,8 +79,7 @@ public class MaterialController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Material b, BindingResult result) {
-        String newProductCode = "MR" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

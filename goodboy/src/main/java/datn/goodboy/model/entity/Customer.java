@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -35,16 +36,27 @@ public class Customer {
   String name;
   @Column(name = "gender")
   boolean gender;
-  @Column(name = "birth_date")
-  LocalDate birth_date;
-  @Column(name = "thanh_pho")
-  String address;
   @Column(name = "phone")
   String phone;
-  @Column(name = "huyen")
+  @Column(name = "birth_date")
+  LocalDate birth_date;
+  @Column(name = "address")
+  String address;
+  @Column(name = "districtcode")
   String city;
-  @Column(name = "xa")
+  @Column(name = "wardcode")
   String country;
+  @Column(name = "fulladdress")
+  String fulladdress;
   @Column(name = "status")
   int status;
+
+  @Column(name="created_at")
+  private LocalDateTime createdAt;
+
+  @Column(name="update_at")
+  private LocalDateTime updatedAt;
+
+  @Column(name="deleted")
+  private boolean deleted;
 }

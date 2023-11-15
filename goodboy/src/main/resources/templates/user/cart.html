@@ -1,0 +1,245 @@
+<!-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="../common/common.jsp" %> -->
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Fashi Template">
+    <meta name="keywords" content="Fashi, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Khăn choàng</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+	<!-- <%@include file="../common/css.jsp" %> -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+	<link rel="stylesheet" href="/css/themify-icons.css" type="text/css">
+	<link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+	<link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+	<link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+	<link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
+	<link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+	<link rel="stylesheet" href="/css/style1.css" type="text/css">
+	<script src="/js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+   
+
+    <!-- Header Section Begin -->
+	<!-- <%@include file="./components/header.jsp" %> -->
+    <!-- Header End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text product-more">
+                        <a href="/home"><i class="fa fa-home"></i> Trang chủ</a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section Begin -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cart-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%">#</th>
+                                    <th style="width: 10%">Hình ảnh</th>
+                                    <th style="width: 25%" class="p-name">Tên sản phẩm</th>
+                                    <th style="width: 20%">Giá</th>
+                                    <th style="width: 20%">Số lượng</th>
+                                    <th style="width: 20%">Tổng giá</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <tr th:each="cartDetail, i : ${list}" >
+                                        <td th:text="${i.index+1}"></td>
+                                        <td th:text="${cartDetail.productDetail.name}"></td>
+                                        <td th:text="${cartDetail.productDetail.name}"></td>
+                                        <td th:text="${cartDetail.productDetail.price}"></td>
+                                        <td class="qua-col first-row">
+                                            <div class="quantity">
+                                                <div class="pro-qty">
+                                                    <span class="dec qtybtn" th:onclick="|qty(${i.index},'${cartDetail.productDetail.id}',0)|">-</span>
+                                                    <input type="text" class="qty_product" th:value="${cartDetail.quantity}" th:onchange="|updateCart(${i.index},'${cartDetail.productDetail.id}')|">
+                                                    <span class="inc qtybtn" th:onclick="|qty(${i.index},'${cartDetail.productDetail.id}',1)|">+</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td th:text="${cartDetail.productDetail.price * cartDetail.quantity}"></td>
+<!--                                        <td   style="width: 5%" th:href="@{'/user/home/delete/' + ${cartDetail.id}}" ><i  class="ti-close"></i></td>-->
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="">
+                        <h3 class="fw-bold">Hóa đơn</h3>
+                        <hr class="my-4">
+<!--                        <div th:each="detail : ${cart.listDetail}" class="d-flex justify-content-between mb-4 row_summary">-->
+<!--                            <h5 class="h6 qty_summary" th:text="${detail.value.quantity + 'x ' + detail.value.name}"></h5>-->
+<!--                            <h5 class="h6 price_summary">-->
+<!--                                <span th:text="${#numbers.formatDecimal(detail.value.price, 0, 'NUMBER')}" /> VND</h5>-->
+<!--                        </div>-->
+                        <hr class="my-4 ">
+                    </div>
+                    <div class="">
+                        <div class="discount-coupon">
+                            <h6>Mã giảm giá</h6>
+                            <form action="#" class="coupon-form">
+                                <input type="text" placeholder="Hãy nhập mã giảm giá">
+                                <button type="submit" class="site-btn coupon-btn">Áp dụng</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="proceed-checkout">
+                            <ul>
+                                <li class="subTotal">Tổng giá<span id="subTotal"><span th:text="${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0)}"></span> VND</span></li>
+                                <hr>
+                                <li class="cart-total">Tổng tiền <span id="cartTotal"><span th:text="${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0)}"></span> VND</span></li>
+                            </ul>
+                            <a href="/checkout" class="proceed-btn">Thanh toán</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+
+    <!-- Footer Section Begin -->
+	<!-- <%@include file="./components/footer.jsp" %> -->
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+	<!-- <%@include file="../common/js.jsp" %> -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery.zoom.min.js"></script>
+<script src="/js/jquery.dd.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/validate.js"></script>
+    <script type="text/javascript">
+        function updateCart(index,productId) {
+            var quantity = $('.qty_product').eq(index).val();
+            if(quantity == 0){
+                removeProduct(index,productId);
+            }else{
+                var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=' + quantity + '&isReplace=true';
+                $.ajax({
+                    url: apiUrl,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(data){
+                        console.log(data.listDetail[index]);
+                        $('.price_total').eq(index).html(data.listDetail[productId].price.toLocaleString('en-US') + ' VND');
+                        $('.price_summary').eq(index).html(data.listDetail[productId].price.toLocaleString('en-US') + ' VND');
+                        $('.qty_summary').eq(index).html(data.listDetail[productId].quantity + 'x ' + data.listDetail[productId].name);
+
+                        $('#subQuantity').html(data.totalQuantity);
+                        $('#subTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                        $('#cartTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+
+                        $('#totalQuantity').html(data.totalQuantity);
+                        $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                        $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                        $.ajax({
+                            url: '/cart',
+                            type: 'GET',
+                            success: function(data){
+                                $('#cartShow').html($(data).find('#cartShow').children());
+                            },
+                            error: function(error){
+                                alert('Error: ' + error);
+                            }
+                        })
+                    },
+                    error: function(error){
+                        alert('Add product to cart fail. Error: ' + error);
+                    }
+
+                });
+            }
+        }
+
+        function removeProduct(index,productId) {
+            $('.row_cart').eq(index).remove();
+            $('.row_summary').eq(index).remove();
+            var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=0&isReplace=true';
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function(data){
+
+                    $('#subQuantity').html(data.totalQuantity);
+                    $('#subTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                    $('#cartTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+
+                    $('#totalQuantity').html(data.totalQuantity);
+                    $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                    $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                    $.ajax({
+                        url: '/cart',
+                        type: 'GET',
+                        success: function(data){
+                            $('#cartShow').html($(data).find('#cartShow').children());
+                        },
+                        error: function(error){
+                            alert('Error: ' + error);
+                        }
+                    })
+                },
+                error: function(error){
+                    alert('Add product to cart fail. Error: ' + error);
+                }
+
+            });
+        }
+
+
+
+        function qty(index,productId, check) {
+            var value = $('.qty_product').eq(index).val();
+            if(check == 1){
+                $('.qty_product').eq(index).val(parseInt(value)+1);
+            }else $('.qty_product').eq(index).val(parseInt(value)-1);
+            updateCart(index,productId);
+        }
+    </script>
+</body>
+
+</html>

@@ -107,7 +107,7 @@ public class SpringSecurityConfig {
             .successHandler(new CustomAuthenticationSuccessHandler())
             .usernameParameter("username")
             .passwordParameter("password")
-            .failureHandler(authenticationFailureHandler())
+            // .failureHandler(authenticationFailureHandler())
             .permitAll())
         .logout(
             formLogin -> formLogin
@@ -123,9 +123,6 @@ public class SpringSecurityConfig {
     return http.build();
   }
 
-  @Bean
-  AuthenticationFailureHandler authenticationFailureHandler() {
-    return new CustomerLoginFailhander();
-  }
+
 
 }
