@@ -17,4 +17,5 @@ public interface Bill1Repository extends JpaRepository<Bill, Integer> {
     @Query("SELECT b FROM Bill b WHERE b.code LIKE %:keyword% OR b.status LIKE %:keyword% OR b.loaiDon LIKE %:keyword%")
     Page<Bill> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
+    Page<Bill> findByStatusContains(Integer status, Pageable pageable);
 }

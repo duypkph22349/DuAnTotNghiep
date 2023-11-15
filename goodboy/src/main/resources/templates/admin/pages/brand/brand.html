@@ -44,7 +44,8 @@
                 <td th:text="${b.name}"></td>
                 <td th:text="${b.status == 1 ? 'active' : 'unactive'}"></td>
                 <td>
-                    <button class="btn btn-primary" id="view-update-button">Update</button>
+                    <a th:href="@{'/admin/brand/view-update/' + ${b.id}}" class="btn btn-info"><i
+                            class="fas fa-edit"></i></a>
                     <a th:href="@{'/admin/brand/delete/' + ${b.id}}" class="btn btn-danger">delete</a>
                 </td>
             </tr>

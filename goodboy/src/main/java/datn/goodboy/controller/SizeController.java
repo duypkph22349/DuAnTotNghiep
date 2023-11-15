@@ -67,7 +67,7 @@ public class SizeController {
     @GetMapping("/view-update/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("brand",sizeService.getById(id));
-        return "admin/pages/size/hien-thi";
+        return "admin/pages/size/update-size";
     }
 
     @PostMapping("/update/{id}")
