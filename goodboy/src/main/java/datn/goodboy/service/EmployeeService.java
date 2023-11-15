@@ -23,12 +23,6 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
-
     public Page<Employee> getPage(Pageable pageable){
         return employeeRepository.findAll(pageable);
     }
