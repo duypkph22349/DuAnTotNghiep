@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -49,4 +50,13 @@ public class Customer {
   String fulladdress;
   @Column(name = "status")
   int status;
+
+  @Column(name="created_at")
+  private LocalDateTime createdAt;
+
+  @Column(name="update_at")
+  private LocalDateTime updatedAt;
+
+  @Column(name="deleted")
+  private boolean deleted;
 }
