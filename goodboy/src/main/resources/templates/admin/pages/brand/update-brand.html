@@ -9,6 +9,15 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                <li class="breadcrumb-item active">Branch Update</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
     <h1 style="text-align: center">ADD CUSTOMER</h1>
     <form th:object="${brand}" th:action="@{'/admin/brand/update/' + ${brand.id}}" method="post">
 

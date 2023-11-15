@@ -8,6 +8,15 @@
 
 <body>
   <section layout:fragment="content">
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Account</li>
+          </ol>
+      </nav>
+  </div><!-- End Page Title -->
     <div class="container">
       <!-- Form to store new cuahang -->
       <form enctype="multipart/form-data" th:action="@{/admin/pages/account/store}" th:object="${accountRequest}"
