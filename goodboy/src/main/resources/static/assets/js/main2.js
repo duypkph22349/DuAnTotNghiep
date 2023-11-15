@@ -149,8 +149,9 @@ function formInOrder(id) {
                                           <div class="processor-seller-at-shop">
                                               <div class="div-user">
                                                   <!-- Add Nhân Viên-->
-                                                  <select name="employee" class="form-select form-select-sm" aria-label="Small select example" size="1">
-                                              </select>
+                                                  <select name="employee" class="form-select form-select-sm"
+                                                      aria-label="Small select example" size="1" required>
+                                                  </select>
                                               </div>
                                           </div>
                                       </div>
@@ -203,8 +204,9 @@ function formInOrder(id) {
                                       <label class="ant-radio-button-wrapper">
                                           <span class="ant-radio-button">
                                               <input autocomplete="off" checked class="btn-check" value="0"
-                                                  id="success-outlined" name="options-outlined" type="radio">
-                                              <label class="btn btn-outline-success" for="success-outlined"><svg
+                                                  id="success-outlined${id}" name="options-outlined" type="radio"
+                                                  onchange="selectOrderType(event, ${id})">
+                                              <label class="btn btn-outline-success" for="success-outlined${id}"><svg
                                                       class="bi bi-house-door" fill="currentColor" height="16"
                                                       viewBox="0 0 16 16" width="16"
                                                       xmlns="http://www.w3.org/2000/svg">
@@ -212,9 +214,10 @@ function formInOrder(id) {
                                                           d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z">
                                                       </path>
                                                   </svg> Tại quầy</label>
-                                              <input type="radio" class="btn-check" name="options-outlined"  value="1"
-                                                  id="danger-outlined" autocomplete="off">
-                                              <label class="btn btn-outline-danger" for="danger-outlined"><svg
+                                              <input type="radio" class="btn-check" name="options-outlined" value="1"
+                                                  id="danger-outlined${id}" autocomplete="off"
+                                                  onchange="selectOrderType(event, ${id})">
+                                              <label class="btn btn-outline-danger" for="danger-outlined${id}"><svg
                                                       xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                       fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
                                                       <path
@@ -243,7 +246,7 @@ function formInOrder(id) {
                                               id="soDienThoai">
                                       </div>
                                       <!-- Địa chỉ -->
-                                      <div class="col-md-4">
+                                      <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Thành
                                               Phố</label>
                                           <select class="form-select" id="city" onchange="getAllDistrict(${id})">
@@ -251,23 +254,24 @@ function formInOrder(id) {
                                               </option>
                                           </select>
                                       </div>
-                                      <div class="col-md-4">
+                                      <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Huyện</label>
                                           <select class="form-select" id="district" onchange="getFullWardCode(${id})">
                                               <option selected="">Chọn Huyện</option>
                                           </select>
                                       </div>
-                                      <div class="col-md-4">
+                                      <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Xã</label>
                                           <select class="form-select" id="ward" onchange="getFullAddress(${id})">
                                               <option selected="">Chọn Xã</option>
                                           </select>
                                       </div>
                                       <input type="hidden" name="" id="FullAddress">
-                                      <div class="col-12">
+                                      <div class="col-12 online-option  d-none">
                                           <label class="form-label">Địa
                                               Chỉ Cụ Thể</label>
-                                          <input type="text" class="form-control" id="address" placeholder="Địa chỉ cụ thể">
+                                          <input type="text" class="form-control" id="address"
+                                              placeholder="Địa chỉ cụ thể">
                                       </div>
                                   </div>
                               </div>
@@ -323,7 +327,7 @@ function formInOrder(id) {
                           <div class="line"></div>
                           <div class="box-payment" id="box-payment-info">
                               <div class="row g-3">
-                                  <div class="col-12">
+                                  <div class="col-12 d-none">
                                       <div class="input-wrapper">
                                           <span class="currency-symbol">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -348,7 +352,7 @@ function formInOrder(id) {
                                               Tiền chuyển khoản
                                           </span>
                                           <input type="text" class="form-control" id="transfer-amount"
-                                              placeholder="0₫">
+                                              placeholder="0 ₫">
                                       </div>
                                   </div>
 
@@ -367,7 +371,7 @@ function formInOrder(id) {
                                                       d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z">
                                                   </path>
                                               </svg>
-                                              Phụ thu tiền mặt
+                                              Tiền mặt
                                           </span>
                                           <input type="text" class="form-control" id="surcharge-amount"
                                               placeholder="0 ₫">
@@ -385,12 +389,12 @@ function formInOrder(id) {
                                                       <span class="fw-500" id="totalAmount">0
                                                           đ</span>
                                                   </div>
-                                                  <div class="box-monney">
+                                                  <div class="box-monney d-none">
                                                       <span class="title">Giảm
                                                           giá&nbsp;</span>
                                                       <span id="discount-amount" class="fw-500 red">0 ₫</span>
                                                   </div>
-                                                  <div class="box-monney">
+                                                  <div class="box-monney online-option d-none">
                                                       <span class="title">Tiền
                                                           Ship&nbsp;</span>
                                                       <span id="amount-ship" class="fw-500 red">0
@@ -410,7 +414,7 @@ function formInOrder(id) {
                                                           ₫</span>
                                                   </div>
 
-                                                  <div class="box-monney"><span class="title">Còn
+                                                  <div class="box-monney d-none"><span class="title">Còn
                                                           thiếu</span>
                                                       <span class="fw-500" id="changeAmount">30.000₫</span>
                                                   </div>
@@ -428,7 +432,6 @@ function formInOrder(id) {
                           </div>
                       </section>
                       <section>
-
                           <div class="ant-tabs ant-tabs-top box-note-tabs">
                               <div role="tablist" class="ant-tabs-nav">
                                   <div class="ant-tabs-nav-wrap">
@@ -484,56 +487,55 @@ function formInOrder(id) {
                                   color: #506dad
                               }
                           </style>
+                          <div class="box-order-status">
+                              <div style="font-size: 16px;">
+                              </div>
+                              <div style="display: flex;">
+                                  <span class="order-action-button" style="margin-right: 8px;"><button type="button"
+                                          class="ant-btn ant-btn-primary"
+                                          style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
+                                                  role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                      viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                      width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                      <path
+                                                          d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                      </path>
+                                                  </svg></span> In (F4)</span></button>
+                                      <button type="button" class="ant-btn ant-btn-primary"
+                                          onclick="removeOrderPage(${id})"
+                                          style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
+                                                  role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                      viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                      width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                      <path
+                                                          d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                      </path>
+                                                  </svg></span> Xóa (F5)</span></button>
+                                      <div id="order-print-div"></div>
+                                      <div></div>
+                                  </span><span id="order-action-button" class="order-action-button"><button
+                                          type="submit" class="ant-btn ant-btn-primary"
+                                          style="font-size: 14px; height: 100%;"><span><span role="img"
+                                                  aria-label="save" class="anticon anticon-save"><svg
+                                                      viewBox="64 64 896 896" focusable="false" data-icon="save"
+                                                      width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                      <path
+                                                          d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
+                                                      </path>
+                                                  </svg></span> Thanh Toán</span></button>
+                                      <div></div>
+                                  </span>
+                              </div>
+                          </div>
                       </section>
                   </div>
               </div>
           </div>
       </div>
-      <div class="box-order-status">
-          <div style="font-size: 16px;">
-              <div>Cần thanh toán: <span style="font-weight: 500;" id="finalAmount2">30.000
-                      ₫</span></div>
-              <div>Còn thiếu: <span style="color: rgb(235, 87, 87); font-weight: 500;"
-                      id="changeAmount2">30.000₫</span>
-              </div>
-          </div>
-          <div style="display: flex;">
-              <span class="order-action-button" style="margin-right: 8px;"><button type="button"
-                      class="ant-btn ant-btn-primary"
-                      style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
-                              role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                  viewBox="64 64 896 896" focusable="false" data-icon="printer" width="1em"
-                                  height="1em" fill="currentColor" aria-hidden="true">
-                                  <path
-                                      d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                  </path>
-                              </svg></span> In (F4)</span></button>
-                  <button type="button" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
-                      style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
-                              role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                  viewBox="64 64 896 896" focusable="false" data-icon="printer" width="1em"
-                                  height="1em" fill="currentColor" aria-hidden="true">
-                                  <path
-                                      d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                  </path>
-                              </svg></span> Xóa (F5)</span></button>
-                  <div id="order-print-div"></div>
-                  <div></div>
-              </span><span id="order-action-button" class="order-action-button"><button type="submit"
-                      class="ant-btn ant-btn-primary" style="font-size: 14px; height: 100%;"><span><span role="img"
-                              aria-label="save" class="anticon anticon-save"><svg viewBox="64 64 896 896"
-                                  focusable="false" data-icon="save" width="1em" height="1em" fill="currentColor"
-                                  aria-hidden="true">
-                                  <path
-                                      d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
-                                  </path>
-                              </svg></span> Thanh Toán</span></button>
-                  <div></div>
-              </span>
-          </div>
-      </div>
+
   </div>
 </div>
+
 `;
   return form;
 }
@@ -558,8 +560,8 @@ function addnewOrderPage() {
     document.getElementById(`hoaDon${id}`).style.display = "block";
     const exitButton = document.getElementById(`vieworder${id}`);
     exitButton.className += " active";
-  }else{
-    alert("Tối đa 5 hóa đơn")
+  } else {
+    alert("Tối đa 5 hóa đơn");
   }
 }
 function renderOrderPage(id) {
@@ -580,6 +582,10 @@ function selectOrder(evt, id) {
 }
 function removeOrderPage(orderId) {
   if (confirm("Bạn Muốn xóa sáo")) {
+    let indexToRemove = listtab.indexOf(orderId);
+    if (indexToRemove !== -1) {
+      listtab.splice(indexToRemove, 1);
+    }
     const orderbtnRemove = document.getElementById(`hd${orderId}`);
     const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
     const orderToRemove = document.getElementById(`hoaDon${orderId}`);
@@ -610,6 +616,21 @@ function getProductDetail(id) {
     cc2: { stt: 2, code: "Jaclyn-XL-Stacia", gia: 24849.0 },
   };
   return products[id];
+}
+function selectOrderType(event, id) {
+  orderType = event.target.value;
+  console.log(orderType, "orderType");
+  console.log(id, "id");
+  const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
+  if (orderType == 0) {
+    OptionOnline.forEach(function (element) {
+      element.classList.add("d-none");
+    });
+  } else if (orderType == 1) {
+    OptionOnline.forEach(function (element) {
+      element.classList.remove("d-none");
+    });
+  }
 }
 // address, shipcode
 function updateTotalPrirce(orderId) {}
@@ -875,7 +896,6 @@ function renderCounterPage() {
 renderCounterPage();
 async function addProductIntoOrder(idorderdetail, id) {
   const form = document.getElementById(`hoaDon${idorderdetail}`);
-
   try {
     const product = await getProductDetails(id);
     const productExists = await findInExitOrder(idorderdetail, product.id);
@@ -887,6 +907,7 @@ async function addProductIntoOrder(idorderdetail, id) {
       const newProductRow = createProductRow(product, idorderdetail);
       productsOnOrder.appendChild(newProductRow);
     }
+    updateTongTien(idorderdetail);
   } catch (error) {
     console.error(error);
   }
@@ -920,6 +941,7 @@ function removeProduct(orderId, idproduct) {
       productsOnOrder.removeChild(row);
     }
   }
+  updateTongTien(orderId);
 }
 async function findInExitOrder(idorderdetail, productId) {
   const productsOnOrder = document.querySelector(
@@ -950,16 +972,6 @@ function increaseProductQuantity(productExists) {
   }
 }
 
-async function getProductDetails(id) {
-  try {
-    const response = await fetch(`/rest/data/counter/productDetails/${id}`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
 function handleOrderSubmit(event) {
   event.preventDefault();
   const formId = event.currentTarget.id;
@@ -1014,4 +1026,59 @@ function getOrderDatailForm(formId) {
   formData.specificAddress = form.querySelector("input#address").value;
   formData.note = form.querySelector("textarea#note").value;
   return JSON.stringify(formData);
+}
+
+async function getProductDetails(id) {
+  try {
+    const response = await fetch(`/rest/data/counter/productDetails/${id}`);
+    const data = response.json();
+    return data;
+  } catch (error) {
+    alert("Không thể tìm thấy sản phẩm !!!");
+    throw error;
+  }
+}
+async function updateTongTien(formId) {
+  const tableRows = document.querySelectorAll(
+    `#hoaDon${formId} #cartTable tbody tr.table-body-row`
+  );
+  const finalAmount = document.querySelector(`#hoaDon${formId} #finalAmount`);
+  const totalAmount = document.querySelector(`#hoaDon${formId} #totalAmount`);
+  let totalMoney = 0;
+  for (const row of tableRows) {
+    const productId = row.getAttribute("idproduct");
+    const quantityElement = row.querySelector(`input[name="quantity"]`);
+    const productQuantity = parseInt(quantityElement.value, 10);
+
+    if (productQuantity <= 0 || isNaN(productQuantity)) {
+      alert("Số lượng sản phẩm không đúng");
+      return;
+    }
+    try {
+      const product = await getProductDetails(productId);
+      if (product) {
+        totalMoney += product.price * productQuantity;
+      }
+    } catch (error) {
+      console.error("Error fetching or calculating total money:", error);
+    }
+  }
+  finalAmount.innerHTML = formatToVND(totalMoney);
+  totalAmount.innerHTML = formatToVND(totalMoney);
+}
+async function finalPrice(formId) {
+  const tableRows = document.querySelectorAll(
+    `#hoaDon${formId} #cartTable tbody tr.table-body-row`
+  );
+  const finalAmount = document.querySelector(`#hoaDon${formId} #final-price`);
+  const remainPrice = document.querySelector(`#hoaDon${formId} #remain-price`);
+  finalAmount.innerHTML = formatToVND(totalMoney);
+}
+function formatToVND(amount) {
+  const formatter = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    minimumFractionDigits: 0, // Set to 0 to display whole numbers
+  });
+  return formatter.format(amount);
 }
