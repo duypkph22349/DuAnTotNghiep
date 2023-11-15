@@ -31,10 +31,8 @@ public class Cart {
     @Column(name = "start_time")
     private LocalDateTime start_time;
 
-    @Column(name = "end_time")
-    private LocalDateTime end_time;
 
-    @Column(name = "quantily")
+    @Column(name = "quantity")
     private int quantily;
 
     @Column(name = "total_money")
@@ -46,7 +44,7 @@ public class Cart {
     @Column(name="created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="update_at")
+    @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
     @Column(name="deleted")
