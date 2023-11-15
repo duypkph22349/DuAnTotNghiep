@@ -74,9 +74,9 @@ function formInOrder(id) {
                                           <table class="table table-hover" id="cartTable">
                                               <thead>
                                                   <tr>
-                                                      <th>Tên sản phẩm</th>
+                                                      <th>Sản phẩm</th>
+                                                      <th>Giá</th>
                                                       <th>Số lượng</th>
-                                                      <th>Tổng tiền</th>
                                                       <th>Action</th>
                                                   </tr>
                                               </thead>
@@ -795,9 +795,79 @@ function getFirstProductPage(orderId) {
           product.quantity,
           product.idPattern.name,
           product.idColor.name,
-          `<button type="button" class="btn btn-primary"  onclick="openProductModal(${product.id})"><i class="far fa-eye"></i></button>
-          <button type="button" class="btn btn-primary"  onclick="addProductIntoOrder(${orderId},${product.id})"><i class="far fa-plus"></i></button>
-          `,
+          `
+          <div class="d-flex">
+          <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop${
+            product.id
+          }">
+          <i class="fas fa-eye fa-xs"></i>
+        </button>
+        <div class="modal fade" id="staticBackdrop${
+          product.id
+        }" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel" ${
+                    product.idProduct?.name ?? ""
+                  }>
+                    ${product.idProduct?.name ?? ""}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p><strong>name :</strong>
+                    <span>${product.name}</span>
+                  </p>
+                  <p><strong>price :</strong>
+                    <span> ${product.price.toLocaleString("it-IT", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                    </span>
+                  </p>
+                  </p>
+                  <p><strong>quantity :</strong>
+                    <span>${product.quantity}</span>
+                  </p>
+                  <p><strong>Product :</strong>
+                    <span>${product.idProduct?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Pattern :</strong>
+                    <span>${product.idPattern?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Color :</strong>
+                    <span>${product.idColor?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Origin :</strong>
+                    <span>${product.idOrigin?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Brand :</strong>
+                    <span>${product.idBrand?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Material :</strong>
+                    <span>${product.idMaterial?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Size :</strong>
+                    <span>${product.idSize?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Styles :</strong>
+                    <span>${product.idStyles?.name ?? ""}</span>
+                  </p>
+                  <p><strong>description :</strong>
+                    <span>${product.description}</span>
+                  </p>
+                </div>
+                <div class=" modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-success  mx-1"  onclick="addProductIntoOrder(${orderId},${
+            product.id
+          })"><i class="far fa-plus"></i></button>
+          </div>`,
         ];
         cells.forEach(function (cellContent) {
           var cell = document.createElement("td");
@@ -809,37 +879,6 @@ function getFirstProductPage(orderId) {
       });
     });
 }
-function openProductModal(id) {
-  var product;
-  fetch(`/rest/data/counter/productDetails/${id}`, {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      product = data;
-    });
-  var modalTitle = document.getElementById("exampleModalLabel");
-  var modalBody = document.querySelector(".modal-body");
-  modalTitle.textContent = product.name;
-  var modalBodyContent = `
-      <img src="${
-        product.imageUrl || defaultImage
-      }" class="img-fluid mb-3" alt="${product.name}">
-      <p><strong>Price:</strong> ${product.price}</p>
-      <p><strong>Quantity:</strong> ${product.quantity}</p>
-      <p><strong>Description:</strong> ${product.description}</p>
-      <p><strong>Material:</strong> ${product.material}</p>
-      <p><strong>Size:</strong> ${product.size}</p>
-      <p><strong>Brand:</strong> ${product.brand}</p>
-      <p><strong>Note:</strong> ${product.note}</p>
-    `;
-  modalBody.innerHTML = modalBodyContent;
-  var productModal = new bootstrap.Modal(
-    document.getElementById("exampleModal")
-  );
-  productModal.show();
-}
-
 function renderCounterPage() {
   addnewOrderPage();
 }
@@ -862,22 +901,24 @@ async function addProductIntoOrder(idorderdetail, id) {
     console.error(error);
   }
 }
-
 function createProductRow(product, idorderdetail) {
   const newProductRow = document.createElement("tr");
   newProductRow.classList.add("table-body-row", "order-product");
   newProductRow.setAttribute("idproduct", product.id);
   newProductRow.innerHTML = `
-        <td>${product.name}</td>
+        <td><strong>Tên:</strong> ${product.name} <strong>Màu sắc:</strong> ${
+    product.idColor?.name ?? ""
+  } <strong>Hoa văn:</strong> ${product.idPattern?.name ?? ""} </td>
         <td>${product.price}</td>
         <td><input name="quantity" type="number" value=1 disabled></td>
         <td>
-          <button type="button" class="btn btn-danger" onclick="removeProduct(${idorderdetail}, ${product.id})">Remove</button>
+          <button type="button" class="btn btn-danger" onclick="removeProduct(${idorderdetail}, ${
+    product.id
+  })">Remove</button>
         </td>
       `;
   return newProductRow;
 }
-
 function removeProduct(orderId, idproduct) {
   const productsOnOrder = document.querySelector(
     `#hoaDon${orderId} #cartTable tbody`
@@ -929,16 +970,14 @@ async function getProductDetails(id) {
     throw error;
   }
 }
-
 function handleOrderSubmit(event) {
   event.preventDefault();
   const formId = event.currentTarget.id;
   const formValuesJSON = getOrderDatailForm(formId);
+  console.log(formValuesJSON);
   return false;
 }
-function thanhtoan(formValuesJSON){
-
-}
+function thanhtoan(formValuesJSON) {}
 function getOrderDatailForm(formId) {
   const formData = {};
   const form = document.getElementById(formId);
@@ -968,5 +1007,6 @@ function getOrderDatailForm(formId) {
   formData.ward = form.querySelector("#ward").value;
   formData.fullAddress = form.querySelector("#FullAddress").value;
   formData.specificAddress = form.querySelector("input#address").value;
+  formData.note = form.querySelector("textarea#note").value;
   return JSON.stringify(formData);
 }
