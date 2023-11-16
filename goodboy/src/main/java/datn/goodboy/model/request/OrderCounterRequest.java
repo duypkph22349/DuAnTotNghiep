@@ -2,6 +2,8 @@ package datn.goodboy.model.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import datn.goodboy.exception.ErrorCreateBill;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 public class OrderCounterRequest {
+
   @JsonProperty("products")
   private List<Product> products;
 
@@ -27,7 +30,7 @@ public class OrderCounterRequest {
 
   @JsonProperty("orderTypes")
   private int orderTypes;
-  // 0 là tại quầy 1 là online.
+
   @JsonProperty("phoneNumber")
   private String phoneNumber;
 
@@ -54,24 +57,24 @@ public class OrderCounterRequest {
 
   @JsonProperty("note")
   private String note;
-  // o is tien mat 1 la chuyen khoan
-  @JsonProperty("payMethod")
-  private int payMethod;
 
   @JsonProperty("totalMoney")
-  private int totalMoney;
+  private float totalMoney;
 
   @JsonProperty("cashMoney")
-  private int cashMoney;
+  private float cashMoney;
+
+  @JsonProperty("trasferMoney")
+  private float transferMoney;
 
   @JsonProperty("reductionAmount")
-  private int reduction_amount;
+  private float reductionAmount;
 
   @JsonProperty("cashReturn")
-  private int cashReturn;
+  private float cashReturn;
 
   @JsonProperty("totalShip")
-  private int totalShip;
+  private float totalShip;
 
   @Getter
   @Setter
@@ -116,30 +119,52 @@ public class OrderCounterRequest {
     this.note = note;
   }
 
-  public String errorMessage;
+  public String getErrorMessage() {
+    StringBuilder errorMessage = new StringBuilder();
 
-  public String VaidError() {
-    return errorMessage;
-  }
+    if (products.isEmpty()) {
+      errorMessage.append("Chưa có sản phẩm nào<br>");
+    } else {
+      if (employeeID == null) {
+        errorMessage.append("Employee cần được chọn !!!<br>");
+      }
+      if (orderTypes == 0) {
+        // check if chọn loại hóa đơn tại quầy
+        if (cashMoney + transferMoney <= totalMoney) {
+          // check if chọn phương thức thanh toán là tiền mặt
+          errorMessage.append("Tiền chưa đủ !!!<br>");
+        }
+      }
+      if (orderTypes == 1) {
+        if (phoneNumber.trim().isEmpty()) {
+          errorMessage.append("Số điện thoại không được thiếu !!!<br>");
+        }
+        if (customerName.trim().isEmpty()) {
+          errorMessage.append("Tên khách hàng không được thiếu !!!<br>");
+        }
 
-  public boolean hasVaidError() {
-    Boolean isHasError = false;
-    if (orderTypes == 1) {
-      // check if chọn loại hóa đơn tại quầy
-      if (payMethod == 1) {
-        // check if chọn phương thức thanh toán là tiền mặt
-
-      } else if (payMethod == 0) {
-        // check if chọn phương thức thanh toán là tiền chuyển khoản
-
-      } else {
-        // check if chọn phương thức thanh toán ko xác định
+        if (district.trim().isEmpty()) {
+          errorMessage.append("district không được thiếu !!!<br>");
+        }
+        if (ward.trim().isEmpty()) {
+          errorMessage.append("ward không được thiếu !!!<br>");
+        }
+        if (fullAddress.trim().isEmpty()) {
+          errorMessage.append("fullAddress không được thiếu !!!<br>");
+        }
+        if (specificAddress.trim().isEmpty()) {
+          errorMessage.append("specificAddress không được thiếu !!!<br>");
+        }
       }
     }
-    if (orderTypes == 0) {
-      // check if loai hoa don online
-    }
+    return errorMessage.toString();
+  }
 
-    return isHasError;
+  public boolean hasValidationError() {
+    String errorMessage = getErrorMessage();
+    if (!errorMessage.isEmpty()) {
+      throw new ErrorCreateBill(errorMessage);
+    }
+    return false;
   }
 }

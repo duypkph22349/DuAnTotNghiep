@@ -25,6 +25,7 @@ import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.test.TestConterService;
+import jakarta.validation.Valid;
 
 @RestController("countercartresttest")
 @RequestMapping("rest/data/counter")
@@ -80,9 +81,10 @@ public class RestCounterController {
 
   @PostMapping("checkout")
   public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
-    System.out.println(orderCounterRequest);
-
-    // Bill bill = countService.saveBill(orderCounterRequest);
-    return ResponseEntity.ok().body(orderCounterRequest);
+    if (!orderCounterRequest.hasValidationError()) {
+      Bill bill = countService.saveBill(orderCounterRequest);
+      return ResponseEntity.ok().body(orderCounterRequest);
+    }
+    return null;
   }
 }

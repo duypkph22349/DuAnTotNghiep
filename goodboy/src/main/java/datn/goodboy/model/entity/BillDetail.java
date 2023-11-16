@@ -3,7 +3,6 @@ package datn.goodboy.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,7 +27,7 @@ public class BillDetail {
     private Bill idBill;
 
     @Column(name = "total_money")
-    BigDecimal totalMoney;
+    Double totalMoney;
 
     @Column(name = "quantity")
     int quantity;

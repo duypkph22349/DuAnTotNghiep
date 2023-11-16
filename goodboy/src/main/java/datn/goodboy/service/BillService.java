@@ -1,28 +1,24 @@
 package datn.goodboy.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.request.BillRequest;
-import datn.goodboy.model.response.BillResponse;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayRepository;
 import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import datn.goodboy.repository.BillRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BillService {
@@ -34,16 +30,15 @@ public class BillService {
     @Autowired
     private PayRepository payRepository;
 
-    public BillService(){
+    public BillService() {
         this.billRepository = billRepository;
     }
 
-
-    public Page<Bill> getPage(Pageable pageable){
+    public Page<Bill> getPage(Pageable pageable) {
         return billRepository.findByDeletedFalse(pageable);
     }
 
-    public List<Bill> getAllBill(){
+    public List<Bill> getAllBill() {
         return (List<Bill>) billRepository.findAll();
     }
 
@@ -51,9 +46,6 @@ public class BillService {
         return billRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found"));
     }
-
-
-
 
     public Bill saveBill(Bill bill) {
 
@@ -71,11 +63,11 @@ public class BillService {
     }
 
     public void createBill(BillRequest billRequest) throws NotFoundException {
-        if(billRequest!=null){
+        if (billRequest != null) {
             Customer customer = customerRepository.findById(billRequest.getId_customer())
-                    .orElseThrow(() -> new NotFoundException("Không tìm thấy khách hàng")) ;
+                    .orElseThrow(() -> new NotFoundException("Không tìm thấy khách hàng"));
             Employee employee = employeeRepository.findById(billRequest.getId_employee())
-                    .orElseThrow(()-> new NotFoundException("Không tìm thấy nhân viên"));
+                    .orElseThrow(() -> new NotFoundException("Không tìm thấy nhân viên"));
             Pay pay = payRepository.findById(billRequest.getId_pay())
                     .orElseThrow(() -> new NotFoundException("Không tìm thấy Pay"));
             Bill bill = new Bill();
@@ -98,15 +90,18 @@ public class BillService {
             billRepository.save(bill);
         }
     }
-    public Page<Bill> searchBillByCode(Integer numberSize, String code){
-        Pageable pageable = PageRequest.of(numberSize,5);
-        return billRepository.searchBillByCodeAndDeletedFalse(pageable,code);
+
+    public Page<Bill> searchBillByCode(Integer numberSize, String code) {
+        Pageable pageable = PageRequest.of(numberSize, 5);
+        return billRepository.searchBillByCodeAndDeletedFalse(pageable, code);
     }
-    public Page<Bill> filerByMonth(Integer month,Integer numberSize){
+
+    public Page<Bill> filerByMonth(Integer month, Integer numberSize) {
         System.out.println(month);
-        Pageable pageable = PageRequest.of(numberSize,5);
-        return billRepository.findAllByMonthSortedByLatest(month,pageable);
+        Pageable pageable = PageRequest.of(numberSize, 5);
+        return billRepository.findAllByMonthSortedByLatest(month, pageable);
     }
+
     public void updateBill(BillRequest bill) throws Exception {
         Bill billSys = billRepository.findByCode(bill.getCode())
                 .orElseThrow(() -> new Exception("Not found"));
