@@ -27,7 +27,7 @@ public class OrderCounterRequest {
 
   @JsonProperty("employeeID")
   private UUID employeeID;
-// o is tai quay 1 is online
+  // o is tai quay 1 is online
   @JsonProperty("orderTypes")
   private int orderTypes;
 
@@ -130,37 +130,37 @@ public class OrderCounterRequest {
     StringBuilder errorMessage = new StringBuilder();
 
     if (products.isEmpty()) {
-      errorMessage.append("Chưa có sản phẩm nào<br>");
+      errorMessage.append("Chưa có sản phẩm nào\n");
     } else {
       if (employeeID == null) {
-        errorMessage.append("Employee cần được chọn !!!<br>");
+        errorMessage.append("Employee cần được chọn !!!\n");
       }
       if (orderTypes == 0) {
         // check if chọn loại hóa đơn tại quầy
-        if (cashMoney + transferMoney <= totalMoney) {
+        if (cashMoney + transferMoney < totalMoney) {
           // check if chọn phương thức thanh toán là tiền mặt
-          errorMessage.append("Tiền chưa đủ !!!<br>");
+          errorMessage.append("Tiền chưa đủ !!!\n");
         }
       }
       if (orderTypes == 1) {
         if (phoneNumber.trim().isEmpty()) {
-          errorMessage.append("Số điện thoại không được thiếu !!!<br>");
+          errorMessage.append("Số điện thoại không được thiếu !!!\n");
         }
         if (customerName.trim().isEmpty()) {
-          errorMessage.append("Tên khách hàng không được thiếu !!!<br>");
+          errorMessage.append("Tên khách hàng không được thiếu !!!\n");
         }
 
         if (district.trim().isEmpty()) {
-          errorMessage.append("district không được thiếu !!!<br>");
+          errorMessage.append("district không được thiếu !!!\n");
         }
         if (ward.trim().isEmpty()) {
-          errorMessage.append("ward không được thiếu !!!<br>");
+          errorMessage.append("ward không được thiếu !!!\n");
         }
         if (fullAddress.trim().isEmpty()) {
-          errorMessage.append("fullAddress không được thiếu !!!<br>");
+          errorMessage.append("fullAddress không được thiếu !!!\n");
         }
         if (specificAddress.trim().isEmpty()) {
-          errorMessage.append("specificAddress không được thiếu !!!<br>");
+          errorMessage.append("specificAddress không được thiếu !!!\n");
         }
       }
     }

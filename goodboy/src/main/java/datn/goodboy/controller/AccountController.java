@@ -43,7 +43,6 @@ public class AccountController {
   // panigation and sort
   @GetMapping("/getcountrow")
   public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
-    System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
     this.pageno = 1;
@@ -155,7 +154,6 @@ public class AccountController {
   // manager
   @GetMapping("manager/viewdetail/{idacc}")
   public String allDetail(@PathVariable("idacc") String idAcc) {
-    System.out.println(idAcc);
     return "/admin/pages/account/account-detail.html";
   }
 }

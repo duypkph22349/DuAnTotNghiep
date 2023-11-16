@@ -1,178 +1,70 @@
-transfer-amount
-surcharge-amount
-finalAmount
-changeAmount
-<div class="box-monney"><span class="title">Tiền
-        khách đưa</span>
-    <span class="fw-500 blue" id="final-price">0
-        ₫</span>
-</div>
 
-<div class="box-monney" style="padding-bottom: 0px;">
-    <span class="title">Trả lại</span>
-    <span class="fw-500 red" id="remain-price">0₫</span>
-    <span id="origin-remain-price" style="display: none;">0</span>
-</div>
-<option disabled selected>Chọn Nhân Viên</option>
-<script>
-    const tableRows = document.querySelectorAll(`#hoaDon${formId} #cartTable tbody tr.table-body-row`);
-    let totalMoney = 0;
 
-    for (const row of tableRows) {
-        const productId = row.getAttribute("idproduct");
-        const quantityElement = row.querySelector(`input[name="quantity"]`);
-        const productQuantity = parseInt(quantityElement.value,10);
-
-        if (productQuantity <= 0 || isNaN(productQuantity)) {
-            alert("Số lượng sản phẩm không đúng");
-            return;
-        }
-
-        try {
-            const product = await getProductDetails(productId);
-            if (product) {
-                totalMoney += product.price * productQuantity;
-            }
-        } catch (error) {
-            console.error("Error fetching or calculating total money:",error);
-        }
-    }
-
-    const changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`);
-    const transferAmount = document.querySelector(`#hoaDon${formId} #transfer-amount`);
-    const surchargeAmount = document.querySelector(`#hoaDon${formId} #surcharge-amount`);
-
-    let transferAmountvl = parseInt(transferAmount.value.trim(),10) || 0;
-    let surchargeAmountvl = parseInt(surchargeAmount.value.trim(),10) || 0;
-
-    formData.transferMoney = transferAmountvl;
-    formData.cashMoney = surchargeAmountvl;
-
-    const totalAmount = transferAmountvl + surchargeAmountvl;
-
-    const cashDifference = totalAmount - totalMoney;
-    formData.cashReturn = cashDifference > 0 ? cashDifference : 0;
-    formData.changeAmount = cashDifference < 0 ? Math.abs(cashDifference) : 0;
-
-    formData.totalShip = 30000;
-    formData.totalMoney = totalMoney;
-
-</script>
-<script>
-    async function getOrderDatailForm(formId) {
-        const formData = {};
-        const form = document.getElementById(formId);
-        const carttable = form.querySelector("#cartTable tbody");
-        const tableRows = carttable.querySelectorAll("tr.table-body-row");
-        formData.products = [];
-        tableRows.forEach((row) => {
-            const productId = row.getAttribute("idproduct");
-            const quantityElement = row.querySelector(`input[name="quantity"]`);
-            const productQuantity = parseInt(quantityElement.value,10); // Convert to integer
-            const productData = {
-                id: parseInt(productId,10), // Convert to integer
-                quantity: productQuantity,
-            };
-            formData.products.push(productData);
-        });
-        formData.customerName = form.querySelector("#tenKhachHang").value;
-        formData.employeeID = form.querySelector("select[name='employee']").value;
-        formData.orderTypes = parseInt(
-            form.querySelector("input[name='options-outlined']:checked").value,
-            10
-        ); // Convert to integer
-        formData.phoneNumber = form.querySelector("#soDienThoai").value;
-        formData.city = form.querySelector("#city").value;
-        formData.district = form.querySelector("#district").value;
-        formData.ward = form.querySelector("#ward").value;
-        formData.fullAddress = form.querySelector("#FullAddress").value;
-        formData.specificAddress = form.querySelector("input#address").value;
-        formData.note = form.querySelector("textarea#note").value;
-
-        const tableRows = document.querySelectorAll(
-            `#hoaDon${formId} #cartTable tbody tr.table-body-row`
-        );
-        let totalMoney = 0;
-
-        for (const row of tableRows) {
-            const productId = row.getAttribute("idproduct");
-            const quantityElement = row.querySelector(`input[name="quantity"]`);
-            const productQuantity = parseInt(quantityElement.value,10);
-
-            if (productQuantity <= 0 || isNaN(productQuantity)) { alert("Số lượng sản phẩm không đúng"); return; } try {
-                const
-                product = await getProductDetails(productId); if (product) { totalMoney += product.price * productQuantity; }
-            } catch
-            (error) { console.error("Error fetching or calculating total money:",error); }
-        } const
-            changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`); const transferAmount = document.querySelector(
-                `#hoaDon${formId} #transfer-amount`); const surchargeAmount = document.querySelector(`#hoaDon${formId}
-    #surcharge-amount` ); let transferAmountvl = parseInt(transferAmount.value.trim(),10) || 0; let
-            surchargeAmountvl = parseInt(surchargeAmount.value.trim(),10) || 0; formData.transferMoney = transferAmountvl;
-        formData.cashMoney = surchargeAmountvl; const totalAmount = transferAmountvl + surchargeAmountvl; const
-            cashDifference = totalAmount - totalMoney; formData.cashReturn = cashDifference > 0 ? cashDifference : 0;
-        formData.changeAmount = cashDifference < 0 ? Math.abs(cashDifference) : 0; formData.totalShip = 30000;
-        formData.totalMoney = totalMoney; return JSON.stringify(formData);
-    } </script>
-<script>
-
-    async function buildFormData(formId) {
-        const formData = {};
-        const form = document.getElementById(formId);
-
-        // Extract product information
-        formData.products = Array.from(
-            form.querySelectorAll("#cartTable tbody tr.table-body-row")
-        ).map((row) => {
-            const productId = row.getAttribute("idproduct");
-            const quantityElement = row.querySelector(`input[name="quantity"]`);
-            const productQuantity = parseInt(quantityElement.value,10);
-            return {
-                id: parseInt(productId,10),
-                quantity: productQuantity,
-            };
-        });
-
-        // Extract customer information
-        formData.customerName = form.querySelector("#tenKhachHang").value;
-        formData.employeeID = form.querySelector("select[name='employee']").value;
-        formData.orderTypes = parseInt(
-            form.querySelector("input[name='options-outlined']:checked").value,
-            10
-        );
-        formData.phoneNumber = form.querySelector("#soDienThoai").value;
-        formData.city = form.querySelector("#city").value;
-        formData.district = form.querySelector("#district").value;
-        formData.ward = form.querySelector("#ward").value;
-        formData.fullAddress = form.querySelector("#FullAddress").value;
-        formData.specificAddress = form.querySelector("input#address").value;
-        formData.note = form.querySelector("textarea#note").value;
-
-        // Calculate totalMoney
-        let totalMoney = 0;
-        for (const row of form.querySelectorAll(
-            `#${formId} #cartTable tbody tr.table-body-row`
-        )) {
-            const productId = row.getAttribute("idproduct");
-            const quantityElement = row.querySelector(`input[name="quantity"]`);
-            const productQuantity = parseInt(quantityElement.value,10);
-
-            if (productQuantity <= 0 || isNaN(productQuantity)) { alert("Số lượng sản phẩm không đúng"); return; } try {
-                const product = await getProductDetails(productId); if (product) {
-                    totalMoney += product.price *
-                        productQuantity;
-                }
-            } catch (error) { console.error("Error fetching or calculating total money:",error); }
-        }
-            // Extract payment information const transferAmount=form.querySelector( `#hoaDon${formId} #transfer-amount`
-            ); const surchargeAmount = form.querySelector(`#${formId} #surcharge-amount`); var
-            transferAmountvl = parseInt(transferAmount.value.trim(),10); var
-                surchargeAmountvl = parseInt(surchargeAmount.value.trim(),10); if (isNaN(transferAmountvl)) {
-                    transferAmountvl = 0;
-                } if (isNaN(surchargeAmountvl)) { surchargeAmountvl = 0; }
-        formData.transferMoney = transferAmountvl; formData.cashMoney = surchargeAmountvl; // Calculate and assign
-            cashReturn and changeAmount const totalAmount = transferAmountvl + surchargeAmountvl;
-        formData.cashReturn = Math.max(totalAmount - totalMoney,0); formData.changeAmount = Math.max(totalMoney -
-            totalAmount,0); // Other properties formData.totalShip=30000; formData.totalMoney=totalMoney; return
-        JSON.stringify(formData);
-    } </script>
+    <span class="order-action-button" style="margin-right: 8px;">
+      <button
+        type="button"
+        class="ant-btn ant-btn-primary"
+        style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"
+      >
+        <span>
+          <span role="img" aria-label="printer" class="anticon anticon-printer">
+            <svg
+              viewBox="64 64 896 896"
+              focusable="false"
+              data-icon="printer"
+              width="1em"
+              height="1em"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z"></path>
+            </svg>
+          </span>{" "}
+          In (F4)
+        </span>
+      </button>
+      <button
+        type="button"
+        class="ant-btn ant-btn-primary"
+        onclick="removeOrderPage(${id})"
+        style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"
+      >
+        <span>
+          <span role="img" aria-label="printer" class="anticon anticon-printer">
+            <svg
+              viewBox="64 64 896 896"
+              focusable="false"
+              data-icon="printer"
+              width="1em"
+              height="1em"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z"></path>
+            </svg>
+          </span>{" "}
+          Xóa (F5)
+        </span>
+      </button>
+      <button
+        type="submit"
+        class="ant-btn ant-btn-primary"
+        style="font-size: 14px; height: 100%;"
+      >
+        <span>
+          <span role="img" aria-label="save" class="anticon anticon-save">
+            <svg
+              viewBox="64 64 896 896"
+              focusable="false"
+              data-icon="save"
+              width="1em"
+              height="1em"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z"></path>
+            </svg>
+          </span>{" "}
+          Thanh Toán
+        </span>
+      </button>

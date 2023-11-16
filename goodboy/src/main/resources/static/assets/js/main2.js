@@ -44,6 +44,7 @@ function formInOrder(id) {
   const form = document.createElement("form");
   form.id = `hoaDon${id}`;
   form.classList.add("taborder");
+  form.setAttribute("idofform", id);
   form.setAttribute("onsubmit", `handleOrderSubmit(event)`);
   form.innerHTML = `<div class="form-container">
   <div class="boxes-model" style="height: calc(100vh - 162px);">
@@ -151,7 +152,7 @@ function formInOrder(id) {
                                               <!-- Add Nhân Viên-->
                                                   <select name="employee" class="form-select form-select-sm"
                                                       aria-label="Small select example" size="1" required>
-                                                      <!-- <option disabled selected>Chọn Nhân Viên</option> -->
+                                                      <option disabled selected value=null>Chọn Nhân Viên</option>
                                                   </select>
                                               </div>
                                           </div>
@@ -1027,16 +1028,20 @@ function increaseProductQuantity(productExists) {
 
 async function handleOrderSubmit(event) {
   event.preventDefault();
-  if (confirm("Xác Nhận Thanh Toán")) {
-    const formId = event.currentTarget.id;
-    const formValuesJSON = await buildFormData(formId);
-    console.log(formValuesJSON);
-    thanhtoan(formValuesJSON);
-    return false;
+  const formId = event.currentTarget.id;
+  const idform = event.currentTarget.getAttribute("idofform");
+  const formValuesJSON = await buildFormData(formId);
+  let errors = await getErrorMessage(formValuesJSON);
+  if (errors.trim() != "") {
+    alert(errors);
+  } else {
+    if (confirm("Xác Nhận Thanh Toán")) {
+      thanhtoan(JSON.stringify(formValuesJSON), idform);
+    }
   }
 }
-function thanhtoan(formValuesJSON) {
-  fetch("/rest/data/counter/checkout", {
+async function thanhtoan(formValuesJSON, idform) {
+  await fetch("/rest/data/counter/checkout", {
     method: "POST",
     body: formValuesJSON,
     headers: {
@@ -1045,7 +1050,34 @@ function thanhtoan(formValuesJSON) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Success:", data);
+      if (data?.status === "BAD_REQUEST") {
+        alert(data?.message);
+        return;
+      } else {
+        confirm("Bạn có muốn in hoa đơn không?");
+        let indexToRemove = listtab.indexOf(idform);
+        if (indexToRemove !== -1) {
+          listtab.splice(indexToRemove, 1);
+        }
+        const orderbtnRemove = document.getElementById(`hd${idform}`);
+        const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
+        const orderToRemove = document.getElementById(`hoaDon${idform}`);
+        if (orderToRemove) {
+          orderToRemove.remove();
+        } else {
+          console.log(`Order with ID ${idform} not found.`);
+        }
+        if (orderbtnrmRemove) {
+          orderbtnrmRemove.remove();
+        } else {
+          console.log(`Order with ID ${idform} not found.`);
+        }
+        if (orderbtnRemove) {
+          orderbtnRemove.remove();
+        } else {
+          console.log(`Order with ID ${idform} not found.`);
+        }
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -1126,7 +1158,7 @@ async function buildFormData(formId) {
   formData.totalShip = 30000;
   formData.totalMoney = totalMoney;
   formData.reductionAmount = 0;
-  return JSON.stringify(formData);
+  return formData;
 }
 
 async function getProductDetails(id) {
@@ -1230,3 +1262,53 @@ function formatToVND(amount) {
   });
   return formatter.format(amount);
 }
+async function getErrorMessage(formData) {
+  console.log(formData);
+  let errorMessage = "";
+  if (!formData.products || formData.products.length === 0) {
+    errorMessage += "Chưa có sản phẩm nào \n";
+  } else {
+    if (formData.employeeID == "null") {
+      errorMessage += "Employee cần được chọn !!! \n";
+    }
+    const cashMoney = parseInt(formData.cashMoney, 10);
+    const transferMoney = parseInt(formData.transferMoney, 10);
+    const totalMoney = parseInt(formData.totalMoney, 10);
+    if (formData.orderTypes === 0) {
+      if (!isNaN(cashMoney) && !isNaN(transferMoney) && !isNaN(totalMoney)) {
+        const allmoney = cashMoney + transferMoney;
+        if (allmoney < totalMoney) {
+          errorMessage += "Tiền chưa đủ !!! \n";
+        }
+      }
+    }
+    if (formData.orderTypes === 1) {
+      if (formData.phoneNumber.trim() === "") {
+        errorMessage += "Số điện thoại không được thiếu !!!\n";
+      }
+      if (formData.customerName.trim() === "") {
+        errorMessage += "Tên khách hàng không được thiếu !!!\n";
+      }
+      if (formData.district.trim() === "") {
+        errorMessage += "Thành Phố không được thiếu !!!\n";
+      }
+      if (formData.ward.trim() === "") {
+        errorMessage += "Xã không được thiếu !!!\n";
+      }
+      if (formData.fullAddress.trim() === "") {
+        errorMessage += "Kiểm tra lại địa chỉ !!!\n";
+      }
+      if (formData.specificAddress.trim() === "") {
+        errorMessage += "Address không được thiếu !!!\n";
+      }
+    }
+  }
+
+  return errorMessage;
+}
+window.addEventListener("beforeunload", function (event) {
+  const confirmationMessage = "Are you sure you want to leave?";
+  event.returnValue = confirmationMessage;
+  // checkExitDataOnForm();
+  return confirmationMessage;
+});
