@@ -1,7 +1,7 @@
 transfer-amount
 surcharge-amount
 finalAmount
-
+changeAmount
 <div class="box-monney"><span class="title">Tiền
     khách đưa</span>
 <span class="fw-500 blue" id="final-price">0
@@ -13,3 +13,4 @@ finalAmount
     <span class="fw-500 red" id="remain-price">0₫</span>
     <span id="origin-remain-price" style="display: none;">0</span>
 </div>
+<option disabled selected>Chọn Nhân Viên</option>

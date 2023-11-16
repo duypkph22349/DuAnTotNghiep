@@ -81,6 +81,7 @@ public class RestCounterController {
   @PostMapping("checkout")
   public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
     System.out.println(orderCounterRequest);
+
     // Bill bill = countService.saveBill(orderCounterRequest);
     return ResponseEntity.ok().body(orderCounterRequest);
   }

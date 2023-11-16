@@ -148,9 +148,10 @@ function formInOrder(id) {
                                       <div style="display: flex;">
                                           <div class="processor-seller-at-shop">
                                               <div class="div-user">
-                                                  <!-- Add Nhân Viên-->
+                                              <!-- Add Nhân Viên-->
                                                   <select name="employee" class="form-select form-select-sm"
                                                       aria-label="Small select example" size="1" required>
+                                                      <!-- <option disabled selected>Chọn Nhân Viên</option> -->
                                                   </select>
                                               </div>
                                           </div>
@@ -267,7 +268,13 @@ function formInOrder(id) {
                                           </select>
                                       </div>
                                       <input type="hidden" name="" id="FullAddress">
-                                      <div class="col-12 online-option  d-none">
+                                      <div class="col-6 online-option  d-none">
+                                          <label class="form-label">Địa
+                                              Chỉ Cụ Thể</label>
+                                          <input type="text" class="form-control" id="address"
+                                              placeholder="Địa chỉ cụ thể">
+                                      </div>
+                                      <div class="col-6 online-option  d-none">
                                           <label class="form-label">Địa
                                               Chỉ Cụ Thể</label>
                                           <input type="text" class="form-control" id="address"
@@ -340,7 +347,7 @@ function formInOrder(id) {
                                               oninput="updateDiscountAmount(this.value)">
                                       </div>
                                   </div>
-                                  <div class="col-12">
+                                  <div class="col-12 incount-option">
                                       <div class="input-wrapper">
                                           <span class="currency-symbol">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -351,12 +358,12 @@ function formInOrder(id) {
                                               </svg>
                                               Tiền chuyển khoản
                                           </span>
-                                          <input type="text" class="form-control" id="transfer-amount"
+                                          <input type="number" class="form-control" id="transfer-amount" onchange="finalPrice(${id})"
                                               placeholder="0 ₫">
                                       </div>
                                   </div>
 
-                                  <div class="col-12">
+                                  <div class="col-12 incount-option">
                                       <div class="input-wrapper">
                                           <span class="currency-symbol">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -373,7 +380,7 @@ function formInOrder(id) {
                                               </svg>
                                               Tiền mặt
                                           </span>
-                                          <input type="text" class="form-control" id="surcharge-amount"
+                                          <input type="number" class="form-control" id="surcharge-amount" onchange="finalPrice(${id})"
                                               placeholder="0 ₫">
                                       </div>
                                   </div>
@@ -397,29 +404,28 @@ function formInOrder(id) {
                                                   <div class="box-monney online-option d-none">
                                                       <span class="title">Tiền
                                                           Ship&nbsp;</span>
-                                                      <span id="amount-ship" class="fw-500 red">0
+                                                      <span id="amount-ship" class="fw-500 red">30.000
                                                           ₫</span>
                                                   </div>
                                               </div>
                                               <div class="box-money-section s3">
                                                   <div class="box-monney"><span class="title">Cần
                                                           thanh toán</span>
-                                                      <span class="fw-500" id="finalAmount">30.000
+                                                      <span class="fw-500" id="finalAmount">0
                                                           ₫</span>
                                                   </div>
 
-                                                  <div class="box-monney"><span class="title">Tiền
+                                                  <div class="box-monney incount-option" ><span class="title">Tiền
                                                           khách đưa</span>
                                                       <span class="fw-500 blue" id="final-price">0
                                                           ₫</span>
                                                   </div>
-
-                                                  <div class="box-monney d-none"><span class="title">Còn
+                                                  <div class="box-monney incount-option"><span class="title">Còn
                                                           thiếu</span>
-                                                      <span class="fw-500" id="changeAmount">30.000₫</span>
+                                                      <span class="fw-500" id="changeAmount">0₫</span>
                                                   </div>
                                               </div>
-                                              <div class="box-monney" style="padding-bottom: 0px;">
+                                              <div class="box-monney incount-option" style="padding-bottom: 0px;">
                                                   <span class="title">Trả lại</span>
                                                   <span class="fw-500 red" id="remain-price">0₫</span>
                                                   <span id="origin-remain-price" style="display: none;">0</span>
@@ -619,16 +625,23 @@ function getProductDetail(id) {
 }
 function selectOrderType(event, id) {
   orderType = event.target.value;
-  console.log(orderType, "orderType");
-  console.log(id, "id");
   const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
+  const Optionincount = document.querySelectorAll(
+    `#hoaDon${id} .incount-option`
+  );
   if (orderType == 0) {
     OptionOnline.forEach(function (element) {
       element.classList.add("d-none");
     });
+    Optionincount.forEach(function (element) {
+      element.classList.remove("d-none");
+    });
   } else if (orderType == 1) {
     OptionOnline.forEach(function (element) {
       element.classList.remove("d-none");
+    });
+    Optionincount.forEach(function (element) {
+      element.classList.add("d-none");
     });
   }
 }
@@ -739,7 +752,6 @@ function getFullAddress(orderId) {
   const fullAdress =
     wardName.text + ", " + districselect.text + " ," + proselect.text;
   thisOrder.querySelector("#FullAddress").value = String(fullAdress);
-  console.log(fullAdress);
 }
 function resetDistrict(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -767,6 +779,47 @@ function resetWard(orderId) {
   defaultOption.disabled = true;
   defaultOption.selected = true;
   wardSelect.appendChild(defaultOption);
+}
+function getServiceShip(orderId) {
+  const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+  const customAttribute = selectedOption.getAttribute("districtcode");
+  const districtto = parseInt(customAttribute);
+  fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+      body: JSON.stringify({
+        to_district: districtto,
+        shop_id: 4676018,
+        from_district: 3440,
+      }),
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      while (shipServiceSelect.firstChild) {
+        shipServiceSelect.removeChild(shipServiceSelect.firstChild);
+      }
+      const defaultOption = document.createElement("option");
+      defaultOption.value = ""; // Set the value as needed
+      defaultOption.textContent = "Chọn Hình thức vận chuyển"; // Set the text content
+      // Set the 'disabled' and 'selected' attributes to make it the default option
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      shipServiceSelect.appendChild(defaultOption);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i].service_id; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].short_name; // Set the text of the option
+        shipServiceSelect.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
 }
 function fillAllEmployee(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -974,11 +1027,13 @@ function increaseProductQuantity(productExists) {
 
 function handleOrderSubmit(event) {
   event.preventDefault();
-  const formId = event.currentTarget.id;
-  const formValuesJSON = getOrderDatailForm(formId);
-  console.log(formValuesJSON);
-  thanhtoan(formValuesJSON);
-  return false;
+  if (confirm("Xác Nhận Thanh Toán")) {
+    const formId = event.currentTarget.id;
+    const formValuesJSON = getOrderDatailForm(formId);
+    console.log(formValuesJSON);
+    thanhtoan(formValuesJSON);
+    return false;
+  }
 }
 function thanhtoan(formValuesJSON) {
   fetch("/rest/data/counter/checkout", {
@@ -1065,14 +1120,61 @@ async function updateTongTien(formId) {
   }
   finalAmount.innerHTML = formatToVND(totalMoney);
   totalAmount.innerHTML = formatToVND(totalMoney);
+  finalPrice(formId);
 }
+
 async function finalPrice(formId) {
   const tableRows = document.querySelectorAll(
     `#hoaDon${formId} #cartTable tbody tr.table-body-row`
   );
   const finalAmount = document.querySelector(`#hoaDon${formId} #final-price`);
   const remainPrice = document.querySelector(`#hoaDon${formId} #remain-price`);
-  finalAmount.innerHTML = formatToVND(totalMoney);
+  const changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`);
+  const transferAmount = document.querySelector(
+    `#hoaDon${formId} #transfer-amount`
+  );
+  const surchargeAmount = document.querySelector(
+    `#hoaDon${formId} #surcharge-amount`
+  );
+
+  let totalMoney = 0;
+  for (const row of tableRows) {
+    const productId = row.getAttribute("idproduct");
+    const quantityElement = row.querySelector(`input[name="quantity"]`);
+    const productQuantity = parseInt(quantityElement.value, 10);
+
+    if (productQuantity <= 0 || isNaN(productQuantity)) {
+      alert("Số lượng sản phẩm không đúng");
+      return;
+    }
+    try {
+      const product = await getProductDetails(productId);
+      if (product) {
+        totalMoney += product.price * productQuantity;
+      }
+    } catch (error) {
+      console.error("Error fetching or calculating total money:", error);
+    }
+  }
+  var transferAmountvl = parseInt(transferAmount.value.trim(), 10);
+  var surchargeAmountvl = parseInt(surchargeAmount.value.trim(), 10);
+  if (isNaN(transferAmountvl)) {
+    transferAmountvl = 0;
+  }
+  if (isNaN(surchargeAmountvl)) {
+    surchargeAmountvl = 0;
+  }
+  finalAmount.innerHTML = formatToVND(transferAmountvl + surchargeAmountvl);
+  const calMoney = transferAmountvl + surchargeAmountvl - totalMoney;
+  if (calMoney > 0) {
+    remainPrice.innerHTML = formatToVND(calMoney);
+    changeAmount.innerHTML = formatToVND(0);
+  } else {
+    remainPrice.innerHTML = formatToVND(0);
+    changeAmount.innerHTML = formatToVND(
+      totalMoney - (transferAmountvl + surchargeAmountvl)
+    );
+  }
 }
 function formatToVND(amount) {
   const formatter = new Intl.NumberFormat("vi-VN", {
