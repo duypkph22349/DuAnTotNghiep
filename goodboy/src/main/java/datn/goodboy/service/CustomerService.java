@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,8 +19,6 @@ public class CustomerService {
 
     // Declare the repository as final to ensure its immutability
     private final CustomerRepository customerRepository;
-
-
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -55,55 +54,70 @@ public class CustomerService {
     // manager
 
     public Object getComboBox() {
-      return null;
+        return null;
     }
 
-//  public List<Province> getAllProvinces() {
-//    String apiUrl = "https://provinces.open-api.vn/api/p/";
-//    ResponseEntity<List<Province>> response = restTemplate.exchange(
-//            apiUrl,
-//            HttpMethod.GET,
-//            null,
-//            new ParameterizedTypeReference<List<Province>>() {}
-//    );
-//    System.out.println("Service"+response.getBody());
-//
-//    return response.getBody();
-//  }
-//
-//  public List<District> getDistrictsByProvinceId(String provinceId) {
-//    String apiUrl = "https://provinces.open-api.vn/api/d/";
-//    String fullUrl = apiUrl + provinceId;
-//    ResponseEntity<List<District>> response = restTemplate.exchange(
-//            fullUrl,
-//            HttpMethod.GET,
-//            null,
-//            new ParameterizedTypeReference<List<District>>() {}
-//    );
-//    return response.getBody();
-//  }
-//
-//  public List<Ward> getWardsByDistrictId(String districtId) {
-//    String apiUrl = "https://provinces.open-api.vn/api/w/";
-//    String fullUrl = apiUrl + districtId;
-//    ResponseEntity<List<Ward>> response = restTemplate.exchange(
-//            fullUrl,
-//            HttpMethod.GET,
-//            null,
-//            new ParameterizedTypeReference<List<Ward>>() {}
-//    );
-//    return response.getBody();
-//  }
+    public Customer getCounterCustomer() {
+        Optional<Customer> cusOptional = customerRepository.getCounterCustomer("COUNTER");
+        if (cusOptional.isPresent()) {
+            return cusOptional.get();
+        } else {
+            Customer customer = new Customer();
+            customer.setBirth_date(LocalDate.now());
+            customer.setCity("");
+            customer.setGender(false);
+            customer.setName("COUNTER");
+            customer.setStatus(1);
+            customer.setBirth_date(LocalDate.now());
+            return customerRepository.save(customer);
+        }
+    }
+    // public List<Province> getAllProvinces() {
+    // String apiUrl = "https://provinces.open-api.vn/api/p/";
+    // ResponseEntity<List<Province>> response = restTemplate.exchange(
+    // apiUrl,
+    // HttpMethod.GET,
+    // null,
+    // new ParameterizedTypeReference<List<Province>>() {}
+    // );
+    // System.out.println("Service"+response.getBody());
+    //
+    // return response.getBody();
+    // }
+    //
+    // public List<District> getDistrictsByProvinceId(String provinceId) {
+    // String apiUrl = "https://provinces.open-api.vn/api/d/";
+    // String fullUrl = apiUrl + provinceId;
+    // ResponseEntity<List<District>> response = restTemplate.exchange(
+    // fullUrl,
+    // HttpMethod.GET,
+    // null,
+    // new ParameterizedTypeReference<List<District>>() {}
+    // );
+    // return response.getBody();
+    // }
+    //
+    // public List<Ward> getWardsByDistrictId(String districtId) {
+    // String apiUrl = "https://provinces.open-api.vn/api/w/";
+    // String fullUrl = apiUrl + districtId;
+    // ResponseEntity<List<Ward>> response = restTemplate.exchange(
+    // fullUrl,
+    // HttpMethod.GET,
+    // null,
+    // new ParameterizedTypeReference<List<Ward>>() {}
+    // );
+    // return response.getBody();
+    // }
 
-//    public List<Province> getAllProvinces() {
-//        return openApiClient.getAllProvinces();
-//    }
-//
-//    public List<District> getAllDistricts() {
-//        return openApiClient.getAllDistricts();
-//    }
-//
-//    public List<Ward> getAllWards() {
-//        return openApiClient.getAllWards();
-//    }
+    // public List<Province> getAllProvinces() {
+    // return openApiClient.getAllProvinces();
+    // }
+    //
+    // public List<District> getAllDistricts() {
+    // return openApiClient.getAllDistricts();
+    // }
+    //
+    // public List<Ward> getAllWards() {
+    // return openApiClient.getAllWards();
+    // }
 }

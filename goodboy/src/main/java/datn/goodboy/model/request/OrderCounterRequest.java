@@ -27,18 +27,12 @@ public class OrderCounterRequest {
 
   @JsonProperty("employeeID")
   private UUID employeeID;
-
+// o is tai quay 1 is online
   @JsonProperty("orderTypes")
   private int orderTypes;
 
   @JsonProperty("phoneNumber")
   private String phoneNumber;
-
-  @JsonProperty("birthdate")
-  private String birthdate;
-
-  @JsonProperty("gender")
-  private String gender;
 
   @JsonProperty("city")
   private String city;
@@ -64,17 +58,20 @@ public class OrderCounterRequest {
   @JsonProperty("cashMoney")
   private float cashMoney;
 
-  @JsonProperty("trasferMoney")
-  private float transferMoney;
+  @JsonProperty("transferMoney")
+  private float transferMoney; // Corrected the field name
 
   @JsonProperty("reductionAmount")
-  private float reductionAmount;
+  private float reductionAmount; // Added the missing field
 
   @JsonProperty("cashReturn")
   private float cashReturn;
 
   @JsonProperty("totalShip")
   private float totalShip;
+
+  @JsonProperty("changeAmount")
+  private float changeAmount;
 
   @Getter
   @Setter
@@ -96,27 +93,37 @@ public class OrderCounterRequest {
       @JsonProperty("employeeID") UUID employeeID,
       @JsonProperty("orderTypes") int orderTypes,
       @JsonProperty("phoneNumber") String phoneNumber,
-      @JsonProperty("birthdate") String birthdate,
-      @JsonProperty("gender") String gender,
       @JsonProperty("city") String city,
       @JsonProperty("district") String district,
       @JsonProperty("ward") String ward,
       @JsonProperty("fullAddress") String fullAddress,
       @JsonProperty("specificAddress") String specificAddress,
-      @JsonProperty("note") String note) {
+      @JsonProperty("note") String note,
+      @JsonProperty("transferMoney") float transferMoney,
+      @JsonProperty("cashMoney") float cashMoney,
+      @JsonProperty("cashReturn") float cashReturn,
+      @JsonProperty("changeAmount") float changeAmount,
+      @JsonProperty("totalShip") float totalShip,
+      @JsonProperty("totalMoney") float totalMoney,
+      @JsonProperty("reductionAmount") float reductionAmount) { // Added the missing field
     this.products = products;
     this.customerName = customerName;
     this.employeeID = employeeID;
     this.orderTypes = orderTypes;
     this.phoneNumber = phoneNumber;
-    this.birthdate = birthdate;
-    this.gender = gender;
     this.city = city;
     this.district = district;
     this.ward = ward;
     this.fullAddress = fullAddress;
     this.specificAddress = specificAddress;
     this.note = note;
+    this.transferMoney = transferMoney;
+    this.cashMoney = cashMoney;
+    this.cashReturn = cashReturn;
+    this.changeAmount = changeAmount;
+    this.totalShip = totalShip;
+    this.totalMoney = totalMoney;
+    this.reductionAmount = reductionAmount; // Added the missing field
   }
 
   public String getErrorMessage() {

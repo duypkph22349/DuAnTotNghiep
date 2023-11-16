@@ -66,7 +66,7 @@ public class PayService {
             return optionalPay.get();
         }
         Pay paymethod = new Pay();
-        paymethod.setPayment_method("CASH");
+        paymethod.setPayment_method("COUNTER");
         paymethod.setDeleted(0);
         paymethod.setStatus(1);
         paymethod.setCreated_at(LocalDateTime.now());

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.PayDetail;
 import datn.goodboy.model.entity.PayDetailId;
@@ -20,6 +21,7 @@ import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayDetailRepository;
 import datn.goodboy.repository.ProductDetailRepository;
+import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.PayService;
 
 @Service
@@ -36,6 +38,8 @@ public class TestConterService {
   ProductDetailRepository productDetailRepository;
   @Autowired
   PayService payService;
+  @Autowired
+  CustomerService cusService;
 
   public Bill saveBill(OrderCounterRequest request) {
     Bill bill = new Bill();
@@ -50,10 +54,16 @@ public class TestConterService {
     bill.setReduction_amount(0);
     bill.setDeposit(0);
     bill.setReduction_amount(0);
+    bill.setCustomer(cusService.getCounterCustomer());
     Optional<Employee> emp = empRepository.findById(request.getEmployeeID());
     if (emp.isPresent()) {
       bill.setEmployee(emp.get());
       bill.setCustomer_name(emp.get().getName());
+    }
+    if (request.getOrderTypes() == 0) {
+      bill.setPay(payService.getThanhToanTaiQuayMethod());
+    } else {
+      bill.setPay(payService.getTransferMethod());
     }
     bill = billRepository.save(bill);
     // thanh toan
@@ -97,6 +107,6 @@ public class TestConterService {
       }
     }
     bill.setTotal_money(total);
-    return bill;
+    return billRepository.save(bill);
   }
 }

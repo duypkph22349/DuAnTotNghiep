@@ -1025,11 +1025,11 @@ function increaseProductQuantity(productExists) {
   }
 }
 
-function handleOrderSubmit(event) {
+async function handleOrderSubmit(event) {
   event.preventDefault();
   if (confirm("Xác Nhận Thanh Toán")) {
     const formId = event.currentTarget.id;
-    const formValuesJSON = getOrderDatailForm(formId);
+    const formValuesJSON = await buildFormData(formId);
     console.log(formValuesJSON);
     thanhtoan(formValuesJSON);
     return false;
@@ -1051,28 +1051,30 @@ function thanhtoan(formValuesJSON) {
       console.error("Error:", error);
     });
 }
-function getOrderDatailForm(formId) {
+async function buildFormData(formId) {
   const formData = {};
   const form = document.getElementById(formId);
-  const carttable = form.querySelector("#cartTable tbody");
-  const tableRows = carttable.querySelectorAll("tr.table-body-row");
-  formData.products = [];
-  tableRows.forEach((row) => {
+
+  // Extract product information
+  formData.products = Array.from(
+    form.querySelectorAll("#cartTable tbody tr.table-body-row")
+  ).map((row) => {
     const productId = row.getAttribute("idproduct");
     const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10); // Convert to integer
-    const productData = {
-      id: parseInt(productId, 10), // Convert to integer
+    const productQuantity = parseInt(quantityElement.value, 10);
+    return {
+      id: parseInt(productId, 10),
       quantity: productQuantity,
     };
-    formData.products.push(productData);
   });
+
+  // Extract customer information
   formData.customerName = form.querySelector("#tenKhachHang").value;
   formData.employeeID = form.querySelector("select[name='employee']").value;
   formData.orderTypes = parseInt(
     form.querySelector("input[name='options-outlined']:checked").value,
     10
-  ); // Convert to integer
+  );
   formData.phoneNumber = form.querySelector("#soDienThoai").value;
   formData.city = form.querySelector("#city").value;
   formData.district = form.querySelector("#district").value;
@@ -1080,6 +1082,50 @@ function getOrderDatailForm(formId) {
   formData.fullAddress = form.querySelector("#FullAddress").value;
   formData.specificAddress = form.querySelector("input#address").value;
   formData.note = form.querySelector("textarea#note").value;
+
+  // Calculate totalMoney
+  let totalMoney = 0;
+  for (const row of form.querySelectorAll(
+    `#cartTable tbody tr.table-body-row`
+  )) {
+    const productId = row.getAttribute("idproduct");
+    const quantityElement = row.querySelector(`input[name="quantity"]`);
+    const productQuantity = parseInt(quantityElement.value, 10);
+    if (productQuantity <= 0 || isNaN(productQuantity)) {
+      alert("Số lượng sản phẩm không đúng");
+      return;
+    }
+    try {
+      const product = await getProductDetails(productId);
+      if (product) {
+        totalMoney += product.price * productQuantity;
+      }
+    } catch (error) {
+      console.error("Error fetching or calculating total money:", error);
+    }
+  }
+  const transferAmount = form.querySelector(`#transfer-amount`);
+  const surchargeAmount = form.querySelector(`#surcharge-amount`);
+  var transferAmountvl = parseInt(transferAmount.value.trim(), 10);
+  var surchargeAmountvl = parseInt(surchargeAmount.value.trim(), 10);
+  if (isNaN(transferAmountvl)) {
+    transferAmountvl = 0;
+  }
+  if (isNaN(surchargeAmountvl)) {
+    surchargeAmountvl = 0;
+  }
+  formData.transferMoney = transferAmountvl;
+  formData.cashMoney = surchargeAmountvl;
+
+  // Calculate and assign cashReturn and changeAmount
+  const totalAmount = transferAmountvl + surchargeAmountvl;
+  formData.cashReturn = Math.max(totalAmount - totalMoney, 0);
+  formData.changeAmount = Math.max(totalMoney - totalAmount, 0);
+
+  // Other properties
+  formData.totalShip = 30000;
+  formData.totalMoney = totalMoney;
+  formData.reductionAmount = 0;
   return JSON.stringify(formData);
 }
 

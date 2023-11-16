@@ -54,8 +54,8 @@ public class RestCounterController {
   }
 
   @GetMapping("customers")
-  public ResponseEntity<List<Customer>> getAllCustomer() {
-    return ResponseEntity.ok().body(customerService.getAllCustomers());
+  public ResponseEntity<List<Employee>> getAllCustomer() {
+    return ResponseEntity.ok().body(employeeService.getAllEmployee());
   }
 
   @GetMapping("productDetails")
@@ -81,6 +81,7 @@ public class RestCounterController {
 
   @PostMapping("checkout")
   public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+    System.out.println(orderCounterRequest);
     if (!orderCounterRequest.hasValidationError()) {
       Bill bill = countService.saveBill(orderCounterRequest);
       return ResponseEntity.ok().body(orderCounterRequest);

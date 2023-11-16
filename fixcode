@@ -3,9 +3,9 @@ surcharge-amount
 finalAmount
 changeAmount
 <div class="box-monney"><span class="title">Tiền
-    khách đưa</span>
-<span class="fw-500 blue" id="final-price">0
-    ₫</span>
+        khách đưa</span>
+    <span class="fw-500 blue" id="final-price">0
+        ₫</span>
 </div>
 
 <div class="box-monney" style="padding-bottom: 0px;">
@@ -14,3 +14,165 @@ changeAmount
     <span id="origin-remain-price" style="display: none;">0</span>
 </div>
 <option disabled selected>Chọn Nhân Viên</option>
+<script>
+    const tableRows = document.querySelectorAll(`#hoaDon${formId} #cartTable tbody tr.table-body-row`);
+    let totalMoney = 0;
+
+    for (const row of tableRows) {
+        const productId = row.getAttribute("idproduct");
+        const quantityElement = row.querySelector(`input[name="quantity"]`);
+        const productQuantity = parseInt(quantityElement.value,10);
+
+        if (productQuantity <= 0 || isNaN(productQuantity)) {
+            alert("Số lượng sản phẩm không đúng");
+            return;
+        }
+
+        try {
+            const product = await getProductDetails(productId);
+            if (product) {
+                totalMoney += product.price * productQuantity;
+            }
+        } catch (error) {
+            console.error("Error fetching or calculating total money:",error);
+        }
+    }
+
+    const changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`);
+    const transferAmount = document.querySelector(`#hoaDon${formId} #transfer-amount`);
+    const surchargeAmount = document.querySelector(`#hoaDon${formId} #surcharge-amount`);
+
+    let transferAmountvl = parseInt(transferAmount.value.trim(),10) || 0;
+    let surchargeAmountvl = parseInt(surchargeAmount.value.trim(),10) || 0;
+
+    formData.transferMoney = transferAmountvl;
+    formData.cashMoney = surchargeAmountvl;
+
+    const totalAmount = transferAmountvl + surchargeAmountvl;
+
+    const cashDifference = totalAmount - totalMoney;
+    formData.cashReturn = cashDifference > 0 ? cashDifference : 0;
+    formData.changeAmount = cashDifference < 0 ? Math.abs(cashDifference) : 0;
+
+    formData.totalShip = 30000;
+    formData.totalMoney = totalMoney;
+
+</script>
+<script>
+    async function getOrderDatailForm(formId) {
+        const formData = {};
+        const form = document.getElementById(formId);
+        const carttable = form.querySelector("#cartTable tbody");
+        const tableRows = carttable.querySelectorAll("tr.table-body-row");
+        formData.products = [];
+        tableRows.forEach((row) => {
+            const productId = row.getAttribute("idproduct");
+            const quantityElement = row.querySelector(`input[name="quantity"]`);
+            const productQuantity = parseInt(quantityElement.value,10); // Convert to integer
+            const productData = {
+                id: parseInt(productId,10), // Convert to integer
+                quantity: productQuantity,
+            };
+            formData.products.push(productData);
+        });
+        formData.customerName = form.querySelector("#tenKhachHang").value;
+        formData.employeeID = form.querySelector("select[name='employee']").value;
+        formData.orderTypes = parseInt(
+            form.querySelector("input[name='options-outlined']:checked").value,
+            10
+        ); // Convert to integer
+        formData.phoneNumber = form.querySelector("#soDienThoai").value;
+        formData.city = form.querySelector("#city").value;
+        formData.district = form.querySelector("#district").value;
+        formData.ward = form.querySelector("#ward").value;
+        formData.fullAddress = form.querySelector("#FullAddress").value;
+        formData.specificAddress = form.querySelector("input#address").value;
+        formData.note = form.querySelector("textarea#note").value;
+
+        const tableRows = document.querySelectorAll(
+            `#hoaDon${formId} #cartTable tbody tr.table-body-row`
+        );
+        let totalMoney = 0;
+
+        for (const row of tableRows) {
+            const productId = row.getAttribute("idproduct");
+            const quantityElement = row.querySelector(`input[name="quantity"]`);
+            const productQuantity = parseInt(quantityElement.value,10);
+
+            if (productQuantity <= 0 || isNaN(productQuantity)) { alert("Số lượng sản phẩm không đúng"); return; } try {
+                const
+                product = await getProductDetails(productId); if (product) { totalMoney += product.price * productQuantity; }
+            } catch
+            (error) { console.error("Error fetching or calculating total money:",error); }
+        } const
+            changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`); const transferAmount = document.querySelector(
+                `#hoaDon${formId} #transfer-amount`); const surchargeAmount = document.querySelector(`#hoaDon${formId}
+    #surcharge-amount` ); let transferAmountvl = parseInt(transferAmount.value.trim(),10) || 0; let
+            surchargeAmountvl = parseInt(surchargeAmount.value.trim(),10) || 0; formData.transferMoney = transferAmountvl;
+        formData.cashMoney = surchargeAmountvl; const totalAmount = transferAmountvl + surchargeAmountvl; const
+            cashDifference = totalAmount - totalMoney; formData.cashReturn = cashDifference > 0 ? cashDifference : 0;
+        formData.changeAmount = cashDifference < 0 ? Math.abs(cashDifference) : 0; formData.totalShip = 30000;
+        formData.totalMoney = totalMoney; return JSON.stringify(formData);
+    } </script>
+<script>
+
+    async function buildFormData(formId) {
+        const formData = {};
+        const form = document.getElementById(formId);
+
+        // Extract product information
+        formData.products = Array.from(
+            form.querySelectorAll("#cartTable tbody tr.table-body-row")
+        ).map((row) => {
+            const productId = row.getAttribute("idproduct");
+            const quantityElement = row.querySelector(`input[name="quantity"]`);
+            const productQuantity = parseInt(quantityElement.value,10);
+            return {
+                id: parseInt(productId,10),
+                quantity: productQuantity,
+            };
+        });
+
+        // Extract customer information
+        formData.customerName = form.querySelector("#tenKhachHang").value;
+        formData.employeeID = form.querySelector("select[name='employee']").value;
+        formData.orderTypes = parseInt(
+            form.querySelector("input[name='options-outlined']:checked").value,
+            10
+        );
+        formData.phoneNumber = form.querySelector("#soDienThoai").value;
+        formData.city = form.querySelector("#city").value;
+        formData.district = form.querySelector("#district").value;
+        formData.ward = form.querySelector("#ward").value;
+        formData.fullAddress = form.querySelector("#FullAddress").value;
+        formData.specificAddress = form.querySelector("input#address").value;
+        formData.note = form.querySelector("textarea#note").value;
+
+        // Calculate totalMoney
+        let totalMoney = 0;
+        for (const row of form.querySelectorAll(
+            `#${formId} #cartTable tbody tr.table-body-row`
+        )) {
+            const productId = row.getAttribute("idproduct");
+            const quantityElement = row.querySelector(`input[name="quantity"]`);
+            const productQuantity = parseInt(quantityElement.value,10);
+
+            if (productQuantity <= 0 || isNaN(productQuantity)) { alert("Số lượng sản phẩm không đúng"); return; } try {
+                const product = await getProductDetails(productId); if (product) {
+                    totalMoney += product.price *
+                        productQuantity;
+                }
+            } catch (error) { console.error("Error fetching or calculating total money:",error); }
+        }
+            // Extract payment information const transferAmount=form.querySelector( `#hoaDon${formId} #transfer-amount`
+            ); const surchargeAmount = form.querySelector(`#${formId} #surcharge-amount`); var
+            transferAmountvl = parseInt(transferAmount.value.trim(),10); var
+                surchargeAmountvl = parseInt(surchargeAmount.value.trim(),10); if (isNaN(transferAmountvl)) {
+                    transferAmountvl = 0;
+                } if (isNaN(surchargeAmountvl)) { surchargeAmountvl = 0; }
+        formData.transferMoney = transferAmountvl; formData.cashMoney = surchargeAmountvl; // Calculate and assign
+            cashReturn and changeAmount const totalAmount = transferAmountvl + surchargeAmountvl;
+        formData.cashReturn = Math.max(totalAmount - totalMoney,0); formData.changeAmount = Math.max(totalMoney -
+            totalAmount,0); // Other properties formData.totalShip=30000; formData.totalMoney=totalMoney; return
+        JSON.stringify(formData);
+    } </script>
