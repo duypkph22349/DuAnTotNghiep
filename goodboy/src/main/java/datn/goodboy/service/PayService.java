@@ -32,7 +32,7 @@ public class PayService {
     }
 
     public Pay getCashMethod() {
-        Optional<Pay> optionalPay = payRepository.getByNameMethod("c");
+        Optional<Pay> optionalPay = payRepository.getByNameMethod("CASH");
         if (optionalPay.isPresent()) {
             Pay pay = optionalPay.get();
             return optionalPay.get();
@@ -52,7 +52,7 @@ public class PayService {
             return optionalPay.get();
         }
         Pay paymethod = new Pay();
-        paymethod.setPayment_method("CASH");
+        paymethod.setPayment_method("TRANSFER");
         paymethod.setDeleted(0);
         paymethod.setStatus(1);
         paymethod.setCreated_at(LocalDateTime.now());

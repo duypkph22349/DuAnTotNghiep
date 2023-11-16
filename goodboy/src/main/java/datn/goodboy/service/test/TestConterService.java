@@ -68,12 +68,12 @@ public class TestConterService {
     bill = billRepository.save(bill);
     // thanh toan
     if (request.getOrderTypes() == 0) {
-      if (request.getCashMoney() >= 0) {
+      if (request.getCashMoney() > 0) {
         PayDetail payDetail = new PayDetail();
         payDetail.setId(new PayDetailId(bill.getId(), payService.getCashMethod().getId()));
         payDetail.setTotalMoney(request.getCashMoney());
         payDetail.setStatus(true);
-      } else if (request.getTransferMoney() >= 0) {
+      } else if (request.getTransferMoney() > 0) {
         PayDetail payDetail = new PayDetail();
         payDetail.setId(new PayDetailId(bill.getId(), payService.getTransferMethod().getId()));
         payDetail.setTotalMoney(request.getTransferMoney());
