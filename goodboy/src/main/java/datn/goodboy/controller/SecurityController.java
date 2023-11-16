@@ -2,6 +2,7 @@ package datn.goodboy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.request.EmployeeSignUpRequest;
 import datn.goodboy.model.request.LoginRequest;
@@ -21,9 +24,12 @@ import datn.goodboy.model.request.ResetPasswordRequest;
 import datn.goodboy.model.request.UserSignUpRequest;
 import datn.goodboy.security.service.SercurityService;
 import datn.goodboy.security.service.SignUpService;
+import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.EmailService;
+import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.VertifyEmailService;
 import datn.goodboy.utils.validate.EmailHelper;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -41,6 +47,10 @@ public class SecurityController {
   VertifyEmailService vertifyEmailsService;
   @Autowired
   EmailService emailService;
+  @Autowired
+  EmployeeService empService;
+  @Autowired
+  CustomerService cusService;
 
   @ModelAttribute("loginRequest")
   LoginRequest loginReqest() {
@@ -149,14 +159,14 @@ public class SecurityController {
     // return "redirect:/login";
   }
 
-  @Secured("NOT_ACCTIVE")
+  @PreAuthorize("hasAuthority('NOT_ACCTIVE')")
   @GetMapping("vertifyemail")
   public String vertifyPage(Model model, RedirectAttributes thRedirectAttributes) {
     model.addAttribute("vertifyemail", new VertifyEmail());
     return "active-email.html";
   }
 
-  @Secured("NOT_ACCTIVE")
+  @PreAuthorize("hasAuthority('NOT_ACCTIVE')")
   @GetMapping("sendvertifyemail")
   public String sendVertifyAcc(Model model, RedirectAttributes thRedirectAttributes) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -172,7 +182,7 @@ public class SecurityController {
     return "redirect:/signOut";
   }
 
-  @Secured("NOT_ACCTIVE")
+  @PreAuthorize("hasAuthority('NOT_ACCTIVE')")
   @PostMapping("vertifyemail")
   public String vertifyAccount(Model model, RedirectAttributes thRedirectAttributes,
       @ModelAttribute("vertifyemail") VertifyEmail vertifyemail) {
@@ -243,5 +253,19 @@ public class SecurityController {
   @GetMapping("/access-denied")
   public String getAccessDenied() {
     return "pages-error-403.html";
+  }
+
+  @GetMapping("/updateprofile/employee")
+  public String getUpdateIdForm(Model model, HttpSession session) {
+    Employee authenEmployee = (Employee) session.getAttribute("authenemployee");
+    model.addAttribute("requset", authenEmployee);
+    return "concac";
+  }
+
+  @PostMapping("/updateprofile/employee")
+  public String updateEmpInfo(Model model, @Valid @ModelAttribute("requset") Employee employee, HttpSession session) {
+
+    session.setAttribute("authenemployee", empService.saveEmployee(employee));
+    return "concac";
   }
 }

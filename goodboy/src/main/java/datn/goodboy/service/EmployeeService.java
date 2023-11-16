@@ -23,14 +23,13 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public Page<Employee> getPage(Pageable pageable){
+    public Page<Employee> getPage(Pageable pageable) {
         return employeeRepository.findAll(pageable);
     }
 
-    public ArrayList<Employee> getAllEmployee(){
+    public ArrayList<Employee> getAllEmployee() {
         return (ArrayList<Employee>) employeeRepository.findAll();
     }
-
 
     public Employee saveEmployee(Employee employee) {
 
@@ -46,7 +45,6 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
 
         return employeeRepository.findById(id);
     }
-
 
     @Override
     public List<EmployeeResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
@@ -111,4 +109,10 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
         }
     }
 
+    // that write funtion
+
+    public Employee updateInfo(Employee employee) {
+        // return employeeRepository.save(employee);
+        return null;
+    }
 }
