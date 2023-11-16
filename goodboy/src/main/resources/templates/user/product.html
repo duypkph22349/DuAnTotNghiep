@@ -1,12 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="zxx">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:fmt="http://www.thymeleaf.org/extras/thymeleaf-extras-java8">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="description" content="Fashi Template">
 	<meta name="keywords" content="Fashi, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Khăn choàng</title>
 
@@ -67,10 +67,10 @@
 								<div class="select-option w-100" id="category" style="">
 									<select class="sorting w-50">
 										<option value="">Tất cả sản phẩm</option>
-										<c:forEach items="${categories}" var="category">
-											<option value="${category.id}" onclick="alert(123)">${category.name}
+										<!-- <c:forEach items="${categories}" var="category">
+											<option value="${category.id}" onclick="alert(123)">${product.name}
 											</option>
-										</c:forEach>
+										</c:forEach> -->
 									</select>
 								</div>
 							</div>
@@ -86,99 +86,96 @@
 						</div>
 					</div>
 				</div>
+
+
+				<!-- Sản phầm -->
 				<div class="product-list" id="product-content">
+					<div class="container">
 					<div class="row">
-<!--						<div th:each="prod : ${products.content}">-->
-<!--&lt;!&ndash;						<c:forEach var="prod" items="${products.content}">&ndash;&gt;-->
-<!--							<div class="col-lg-3 col-sm-6">-->
-<!--								<div class="product-item">-->
-<!--									<div class="pi-pic">-->
-<!--										<img src="/images/${prod.category.id}/${prod.thumbnail}" alt="">-->
-<!--										<div class="sale pp-sale">Giảm giá</div>-->
-<!--										<div class="icon">-->
-<!--											<i class="icon_heart_alt"></i>-->
-<!--										</div>-->
-<!--										<ul>-->
-<!--											<li class="w-icon active"><a onclick="addToCart('${prod.id}')"><i-->
-<!--														class="icon_bag_alt"></i></a></li>-->
-<!--											<li class="quick-view"><a href="/products/detail/${prod.slug}">Chi tiết sản-->
-<!--													phẩm</a></li>-->
-<!--											<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>-->
-<!--										</ul>-->
-<!--									</div>-->
-<!--									<div class="pi-text">-->
-<!--										<div class="catagory-name">${prod.category.name}</div>-->
-<!--										<a href="#">-->
-<!--											<h5>${prod.name}</h5>-->
-<!--										</a>-->
-<!--										<div class="product-price">-->
-<!--											<fmt:formatNumber type="number" value="${prod.price}" /> VND-->
-<!--											<%&#45;&#45; <span>${prod.price}</span> &#45;&#45;%>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--&lt;!&ndash;						</c:forEach>&ndash;&gt;-->
-<!--						</div>-->
-						<div th:each="productdetail : ${list}">
-							<div class="col-lg-3 col-sm-6">
+						
+							<div th:each="productdetail : ${list}" class="col-lg-3 col-md-6">
 								<div class="product-item">
 									<div class="pi-pic">
-										<div class="text-center"
+										<div
 											th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
-											<img th:src="${productdetail.imageProducts[0].img}" alt="Ảnh sản phẩm"
-												  />
+											<img th:src="${productdetail.imageProducts[0].img}" alt="Ảnh sản phẩm" />
 										</div>
-										<div class="sale pp-sale">Giảm giá</div>
-										<div class="icon">
-											<i class="icon_heart_alt"></i>
-										</div>
+										
 										<ul>
-											<li class="w-icon active"><a th:onclick="'addToCart(\'' + ${productdetail.id} + '\')'"><i
-													class="icon_bag_alt"></i></a></li>
-											<li class="quick-view"><a href="/products/detail/${prod.slug}">Chi tiết sản phẩm</a></li>
+											<li class="w-icon active"><a
+													th:onclick="'addToCart(\'' + ${productdetail.id} + '\')'"><i
+														class="icon_bag_alt"></i></a></li>
+											<!-- <li class="quick-view"><a href="user/detail/*{productdetail.id}">Chi tiết
+													sản phẩm</a></li> -->
+													<li class="quick-view"><a th:href="@{/user/detail/{productId}(productId=${productdetail.id})}">Chi tiết sản phẩm</a></li>
+
 											<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
 										</ul>
 									</div>
 									<div class="pi-text">
-<!--										<div class="catagory-name" th:text="${prod.category.name}"></div>-->
+										<div class="catagory-name" th:text="${productdetail.idProduct.name}"></div>
 										<a href="#">
 											<h5 th:text="${productdetail.name}"></h5>
 										</a>
 										<div class="product-price">
-											<span th:text="${productdetail.price}"></span> VND
+											<span th:text="${productdetail.price}" />  VND
+
 										</div>
+									</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
-<!--						<nav aria-label="Page navigation example" class="w-100 d-flex justify-content-center">-->
-<!--							<ul class="pagination" id="pageNumber">-->
-<!--								<li class="page-item">-->
-<!--									<button class="btn page-link" onclick="select(this,0)">First</button>-->
-<!--								</li>-->
-<!--								<li class="page-item"><button class="btn page-link"-->
-<!--										onclick="select(this,${products.number > 0? products.number - 1 : 0})">Prev</button>-->
-<!--								</li>-->
-<!--								<li class="page-item"><button class="btn page-link">${products.number +-->
-<!--										1}/${products.totalPages}</button></li>-->
-<!--								<li class="page-item"><button class="btn page-link"-->
-<!--										onclick="select(this,${products.number < products.totalPages-1? products.number + 1 : products.totalPages - 1})">Next</button>-->
-<!--								</li>-->
-<!--								<li class="page-item">-->
-<!--									<button class="btn page-link"-->
-<!--										onclick="select(this,${products.totalPages - 1})">Last</button>-->
-<!--								</li>-->
-<!--							</ul>-->
-<!--						</nav>-->
 					</div>
 				</div>
-				<div>
+				<!-- Phân trang -->
+				<div class="table-footer d-flex justify-content-between mt-3">
+					<div class="text-start">This page is <span th:text="${crpage}"></span> of <span
+							th:text="${totalpage}"></span> </div>
 					<div class="text-center">
-
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center">
+								<li class="page-item disabled" th:if="${crpage-1 < 1}">
+									<a class="page-link" th:href="@{/user/page(pageno=${crpage-1})}" tabindex="-1"
+										aria-disabled="true"><i class="fas fa-chevron-left fa-sm"></i></a>
+								</li>
+								<li class="page-item" th:unless="${crpage-1 < 1}">
+									<a class="page-link" th:href="@{/user/page(pageno=${crpage-1})}"><i
+											class="fas fa-chevron-left fa-sm"></i></a>
+								</li>
+								<th:block th:each="page : ${pagenumber}">
+									<li class="page-item"
+										th:class="${crpage == page} ? 'page-item active' : 'page-item'">
+										<a class="page-link" th:href="@{/user/page(pageno=${page})}"
+											th:text="${page}"></a>
+									</li>
+								</th:block>
+								<li class="page-item disabled" th:if="${crpage == totalpage}">
+									<a class="page-link" th:href="@{/user/page(pageno=${crpage+1})}" tabindex="-1"
+										aria-disabled="true"><i class="fas fa-chevron-right fa-sm"></i></a>
+								</li>
+								<li class="page-item" th:unless="${crpage == totalpage}">
+									<a class="page-link" th:href="@{/user/page(pageno=${crpage+1})}"><i
+											class="fas fa-chevron-right fa-sm"></i></a>
+								</li>
+							</ul>
+						</nav><!-- End Centered Pagination -->
 					</div>
+					<form action="#" class="mx-2" th:action="@{/user/getcountrow}" method="get" id="rowCountForm">
+						Number of rows
+						<select name="selectedValue" class="border-0 px-2"
+							onchange="document.getElementById('rowCountForm').submit();">
+							<option value="10" th:selected="${rowcount == 10}">10</option>
+							<option value="20" th:selected="${rowcount == 20}">20</option>
+							<option value="50" th:selected="${rowcount == 50}">50</option>
+						</select>
+					</form>
 				</div>
+			</div>
+		</div>
+		<div>
+			<div class="text-center">
+
 			</div>
 		</div>
 	</section>
@@ -186,6 +183,8 @@
 
 	<!-- Footer Section Begin -->
 	<!-- <%@include file="./components/footer.jsp" %> -->
+<!--	<div th:replace="/user/components/footer :: footer"></div>-->
+
 	<!-- Footer Section End -->
 
 	<!-- Js Plugins -->

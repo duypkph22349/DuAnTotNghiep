@@ -1278,12 +1278,12 @@ ul, ol {
     font-weight: 700;
 }
 
-.product-item .pi-text .product-price span {
-    font-size: 14px;
-    font-weight: 400;
-    color: #b2b2b2;
-    text-decoration: line-through;
-}
+/*.product-item .pi-text .product-price span {*/
+/*    font-size: 14px;*/
+/*    font-weight: 400;*/
+/*    color: #b2b2b2;*/
+/*    text-decoration: line-through;*/
+/*}*/
 
 /*---------------------
   Deal Of The Week
