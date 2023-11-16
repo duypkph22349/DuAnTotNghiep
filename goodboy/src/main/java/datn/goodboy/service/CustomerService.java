@@ -48,10 +48,6 @@ public class CustomerService {
     public List<CustomerResponse> getPageNo(int pageNo) {
         return customerRepository.getPageNo(PageRequest.of(pageNo, 3)).getContent();
     }
-    // public List<CustomerResponse> getPageNo(int pageNo) {
-    // return customerRepository.getAllResponse();
-    // }
-    // manager
 
     public Object getComboBox() {
         return null;
@@ -72,52 +68,5 @@ public class CustomerService {
             return customerRepository.save(customer);
         }
     }
-    // public List<Province> getAllProvinces() {
-    // String apiUrl = "https://provinces.open-api.vn/api/p/";
-    // ResponseEntity<List<Province>> response = restTemplate.exchange(
-    // apiUrl,
-    // HttpMethod.GET,
-    // null,
-    // new ParameterizedTypeReference<List<Province>>() {}
-    // );
-    // System.out.println("Service"+response.getBody());
-    //
-    // return response.getBody();
-    // }
-    //
-    // public List<District> getDistrictsByProvinceId(String provinceId) {
-    // String apiUrl = "https://provinces.open-api.vn/api/d/";
-    // String fullUrl = apiUrl + provinceId;
-    // ResponseEntity<List<District>> response = restTemplate.exchange(
-    // fullUrl,
-    // HttpMethod.GET,
-    // null,
-    // new ParameterizedTypeReference<List<District>>() {}
-    // );
-    // return response.getBody();
-    // }
-    //
-    // public List<Ward> getWardsByDistrictId(String districtId) {
-    // String apiUrl = "https://provinces.open-api.vn/api/w/";
-    // String fullUrl = apiUrl + districtId;
-    // ResponseEntity<List<Ward>> response = restTemplate.exchange(
-    // fullUrl,
-    // HttpMethod.GET,
-    // null,
-    // new ParameterizedTypeReference<List<Ward>>() {}
-    // );
-    // return response.getBody();
-    // }
 
-    // public List<Province> getAllProvinces() {
-    // return openApiClient.getAllProvinces();
-    // }
-    //
-    // public List<District> getAllDistricts() {
-    // return openApiClient.getAllDistricts();
-    // }
-    //
-    // public List<Ward> getAllWards() {
-    // return openApiClient.getAllWards();
-    // }
 }

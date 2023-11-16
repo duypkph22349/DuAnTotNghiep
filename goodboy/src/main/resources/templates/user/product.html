@@ -37,6 +37,8 @@
 
 	<!-- Header Section Begin -->
 	<!-- <%@include file="./components/header.jsp" %> -->
+	<div th:replace="/user/components/header :: header"></div>
+
 	<!-- Header End -->
 
 	<!-- Breadcrumb Section Begin -->
@@ -118,55 +120,58 @@
 <!--							</div>-->
 <!--&lt;!&ndash;						</c:forEach>&ndash;&gt;-->
 <!--						</div>-->
-						<div th:each="prod : ${products.content}">
+						<div th:each="productdetail : ${list}">
 							<div class="col-lg-3 col-sm-6">
 								<div class="product-item">
 									<div class="pi-pic">
-<!--										<img th:src="@{/images/{categoryId}/{thumbnail}(categoryId=${prod.category.id}, thumbnail=${prod.thumbnail})}" alt="">-->
+										<div class="text-center"
+											th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
+											<img th:src="${productdetail.imageProducts[0].img}" alt="Ảnh sản phẩm"
+												  />
+										</div>
 										<div class="sale pp-sale">Giảm giá</div>
 										<div class="icon">
 											<i class="icon_heart_alt"></i>
 										</div>
 										<ul>
-											<li class="w-icon active"><a th:onclick="'addToCart(\'' + ${prod.id} + '\')'"><i
+											<li class="w-icon active"><a th:onclick="'addToCart(\'' + ${productdetail.id} + '\')'"><i
 													class="icon_bag_alt"></i></a></li>
-<!--											<li class="quick-view"><a th:href="@{'/products/detail/' + ${prod.slug}}">Chi tiết sản-->
-<!--												phẩm</a></li>-->
+											<li class="quick-view"><a href="/products/detail/${prod.slug}">Chi tiết sản phẩm</a></li>
 											<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
 										</ul>
 									</div>
 									<div class="pi-text">
 <!--										<div class="catagory-name" th:text="${prod.category.name}"></div>-->
 										<a href="#">
-											<h5 th:text="${prod.name}"></h5>
+											<h5 th:text="${productdetail.name}"></h5>
 										</a>
 										<div class="product-price">
-											<span th:text="${prod.price}"></span> VND
+											<span th:text="${productdetail.price}"></span> VND
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<nav aria-label="Page navigation example" class="w-100 d-flex justify-content-center">
-							<ul class="pagination" id="pageNumber">
-								<li class="page-item">
-									<button class="btn page-link" onclick="select(this,0)">First</button>
-								</li>
-								<li class="page-item"><button class="btn page-link"
-										onclick="select(this,${products.number > 0? products.number - 1 : 0})">Prev</button>
-								</li>
-								<li class="page-item"><button class="btn page-link">${products.number +
-										1}/${products.totalPages}</button></li>
-								<li class="page-item"><button class="btn page-link"
-										onclick="select(this,${products.number < products.totalPages-1? products.number + 1 : products.totalPages - 1})">Next</button>
-								</li>
-								<li class="page-item">
-									<button class="btn page-link"
-										onclick="select(this,${products.totalPages - 1})">Last</button>
-								</li>
-							</ul>
-						</nav>
+<!--						<nav aria-label="Page navigation example" class="w-100 d-flex justify-content-center">-->
+<!--							<ul class="pagination" id="pageNumber">-->
+<!--								<li class="page-item">-->
+<!--									<button class="btn page-link" onclick="select(this,0)">First</button>-->
+<!--								</li>-->
+<!--								<li class="page-item"><button class="btn page-link"-->
+<!--										onclick="select(this,${products.number > 0? products.number - 1 : 0})">Prev</button>-->
+<!--								</li>-->
+<!--								<li class="page-item"><button class="btn page-link">${products.number +-->
+<!--										1}/${products.totalPages}</button></li>-->
+<!--								<li class="page-item"><button class="btn page-link"-->
+<!--										onclick="select(this,${products.number < products.totalPages-1? products.number + 1 : products.totalPages - 1})">Next</button>-->
+<!--								</li>-->
+<!--								<li class="page-item">-->
+<!--									<button class="btn page-link"-->
+<!--										onclick="select(this,${products.totalPages - 1})">Last</button>-->
+<!--								</li>-->
+<!--							</ul>-->
+<!--						</nav>-->
 					</div>
 				</div>
 				<div>

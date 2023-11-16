@@ -15,7 +15,7 @@ import datn.goodboy.service.RolesService;
 
 @RequestMapping("admin/roles")
 @Controller
-public class Roles {
+public class RolesController {
 
     @Autowired
     private RolesService rolesService;
@@ -32,12 +32,12 @@ public class Roles {
         return "redirect:/admin/roles/hien-thi";
     }
 
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         rolesService.deleteRoles(id);
         return "redirect:/admin/roles/hien-thi";
     }
-    @GetMapping("detail/{id}")
+    @GetMapping("edit/{id}")
     public String detail(Model model, @PathVariable("id") int id){
         Optional<datn.goodboy.model.entity.Roles> roles = rolesService.findByIdRoles(id);
         if (roles.isPresent()) {
@@ -45,7 +45,9 @@ public class Roles {
         } else {
             model.addAttribute("detail", null);
         }
-        return "";
+        return "admin/pages/roles/create-roles";
     }
+
+
 
 }

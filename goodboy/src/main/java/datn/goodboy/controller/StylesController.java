@@ -43,7 +43,7 @@ public class StylesController {
         model.addAttribute("totalPage", brandPage.getTotalPages());
         model.addAttribute("brandPage", brandPage.getContent());
         model.addAttribute("keyword", keyword); // Truyền từ khóa để hiển thị lại trên giao diện
-        return "admin/pages/stypes/hien-thi";
+        return "admin/pages/styles/hien-thi";
     }
 
     @GetMapping("/view-add")
@@ -54,14 +54,14 @@ public class StylesController {
     @GetMapping("/view-update/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("brand",stylesService.getById(id));
-        return "admin/pages/stypes/hien-thi";
+        return "admin/pages/styles/update-styles";
     }
 
     @PostMapping("/update/{id}")
     public String update(Model model, @Valid Styles b, @PathVariable Integer id) {
         b.setUpdatedAt(LocalDateTime.now());
         stylesService.update(id, b);
-        return "redirect:/admin/stype/dsStype";
+        return "redirect:/admin/style/dsStype";
     }
 
     @PostMapping("/add")

@@ -8,6 +8,15 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                <li class="breadcrumb-item active">Customer</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 <h1 style="text-align: center">ADD CUSTOMER</h1>
 <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post" class="form">
 
