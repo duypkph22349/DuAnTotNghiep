@@ -55,8 +55,9 @@ public class ShoppingCartService implements IShoppingCartService {
 
     @Override
     public double getAmount() {
-        return maps.values().stream().mapToDouble(item -> item.getQuantity() * item.getCart().getMoney()).sum();
+        return 0;
     }
+
 
     public List<CartDetail> getCartItems() {
         return new ArrayList<>(maps.values());

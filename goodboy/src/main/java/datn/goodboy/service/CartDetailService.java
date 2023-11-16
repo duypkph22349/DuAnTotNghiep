@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,10 +32,18 @@ public class CartDetailService {
     }
 
     public void deleteCart(int id) {
-        cartDetailRepository.deleteById(id);
+        if(cartDetailRepository.existsById(id)){
+            cartDetailRepository.deleteById(id);
+        }
     }
 
-    public Optional<CartDetail> findByIdCart(int id) {
-        return cartDetailRepository.findById(id);
+    public  CartDetail  findByIdCart(int id) {
+        return cartDetailRepository.findById(id).get();
+    }
+
+    public BigDecimal getTotal(List<CartDetail> list){
+
+        return cartDetailRepository.getTotal(list);
+
     }
 }

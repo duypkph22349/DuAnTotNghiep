@@ -28,16 +28,6 @@ public class Cart {
     @JoinColumn(name = "id_customer" )
     private Customer customer;
 
-    @Column(name = "start_time")
-    private LocalDateTime start_time;
-
-
-    @Column(name = "quantity")
-    private int quantily;
-
-    @Column(name = "total_money")
-    private long money;
-
     @Column(name = "status")
     private int status;
 

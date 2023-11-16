@@ -17,11 +17,5 @@ public class CartItem {
         this.danhSachSanPham = danhSachSanPham;
     }
 
-    public double getTotal() {
-        double total = 0;
-        for (Cart item : items) {
-            total += item.getMoney() * item.getQuantily();
-        }
-        return total;
-    }
+
 }
