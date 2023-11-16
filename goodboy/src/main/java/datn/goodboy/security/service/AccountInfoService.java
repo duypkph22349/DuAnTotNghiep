@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class AccountInforService implements UserDetailsService {
+public class AccountInfoService implements UserDetailsService {
   private final AccountInforRepository repository;
   @Autowired
   PasswordEncoder encoder;
@@ -33,4 +33,13 @@ public class AccountInforService implements UserDetailsService {
       return new UserInfoUserDetails(UserInfo);
     }
   }
+
+  public Account getAccountByEmail(String email) {
+    Optional<Account> accouOptional = repository.findByEmail(email);
+    if (accouOptional.isPresent()) {
+      return accouOptional.get();
+    }
+    return null;
+  }
+
 }

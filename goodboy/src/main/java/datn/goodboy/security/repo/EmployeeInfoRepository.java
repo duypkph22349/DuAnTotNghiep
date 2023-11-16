@@ -17,4 +17,7 @@ public interface EmployeeInfoRepository extends JpaRepository<Employee, UUID> {
 
   @Query(value = "SELECT acc FROM Account acc WHERE acc.email LIKE :email")
   List<Account> hasEmailis(@Param("email") String email);
+
+  @Query(value = "SELECT emp FROM Employee emp WHERE emp.email = :email")
+  Optional<Employee> findByEmail(String email);
 }

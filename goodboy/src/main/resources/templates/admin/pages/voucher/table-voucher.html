@@ -112,11 +112,14 @@
                                 th:text="${convert.convertTrangThai(voucher.status)}">
                             </td>
                             <td>
-                                <a th:unless="${voucher.deleted}" th:href="@{/admin/voucher/delete(id=${voucher.id})}"
-                                    class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                <a th:if="${voucher.deleted}" th:href="@{/admin/voucher/delete(id=${voucher.id})}"
-                                    class="btn btn-secondary"><i class="fas fa-undo-alt"></i></a>
-                                <a th:href="@{/admin/voucher/edit(id=${voucher.id})}" class="btn btn-success"><i
+                                <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${voucher.deleted}"
+                                    th:href="@{/admin/voucher/delete(id=${voucher.id})}" class="btn btn-danger"><i
+                                        class="fas fa-trash-alt"></i></a>
+                                <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${voucher.deleted}"
+                                    th:href="@{/admin/voucher/delete(id=${voucher.id})}" class="btn btn-secondary"><i
+                                        class="fas fa-undo-alt"></i></a>
+                                <a sec:authorize="hasAnyAuthority('ADMIN')"
+                                    th:href="@{/admin/voucher/edit(id=${voucher.id})}" class="btn btn-success"><i
                                         class="fas fa-edit"></i></a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     th:attr="data-bs-target='#staticBackdrop' + ${voucher.id}">

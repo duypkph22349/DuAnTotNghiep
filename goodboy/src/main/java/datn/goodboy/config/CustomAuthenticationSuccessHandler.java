@@ -15,21 +15,32 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
 
+import datn.goodboy.model.entity.Account;
+import datn.goodboy.model.entity.Employee;
+import datn.goodboy.security.service.AccountInfoService;
+import datn.goodboy.security.service.EmployeInfoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     protected final Log logger = LogFactory.getLog(this.getClass());
     private RequestCache requestCache = new HttpSessionRequestCache();
 
-    public CustomAuthenticationSuccessHandler() {
-        setUseReferer(true);
+    public CustomAuthenticationSuccessHandler(AccountInfoService userService, EmployeInfoService employeeService) {
+        this.employeeService = employeeService;
+        this.userService = userService;
+        setUseReferer(true); // use referer
     }
+
+    AccountInfoService userService;
+    EmployeInfoService employeeService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
+        setSessionAuthenLogin(request, response, authentication);
         SavedRequest savedRequest = this.requestCache.getRequest(request, response);
         if (savedRequest == null) {
             String targetUrl = determineTargetUrl(authentication);
@@ -55,15 +66,25 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         for (GrantedAuthority a : authorities) {
             roles.add(a.getAuthority());
         }
-        if (roles.contains("CHANGE_PASSWORD")) {
-            url = "/resetpassword";
-        } else if (roles.contains("NOT_ACCTIVE")) {
+        if (roles.contains("NOT_ACCTIVE")) {
             url = "/sendvertifyemail";
         } else if (roles.contains("ADMIN")) {
-            url = "/homepage";
+            url = "/admin";
         } else if (roles.contains("USER")) {
-            url = "/sock";
+            url = "/shop";
         }
         return url;
+    }
+
+    public void setSessionAuthenLogin(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) {
+        HttpSession session = request.getSession();
+        session.setAttribute("authenusername", authentication.getName());
+
+        Account user = userService.getAccountByEmail(authentication.getName());
+        Employee employee = employeeService.getEmployeeByEmail(authentication.getName());
+
+        session.setAttribute("authenuser", user);
+        session.setAttribute("authenemployee", employee);
     }
 }

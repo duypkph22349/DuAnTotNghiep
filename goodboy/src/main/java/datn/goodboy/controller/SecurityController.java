@@ -240,4 +240,8 @@ public class SecurityController {
     return "reset-password.html";
   }
 
+  @GetMapping("/access-denied")
+  public String getAccessDenied() {
+    return "pages-error-403.html";
+  }
 }
