@@ -1,3 +1,4 @@
+#Ghi chú 
 <!-- Định dạng thành Tiền tệ -->
 <td th:text="${#strings.replace(
   #numbers.formatDecimal(voucher?.discount, 0, 'COMMA', 2, 'POINT'), 
