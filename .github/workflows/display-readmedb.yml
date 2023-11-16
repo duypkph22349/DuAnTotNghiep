@@ -13,4 +13,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Display READMEDB
-      run: echo "<meta http-equiv='refresh' content='0;url=READMEDB.md'>" > index.html
+      run: echo "<meta http-equiv='refresh' content='0;url=READMEDB.md'>" > indexx.html
