@@ -1,49 +1,40 @@
-Certainly! It looks like you have code snippets related to formatting currency, date and time, order types, and status for a billing system. Below is a simplified version of the README file with explanations for each section:
 
 ```markdown
-# Project README
+#  README
 
-## Formatting Currency
+## Formatting giá tiền
 
-To format currency in the application, the following Thymeleaf expression is used:
+Biểu thức này sử dụng các chức năng định dạng số và thao tác chuỗi của Thymeleaf để hiển thị phiếu giảm giá bằng Đồng Việt Nam (VND), loại bỏ mọi dấu '.00'.
 
 ```html
 th:text="${#strings.replace(#numbers.formatDecimal(voucher?.discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
 ```
 
-This expression utilizes Thymeleaf's string manipulation and number formatting functions to display the voucher discount in Vietnamese Dong (VNĐ), removing any trailing '.00'.
+## Formatting ngày và giờ
 
-## Formatting Date and Time
-
-For formatting date and time, the following Thymeleaf expression is employed:
+Biểu thức này sử dụng định dạng thời gian của Thymeleaf để hiển thị thời gian bắt đầu của phiếu thưởng ở định dạng 'dd-MM-yyyy HH:mm'.
 
 ```html
 td th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"
 ```
 
-This expression uses Thymeleaf's temporals formatting to display the start time of a voucher in the 'dd-MM-yyyy HH:mm' format.
-
 ## Order Types
-
-In the billing system, orders can have different types, identified by the following codes:
 
 - 0: Tại quầy (At the counter)
 - 1: Online
 
-These codes represent the order placement method.
+Mã này đại diện cho phương pháp đặt hàng.
 
-## Status for All Tables
+## Status cho tất cả bảng
 
-In the application, status codes are used universally to denote the active or inactive state. The status codes are as follows:
+Mã này áp dụng vào status cho tất cả bảng
 
 - 0: Ngừng kích hoạt (Deactivated)
 - 1: Kích hoạt (Activated)
 
-These codes are applied across all tables in the system.
-
 ## Bill Status Timeline
 
-The timeline of a bill's status is represented by the following codes:
+Mã này áp dụng cho timeline trạng thái đơn hàng
 
 - 0: Chờ xác nhận (Pending confirmation)
 - 1: Xác nhận thành công (Confirmed successfully)
