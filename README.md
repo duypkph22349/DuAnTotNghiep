@@ -1,6 +1,5 @@
 
 ```markdown
-#  README
 
 ## Formatting giá tiền
 
@@ -20,10 +19,10 @@ td th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"
 
 ## Order Types
 
+Mã này đại diện cho phương pháp đặt hàng.
+
 - 0: Tại quầy (At the counter)
 - 1: Online
-
-Mã này đại diện cho phương pháp đặt hàng.
 
 ## Status cho tất cả bảng
 
@@ -42,8 +41,3 @@ Mã này áp dụng cho timeline trạng thái đơn hàng
 - 3: Đang giao hàng (In transit)
 - 4: Đã giao hàng (Delivered)
 - 5: Thành công (Successful)
-
-These codes reflect the different stages a bill goes through, from confirmation to successful delivery.
-
-Feel free to update this README file as needed to provide more context or details specific to your project.
-```
