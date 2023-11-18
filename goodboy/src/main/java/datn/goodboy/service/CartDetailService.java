@@ -1,7 +1,9 @@
 package datn.goodboy.service;
 
 
+import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.repository.CartDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,10 @@ public class CartDetailService {
         return (ArrayList<CartDetail>) cartDetailRepository.findAll();
     }
 
+
+//    public CartDetail findByMaGHAndMaCTSP(Cart cart, ProductDetail productDetail){
+//        return cartDetailRepository.findByMaGHAndMactsp(cart, productDetail);
+//    }
 
     public CartDetail saveCart(CartDetail cartDetail) {
         return cartDetailRepository.save(cartDetail);

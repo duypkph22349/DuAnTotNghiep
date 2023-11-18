@@ -59,4 +59,6 @@ public class Customer {
 
   @Column(name="deleted")
   private boolean deleted;
+
+
 }

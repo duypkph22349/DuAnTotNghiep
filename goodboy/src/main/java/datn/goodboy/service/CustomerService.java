@@ -4,10 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import datn.goodboy.model.entity.DiaChi.District;
-import datn.goodboy.model.entity.DiaChi.Province;
-import datn.goodboy.model.entity.DiaChi.Ward;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +36,10 @@ public class CustomerService {
 
     public Optional<Customer> getCustomerById(UUID id) {
         return customerRepository.findById(id);
+    }
+
+    public Customer customerByid(UUID id) {
+        return customerRepository.findById(id).get();
     }
 
     public Customer saveCustomer(Customer customer) {
