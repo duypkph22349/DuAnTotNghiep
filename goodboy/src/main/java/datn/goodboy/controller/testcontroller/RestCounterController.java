@@ -1,10 +1,10 @@
 package datn.goodboy.controller.testcontroller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.OrderCounterRequest;
@@ -52,8 +51,8 @@ public class RestCounterController {
   }
 
   @GetMapping("customers")
-  public ResponseEntity<List<Customer>> getAllCustomer() {
-    return ResponseEntity.ok().body(customerService.getAllCustomers());
+  public ResponseEntity<List<Employee>> getAllCustomer() {
+    return ResponseEntity.ok().body(employeeService.getAllEmployee());
   }
 
   @GetMapping("productDetails")
@@ -63,14 +62,25 @@ public class RestCounterController {
 
   @GetMapping("productDetails/{id}")
   public ResponseEntity<ProductDetail> getProduct(@PathVariable("id") int id) {
-    System.out.println(id);
     Optional<ProductDetail> proc = productDetailService.getProductDetailById(id);
     return ResponseEntity.ok().body(productDetailService.getProductDetailById(id).get());
   }
 
+  @GetMapping("orderDetail")
+  public ResponseEntity<OrderCounterRequest> getOrderDetail() {
+    OrderCounterRequest.Product pr = new OrderCounterRequest.Product(1, 2);
+    OrderCounterRequest orderCounterRequest = new OrderCounterRequest();
+    orderCounterRequest.setProducts(Arrays.asList(pr));
+    ;
+    return ResponseEntity.ok().body(orderCounterRequest);
+  }
+
   @PostMapping("checkout")
-  public ResponseEntity<Bill> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
-    Bill bill = countService.saveBill(orderCounterRequest);
-    return ResponseEntity.ok().body(bill);
+  public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+    if (!orderCounterRequest.hasValidationError()) {
+      Bill bill = countService.saveBill(orderCounterRequest);
+      return ResponseEntity.ok().body(orderCounterRequest);
+    }
+    return null;
   }
 }

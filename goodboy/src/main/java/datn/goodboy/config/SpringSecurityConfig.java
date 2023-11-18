@@ -19,11 +19,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import datn.goodboy.security.repo.AccountInforRepository;
 import datn.goodboy.security.repo.EmployeeInfoRepository;
-import datn.goodboy.security.service.AccountInforService;
+import datn.goodboy.security.service.AccountInfoService;
 import datn.goodboy.security.service.EmployeInfoService;
 
 @Configuration
@@ -61,8 +62,8 @@ public class SpringSecurityConfig {
   @Autowired
   AccountInforRepository khifrepository;
 
-  AccountInforService KhachHangServer() {
-    return new AccountInforService(khifrepository);
+  AccountInfoService KhachHangServer() {
+    return new AccountInfoService(khifrepository);
   }
 
   @Bean
@@ -85,18 +86,28 @@ public class SpringSecurityConfig {
   }
 
   @Bean
+  LogoutSuccessHandler logoutSuccessHandler() {
+    return new CustomLogoutSuccessHandler();
+  }
+
+  @Bean
+  AccessDeniedHandler accessDeniedHandler() {
+    return new CustomAccessDeniedHandler();
+  }
+
+  @Bean
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
     http
-        .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/login").permitAll();
-        })
-
-        .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/test/login/signup").permitAll();
+        .authorizeHttpRequests(authorize -> {
+          // delete only role admin
+          authorize.requestMatchers("/admin/*/delete/**").hasAnyAuthority("ADMIN");
         })
         .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/admin/**").authenticated();
+          authorize.requestMatchers("/admin/**").hasAnyAuthority("STAFF", "ADMIN");
+        })
+        .authorizeHttpRequests((authorize) -> {
+          authorize.requestMatchers("/shop/**").hasAnyAuthority("USER");
         })
         .authorizeHttpRequests((authorize) -> {
           authorize.anyRequest().permitAll();
@@ -104,25 +115,28 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
-            .successHandler(new CustomAuthenticationSuccessHandler())
+            .successHandler(new CustomAuthenticationSuccessHandler(KhachHangServer(), nhanVienServer()))
             .usernameParameter("username")
             .passwordParameter("password")
-            // .failureHandler(authenticationFailureHandler())
             .permitAll())
         .logout(
             formLogin -> formLogin
                 .logoutUrl("/signOut")
-                .logoutSuccessUrl("/login")
+                .logoutSuccessHandler(logoutSuccessHandler())
                 .permitAll())
-        .rememberMe((remember) -> remember.key("feaef").tokenValiditySeconds(maxAge)
-            .userDetailsService(nhanVienServer())
+        .rememberMe((remember) -> remember.key("fefe").tokenValiditySeconds(maxAge)
+            .rememberMeCookieName("remember-token")
             .userDetailsService(KhachHangServer()))
+        .rememberMe((remember) -> remember.key("faewfaewf").tokenValiditySeconds(maxAge)
+            .rememberMeCookieName("remember-admin-token")
+            .userDetailsService(nhanVienServer()))
         .csrf(AbstractHttpConfigurer::disable)
+        .exceptionHandling((exceptionHandling) -> {
+          exceptionHandling.accessDeniedHandler(accessDeniedHandler());
+        })
         .httpBasic(Customizer.withDefaults())
         .authenticationManager(authManager);
     return http.build();
   }
-
-
 
 }

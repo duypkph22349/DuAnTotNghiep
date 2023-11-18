@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import datn.goodboy.security.service.AccountInforService;
+import datn.goodboy.security.service.AccountInfoService;
 import datn.goodboy.security.service.EmployeInfoService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Autowired
   private EmployeInfoService employeInfoService;
   @Autowired
-  private AccountInforService accountInforService;
+  private AccountInfoService accountInforService;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request,

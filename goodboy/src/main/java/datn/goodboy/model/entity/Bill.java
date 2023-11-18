@@ -63,7 +63,7 @@ public class Bill {
   float money_ship;
 
   @Column(name = "total_money")
-  float total_money;
+  Double total_money;
 
   @Column(name = "reduction_amount")
   float reduction_amount;
@@ -94,6 +94,7 @@ public class Bill {
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
   }
+
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();

@@ -39,8 +39,8 @@ public class SercurityService {
     return new EmployeInfoService(employeInfoRepository);
   }
 
-  AccountInforService accountService() {
-    return new AccountInforService(accountInfoRepository);
+  AccountInfoService accountService() {
+    return new AccountInfoService(accountInfoRepository);
   }
 
   public void setAuthentichByEmail(String email) {

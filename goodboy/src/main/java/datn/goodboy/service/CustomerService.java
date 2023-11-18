@@ -1,13 +1,10 @@
 package datn.goodboy.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import datn.goodboy.model.entity.DiaChi.District;
-import datn.goodboy.model.entity.DiaChi.Province;
-import datn.goodboy.model.entity.DiaChi.Ward;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +19,6 @@ public class CustomerService {
 
     // Declare the repository as final to ensure its immutability
     private final CustomerRepository customerRepository;
-
-
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -54,10 +49,24 @@ public class CustomerService {
         return customerRepository.getPageNo(PageRequest.of(pageNo, 3)).getContent();
     }
 
-
     public Object getComboBox() {
-      return null;
+        return null;
     }
 
+    public Customer getCounterCustomer() {
+        Optional<Customer> cusOptional = customerRepository.getCounterCustomer("COUNTER");
+        if (cusOptional.isPresent()) {
+            return cusOptional.get();
+        } else {
+            Customer customer = new Customer();
+            customer.setBirth_date(LocalDate.now());
+            customer.setCity("");
+            customer.setGender(false);
+            customer.setName("COUNTER");
+            customer.setStatus(1);
+            customer.setBirth_date(LocalDate.now());
+            return customerRepository.save(customer);
+        }
+    }
 
 }
