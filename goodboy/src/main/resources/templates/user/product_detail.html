@@ -36,7 +36,9 @@
     </div>
 
     <!-- Header Section Begin -->
-    <%@include file="./components/header.jsp" %>
+    <!-- <%@include file="./components/header.jsp" %> -->
+    <div th:replace="/user/components/header :: header"></div>
+
     <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
@@ -62,23 +64,20 @@
             <div class="row">
                 <div class="col-lg-6 px-5">
                     <div class="product-pic text-center mb-3">
-                        <img class="product-big-img w-100" id="product_thumbnail"
-                            src="/images/${product.category.id}/${color.images[0].image}" alt="">
+                        <img th:src="${productDetailRequest.image[0].img}" alt="Ảnh sản phẩm" />
                     </div>
                     <div class="product-thumbs">
                         <div class="product-thumbs-track ps-slider owl-carousel owl-loaded owl-drag">
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
-                                    style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;">
-                                    <c:forEach var="image"  items="${color.images}" varStatus="loop">
-                                        <div class="owl-item" style="width: 223.333px; margin-right: 10px;">
-                                            <div class="pt"
-                                                data-imgbigurl="/images/${product.category.id}/${image.image}">
-                                                <img src="/images/${product.category.id}/${image.image}" id="product_image${loop.index}"
-                                                    alt="">
+                                    style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;display: flex;">
+                                    <div th:each="image,loop : ${productDetailRequest.image}">
+                                        <div class="owl-item" style="width: 111,6665px; margin-right: 0.5px;">
+                                            <div class="pt">
+                                                <img class="p-1 image-fluid w-100" th:src="${image?.img}" id="product_image${loop.index}" alt="ảnh sản phẩm">
                                             </div>
                                         </div>
-                                    </c:forEach>
+                                    </div>
                                 </div>
                             </div>
                             <div class="owl-nav">
@@ -96,11 +95,11 @@
                 <div class="col-lg-6 pt-4">
                     <div class="product-details">
                         <div class="pd-title mb-3">
-                            <h2 class= "font-weight-bold">${product.name}</h2>
+                            <h2 class= "font-weight-bold" th:text="${productDetailRequest.name}"></h2>
                             <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                         </div>
                         <div class="pd-share mb-3">
-                            <div class="p-code">Mã sản phẩm : ${product.slug}</div>
+                            <div class="p-code" >Mã sản phẩm : ${productDetailRequest.code}</div>
                             <div class="pd-social">
                                 <a href="#"><i class="ti-facebook"></i></a>
                                 <a href="#"><i class="ti-twitter-alt"></i></a>
@@ -116,12 +115,12 @@
                         </div>
                         <div class="pd-desc">
                             <h1 class="font-weight-bold text-danger" style="font-size: 36px">
-                                <fmt:formatNumber type="number" value="${product.price}" /> VND
+                                <span th:text="${productDetailRequest.price}" /> VND
                             </h1>
                         </div>
                         <div class="pd-desc">
                             <h4 class="mb-4 font-weight-bold text-dark">Mô tả</h4>
-                            <p>${product.description}</p>
+                            <span th:text="${productDetailRequest.description}"></span>
                         </div>
                         <div class="pd-color row align-items-center">
                             <h4 class="font-weight-bold col-md-2">Màu sắc</h4>
@@ -195,6 +194,8 @@
 
     <!-- Footer Section Begin -->
 <!--    <%@include file="./components/footer.jsp" %>-->
+<div th:replace="/user/components/footer :: footer"></div>
+
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->

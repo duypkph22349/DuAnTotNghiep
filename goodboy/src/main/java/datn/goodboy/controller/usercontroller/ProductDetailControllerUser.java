@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-
+@RequestMapping("user")
 public class ProductDetailControllerUser {
 
     @Autowired
@@ -145,7 +145,7 @@ public class ProductDetailControllerUser {
     // panigation and sort
     @GetMapping("/getcountrow")
     public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue,
-                              @ModelAttribute("fillter") ProductDetailFilter fillter) {
+            @ModelAttribute("fillter") ProductDetailFilter fillter) {
         System.out.println(selectedValue);
         rowcount = Integer.parseInt(selectedValue);
         if (fillter != null) {
@@ -158,7 +158,7 @@ public class ProductDetailControllerUser {
                 model.addAttribute("pagenumber", pagenumbers);
                 model.addAttribute("crpage", pageno);
                 model.addAttribute("rowcount", rowcount);
-                return "/admin/pages/productdetail/table-productdetail.html";
+                return "user/product";
             }
         }
         pagenumbers = service.getPanigation(rowcount, pageno);
@@ -175,8 +175,8 @@ public class ProductDetailControllerUser {
 
     @GetMapping("sort")
     public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
-                              @RequestParam("sortDir") boolean sordir,
-                              @ModelAttribute("fillter") ProductDetailFilter fillter) {
+            @RequestParam("sortDir") boolean sordir,
+            @ModelAttribute("fillter") ProductDetailFilter fillter) {
         this.sortBy = sortby;
         this.sortDir = sordir;
         this.pageno = 1;
@@ -190,7 +190,7 @@ public class ProductDetailControllerUser {
                 model.addAttribute("pagenumber", pagenumbers);
                 model.addAttribute("crpage", pageno);
                 model.addAttribute("rowcount", rowcount);
-                return "/admin/pages/productdetail/table-productdetail.html";
+                return "user/product";
             }
         }
         List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
@@ -206,7 +206,7 @@ public class ProductDetailControllerUser {
 
     @GetMapping("/page")
     public String getPageNo(Model model, @RequestParam("pageno") int pageno,
-                            @ModelAttribute("fillter") ProductDetailFilter fillter) {
+            @ModelAttribute("fillter") ProductDetailFilter fillter) {
         if (pageno <= 1) {
             this.pageno = 1;
             pageno = 1;
@@ -222,7 +222,7 @@ public class ProductDetailControllerUser {
                 model.addAttribute("pagenumber", pagenumbers);
                 model.addAttribute("crpage", pageno);
                 model.addAttribute("rowcount", rowcount);
-                return "/admin/pages/productdetail/table-productdetail.html";
+                return "user/product";
             }
         }
         List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
@@ -237,7 +237,7 @@ public class ProductDetailControllerUser {
     }
 
     // end
-    @GetMapping( "products")
+    @GetMapping("products")
     public String getProductDetailIndexpages(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
         if (fillter != null) {
             if (fillter.filterAble()) {
@@ -265,40 +265,30 @@ public class ProductDetailControllerUser {
         return "user/product";
     }
 
-
-
     @ModelAttribute("productDetailRequest")
     public ProductDetailRequest setproductDetailForm() {
         return productDetailRequest;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @PostMapping("store")
     public String storeProductDetail(Model model,
-                                     @RequestParam("listimage") List<MultipartFile> listimage,
-                                     @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
-                                     BindingResult theBindingResult) throws IOException {
+            @RequestParam("listimage") List<MultipartFile> listimage,
+            @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
+            BindingResult theBindingResult) throws IOException {
         if (theBindingResult.hasErrors()) {
-            return "/admin/pages/productdetail/form-productdetail.html";
+            return "user/product";
         } else {
 
             service.saveProdudct(productDetailRequest, listimage);
-            return "redirect:index";
+            return "redirect:products";
         }
     }
 
+    @GetMapping("detail/{id}")
+    public String editProductDetail(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("productDetailRequest",
+                service.getProductDetailRequetById(id));
+            return "user/product_detail";
+    }
 
 }

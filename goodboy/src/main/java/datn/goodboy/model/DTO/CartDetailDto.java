@@ -26,7 +26,5 @@ public class CartDetailDto implements Serializable {
 
     private String name;
 
-    private String slug;
-
     private String image;
 }
