@@ -1,4 +1,4 @@
-package datn.goodboy.exception;
+package datn.goodboy.exeption.rest;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 

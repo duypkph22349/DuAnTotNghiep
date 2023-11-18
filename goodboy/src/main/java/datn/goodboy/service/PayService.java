@@ -11,12 +11,8 @@ import datn.goodboy.repository.PayRepository;
 
 @Service
 public class PayService {
-    private final PayRepository payRepository;
-
     @Autowired
-    public PayService(PayRepository payRepository) {
-        this.payRepository = payRepository;
-    }
+    PayRepository payRepository;
 
     public Optional<Pay> findPayById(int id) {
         return payRepository.findById(id);

@@ -617,13 +617,6 @@ function removeOrderPage(orderId) {
 function findProdcut(orderId) {}
 
 //calldata
-function getProductDetail(id) {
-  const products = {
-    cc1: { stt: 1, code: "Jaclyn-XL-Melessa", gia: 43658.0 },
-    cc2: { stt: 2, code: "Jaclyn-XL-Stacia", gia: 24849.0 },
-  };
-  return products[id];
-}
 function selectOrderType(event, id) {
   orderType = event.target.value;
   const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
@@ -955,11 +948,19 @@ async function addProductIntoOrder(idorderdetail, id) {
     const productExists = await findInExitOrder(idorderdetail, product.id);
 
     if (productExists !== null) {
-      increaseProductQuantity(productExists);
+      increaseProductQuantity(productExists, product);
     } else {
-      const productsOnOrder = form.querySelector("#cartTable tbody");
-      const newProductRow = createProductRow(product, idorderdetail);
-      productsOnOrder.appendChild(newProductRow);
+      if (product.quantity < 1) {
+        alert(
+          `Sản phẩm: " ${product.name} Màu sắc: ${
+            product.idColor?.name ?? ""
+          } Hoa văn: ${product.idPattern?.name ?? ""} Đã Hết`
+        );
+      } else {
+        const productsOnOrder = form.querySelector("#cartTable tbody");
+        const newProductRow = createProductRow(product, idorderdetail);
+        productsOnOrder.appendChild(newProductRow);
+      }
     }
     updateTongTien(idorderdetail);
   } catch (error) {
@@ -1012,12 +1013,18 @@ async function findInExitOrder(idorderdetail, productId) {
   return null;
 }
 
-function increaseProductQuantity(productExists) {
+function increaseProductQuantity(productExists, product) {
   if (productExists instanceof Element) {
     const inputNumber = productExists.querySelector("td:nth-child(3) input");
     if (inputNumber instanceof Element) {
       const currentValue = parseInt(inputNumber.value, 10) || 0;
-      inputNumber.value = currentValue + 1;
+      if (currentValue >= product.quantity) {
+        alert(
+          `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`
+        );
+      } else {
+        inputNumber.value = currentValue + 1;
+      }
     } else {
       console.error("Input number element not found.");
     }

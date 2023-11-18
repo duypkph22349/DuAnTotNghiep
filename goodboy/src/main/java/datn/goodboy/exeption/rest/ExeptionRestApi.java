@@ -1,4 +1,4 @@
-package datn.goodboy.exception;
+package datn.goodboy.exeption.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,19 +34,6 @@ public class ExeptionRestApi extends ResponseEntityExceptionHandler {
     }
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
         ex.getLocalizedMessage(), errors);
-    return new ResponseEntity<Object>(
-        apiError, new HttpHeaders(), apiError.getStatus());
-  }
-
-  @Override
-  protected ResponseEntity<Object> handleBindException(BindException ex,
-      HttpHeaders headers, HttpStatusCode status,
-      WebRequest request) {
-    List<String> errors = new ArrayList<String>();
-    for (ObjectError iterable_element : ex.getBindingResult().getAllErrors()) {
-      errors.add(iterable_element.getObjectName() + " not validated yet" + iterable_element.getDefaultMessage());
-    }
-    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
     return new ResponseEntity<Object>(
         apiError, new HttpHeaders(), apiError.getStatus());
   }

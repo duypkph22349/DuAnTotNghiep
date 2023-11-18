@@ -3,7 +3,7 @@ package datn.goodboy.model.request;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import datn.goodboy.exception.ErrorCreateBill;
+import datn.goodboy.exeption.rest.ErrorCreateBill;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
