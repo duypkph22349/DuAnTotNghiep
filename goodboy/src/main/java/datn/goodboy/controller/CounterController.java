@@ -48,7 +48,7 @@ public class CounterController {
 
   @GetMapping("")
   public String getOrderPage(Model model) {
-    return "admin/pages/cartcounter/thatcc.html";
+    return "admin/pages/cartcounter/counter.html";
   }
 
   @PostMapping("viewordetail/{id}")
