@@ -1,4 +1,4 @@
-package datn.goodboy.controller.testcontroller;
+package datn.goodboy.controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +17,6 @@ import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.OrderCounterRequest;
-import datn.goodboy.service.CartDetailService;
-import datn.goodboy.service.CartService;
-import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.test.TestConterService;
@@ -29,21 +26,12 @@ import datn.goodboy.service.test.TestConterService;
 public class RestCounterController {
 
   @Autowired
-  private CartService cartService;
-
-  @Autowired
-  private CustomerService customerService;
-
-  @Autowired
   private EmployeeService employeeService;
 
   @Autowired
   private ProductDetailService productDetailService;
   @Autowired
   private TestConterService countService;
-
-  @Autowired
-  private CartDetailService icartService;
 
   @GetMapping("employees")
   public ResponseEntity<List<Employee>> getAllEmp() {

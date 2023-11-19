@@ -128,7 +128,6 @@ public class AccountController {
   public String goToCreateForm(Model model) {
     accountRequest = new AccountRequest();
     accountRequest.setStatus(1);
-    model.addAttribute("listCustomer", customerService.getComboBox());
     model.addAttribute("accountRequest", accountRequest);
     model.addAttribute("rowcount", rowcount);
     return "/admin/pages/account/form-account.html";
@@ -150,7 +149,6 @@ public class AccountController {
   public String storeAccount(Model model, @Valid @ModelAttribute("accountRequest") AccountRequest accountRequest,
       BindingResult theBindingResult) {
     if (theBindingResult.hasErrors()) {
-      model.addAttribute("listCustomer", customerService.getComboBox());
       return "/admin/pages/account/form-account.html";
     } else {
       service.saveAccount(accountRequest);

@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import datn.goodboy.model.entity.Customer;
-import datn.goodboy.model.response.CustomerComboboxResponse;
 import datn.goodboy.model.response.CustomerResponse;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
@@ -20,9 +19,6 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
   @Query(value = "SELECT new datn.goodboy.model.response.CustomerResponse(c.id, c.code, c.name, c.gender, c.birth_date, c.phone, c.address, c.city, c.country, c.status) FROM Customer c")
   public List<CustomerResponse> getAllResponse();
-
-  @Query(value = "SELECT new datn.goodboy.model.response.CustomerComboboxResponse(c.id, c.name + ' - '+ c.phone) FROM Customer c")
-  public List<CustomerComboboxResponse> getCombobox();
 
   @Query(value = "SELECT cus FROM Customer cus WHERE cus.name= :name")
   public Optional<Customer> getCounterCustomer(@Param("name") String name);

@@ -53,10 +53,6 @@ public class CustomerService {
         return customerRepository.getPageNo(PageRequest.of(pageNo, 3)).getContent();
     }
 
-    public Object getComboBox() {
-        return null;
-    }
-
     public Customer getCounterCustomer() {
         Optional<Customer> cusOptional = customerRepository.getCounterCustomer("COUNTER");
         if (cusOptional.isPresent()) {
