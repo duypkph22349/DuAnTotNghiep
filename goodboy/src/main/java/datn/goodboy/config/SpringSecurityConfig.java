@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import datn.goodboy.security.repo.AccountInforRepository;
@@ -32,7 +33,7 @@ import datn.goodboy.security.service.EmployeInfoService;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-  @Value("${max-age-token-cookie}")
+  @Value("${max-login-token-time}")
   private int maxAge;
 
   @Bean
@@ -115,6 +116,7 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
+            // .failureHandler(AuthenticationFailureHandler)
             .successHandler(new CustomAuthenticationSuccessHandler(KhachHangServer(), nhanVienServer()))
             .usernameParameter("username")
             .passwordParameter("password")

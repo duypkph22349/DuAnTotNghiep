@@ -44,20 +44,6 @@ public class RolesService {
         return rolesRepository.findById(id);
     }
 
-    public Roles getNewEmployeeRole() {
-        Optional<Roles> roles = rolesRepository.getNewEmployeeRole();
-        if (roles.isPresent()) {
-            return roles.get();
-        } else {
-            Roles newEmpRoles = new Roles();
-            newEmpRoles.setName("NEWEMPLOYEE");
-            newEmpRoles.setRole("NEWEMPLOYEE");
-            newEmpRoles.setDeleted(false);
-            newEmpRoles.setUpdatedAt(LocalDateTime.now());
-            newEmpRoles.setStatus(0);
-            return rolesRepository.save(newEmpRoles);
-        }
-    }
 
     public Roles getEmployeeRole() {
         Optional<Roles> roles = rolesRepository.getEmployeeRole();

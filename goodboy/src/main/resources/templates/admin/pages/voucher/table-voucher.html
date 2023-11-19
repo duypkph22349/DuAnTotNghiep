@@ -18,15 +18,16 @@
             </nav>
         </div><!-- End Page Title -->
         <div class="container-fluid">
-            <div class="d-flex">
+            <div>
+                <form th:action="@{/admin/voucher/seach}" method="get"></form>
+                <div class="input-group">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon" />
+                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div sec:authorize="hasAnyAuthority('ADMIN')" class="d-flex">
                 <a href="/admin/voucher/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
-                <!-- <div>
-                    <div class="input-group">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                            aria-describedby="search-addon" />
-                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
-                    </div>
-                </div> -->
             </div>
             <div style="overflow: auto" class="mt-4">
                 <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
@@ -36,12 +37,6 @@
                                 <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=true)}"><i
                                         class="fas fa-arrow-up"></i></a>
                                 <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=false)}"><i
-                                        class="fas fa-arrow-down"></i></a>
-                            </th>
-                            <th scope="col">Code
-                                <a th:href="@{/admin/voucher/sort(sortBy=code ,sortDir=true)}"><i
-                                        class="fas fa-arrow-up"></i></a>
-                                <a th:href="@{/admin/voucher/sort(sortBy=code ,sortDir=false)}"><i
                                         class="fas fa-arrow-down"></i></a>
                             </th>
                             <th scope="col">Ngày bắt đầu
@@ -92,9 +87,8 @@
                     <tbody>
                         <tr th:each="voucher : ${list}">
                             <td th:text="${voucher.name}"></td>
-                            <td th:text="${voucher.code}"></td>
-                            <td th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"></td>
-                            <td th:text="${#temporals.format(voucher?.end_time, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td th:text="${#temporals.format(voucher?.start_time, 'HH:mm dd-MM-yyyy')}"></td>
+                            <td th:text="${#temporals.format(voucher?.end_time, 'HH:mm dd-MM-yyyy')}"></td>
                             <td th:text="${voucher?.quantily}"></td>
                             <td th:if="${voucher.types}" th:text="${voucher?.discount} +' %'"></td>
                             <td th:unless="${voucher.types}"
