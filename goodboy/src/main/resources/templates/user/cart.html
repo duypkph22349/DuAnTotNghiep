@@ -71,38 +71,50 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    <tr th:each="cartDetail, i : ${list}" >
-                                        <td th:text="${i.index+1}"></td>
-                                        <td th:text="${cartDetail.productDetail.name}"></td>
-                                        <td th:text="${cartDetail.productDetail.name}"></td>
-                                        <td th:text="${cartDetail.productDetail.price}"></td>
-                                        <td class="qua-col first-row">
-                                            <div class="quantity">
-                                                <div class="pro-qty">
-                                                    <span class="dec qtybtn" th:onclick="|qty(${i.index},'${cartDetail.productDetail.id}',0)|">-</span>
-                                                    <input type="text" class="qty_product" th:value="${cartDetail.quantity}" th:onchange="|updateCart(${i.index},'${cartDetail.productDetail.id}')|">
-                                                    <span class="inc qtybtn" th:onclick="|qty(${i.index},'${cartDetail.productDetail.id}',1)|">+</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td th:text="${cartDetail.productDetail.price * cartDetail.quantity}"></td>
-<!--                                        <td   style="width: 5%" th:href="@{'/user/home/delete/' + ${cartDetail.id}}" ><i  class="ti-close"></i></td>-->
-                                    </tr>
+                            <tr th:each="cartDetail, loop : ${list}">
+                                <td th:text="${loop.index+1}"></td>
+                                <td th:text="${cartDetail.productDetail.name}"></td>
+                                <td th:text="${cartDetail.productDetail.name}"></td>
+                                <td th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                ></td>
+                                <td>
+                                    <form style="top: 40px; margin-top: 20px; margin-left: 70px" th:action="@{/user/updateSoLuong/{id}(id=${cartDetail.id})}" method="post">
+                                        <button type="submit" name="actions" th:value="giam">-</button>
+                                        <input aria-label="quantity" class="input-qty" th:max="${cartDetail.productDetail.quantity}" th:min="0" type="number"
+                                               name="quantity" th:value="${cartDetail.quantity}"  >
+                                        <button type="submit" name="actions" th:value="tang">+</button>
+                                    </form>
+                                </td>
+                                <td th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price * cartDetail.quantity, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                ></td>
+                                <td class="close-td first-row">
+                                    <a th:href="@{'/user/delete/' + ${cartDetail.id}}" class="btn btn-outline-danger"   onclick="if (!confirm('Bạn chắc chắn có muốn xóa không ?')){return false;}else{return true}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                             class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <div class="col-lg-12">
                     <div class="">
                         <h3 class="fw-bold">Hóa đơn</h3>
                         <hr class="my-4">
-<!--                        <div th:each="detail : ${cart.listDetail}" class="d-flex justify-content-between mb-4 row_summary">-->
-<!--                            <h5 class="h6 qty_summary" th:text="${detail.value.quantity + 'x ' + detail.value.name}"></h5>-->
-<!--                            <h5 class="h6 price_summary">-->
-<!--                                <span th:text="${#numbers.formatDecimal(detail.value.price, 0, 'NUMBER')}" /> VND</h5>-->
-<!--                        </div>-->
+                        <div th:each="cartDetail, loop : ${list}" class="d-flex justify-content-between mb-4 row_summary">
+                            <h5 class="h6 qty_summary"  th:text="${cartDetail.productDetail.quantity + 'x ' + cartDetail.productDetail.name}"></h5>
+                            <h5 class="h6 price_summary"
+                              th:text="${cartDetail.productDetail.price * cartDetail.quantity}"> VND</h5>
+                        </div>
                         <hr class="my-4 ">
                     </div>
+
+
                     <div class="">
                         <div class="discount-coupon">
                             <h6>Mã giảm giá</h6>
@@ -115,9 +127,13 @@
                     <div class="">
                         <div class="proceed-checkout">
                             <ul>
-                                <li class="subTotal">Tổng giá<span id="subTotal"><span th:text="${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0)}"></span> VND</span></li>
+                                <li class="subTotal">Tổng giá <span
+                                                                    th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                ></span></li>
                                 <hr>
-                                <li class="cart-total">Tổng tiền <span id="cartTotal"><span th:text="${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0)}"></span> VND</span></li>
+                                <li class="cart-total">Tổng tiền <span th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+
+                                ></span></li>
                             </ul>
                             <a href="/checkout" class="proceed-btn">Thanh toán</a>
                         </div>
@@ -152,6 +168,10 @@
 <script src="/js/main.js"></script>
 
 <script src="/js/validate.js"></script>
+
+
+
+
     <script type="text/javascript">
         function updateCart(index,productId) {
             var quantity = $('.qty_product').eq(index).val();

@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,6 +25,9 @@ public class CartDetail {
     @ManyToOne
     @JoinColumn(name = "id_cart" )
     private Cart cart;
+
+    @Column(name = "price")
+    private Float price;
 
     @ManyToOne
     @JoinColumn(name = "id_product_detail" )

@@ -37,6 +37,10 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
+    public Customer customerByid(UUID id) {
+        return customerRepository.findById(id).get();
+    }
+
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
     }

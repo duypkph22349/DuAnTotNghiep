@@ -49,3 +49,8 @@ Any other relevant information, tips, or special considerations can be added her
 ---
 
 This is a basic structure, and you should tailor it to fit the specifics of your project. Include more details about your project, dependencies, and any special considerations that users might need to know.
+# DuAnTotNghiep
+In OrderCounter Code
+ OrderTypes
+0 is in Counter
+1 is Online
