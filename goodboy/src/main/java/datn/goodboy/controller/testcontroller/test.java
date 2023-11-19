@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class test {
     @GetMapping
     public String t(Model model){
-        return "user/cart";
+        return "user/home";
     }
 }

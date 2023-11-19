@@ -37,7 +37,7 @@
 
     <!-- Header Section Begin -->
     <!-- <%@include file="./components/header.jsp" %> -->
-    <div th:replace="/user/components/header :: header"></div>
+    <div th:replace="~{/user/components/header :: header}"></div>
 
     <!-- Header End -->
 
@@ -194,7 +194,7 @@
 
     <!-- Footer Section Begin -->
 <!--    <%@include file="./components/footer.jsp" %>-->
-<div th:replace="/user/components/footer :: footer"></div>
+    <div th:replace="~{/user/components/footer :: footer}"></div>
 
     <!-- Footer Section End -->
 
