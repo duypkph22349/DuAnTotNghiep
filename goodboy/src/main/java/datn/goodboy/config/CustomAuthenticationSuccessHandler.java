@@ -70,8 +70,10 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             url = "/sendvertifyemail";
         } else if (roles.contains("ADMIN")) {
             url = "/admin";
+        } else if (roles.contains("STAFF")) {
+            url = "/admin";
         } else if (roles.contains("USER")) {
-            url = "/shop";
+            url = "/home";
         }
         return url;
     }

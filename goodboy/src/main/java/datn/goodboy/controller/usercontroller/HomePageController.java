@@ -23,11 +23,6 @@ public class HomePageController {
     return "/user/cart.html";
   }
 
-  @GetMapping("login")
-  public String getlogin(Model model) {
-    return "/user/login.html";
-  }
-
   @GetMapping("shop")
   public String getshop(Model model) {
     return "/user/shop.html";

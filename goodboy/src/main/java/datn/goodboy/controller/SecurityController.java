@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.request.EmployeeSignUpRequest;
-import datn.goodboy.model.request.LoginRequest;
 import datn.goodboy.model.request.ResetPasswordRequest;
 import datn.goodboy.model.request.UserSignUpRequest;
 import datn.goodboy.security.service.SercurityService;
@@ -34,8 +33,6 @@ import jakarta.validation.Valid;
 
 @Controller
 public class SecurityController {
-  @Autowired
-  LoginRequest loginRequest;
   @Autowired
   EmailHelper emailHelper;
   @Autowired
@@ -52,16 +49,19 @@ public class SecurityController {
   @Autowired
   CustomerService cusService;
 
-  @ModelAttribute("loginRequest")
-  LoginRequest loginReqest() {
-    return loginRequest;
-  }
-
   @GetMapping("/login")
   public String loginPage(Model model) {
-    loginRequest = new LoginRequest();
-    model.addAttribute("loginRequest", loginRequest);
     return "login.html";
+  }
+
+  @GetMapping("/employee/login")
+  public String loginEmployeePage(Model model) {
+    return "admin/login.html";
+  }
+
+  @GetMapping("/user/login")
+  public String loginCustomePage(Model model) {
+    return "user/login.html";
   }
 
   @GetMapping("/login-fail")
@@ -69,6 +69,20 @@ public class SecurityController {
       RedirectAttributes redirAttrs) {
     redirAttrs.addFlashAttribute("message", "Email or Password is incorrect!!!");
     return "redirect:/login";
+  }
+
+  @GetMapping("employee/login-fail")
+  public String loginEmployeeFail(Model model,
+      RedirectAttributes redirAttrs) {
+    redirAttrs.addFlashAttribute("message", "Email or Password is incorrect!!!");
+    return "redirect:/employee/login";
+  }
+
+  @GetMapping("/user/login-fail")
+  public String loginUserFail(Model model,
+      RedirectAttributes redirAttrs) {
+    redirAttrs.addFlashAttribute("message", "Email or Password is incorrect!!!");
+    return "redirect:/user/login";
   }
 
   @GetMapping("/homepage")
