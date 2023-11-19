@@ -32,7 +32,7 @@ import datn.goodboy.security.service.EmployeInfoService;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-  @Value("${max-age-token-cookie}")
+  @Value("${max-login-token-time}")
   private int maxAge;
 
   @Bean
