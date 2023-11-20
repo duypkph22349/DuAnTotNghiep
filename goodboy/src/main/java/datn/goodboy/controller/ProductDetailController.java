@@ -282,7 +282,6 @@ public class ProductDetailController {
   @GetMapping("create")
   public String goToCreateForm(Model model) {
     productDetailRequest = new ProductDetailRequest();
-    model.addAttribute("listCustomer", customerService.getComboBox());
     productDetailRequest.resetRequest();
     model.addAttribute("productDetailRequest", productDetailRequest);
     return "/admin/pages/productdetail/form-productdetail.html";

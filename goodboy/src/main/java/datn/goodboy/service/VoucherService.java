@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.VoucherRequest;
-import datn.goodboy.model.response.VoucherResponse;
 import datn.goodboy.repository.VoucherRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
@@ -24,7 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class VoucherService implements PanigationInterface<VoucherResponse> {
+public class VoucherService implements PanigationInterface<Voucher> {
   // thay repose thanh voucher
   // Declare the repository as final to ensure its immutability
   @Autowired
@@ -91,7 +90,7 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
   }
   // user
 
-  public List<VoucherResponse> getAllAccountHasVoucher(UUID idVoucher) {
+  public List<Voucher> getAllAccountHasVoucher(UUID idVoucher) {
     return null;
   }
 
@@ -116,11 +115,11 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
   // panigation start
   // panigation
   @Override
-  public List<VoucherResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
+  public List<Voucher> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
     if (pageNo > getPageNumber(pageSize)) {
       return null;
     }
-    List<VoucherResponse> ChiTietSanPhams;
+    List<Voucher> ChiTietSanPhams;
     ChiTietSanPhams = new ArrayList<>();
     Sort sort;
     if (sortDir) {
@@ -130,7 +129,7 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<VoucherResponse> page = voucherRepository.getResponsePage(pageable);
+    Page<Voucher> page = voucherRepository.findAll(pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
@@ -138,7 +137,7 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
   @Override
   public int getPageNumber(int rowcount) {
     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<VoucherResponse> page = voucherRepository.getResponsePage(pageable);
+    Page<Voucher> page = voucherRepository.findAll(pageable);
     int totalPage = page.getTotalPages();
     return totalPage;
   }
@@ -146,7 +145,7 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
   @Override
   public int[] getPanigation(int rowcount, int pageno) {
     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<VoucherResponse> page = voucherRepository.getResponsePage(pageable); // findAll()
+    Page<Voucher> page = voucherRepository.findAll(pageable); // findAll()
     int totalPage = page.getTotalPages();
     int[] rs;
     if (totalPage <= 1) {

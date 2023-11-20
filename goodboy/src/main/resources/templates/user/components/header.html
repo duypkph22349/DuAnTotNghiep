@@ -1,157 +1,308 @@
-<!-- <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="../../common/common.jsp"%> -->
 <header class="header-section" style="background: #ffffff">
-	<div class="header-top">
-<!--		<div class="container">-->
-<!--			<div class="ht-left">-->
-<!--				<div class="mail-service">-->
-<!--					<i class=" fa fa-envelope"></i> vha7429@gmail.com-->
-<!--				</div>-->
-<!--				<div class="phone-service">-->
-<!--					<i class=" fa fa-phone"></i> +84329761626-->
-<!--				</div>-->
-<!--			</div>-->
-			<div class="ht-right">
-				<c:choose>
-					<c:when test="${sessionScope.account == null}">
-						<a class="login-panel px-3" data-toggle="modal"
-							data-target="#registerModal"><i class="fa fa-user"></i>Đăng ký</a>
-						<a class="login-panel px-3" data-toggle="modal"
-							data-target="#loginModal"><i class="fa fa-user"></i>Đăng nhập</a>
-					</c:when>
-					<c:otherwise>
-						<span class="login-panel p-0  dropdown">
-							<button type="button"
-								class="btn bg-transparent px-3 py-1 w-100 dropdown-toggle text-right"
-								data-toggle="dropdown" aria-expanded="false">
-								<span class="mr-3">Chào, ${sessionScope.account.fullname}</span>
-								<img src="/avatar/${sessionScope.account.avatar}" class="rounded-circle mr-3" style="width: 40px; height: 40px;">
-							</button>
-							<div class="dropdown-menu" style="left: auto; right: 0;">
-								<c:if test="${sessionScope.account.isAdmin()}">
-									<a class="dropdown-item" href="/admin/home">Quản lý</a>
-								</c:if>
-								<a class="dropdown-item" href="/profile">Thông tin</a> <a
-									class="dropdown-item" href="/change_password">Đổi mật khẩu</a> <a
-									class="dropdown-item" href="/order_status">Đơn hàng</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="/logout">Đăng xuất</a>
-							</div>
-						</span>
-					</c:otherwise>
-				</c:choose>
-				<div class="lan-selector">
-					<select class="language_drop" name="countries" id="countries"
-						style="width: 300px;">
-						<option value='yu' data-image="/img/flag-2.jpg"
-							data-imagecss="flag yu" data-title="Bangladesh"> VIE </option>
-						<option value='yt' data-image="/img/flag-1.jpg"
-							data-imagecss="flag yt" data-title="English"> ENG </option>
-					</select>
-				</div>
-				<div class="top-social">
-					<a href="#"><i class="ti-facebook"></i></a> <a href="#"><i
-						class="ti-twitter-alt"></i></a> <a href="#"><i class="ti-linkedin"></i></a>
-					<a href="#"><i class="ti-pinterest"></i></a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container" style="background: #ffffff">
-		<div class="inner-header">
-			<div class="row">
-				<div class="col-lg-2 col-md-2">
-					<div class="logo">
-						<a href="/home"> <img src="/img/aaaaaaaaa.jpg"
-							class="img-responsive" alt="Logo">
-						</a>
-					</div>
-				</div>
-				<div class="col-lg-7 col-md-7">
-					<div class="advanced-search">
-						<button type="button" class="category-btn">Danh mục</button>
-						<div class="input-group">
-							<input type="text" placeholder="Bạn cần tìm kiếm gì?">
-							<button type="button">
-								<i class="ti-search"></i>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 text-right col-md-3">
-					<ul class="nav-right">
-						<li class="heart-icon"><a href="#"> <i
-								class="icon_heart_alt"></i> <span>0</span>
-						</a></li>
-						<li class="cart-icon"><a href="/cart"> <i
-								class="icon_bag_alt"></i> <span id="totalQuantity">${cart.totalQuantity}</span>
-						</a>
-							<div class="cart-hover">
-								<div class="select-items">
-									<table>
-										<tbody id="cartShow">
-											<c:forEach var="detail" items="${cart.listDetail}">
-												<tr>
-													<td class="si-pic"><img style="width: 60px"
-														src="/images/${detail.value.cateId}/${detail.value.image}" alt=""></td>
-													<td class="si-text">
-														<div class="product-selected">
-															<p>
-																<fmt:formatNumber type="number"
-																	value="${detail.value.price}" />
-																VND
-															</p>
-															<h6>${detail.value.quantity}x${detail.value.name}</h6>
-														</div>
-													</td>
-													<td class="si-close"><i class="ti-close"></i></td>
-												</tr>
-											</c:forEach>
+    <div class="container" style="background: #ffffff">
+        <div class="inner-header">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="logo">
+                        <a href="/home"> <img src="/img/aaaaaaaaa.jpg"
+                                              class="img-responsive" alt="Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7">
+                    <div class="advanced-search">
+                        <button type="button" class="category-btn">Danh mục</button>
+                        <div class="input-group">
+                            <input type="text" placeholder="Bạn cần tìm kiếm gì?">
+                            <button type="button">
+                                <i class="ti-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 text-right col-md-3">
+                    <ul class="nav-right">
+                        <li class="heart-icon"><a href="#"> <i
+                                class="icon_heart_alt"></i> <span>0</span>
+                        </a></li>
+                        <li class="cart-icon"><a href="/cart"> <i
+                                class="icon_bag_alt"></i> <span id="totalQuantity">${cart.totalQuantity}</span>
+                        </a>
+                            <div class="cart-hover">
+                                <div class="select-items">
+                                    <table>
+                                        <tbody id="cartShow">
+                                        <c:forEach var="detail" items="${cart.listDetail}">
+                                            <tr>
+                                                <td class="si-pic"><img style="width: 60px"
+                                                                        src="/images/${detail.value.cateId}/${detail.value.image}"
+                                                                        alt=""></td>
+                                                <td class="si-text">
+                                                    <div class="product-selected">
+                                                        <p>
+                                                            <fmt:formatNumber type="number"
+                                                                              value="${detail.value.price}"/>
+                                                            VND
+                                                        </p>
+                                                        <h6>${detail.value.quantity}x${detail.value.name}</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="si-close"><i class="ti-close"></i></td>
+                                            </tr>
+                                        </c:forEach>
 
-										</tbody>
-									</table>
-								</div>
-								<div class="select-total">
-									<span>Tổng:</span>
-									<h5 id="totalPrice1">
-										<fmt:formatNumber type="number" value="${cart.totalPrice}" />
-										VND
-									</h5>
-								</div>
-								<div class="select-button">
-									<a href="/cart" class="primary-btn view-card">Giỏ hàng </a> <a
-										href="/checkout" class="primary-btn checkout-btn">Thanh toán</a>
-								</div>
-							</div></li>
-						<li class="cart-price" id="totalPrice2"><fmt:formatNumber
-								type="number" value="${cart.totalPrice}" /> VND</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="nav-item">
-		<div class="container">
-			<div class="nav-depart">
-				<div class="depart-btn">
-					<i class="ti-menu"></i> <span>Tất cả danh mục</span>
-					<ul class="depart-hover">
-						<li><a href="/product/shirt">Áo</a></li>
-						<li><a href="/product/trouser">Quần</a></li>
-						<li><a href="/product/accessory">Phụ kiện</a></li>
-					</ul>
-				</div>
-			</div>
-			<nav class="nav-menu mobile-menu">
-				<ul>
-					<li class="item_nav"><a href="/home">Trang chủ</a></li>
-					<li class="item_nav"><a href="/about">Giới thiệu</a></li>
-					<li class="item_nav"><a href="http://localhost:8080/user/products">Sản phẩm</a></li>
-					<li class="item_nav"><a href="/contact">Liên hệ</a></li>
-				</ul>
-			</nav>
-			<div id="mobile-menu-wrap"></div>
-		</div>
-	</div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="select-total">
+                                    <span>Tổng:</span>
+                                    <h5 id="totalPrice1">
+                                        <fmt:formatNumber type="number" value="${cart.totalPrice}"/>
+                                        VND
+                                    </h5>
+                                </div>
+                                <div class="select-button">
+                                    <a href="/cart" class="primary-btn view-card">Giỏ hàng </a> <a
+                                        href="/checkout" class="primary-btn checkout-btn">Thanh toán</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="cart-price" id="totalPrice2">
+                            <fmt:formatNumber
+                                    type="number" value="${cart.totalPrice}"/>
+                            VND
+                        </li>
+                    </ul>
+                    <div class="ht-right">
+                        <div th:if="${session.account == null}">
+                            <a class="login-panel px-3" data-toggle="modal" data-target="#registerModal" type="button">
+                                <i class="fa fa-user"></i>Đăng ký
+                            </a>
+                            <a class="login-panel px-3" data-toggle="modal" data-target="#loginModal" type="button" >
+                                <i class="fa fa-user"></i>Đăng nhập
+                            </a>
+                        </div>
+                        <div th:if="${session.account != null}">
+    <span class="login-panel p-0 dropdown">
+        <button type="button"
+                class="btn bg-transparent px-3 py-1 w-100 dropdown-toggle text-right"
+                data-toggle="dropdown" aria-expanded="false">
+            <span class="mr-3">Chào, [[${session.account.fullname}]]</span>
+            <img th:src="@{/avatar/{avatar}(avatar=${session.account.avatar})}" class="rounded-circle mr-3"
+                 style="width: 40px; height: 40px;">
+        </button>
+        <div class="dropdown-menu" style="left: auto; right: 0;">
+            <div th:if="${session.account.isAdmin()}">
+                <a class="dropdown-item" th:href="@{/admin/home}">Quản lý</a>
+            </div>
+            <a class="dropdown-item" th:href="@{/profile}">Thông tin</a>
+            <a class="dropdown-item" th:href="@{/change_password}">Đổi mật khẩu</a>
+            <a class="dropdown-item" th:href="@{/order_status}">Đơn hàng</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+        </div>
+    </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="nav-item">
+            <div class="container">
+                <div class="nav-depart">
+                    <div class="depart-btn">
+                        <i class="ti-menu"></i> <span>Tất cả danh mục</span>
+                        <ul class="depart-hover">
+                            <li><a href="/product/shirt">Áo</a></li>
+                            <li><a href="/product/trouser">Quần</a></li>
+                            <li><a href="/product/accessory">Phụ kiện</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <nav class="nav-menu mobile-menu">
+                    <ul>
+                        <li class="item_nav"><a href="/home">Trang chủ</a></li>
+                        <li class="item_nav"><a href="/about">Giới thiệu</a></li>
+                        <li class="item_nav"><a href="http://localhost:8080/user/products">Sản phẩm</a></li>
+                        <li class="item_nav"><a href="/contact">Liên hệ</a></li>
+                    </ul>
+                </nav>
+                <div id="mobile-menu-wrap"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade align-items-center justify-content-center" id="loginModal" tabindex="-1"
+         aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="modal-header border-0 d-flex justify-content-between">
+                    <h2 class="fw-bold"><Strong> Trang đăng nhập </Strong></h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="login-form">
+                        <form novalidate action="/singin" method="post" id="loginForm">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <strong>Tên email </strong></label>
+                                <input name="username" type="text" class="form-control" placeholder="Hãy nhập email" required />
+                                <div class="text-center text-danger mb-2" th:if="${usernotfounmessage}">
+                                    <span th:text="${usernotfounmessage}"></span>
+                                </div>
+                                <div class="invalid-feedback">Please enter your Email.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mật khẩu</label>
+                                <input name="password" type="password" class="form-control" placeholder="Hãy nhập mật khẩu" required/>
+                                <div class="invalid-feedback">Please enter your password!</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 mt-2 form-group">
+                                    <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                    <label for="remember-me" class="label-agree-term"><span><span></span></span>Ghi nhớ đăng nhập?</label>
+                                </div>
+                                <div class="col-sm-5  form-group">
+                                    <a class="img-responsive btn text-danger" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+                                       data-target="#forgotModal"> Quên mật khẩu?</a>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-center">
+                                <div class="text-center text-danger mb-2" th:if="${message}">
+                                    <span th:text="${message}"></span>
+                                </div>
+                                <button class="btn primary-btn fw-bold w-100 py-2 rounded-pill" type="submit">Đăng nhập</button>
+                            </div>
+                        </form>
+                        <div class="mt-3 text-center">
+                            <span>Bạn chưa có tài khoản?</span>
+                            <a class="img-responsive btn text-danger" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+                               data-target="#registerModal"> Đăng ký ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal đăng kí -->
+    <div class="modal fade align-items-center justify-content-center" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 1000px !important;">
+            <div class="modal-content p-3">
+                <div class="modal-header border-0 d-flex justify-content-between">
+                    <h2 class="fw-bold "><Strong> Trang đăng ký </Strong></h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" >&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="register-form">
+                        <form action="/register" method="post" id="registerForm" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-4 border-right">
+                                    <div class="d-flex flex-column align-items-center text-center px-3 ">
+                                        <div class="mt-3">
+                                            <label class="h3"> <strong>Hình ảnh</strong>
+                                            </label>
+                                        </div>
+                                        <div class="avatar-upload m-0 w-100" style="max-width: 100%;">
+                                            <label for="imageUpload" class="rounded-0 w-100 d-flex justify-content-center">
+                                                <div class="avatar-preview rounded-0"
+                                                     style="width: 250px; height: 300px">
+                                                    <div id="imagePreview" class="w-100 rounded-0"
+                                                         style="background-image: url('static/img/no_image.jpg');"></div>
+                                                </div>
+                                            </label>
+                                            <input type="file" class="custom-file-input" id="imageUpload" name="avatar" accept=".jpg,.png,.jpeg" onchange="readURL(this)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 border-right">
+                                    <div class="p-3 ">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Tên tài khoản</label>
+                                                <input name="username" type="text" class="form-control" placeholder="Hãy nhập tên tài khoản" />
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Họ và tên</label>
+                                                <input name="fullname" type="text" class="form-control" placeholder="Hãy nhập họ và tên" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Mật khẩu</label>
+                                                <input name="password" type="password" class="form-control" placeholder="Hãy nhập mật khẩu" />
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Xác nhận mật khẩu</label>
+                                                <input name="confirm" type="password" class="form-control" placeholder="Hãy nhập xác nhận mật khẩu" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Giới tính</label>
+                                                <select class="form-control" name="gender" id="gender">
+                                                    <option value="true">Nam</option>
+                                                    <option value="false">Nữ</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                                <label class="form-label font-weight-bold">Điện thoại</label>
+                                                <input name="phone" type="text" class="form-control" placeholder="Hãy nhập số điện thoại" />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label font-weight-bold">Email</label>
+                                            <input name="email" type="email" class="form-control" placeholder="Hãy nhập Email" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label font-weight-bold">Địa chỉ</label>
+                                            <input name="address" type="text" class="form-control" placeholder="Hãy nhập địa chỉ" />
+                                        </div>
+                                        <div class="mt-5">
+                                            <button class="btn btn-primary w-100 py-2 font-weight-bold profile-button" style="font-size: 20px">Đăng ký</button>
+                                            <div class="mt-2 text-center">
+                                                <span>Bạn đã sẵn sàng đăng nhập?</span>
+                                                <a class="img-responsive btn text-danger" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+                                                   data-target="#loginModal"> Đăng nhập tại đây</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').css('background-image',
+                        'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $('#imagePreview').css('background-image',
+                    'url(img/no_image.jpg)');
+            }
+        }
+    </script>
+
+
+
 </header>

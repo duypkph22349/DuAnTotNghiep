@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.VoucherRequest;
-import datn.goodboy.model.response.VoucherResponse;
 import datn.goodboy.service.VoucherService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import datn.goodboy.service.CustomerService;
@@ -37,7 +37,7 @@ public class VoucherController {
   private CustomerService customerService;
   @Autowired
   private VoucherRequest voucherRequest;
-  private VoucherResponse voucherResponse;
+  private Voucher voucherResponse;
   public int rowcount = 10;
   public int[] pagenumbers;
   public String sortBy = "name";
@@ -56,7 +56,7 @@ public class VoucherController {
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
     this.pageno = 1;
-    List<VoucherResponse> list = service.getPageNo(1, rowcount, sortBy, sortDir);
+    List<Voucher> list = service.getPageNo(1, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
@@ -72,7 +72,7 @@ public class VoucherController {
     this.sortBy = sortby;
     this.sortDir = sordir;
     this.pageno = 1;
-    List<VoucherResponse> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
+    List<Voucher> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
     totalpage = service.getPageNumber(rowcount);
     pagenumbers = service.getPanigation(rowcount, pageno);
     model.addAttribute("list", list);
@@ -90,7 +90,7 @@ public class VoucherController {
       pageno = 1;
     }
     this.pageno = pageno;
-    List<VoucherResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
+    List<Voucher> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     pagenumbers = service.getPanigation(rowcount, this.pageno);
@@ -105,7 +105,7 @@ public class VoucherController {
   @GetMapping({ "index", "" })
   public String getVoucherIndexpages(Model model) {
     this.pageno = 1;
-    List<VoucherResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
+    List<Voucher> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
@@ -125,7 +125,6 @@ public class VoucherController {
   @GetMapping("create")
   public String goToCreateForm(Model model) {
     voucherRequest = new VoucherRequest();
-    model.addAttribute("listCustomer", customerService.getComboBox());
     model.addAttribute("voucherRequest", voucherRequest);
     return "/admin/pages/voucher/form-voucher.html";
   }
