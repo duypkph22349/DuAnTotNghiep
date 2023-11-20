@@ -67,7 +67,7 @@ public class PatternController {
     @GetMapping("/view-update/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("brand",patternTypeService.getById(id));
-        return "admin/pages/pattern/update-pattern";
+        return "admin/pages/patterntype/update-pattern";
     }
 
     @PostMapping("/update/{id}")
@@ -79,8 +79,7 @@ public class PatternController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid PatternType b, BindingResult result) {
-        String newProductCode = "PT" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

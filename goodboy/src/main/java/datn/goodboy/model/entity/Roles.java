@@ -1,6 +1,5 @@
 package datn.goodboy.model.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,12 +24,12 @@ public class Roles {
     @Column(name = "status")
     int status;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="update_at")
+    @Column(name = "update_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
 }

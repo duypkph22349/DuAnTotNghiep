@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.request.AccountRequest;
-import datn.goodboy.model.response.AccountResponse;
 import datn.goodboy.service.AccountService;
 import datn.goodboy.service.CustomerService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 
 @Controller
@@ -33,7 +34,6 @@ public class AccountController {
   @Autowired
   private AccountRequest accountRequest;
 
-  private AccountResponse accountResponse;
   public int rowcount = 10;
   public int[] pagenumbers;
   public String sortBy = "email";
@@ -41,19 +41,32 @@ public class AccountController {
   public int pageno = 0;
   public int totalpage = 0;
 
+  @ModelAttribute("rowcount")
+  public int rowcount() {
+    return rowcount;
+  }
+
+  @Autowired
+  TrangThaiConvert convert;
+
+  @ModelAttribute("convert")
+  public TrangThaiConvert convert() {
+    return convert;
+  }
+
   // panigation and sort
   @GetMapping("/getcountrow")
   public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
-    System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
     this.pageno = 1;
-    List<AccountResponse> list = service.getPageNo(1, rowcount, sortBy, sortDir);
+    List<Account> list = service.getPageNo(1, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/account/table-account.html"; // Redirect back to the form page
   }
 
@@ -63,13 +76,14 @@ public class AccountController {
     this.sortBy = sortby;
     this.sortDir = sordir;
     this.pageno = 1;
-    List<AccountResponse> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
+    List<Account> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
     totalpage = service.getPageNumber(rowcount);
     pagenumbers = service.getPanigation(rowcount, pageno);
     model.addAttribute("list", list);
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/account/table-account.html";
   }
 
@@ -80,7 +94,7 @@ public class AccountController {
       pageno = 1;
     }
     this.pageno = pageno;
-    List<AccountResponse> list = service.getPageNo(this.pageno , rowcount, sortBy, sortDir);
+    List<Account> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     pagenumbers = service.getPanigation(rowcount, this.pageno);
@@ -91,16 +105,17 @@ public class AccountController {
   }
 
   // end
-  @GetMapping("index")
+  @GetMapping({ "index", "" })
   public String getAccountIndexpages(Model model) {
     this.pageno = 1;
-    List<AccountResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
+    List<Account> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", totalpage);
     model.addAttribute("list", list);
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/account/table-account.html";
   }
 
@@ -115,20 +130,20 @@ public class AccountController {
     accountRequest.setStatus(1);
     model.addAttribute("listCustomer", customerService.getComboBox());
     model.addAttribute("accountRequest", accountRequest);
+    model.addAttribute("rowcount", rowcount);
     return "/admin/pages/account/form-account.html";
   }
 
   @GetMapping("delete")
-  public String deleteAccount(Model model, @RequestParam("id") String id) {
-    service.deleteAccount(UUID.fromString(id));
-    return "redirect:table-account";
+  public String deleteAccount(Model model, @RequestParam("id") UUID id) {
+    service.deleteAccount(id);
+    return "redirect:index";
   }
 
-  @GetMapping("edit")
-  public String editAccount(Model model, @RequestParam("id") String id) {
-    model.addAttribute("accountRequest", service.getAccountRequetById(UUID.fromString(id)));
-    model.addAttribute("listCustomer", customerService.getAllCustomers());
-    return "/admin/pages/account/form-account.html";
+  @GetMapping("update")
+  public String updateAccount(@RequestParam("id") UUID id, @RequestParam("status") int status) {
+    service.updateAccount(id, status);
+    return "redirect:index";
   }
 
   @PostMapping("store")
@@ -143,20 +158,9 @@ public class AccountController {
     }
   }
 
-  @PostMapping("update")
-  public String update(@Valid @ModelAttribute("accountRequest") AccountRequest accountRequest,
-      BindingResult theBindingResult, Model model) {
-    if (theBindingResult.hasErrors()) {
-      return "/admin/pages/account/form-account.html";
-    }
-    service.updateAccount(accountRequest);
-    return "redirect:table-account";
-  }
-
   // manager
   @GetMapping("manager/viewdetail/{idacc}")
   public String allDetail(@PathVariable("idacc") String idAcc) {
-    System.out.println(idAcc);
     return "/admin/pages/account/account-detail.html";
   }
 }

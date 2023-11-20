@@ -22,7 +22,7 @@ public class JwtTokenProvider {
   private String JWT_SECRET;
 
   // Thời gian có hiệu lực của chuỗi jwt
-  @Value("${app-jwt-expiration-milliseconds}")
+  @Value("${max-login-token-time}")
   private long JWT_EXPIRATION;
 
   // Tạo ra jwt từ thông tin user

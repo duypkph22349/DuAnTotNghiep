@@ -33,4 +33,15 @@ public class EmailHelper {
     }
     return true;
   }
+
+  public boolean isEmailNotExsits(String email) {
+    if (!employeeRepository.hasEmailis(email).isEmpty()) {
+      return false;
+    }
+    if (!accountRepository.hasEmailis(email).isEmpty()) {
+      return false;
+    }
+    return true;
+  }
+
 }

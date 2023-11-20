@@ -25,7 +25,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     private int currentProductCode = 1;
-    @GetMapping("/dsProduct")
+    @GetMapping({"/dsProduct",""})
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
@@ -77,8 +77,7 @@ public class ProductController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Product b, BindingResult result) {
-        String newProductCode = "SP" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

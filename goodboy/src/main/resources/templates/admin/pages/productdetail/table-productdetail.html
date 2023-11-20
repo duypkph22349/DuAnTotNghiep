@@ -20,6 +20,15 @@
 
 <body>
     <section layout:fragment="content">
+        <div class="pagetitle">
+            <h1>Dashboard</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                    <li class="breadcrumb-item active">Product Detail</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
         <div class="container-fluid">
             <div class="d-flex">
                 <a href="/admin/productdetail/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
@@ -133,13 +142,13 @@
                 <thead class="position-sticky top-0">
                     <tr class="text-center">
                         <th class="fw-bold">STT</th>
-                        <th class="fw-bold"></th>
-                        <th scope="col">Name
+                        <!-- <th class="fw-bold"></th> -->
+                        <!-- <th scope="col">Name
                             <a th:href="@{/admin/productdetail/sort(sortBy=name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
                             <a th:href="@{/admin/productdetail/sort(sortBy=name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
-                        </th>
+                        </th> -->
                         <th scope="col">Code
                             <a th:href="@{/admin/productdetail/sort(sortBy=code ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
@@ -164,31 +173,6 @@
                             <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
-                        <!-- <th scope="col">Mẫu
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idPattern.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idPattern.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Màu sắc
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idColor.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idColor.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Nguồn gốc
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idOrigin.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idOrigin.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Thương hiệu
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idBrand.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idBrand.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                    -->
                         <th scope="col">Chất liệu
                             <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
@@ -207,12 +191,6 @@
                             <a th:href="@{/admin/productdetail/sort(sortBy=idStyles.name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
-                        <th scope="col">Mô tả
-                            <a th:href="@{/admin/productdetail/sort(sortBy=description ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=description ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
                         <th scope="col" class="text-center">Trạng thái
                             <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
@@ -225,7 +203,7 @@
                 <tbody>
                     <tr th:each="productdetail, index  : ${list}">
                         <td class="fw-bold" th:text="${index.index + 1}"></td>
-                        <td class="text-center"
+                        <!-- <td class="text-center"
                             th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
                             <img th:src="${productdetail.imageProducts[0].img}" class="image-fluid"
                                 style="height: 60px;" />
@@ -234,19 +212,16 @@
                             <img
                                 src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
                         </td>
-                        <td th:text="${productdetail.name}"></td>
+                        <td th:text="${productdetail.name}"></td> -->
                         <td th:text="${productdetail.code}"></td>
-                        <td th:text="${productdetail.price}"></td>
+                        <td
+                            th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                        </td>
                         <td th:text="${productdetail.quantity}"></td>
                         <td th:text="${productdetail.idProduct?.name}"></td>
-                        <!-- <td th:text="${productdetail.idPattern?.name}"></td>
-                        <td th:text="${productdetail.idColor?.name}"></td>
-                        <td th:text="${productdetail.idOrigin?.name}"></td>
-                        <td th:text="${productdetail.idBrand?.name}"></td> -->
                         <td th:text="${productdetail.idMaterial?.name}"></td>
                         <td th:text="${productdetail.idSize?.name}"></td>
                         <td th:text="${productdetail.idStyles?.name}"></td>
-                        <td th:text="${productdetail.description}"></td>
                         <td th:unless="${productdetail.deleted}" class="text-center">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
@@ -271,26 +246,65 @@
                             <a th:href="@{'/admin/productdetail/edit/'+${productdetail.id}}" class="btn btn-success"><i
                                     class="fas fa-edit"></i></a>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">
-                                <i class="far fa-eye"></i>
+                                th:attr="data-bs-target='#staticBackdrop'+ ${productdetail.id}">
+                                <i class=" far fa-eye"></i>
                             </button>
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                aria-hidden="true">
+                            <div class="modal fade" th:id="'staticBackdrop' + ${productdetail.id}"
+                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                            <h5 class="modal-title" id="staticBackdropLabel"
+                                                th:text="${productdetail.idProduct?.name}"></h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            ...
+                                            <p><strong>name :</strong>
+                                                <span th:text="${productdetail.name}"></span>
+                                            </p>
+                                            <p><strong>price :</strong>
+                                                <span
+                                                    th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                                </span>
+                                            </p>
+                                            </p>
+                                            <p><strong>quantity :</strong>
+                                                <span th:text="${productdetail.quantity}"></span>
+                                            </p>
+                                            <p><strong>Product :</strong>
+                                                <span th:text="${productdetail.idProduct?.name}"></span>
+                                            </p>
+                                            <p><strong>Pattern :</strong>
+                                                <span th:text="${productdetail.idPattern?.name}"></span>
+                                            </p>
+                                            <p><strong>Color :</strong>
+                                                <span th:text="${productdetail.idColor?.name}"></span>
+                                            </p>
+                                            <p><strong>Origin :</strong>
+                                                <span th:text="${productdetail.idOrigin?.name}"></span>
+                                            </p>
+                                            <p><strong>Brand :</strong>
+                                                <span th:text="${productdetail.idBrand?.name}"></span>
+                                            </p>
+                                            <p><strong>Material :</strong>
+                                                <span th:text="${productdetail.idMaterial?.name}"></span>
+                                            </p>
+                                            <p><strong>Size :</strong>
+                                                <span th:text="${productdetail.idSize?.name}"></span>
+                                            </p>
+                                            <p><strong>Styles :</strong>
+                                                <span th:text="${productdetail.idStyles?.name}"></span>
+                                            </p>
+                                            <p><strong>description :</strong>
+                                                <span th:text="${productdetail.description}"></span>
+                                            </p>
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Understood</button>
                                         </div>
                                     </div>
                                 </div>

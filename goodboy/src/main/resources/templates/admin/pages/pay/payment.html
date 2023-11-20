@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Brand</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
+  <style>
+    .add-button {
+      float: right;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<section layout:fragment="content">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+            <li class="breadcrumb-item active">Pay Method</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<!--  <div>-->
+    <h1 style="text-align: center">Pay</h1>
+
+
+    <div class="form-group">
+        <label>Phương thức thanh toán</label>
+
+        <!-- Nút cho "Tiền mặt" -->
+        <form th:action="@{/payment/cash}" method="post">
+            <button type="submit">Tiền mặt</button>
+        </form>
+
+        <!-- Nút cho "Chuyển khoản" -->
+        <form th:action="@{/payment/bankTransfer}" method="post">
+            <button type="submit">Chuyển khoản</button>
+        </form>
+    </div>
+
+    <!-- Hiển thị thông báo -->
+    <div th:if="${message}" th:text="${message}"></div>
+
+
+
+
+    <!--    <script>-->
+<!--      // function showPaymentOptions() {-->
+<!--      //   var paymentOptions = document.getElementById('paymentOptions');-->
+<!--      //   paymentOptions.style.display = 'block';-->
+<!--      // }-->
+<!--      //-->
+<!--      // function payByCash() {-->
+<!--      //     alert('Bạn đã chọn thanh toán bằng tiền mặt.');-->
+<!--      //     updatePaymentMethod(1); // Chọn ID "1" cho thanh toán bằng tiền mặt-->
+<!--      // }-->
+<!--      //-->
+<!--      // function payByTransfer() {-->
+<!--      //     alert('Bạn đã chọn thanh toán bằng chuyển khoản.');-->
+<!--      //     updatePaymentMethod(2); // Chọn ID "2" cho thanh toán bằng chuyển khoản-->
+<!--      // }-->
+
+<!--      // function updatePaymentMethod(selectedId) {-->
+<!--          // Gửi yêu cầu đến máy chủ để cập nhật giá trị trong cơ sở dữ liệu-->
+<!--          // Sử dụng Ajax hoặc Fetch API để thực hiện yêu cầu HTTP-->
+<!--          // fetch("/updatePaymentMethod", {-->
+<!--          //     method: 'POST',-->
+<!--          //     headers: {-->
+<!--          //         'Content-Type': 'application/json',-->
+<!--          //     },-->
+<!--          //     body: JSON.stringify({-->
+<!--          //         selectedId: selectedId,-->
+<!--          //     }),-->
+<!--          // })-->
+<!--          //     .then(response => {-->
+<!--          //         if (!response.ok) {-->
+<!--          //             throw new Error(`Network response was not ok. Status: ${response.status}`);-->
+<!--          //-->
+<!--          //         }-->
+<!--          //         return response.json();-->
+<!--          //     })-->
+<!--          //     .then(data => {-->
+<!--          //         console.log(data); // Xử lý phản hồi từ máy chủ nếu cần-->
+<!--          //         console.log(selectedId)-->
+<!--          //     })-->
+<!--          //     .catch(error => {-->
+<!--          //         console.error('There was a problem with the fetch operation:', error);-->
+<!--          //     });-->
+<!--      // }-->
+<!--    </script>-->
+
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>

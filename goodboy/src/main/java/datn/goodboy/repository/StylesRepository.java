@@ -22,7 +22,7 @@ public interface StylesRepository extends JpaRepository<Styles, Integer> {
 
     Page<Styles> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @Query("SELECT new map(e.id as key, e.name as value) FROM Origin e")
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Styles e")
     List<Map<Integer, String>> getComboBoxMap();
 
 }

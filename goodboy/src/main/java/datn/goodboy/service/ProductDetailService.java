@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import datn.goodboy.exeption.rest.ErrorCreateBill;
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Material;
@@ -120,8 +121,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       return null;
     }
   }
-
-
 
   public ProductDetailRequest getProductDetailRequetById(Integer id) {
     ProductDetailRequest request = new ProductDetailRequest();
@@ -411,12 +410,48 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     }
   }
 
-    public ArrayList<ProductDetail> getAllProductDetail(){
-        return (ArrayList<ProductDetail>) productDetailRepository.findAll();
-    }
+  public ArrayList<ProductDetail> getAllProductDetail() {
+    return (ArrayList<ProductDetail>) productDetailRepository.findAll();
+  }
 
-    public Optional<ProductDetail> getProductDetailById(Integer id){
-        return productDetailRepository.findById(id);
-    }
+  public Optional<ProductDetail> getProductDetailById(Integer id) {
+    return productDetailRepository.findById(id);
+  }
 
+  public boolean enoughtProduct(int productId, int quantity) {
+    Optional<ProductDetail> productDetail = this.getProductDetailById(productId);
+    if (productDetail.isPresent()) {
+      return (productDetail.get().getQuantity() > quantity);
+    } else {
+      throw new ErrorCreateBill("saản phẩm không tồn tại");
+    }
+  }
+
+  public void saleProduct(int productId, int quantity) {
+    System.out.println("idprc " + productId + " quantity " + quantity);
+    Optional<ProductDetail> productDetail = this.getProductDetailById(productId);
+    if (productDetail.isPresent()) {
+      ProductDetail exitProductDetail = productDetail.get();
+      if (exitProductDetail.getQuantity() < quantity) {
+        System.out.println(" Khong du so luong");
+      } else {
+        exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
+        productDetailRepository.save(exitProductDetail);
+      }
+    }
+  }
+
+  public void saleProductInUser(int productId, int quantity) {
+    Optional<ProductDetail> productDetail = this.getProductDetailById(productId);
+    if (productDetail.isPresent()) {
+      ProductDetail exitProductDetail = productDetail.get();
+      if (exitProductDetail.getQuantity() < quantity) {
+        throw new ErrorCreateBill("Số lượng của sản phẩm: " + productDetail.get().getName() // throw another exeption
+            + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
+      } else {
+        exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
+        productDetailRepository.save(exitProductDetail);
+      }
+    }
+  }
 }

@@ -63,7 +63,7 @@ public class Bill {
   float money_ship;
 
   @Column(name = "total_money")
-  float total_money;
+  Double total_money;
 
   @Column(name = "reduction_amount")
   float reduction_amount;
@@ -86,11 +86,15 @@ public class Bill {
   @Column(name = "deleted")
   boolean deleted;
 
+  @Column(name = "order_type")
+  int loaiDon;
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
   }
+
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();

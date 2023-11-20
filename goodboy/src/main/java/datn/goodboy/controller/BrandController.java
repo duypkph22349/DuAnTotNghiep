@@ -73,8 +73,7 @@ public class BrandController {
 
     @PostMapping("/add")
     public String add(Model model,@Valid Brand b, BindingResult result) {
-        String newProductCode = "BR" + String.format("%d", currentProductCode);
-        b.setCode(newProductCode);
+
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);

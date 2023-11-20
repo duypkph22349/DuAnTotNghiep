@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Brand</title>
+    <title>Color</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
     <style>
@@ -16,6 +16,15 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                <li class="breadcrumb-item active">Color</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
     <div>
         <h1 style="text-align: center">LIST COLOR</h1>
 
@@ -43,7 +52,8 @@
                 <td th:text="${b.name}"></td>
                 <td th:text="${b.status == 1 ? 'active' : 'unactive'}"></td>
                 <td>
-                    <button class="btn btn-primary" id="view-update-button">Update</button>
+                    <a th:href="@{'/admin/color/view-update/' + ${b.id}}" class="btn btn-info"><i
+                            class="fas fa-edit"></i></a>
                     <a th:href="@{'/admin/color/delete/' + ${b.id}}" class="btn btn-danger">delete</a>
                 </td>
             </tr>

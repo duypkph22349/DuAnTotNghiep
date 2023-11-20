@@ -3,12 +3,13 @@ package datn.goodboy.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "CartDetail")
+@Table(name = "carts_detail")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +26,9 @@ public class CartDetail {
     @JoinColumn(name = "id_cart" )
     private Cart cart;
 
+    @Column(name = "price")
+    private Float price;
+
     @ManyToOne
     @JoinColumn(name = "id_product_detail" )
     private ProductDetail productDetail;
@@ -35,7 +39,7 @@ public class CartDetail {
     @Column(name="created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="update_at")
+    @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
     @Column(name="deleted")

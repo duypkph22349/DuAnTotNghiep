@@ -1,7 +1,6 @@
 package datn.goodboy.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +53,6 @@ public class VoucherController {
   // panigation and sort
   @GetMapping("/getcountrow")
   public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
-    System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     pagenumbers = service.getPanigation(rowcount, pageno);
     this.pageno = 1;
@@ -104,7 +102,7 @@ public class VoucherController {
   }
 
   // end
-  @GetMapping({"index",""})
+  @GetMapping({ "index", "" })
   public String getVoucherIndexpages(Model model) {
     this.pageno = 1;
     List<VoucherResponse> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
@@ -133,8 +131,8 @@ public class VoucherController {
   }
 
   @GetMapping("delete")
-  public String deleteVoucher(Model model, @RequestParam("id") String id) {
-    // service.deleteVoucher(UUID.fromString(id));
+  public String deleteVoucher(Model model, @RequestParam("id") int id) {
+    service.deleteVoucher(id);
     return "redirect:index";
   }
 
@@ -162,7 +160,6 @@ public class VoucherController {
         model.addAttribute("validateerrors", voucherRequest.ValidateError());
         return "/admin/pages/voucher/form-voucher.html";
       }
-      System.out.println(voucherRequest.toString());
       service.saveVoucher(voucherRequest);
       return "redirect:index";
     }
@@ -174,7 +171,6 @@ public class VoucherController {
     if (theBindingResult.hasErrors()) {
       return "/admin/pages/voucher/update-voucher.html";
     }
-    System.out.println(voucherRequest);
     service.updateVoucher(voucherRequest);
     return "redirect:index";
   }

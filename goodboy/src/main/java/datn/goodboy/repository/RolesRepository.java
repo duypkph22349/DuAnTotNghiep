@@ -13,6 +13,6 @@ public interface RolesRepository extends JpaRepository<Roles, Integer> {
   @Query(value = "SELECT role FROM Roles role WHERE role.name LIKE 'EMPLOYEE'")
   Optional<Roles> getEmployeeRole();
 
-  @Query(value = "SELECT role FROM Roles role WHERE role.name LIKE 'NEWEMPLOYEE'")
-  Optional<Roles> getNewEmployeeRole();
+  @Query(value = "SELECT role FROM Roles role WHERE role.name LIKE 'ADMIN'")
+  Optional<Roles> getAdminRole();
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import groovy.transform.ToString;
 import jakarta.persistence.Column;
@@ -93,4 +95,14 @@ public class ProductDetail {
     @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
     @JsonIgnore
     private List<Images> imageProducts;
+   public String toJson() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        return objectMapper.writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+        // Handle the exception, e.g., log it or return a default JSON string
+        e.printStackTrace();
+        return "{}"; // Return an empty JSON object as a fallback
+    }
+}
 }

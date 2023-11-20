@@ -52,13 +52,21 @@ public class VoucherService implements PanigationInterface<VoucherResponse> {
     voucher1.setMax_discount(voucher.getMaxDiscount());
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setCreated_at(LocalDateTime.now());
-    voucher1.setDeleted(false); 
+    voucher1.setDeleted(false);
     System.out.println(voucher1.toString());
     return voucherRepository.save(voucher1);
   }
 
   public void deleteVoucher(int id) {
-    voucherRepository.deleteById(id);
+    Optional<Voucher> voucher = voucherRepository.findById(id);
+    if (voucher.isPresent()) {
+      if (voucher.get().isDeleted()) {
+        voucher.get().setDeleted(false);
+      } else {
+        voucher.get().setDeleted(true);
+      }
+      voucherRepository.save(voucher.get());
+    }
   }
 
   // manager

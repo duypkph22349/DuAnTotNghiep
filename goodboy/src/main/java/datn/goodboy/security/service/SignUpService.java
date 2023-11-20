@@ -44,7 +44,7 @@ public class SignUpService {
       employee.setStatus(1);
       employee.setCreatedAt(LocalDateTime.now());
       employee.setPhone(request.getPhone());
-      Roles newEmpRoles = roleService.getNewEmployeeRole();
+      Roles newEmpRoles = roleService.getEmployeeRole();
       employee.setRoles(newEmpRoles);
       employee.setPassword(encoder.encode(request.getPassword()));
       return employeeService.saveEmployee(employee);

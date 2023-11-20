@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+  xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <style>
-
     label {
       display: block;
       margin-bottom: 5px;
@@ -39,137 +39,326 @@
       height: 100%;
       cursor: pointer;
     }
-
   </style>
 </head>
 <!--Image-->
 
 <body>
-<section layout:fragment="content">
-  <script>
-    function previewImage(event) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        var output = document.getElementById('preview');
-        output.src = e.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  </script>
+  <section layout:fragment="content">
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+          <li class="breadcrumb-item active">Detail Employee</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <script>
+      function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var output = document.getElementById('preview');
+          output.src = e.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    </script>
+
+    <form th:object="${employee}" th:action="@{/admin/employee/add}" action="#" method="post">
+      <div class="modal-body">
+        <div class="modal-content p-3">
+          <div class="modal-body">
+            <div class="register-form">
+              <div class="row">
+                <div class="col-md-4 border-right">
+                  <div class="d-flex flex-column align-items-center text-center px-3">
+                    <div class="mt-3">
+                      <label class="h3"><strong>Hình Ảnh</strong></label>
+                    </div>
+                    <div class="avatar-upload m-0 w-100" style="max-width: 100%;">
+                      <label for="imageUpload" class="rounded-0 w-100 d-flex justify-content-center">
+                        <div class="avatar-preview rounded-0" style="width: 250px; height: 280px">
+                          <img id="imagePreview" class="w-100 rounded-0" src="/images/faces/no_image.jpg" width="250px"
+                            height="280px" style="border: 1px solid #0d3ddc; padding: 10px;border-radius: 50%;" />
+                        </div>
+                      </label>
+                      <input th:name="image" th:value="${detail.image}" type="file" class="custom-file-input"
+                        id="imageUpload" name="avatar" accept=".jpg,.png,.jpeg" onchange="readURL(this)"
+                        style="display: none;">
+                    </div>
+                  </div>
+                  <br>
 
 
-  <form th:object="${employee}" th:action="@{'/admin/employee/add'}" action="#" method="post">
-    <h4  style="font-weight: 1000">Thông tin nhân viên</h4>
-    <input type="hidden" th:name="id" th:value="${detail.id}">
-    <label class="file-label">
-      <input class="file" th:name="image"  th:src="@{'/images/faces/' + ${detail.image}}"  th:value="${detail.image}" type="file" accept="image/*" onchange="previewImage(event)"/>
-      <img id="preview" th:src="@{'/images/faces/' + ${detail.image}}" th:value="${detail.image}"  width="150px" height="200px" style=" border: 1px solid #0d3ddc;
-            padding: 10px;
-            border-radius: 50%;"/>
-    </label>
-    <div style="clear: both; display: block; height: 10px"></div>
-    <div>
-      <label>Email:</label>
-      <input type="text" th:name="email" th:value="${detail.email}" placeholder="Nhập email..." class="form-control">
-    </div>
-    <div style="clear: both; display: block; height: 10px"></div>
+                </div>
+                <div class="col-md-8 border-right">
+                  <div class="p-3 ">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                        <label class="form-label font-weight-bold">Email</label>
+                        <input th:name="email" th:value="${detail.email}" type="text" class="form-control"
+                          placeholder="Hãy nhập email" />
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                        <label class="form-label font-weight-bold">Họ và tên</label>
+                        <input th:name="name" th:value="${detail.name}" type="text" class="form-control"
+                          placeholder="Hãy nhập họ và tên" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                        <label class="form-label font-weight-bold">Mật khẩu</label>
+                        <input th:name="password" th:value="${detail.password}" type="password" class="form-control"
+                          placeholder="Hãy nhập mật khẩu" />
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                        <label class="form-label font-weight-bold">Xác nhận mật
+                          khẩu</label>
+                        <input th:name="confirm" th:value="${detail.password}" type="password" class="form-control"
+                          placeholder="Hãy nhập xác nhận mật khẩu" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                        <label class="form-label font-weight-bold">Chức vụ:</label>
+                        <select name="roles" class="form-control">
+                          <option th:each="roles:${roles}" th:value="${roles.id}" th:text="${roles.name}"
+                            th:selected="${roles.id==detail.roles.id}"></option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                        <label class="form-label font-weight-bold">Giới tính</label>
+                        <select class="form-control" th:name="gender" id="gender">
+                          <option value="true" th:value="${detail.gender}" th:selected="${detail.gender==true}">Nam
+                          </option>
+                          <option value="false" th:value="${detail.gender}" th:selected="${detail.gender==false}">Nữ
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                        <label class="form-label font-weight-bold">Điện
+                          thoại</label>
+                        <input th:name="phone" th:value="${detail.phone}" type="text" class="form-control"
+                          placeholder="Hãy nhập số điện thoại" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 col-sm-6 col-lg-8 mb-3">
+                        <label class="form-label font-weight-bold">Số Căn
+                          Cước</label>
+                        <input th:name="cccd" th:value="${detail.cccd}" type="email" class="form-control"
+                          placeholder="Hãy nhập số Căn cước" />
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                        <label class="form-label font-weight-bold">Birth
+                          Date:</label>
+                        <input type="date" th:name="birth_date" th:value="${detail.birth_date}" class="form-control">
+                      </div>
+                    </div>
 
-    <div>
-      <label>Address:</label>
-      <!--            <input type="text" th:name="address" class="form-control">-->
-      <select th:name="address" id="province">
-        <option th:each="province :${provinces}" th:value="${province.name}"
-                th:text="${province.name}"></option>
-      </select>
-    </div>
-    <div style="clear: both; display: block; height: 10px"></div>
-    <div>
-      <label>Country:</label>
-      <!--            <input type="text" th:name="country" class="form-control">-->
-      <select th:name="country" id="ward">
-        <option th:each="ward :${wards}" th:value="${ward.name}" th:text="${ward.name}">chọn quận</option>
-      </select>
-    </div>
-
-    <!--        2      -->
-    <div style="position: absolute; right: 400px; top: 150px">
-      <h4 style="font-weight: 1000">Thông tin chi tiết</h4>
-      <div>
-        <label>Mã:</label>
-        <input type="text" th:name="code" th:value="${detail.code}" placeholder="Nhập mã nhân viên..." class="form-control">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label class="form-label font-weight-bold">Thành
+                          Phố:</label>
+                        <select class="form-control" id="Provinces" onchange="getDistricts()">
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label font-weight-bold">Huyện:</label>
+                        <select class="form-control" id="Districts" th:name="city" onchange="getWards()">
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label font-weight-bold">Xã:</label>
+                        <select class="form-control" th:name="country" onchange="setFullAdress()" id="Wards">
+                        </select>
+                        <input type="hidden" id="FullAddress" th:name="fulladdress">
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                          crossorigin="anonymous"></script>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="mb-3">
+                      <label class="form-label font-weight-bold">Địa chỉ cụ
+                        thể:</label>
+                      <input type="text" th:name="address" th:value="${detail.address}" placeholder="Địa chỉ cụ thể...."
+                        class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" href="/admin/employee/hien-thi"
+            data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
       </div>
-      <div style="clear: both; display: block; height: 10px"></div>
+    </form>
 
-      <div>
-        <label>Tên nhân viên:</label>
-        <input type="text" th:name="name" th:value="${detail.name}"  placeholder="Nhập tên nhân viên...   "  class="form-control">
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
+    <script>
+      const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
+      const shop_id = 4676018;
+      const districtform = 3440; // quận nam từ liêm
+      const districtto = 3308; // huyện trực ninh
+      const WardCodeninhcuong = "800083";
+      const provinceSelect = document.getElementById("Provinces");
+      const districtSelect = document.getElementById("Districts");
+      const wardSelect = document.getElementById("Wards");
+      const shipServiceSelect = document.getElementById("shipService");
+      const giaship = document.getElementById("giaship");
 
-      <div>
-        <label>Birth Date:</label>
-        <input type="date" th:name="birth_date" th:value="${detail.birth_date}" class="form-control">
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
+      function getProvinces() {
+        fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province",{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            provinceSelect.appendChild(defaultOption);
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+              const option = document.createElement("option");
+              option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+              option.text = options[i].ProvinceName; // Set the text of the option
+              option.setAttribute("providecode",options[i].ProvinceID);
+              provinceSelect.appendChild(option); // Add the option to the select element
+            }
+          })
+          .catch((error) => console.error("Error:",error));
+      }
 
-      <div>
-        <label>Giới tính:</label>
-        <input type="radio" th:name="gender"  th:value="true" th:text="Nam" th:checked="${detail.gender==true}">
-        <input type="radio" th:name="gender"  th:value="false" th:text="Nữ" th:checked="${detail.gender==false}">
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
+      function getDistricts() {
+        const selectedOption = provinceSelect.options[provinceSelect.selectedIndex];
+        const customAttribute = selectedOption.getAttribute("providecode");
+        const provinceid = parseInt(customAttribute);
+        fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district",{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+          body: JSON.stringify({ province_id: provinceid }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            //remove all child
+            resetDistrict();
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+              const option = document.createElement("option");
+              option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+              option.text = options[i].DistrictName; // Set the text of the option
+              option.setAttribute("districtcode",options[i].DistrictID);
+              districtSelect.appendChild(option); // Add the option to the select element
+            }
+          })
+          .catch((error) => console.error("Error:",error));
+      }
 
-      <div>
-        <label>City:</label>
-        <!--            <input type="text" th:name="city" class="form-control">-->
-        <select th:name="city" id="district">
-          <option th:each="district :${districts}" th:value="${district.name}" th:text="${district.name}">chọn
-            quận
-          </option>
-        </select>
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
-    </div>
-    <!--    3-->
-    <div style="position: absolute; right: 50px; top: 185px">
+      function getWards() {
+        const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+        const customAttribute = selectedOption.getAttribute("districtcode");
+        const districtid = parseInt(customAttribute);
+        fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+          body: JSON.stringify({ district_id: districtid }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            //remove all child
+            resetWard();
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+              const option = document.createElement("option");
+              option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+              option.text = options[i].WardName;
+              // Set the text of the option
+              wardSelect.appendChild(option); // Add the option to the select element
+            }
+          })
+          .catch((error) => console.error("Error:",error));
+      }
 
-      <div>
-        <label>Phone:</label>
-        <input type="text" th:name="phone" th:value="${detail.phone}" placeholder="Nhập số điện thoại..."  class="form-control">
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
+      function setFullAdress() {
+        const proselect = provinceSelect.options[provinceSelect.selectedIndex];
+        const proname = proselect.text;
+        const districselect = districtSelect.options[districtSelect.selectedIndex];
+        const distname = districselect.text;
+        const wardName = wardSelect.options[wardSelect.selectedIndex];
+        const wardname = wardName.text;
+        const fullAdress = wardname + ", " + distname + " ," + proname;
+        document.getElementById("FullAddress").value = String(fullAdress);
+        console.log(fullAdress)
+      }
 
-      <div>
-        <label>Mã định danh:</label>
-        <input type="text" th:name="cccd" th:value="${detail.cccd}" placeholder="Nhập mã định danh..."  class="form-control">
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
-      <div>
-        <label>Địa chỉ cụ thể:</label>
-        <input type="text" th:name="address" th:value="${detail.address}" placeholder="Địa chỉ cụ thể...." class="form-control">
+      function resetDistrict() {
+        while (districtSelect.firstChild) {
+          districtSelect.removeChild(districtSelect.firstChild);
+        }
+        const defaultOption = document.createElement("option");
+        defaultOption.value = ""; // Set the value as needed
+        defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
 
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
-      <div>
-        <label>Chức vụ:</label>
-        <select name="roles">
-          <option th:each="roles:${roles}" th:value="${roles.id}" th:text="${roles.name}" th:selected="${roles.id==detail.roles.id}"></option>
-        </select>
-      </div>
-      <div>
-        <label>Status:</label>
-        <select th:name="status">
-          <option th:value="0" th:selected="${detail.status==0}">Active</option>
-          <option th:value="1" th:selected="${detail.status==1}">No longer active</option>
-        </select>
-      </div>
-      <div style="clear: both; display: block; height: 10px"></div>
+        // Set the 'disabled' and 'selected' attributes to make it the default option
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
 
-    </div>
-    <div class="submit-btn" style="text-align: right; bottom: 1px">
-      <button class="btn btn-primary" type="submit">Lưu</button>
-    </div>
-  </form>
-</section>
+        districtSelect.appendChild(defaultOption);
+        resetWard();
+      }
+
+      function resetWard() {
+        while (wardSelect.firstChild) {
+          wardSelect.removeChild(wardSelect.firstChild);
+        }
+        const defaultOption = document.createElement("option");
+        defaultOption.value = ""; // Set the value as needed
+        defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
+
+        // Set the 'disabled' and 'selected' attributes to make it the default option
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+
+        wardSelect.appendChild(defaultOption);
+      }
+
+      getProvinces();
+    </script>
+
+    <script>
+      function readURL(input) {
+        var imagePreview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+          }
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          imagePreview.src = '/images/faces/no_image.jpg';
+        }
+      }
+    </script>
+
+  </section>
 </body>
+
 </html>

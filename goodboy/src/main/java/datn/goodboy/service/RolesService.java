@@ -17,7 +17,6 @@ public class RolesService {
     @Autowired
     private RolesRepository rolesRepository;
 
-    @Autowired
     public RolesService(RolesRepository rolesRepository) {
         this.rolesRepository = rolesRepository;
     }
@@ -45,8 +44,9 @@ public class RolesService {
         return rolesRepository.findById(id);
     }
 
-    public Roles getNewEmployeeRole() {
-        Optional<Roles> roles = rolesRepository.getNewEmployeeRole();
+
+    public Roles getEmployeeRole() {
+        Optional<Roles> roles = rolesRepository.getEmployeeRole();
         if (roles.isPresent()) {
             return roles.get();
         } else {
@@ -58,16 +58,17 @@ public class RolesService {
             newEmpRoles.setStatus(0);
             return rolesRepository.save(newEmpRoles);
         }
+        // else throws exeption
     }
 
-    public Roles getEmployeeRole() {
-        Optional<Roles> roles = rolesRepository.getNewEmployeeRole();
+    public Roles getAdmineRole() {
+        Optional<Roles> roles = rolesRepository.getAdminRole();
         if (roles.isPresent()) {
             return roles.get();
         } else {
             Roles newEmpRoles = new Roles();
-            newEmpRoles.setName("NEWEMPLOYEE");
-            newEmpRoles.setRole("EMPLOYEE");
+            newEmpRoles.setName("ADMIN");
+            newEmpRoles.setRole("ADMIN,STAFF");
             newEmpRoles.setDeleted(false);
             newEmpRoles.setUpdatedAt(LocalDateTime.now());
             newEmpRoles.setStatus(0);

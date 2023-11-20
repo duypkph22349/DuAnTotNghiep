@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Brand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
+    <style>
+        /* CSS cho container chứa form */
+        .filter-container {
+            border: 1px solid #ddd; /* Màu và độ rộng đường viền */
+            border-radius: 5px; /* Độ cong của các góc */
+            padding: 15px; /* Khoảng cách giữa nội dung và đường viền */
+            margin-bottom: 20px; /* Khoảng cách dưới cùng */
+        }
+
+        /* CSS cho các trường tìm kiếm và bộ lọc */
+        .filter-container label,
+        .filter-container input,
+        .filter-container select,
+        .filter-container button {
+            margin-bottom: 8px;
+        }
+
+        .filter-container input,
+        .filter-container select,
+        .filter-container button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                <li class="breadcrumb-item active">Bill</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div>
+        <h1 style="text-align: center">Danh sách bill</h1>
+        <div class="filter-container">
+            <form action="" method="get">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label >Mã đơn hàng:</label>
+                        <input type="text"  name="code" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label >Loại đơn:</label>
+                        <select  name="orderType">
+                            <option value="0" >Tất cả</option>
+                            <option value="1" >Tại quầy</option>
+                            <option value="2" >Giao hàng</option>
+                            <!-- Thêm các option khác nếu cần -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label >Trạng thái:</label>
+                        <select name="status">
+                            <option value="0" >Tất cả</option>
+                            <option value="1" >Chờ xác nhận</option>
+                            <option value="2" >Xác nhận</option>
+                            <option value="3">Chờ vận chuyển</option>
+                            <option value="4" >Đang giao</option>
+                            <option value="5" >Đã thanh toán</option>
+                            <option value="6" >Thành công</option>
+                            <!-- Thêm các option khác nếu cần -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <label >Từ ngày:</label>
+                        <input type="date" name="startDate" />
+
+                        <label >Đến ngày:</label>
+                        <input type="date" name="endDate" />
+                    </div>
+
+                </div>
+
+                <button type="submit">Lọc</button>
+            </form>
+        </div>
+        <table class="table mt-2 table-responsive">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Mã đơn hàng</th>
+                <th scope="col">Tên khách hàng</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Loại đơn hàng</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="b, i:${lstBill}">
+                <td th:text="${i.index + 1}"></td>
+                <td th:text="${b.code}"></td>
+                <td th:text="${b.customer.name}"></td>
+                <td th:text="${b.total_money}"></td>
+                <td th:text="${b.createdAt}"></td>
+                <td th:text="${b.loaiDon== 1 ? 'Giao hàng' : 'Tại quầy'}"></td>
+                <td th:text="${b.status == 0 ? 'Chờ xác nhận' : (b.status == 1 ? 'Xác nhận' : (b.status == 2 ? 'Chờ vận chuyển' : (b.status == 3 ? 'Đang giao' : (b.status == 4 ? 'Đã thanh toán' : 'Thành công'))))}"></td>
+                <td><i
+                        class="fas fa-edit"></i></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+
+    <!--    add-->
+
+
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>

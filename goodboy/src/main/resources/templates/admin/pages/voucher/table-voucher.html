@@ -8,16 +8,26 @@
 
 <body>
     <section layout:fragment="content">
+        <div class="pagetitle">
+            <h1>Dashboard</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                    <li class="breadcrumb-item active">Voucher</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
         <div class="container-fluid">
-            <div class="d-flex">
-                <a href="/admin/voucher/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
-                <div>
-                    <div class="input-group">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                            aria-describedby="search-addon" />
-                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
-                    </div>
+            <div>
+                <form th:action="@{/admin/voucher/seach}" method="get"></form>
+                <div class="input-group">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon" />
+                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
                 </div>
+            </div>
+            <div sec:authorize="hasAnyAuthority('ADMIN')" class="d-flex">
+                <a href="/admin/voucher/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
             </div>
             <div style="overflow: auto" class="mt-4">
                 <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
@@ -27,12 +37,6 @@
                                 <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=true)}"><i
                                         class="fas fa-arrow-up"></i></a>
                                 <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=false)}"><i
-                                        class="fas fa-arrow-down"></i></a>
-                            </th>
-                            <th scope="col">Code
-                                <a th:href="@{/admin/voucher/sort(sortBy=code ,sortDir=true)}"><i
-                                        class="fas fa-arrow-up"></i></a>
-                                <a th:href="@{/admin/voucher/sort(sortBy=code ,sortDir=false)}"><i
                                         class="fas fa-arrow-down"></i></a>
                             </th>
                             <th scope="col">Ngày bắt đầu
@@ -83,37 +87,41 @@
                     <tbody>
                         <tr th:each="voucher : ${list}">
                             <td th:text="${voucher.name}"></td>
-                            <td th:text="${voucher.code}"></td>
-                            <td th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"></td>
-                            <td th:text="${#temporals.format(voucher?.end_time, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td th:text="${#temporals.format(voucher?.start_time, 'HH:mm dd-MM-yyyy')}"></td>
+                            <td th:text="${#temporals.format(voucher?.end_time, 'HH:mm dd-MM-yyyy')}"></td>
                             <td th:text="${voucher?.quantily}"></td>
                             <td th:if="${voucher.types}" th:text="${voucher?.discount} +' %'"></td>
-                            <td th:unless="${voucher.types}" th:text="${voucher?.discount} +' vnĐ'"></td>
-                            <td th:text="${voucher?.max_discount} +' vnĐ'"></td>
-                            <td th:text="${voucher?.min_order} +' vnĐ'"></td>
-                            <td th:unless="${voucher.deleted}"
-                                th:text="${convert.convertTrangThai(voucher.status)}">
+                            <td th:unless="${voucher.types}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(voucher?.discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                             </td>
-                            <td th:if="${voucher.deleted}"  class="text-decoration-line-through"
+                            <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(voucher?.max_discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                            </td>
+                            <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(voucher?.min_order, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                            </td>
+                            <td th:unless="${voucher.deleted}" th:text="${convert.convertTrangThai(voucher.status)}">
+                            </td>
+                            <td th:if="${voucher.deleted}" class="text-decoration-line-through"
                                 th:text="${convert.convertTrangThai(voucher.status)}">
                             </td>
                             <td>
-                                <a th:unless="${voucher.deleted}" th:href="@{/admin/voucher/delete(id=${voucher.id})}"
-                                    class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                <a th:if="${voucher.deleted}" th:href="@{/admin/voucher/delete(id=${voucher.id})}"
-                                    class="btn btn-secondary"><i class="fas fa-undo-alt"></i></a>
-                                <a th:href="@{/admin/voucher/edit(id=${voucher.id})}" class="btn btn-success"><i
+                                <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${voucher.deleted}"
+                                    th:href="@{/admin/voucher/delete(id=${voucher.id})}" class="btn btn-danger"><i
+                                        class="fas fa-trash-alt"></i></a>
+                                <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${voucher.deleted}"
+                                    th:href="@{/admin/voucher/delete(id=${voucher.id})}" class="btn btn-secondary"><i
+                                        class="fas fa-undo-alt"></i></a>
+                                <a sec:authorize="hasAnyAuthority('ADMIN')"
+                                    th:href="@{/admin/voucher/edit(id=${voucher.id})}" class="btn btn-success"><i
                                         class="fas fa-edit"></i></a>
-
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
+                                    th:attr="data-bs-target='#staticBackdrop' + ${voucher.id}">
                                     <i class="far fa-eye"></i>
                                 </button>
-
-
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                    aria-hidden="true">
+                                <div class="modal fade" th:id="'staticBackdrop' + ${voucher.id}"
+                                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -122,12 +130,41 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                ...
+                                                <div>
+                                                    <p><strong>Name</strong>: <span th:text="${voucher.name}"></span>
+                                                    </p>
+                                                    <p><strong>code</strong>: <span th:text="${voucher.code}"></span>
+                                                    </p>
+                                                    <p><strong>start time:</strong> <span
+                                                            th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"></span>
+                                                    </p>
+                                                    <p><strong>end time</strong>: <span
+                                                            th:text="${#temporals.format(voucher?.end_time, 'dd-MM-yyyy HH:mm')}"></span>
+                                                    </p>
+                                                    <p> <strong>Quantily :</strong> <span
+                                                            th:text="${voucher?.quantily}"></span></p>
+                                                    <p> <strong>Max Discount:</strong> <span
+                                                            th:text="${#strings.replace(#numbers.formatDecimal(voucher?.max_discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                                        </span></p>
+                                                    <p> <strong>Min Order:</strong> <span
+                                                            th:text="${#strings.replace(#numbers.formatDecimal(voucher?.min_order, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                                        </span></p>
+
+                                                    <p> <strong>Trạng Thái :</strong> <span
+                                                            th:unless="${voucher.deleted}"
+                                                            th:text="${convert.convertTrangThai(voucher.status)}">
+                                                        </span>
+                                                        <span th:if="${voucher.deleted}"
+                                                            class="text-decoration-line-through"
+                                                            th:text="${convert.convertTrangThai(voucher.status)}">
+                                                        </span>
+                                                    </p>
+
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Understood</button>
                                             </div>
                                         </div>
                                     </div>
@@ -136,8 +173,8 @@
                         </tr>
                     </tbody>
                 </table>
-
             </div>
+
             <div class="table-footer d-flex justify-content-between mt-3">
                 <div class="text-start">This page is <span th:text="${crpage}"></span> of <span
                         th:text="${totalpage}"></span> </div>
@@ -179,6 +216,7 @@
                     </select>
                 </form>
             </div>
+        </div>
     </section>
 </body>
 
