@@ -20,7 +20,11 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-6 mb-3">
             <label class="form-label font-weight-bold">Role</label>
-            <input th:name="name" th:value="${detail.role}" type="text" class="form-control" placeholder="Hãy nhập role" required/>
+
+            <select name="roles" class="form-control">
+                <option th:each="roles:${detail}" th:value="${detail.id}" th:text="${detail.role}"
+                        th:selected="${detail.id==detail.name}"></option>
+            </select>
         </div>
 
         <div class="col-12 col-sm-6 col-lg-6 mb-3">
@@ -32,7 +36,9 @@
         </div>
 
         <div class="submit-btn" style="text-align: right; bottom: 1px">
-            <button class="btn btn-primary" href="/admin/roles/hien-thi">Quay Lại</button>
+            <button class="btn btn-danger" href="/admin/roles/hien-thi">
+                <i class="fas fa-arrow-left"></i> Close
+            </button>
             <button class="btn btn-primary" type="submit">Lưu</button>
         </div>
     </form>

@@ -2,14 +2,11 @@ package datn.goodboy.controller;
 
 import java.util.Optional;
 
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import datn.goodboy.service.RolesService;
 
@@ -19,6 +16,14 @@ public class RolesController {
 
     @Autowired
     private RolesService rolesService;
+
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {
@@ -32,8 +37,8 @@ public class RolesController {
         return "redirect:/admin/roles/hien-thi";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @GetMapping("/delete")
+    public String delete(Model model, @RequestParam("id") Integer id) {
         rolesService.deleteRoles(id);
         return "redirect:/admin/roles/hien-thi";
     }

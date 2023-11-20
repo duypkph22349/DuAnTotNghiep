@@ -2,6 +2,7 @@ package datn.goodboy.controller;
 
 import java.time.LocalDateTime;
 
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,11 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.service.SizeService;
@@ -25,6 +22,14 @@ public class SizeController {
     @Autowired
     private SizeService sizeService;
     private int currentProductCode = 1;
+
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
     @GetMapping("/dsSize")
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
@@ -85,6 +90,12 @@ public class SizeController {
         b.setStatus(1);
         currentProductCode++;
         sizeService.add(b);
+        return "redirect:/admin/size/dsSize";
+    }
+
+    @GetMapping("/delete")
+    public String delete(Model model, @RequestParam("id") Integer id) {
+        sizeService.deleteSize(id);
         return "redirect:/admin/size/dsSize";
     }
 }

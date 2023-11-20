@@ -1,10 +1,12 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.repository.PatternTypeRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,5 +44,17 @@ public class PatternTypeService {
 
     public List<Map<Integer, String>> getCombobox() {
         return patternTypeRepository.getComboBoxMap();
+    }
+
+    public void deletePattern(Integer id) {
+        Optional<PatternType> patternType = patternTypeRepository.findById(id);
+        if (patternType.isPresent()) {
+            if (patternType.get().isDeleted()) {
+                patternType.get().setDeleted(false);
+            } else {
+                patternType.get().setDeleted(true);
+            }
+            patternTypeRepository.save(patternType.get());
+        }
     }
 }

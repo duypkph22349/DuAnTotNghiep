@@ -26,6 +26,8 @@ public class Product {
     private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+    @Column(name = "deleted")
+    private boolean deleted;
     @Column(name="status")
     private int status;
 }

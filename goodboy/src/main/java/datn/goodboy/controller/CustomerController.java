@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,14 @@ import datn.goodboy.service.CustomerService;
 public class CustomerController {
     @Autowired
     CustomerService customerService;
+
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
 
     @GetMapping({"/get-all", ""})
     public String hienThi(Model model,
@@ -60,23 +69,9 @@ public class CustomerController {
         return "redirect:/admin/customer/get-all";
     }
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable("id") UUID id, Model model) {
-
-        Customer customer = customerService.getCustomerById(id).get();
-        if (customer != null) {
-            // Chuyển đổi trạng thái
-            if (customer.getStatus() == 1) {
-                customer.setStatus(0); // Chuyển từ hoạt động sang không hoạt động
-            }
-
-            // Lưu cập nhật vào cơ sở dữ liệu
-            customerService.saveCustomer(customer);
-        }
-
-        // Cập nhật danh sách khách hàng
-        List<Customer> customerList = customerService.getAllCustomers();
-        model.addAttribute("list", customerList);
+    @GetMapping("delete")
+    public String deleteVoucher(Model model, @RequestParam("id") UUID id) {
+        customerService.deleteVoucher(id);
         return "redirect:/admin/customer/get-all";
     }
 
