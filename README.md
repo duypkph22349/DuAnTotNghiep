@@ -35,8 +35,7 @@ Mã này áp dụng vào status cho tất cả bảng
 
 Mã này áp dụng cho timeline trạng thái đơn hàng
 
-- 0: Chờ xác nhận (Pending confirmation)
-- 1: Xác nhận thành công (Confirmed successfully)
+- 1:Chờ xác nhận (Confirmed successfully)
 - 2: Chờ giao hàng (Pending delivery)
 - 3: Đang giao hàng (In transit)
 - 4: Đã giao hàng (Delivered)
