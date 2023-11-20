@@ -116,7 +116,7 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
-            // .failureHandler(AuthenticationFailureHandler)
+            .failureUrl("/login-fail")
             .successHandler(new CustomAuthenticationSuccessHandler(KhachHangServer(), nhanVienServer()))
             .usernameParameter("username")
             .passwordParameter("password")

@@ -17,9 +17,9 @@ import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.OrderCounterRequest;
+import datn.goodboy.service.ConterService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
-import datn.goodboy.service.test.TestConterService;
 
 @RestController("countercartresttest")
 @RequestMapping("rest/data/counter")
@@ -31,7 +31,7 @@ public class RestCounterController {
   @Autowired
   private ProductDetailService productDetailService;
   @Autowired
-  private TestConterService countService;
+  private ConterService countService;
 
   @GetMapping("employees")
   public ResponseEntity<List<Employee>> getAllEmp() {
@@ -65,6 +65,7 @@ public class RestCounterController {
 
   @PostMapping("checkout")
   public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+    System.out.println(orderCounterRequest.toString());
     if (!orderCounterRequest.hasValidationError()) {
       Bill bill = countService.saveBill(orderCounterRequest);
       return ResponseEntity.ok().body(orderCounterRequest);
