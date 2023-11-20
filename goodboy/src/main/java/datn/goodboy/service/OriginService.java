@@ -1,11 +1,14 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.repository.OriginRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,5 +45,16 @@ public class OriginService {
 
     public List<Map<Integer, String>> getCombobox() {
         return originRepository.getComboBoxMap();
+    }
+    public void delete(int id) {
+        Optional<Origin> origin = originRepository.findById(id);
+        if (origin.isPresent()) {
+            if (origin.get().isDeleted()) {
+                origin.get().setDeleted(false);
+            } else {
+                origin.get().setDeleted(true);
+            }
+            originRepository.save(origin.get());
+        }
     }
 }

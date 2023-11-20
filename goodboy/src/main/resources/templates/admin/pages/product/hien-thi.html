@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Brand</title>
+    <title>Mamercy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
     <style>
@@ -51,11 +51,21 @@
                 <td th:text="${i.index + 1}"></td>
                 <td th:text="${b.code}"></td>
                 <td th:text="${b.name}"></td>
-                <td th:text="${b.status == 1 ? 'active' : 'unactive'}"></td>
+                <td th:unless="${b.deleted}" th:text="${convert.convertTrangThai(b.status)}">
+                </td>
+                <td th:if="${b.deleted}" class="text-decoration-line-through"
+                    th:text="${convert.convertTrangThai(b.status)}">
+                </td>
                 <td>
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${b.deleted}"
+                       th:href="@{/admin/product/delete(id=${b.id})}" class="btn btn-danger"><i
+                            class="fas fa-trash-alt"></i></a>
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${b.deleted}"
+                       th:href="@{/admin/product/delete(id=${b.id})}" class="btn btn-secondary"><i
+                            class="fas fa-undo-alt"></i></a>
                     <a th:href="@{'/admin/product/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>
-                    <a th:href="@{'/admin/product/delete/' + ${b.id}}" class="btn btn-danger">delete</a>
+
                 </td>
             </tr>
             </tbody>

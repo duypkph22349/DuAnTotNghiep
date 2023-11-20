@@ -1,6 +1,7 @@
 package datn.goodboy.controller;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.service.StylesService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,13 @@ public class StylesController {
     @Autowired
     private StylesService stylesService;
     private int currentProductCode = 1;
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
     @GetMapping("/dsStyle")
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
@@ -72,6 +80,11 @@ public class StylesController {
         b.setStatus(1);
         currentProductCode++;
         stylesService.add(b);
+        return "redirect:/admin/style/dsStype";
+    }
+    @GetMapping("delete")
+    public String delete(Model model, @RequestParam("id") int id) {
+        stylesService.delete(id);
         return "redirect:/admin/style/dsStype";
     }
 }

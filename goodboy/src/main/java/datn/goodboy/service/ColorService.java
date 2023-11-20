@@ -1,10 +1,12 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Color;
 import datn.goodboy.repository.ColorRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,5 +44,16 @@ public class ColorService {
 
     public List<Map<Integer, String>> getCombobox() {
         return colorRepository.getComboBoxMap();
+    }
+    public void delete(int id) {
+        Optional<Color> color = colorRepository.findById(id);
+        if (color.isPresent()) {
+            if (color.get().isDeleted()) {
+                color.get().setDeleted(false);
+            } else {
+                color.get().setDeleted(true);
+            }
+            colorRepository.save(color.get());
+        }
     }
 }
