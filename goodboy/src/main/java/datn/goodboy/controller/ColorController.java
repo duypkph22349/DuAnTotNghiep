@@ -2,6 +2,7 @@ package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Color;
 import datn.goodboy.service.ColorService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,13 @@ public class ColorController {
     @Autowired
     private ColorService colorService;
     private int currentProductCode = 1;
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
     @GetMapping("/dsColor")
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
@@ -77,6 +85,11 @@ public class ColorController {
         b.setStatus(1);
         currentProductCode++;
         colorService.add(b);
+        return "redirect:/admin/color/dsColor";
+    }
+    @GetMapping("delete")
+    public String delete(Model model, @RequestParam("id") int id) {
+        colorService.delete(id);
         return "redirect:/admin/color/dsColor";
     }
 }
