@@ -1167,12 +1167,13 @@ async function buildFormData(formId) {
 
   // Other properties
   if (formData.orderTypes) {
-    formData.totalShip = form.querySelector(`#total-ship`);
+    formData.totalShip = form.querySelector(`#total-ship`).value;
   } else {
-    formData.totalShip = 30000;
+    formData.totalShip = 0;
   }
   formData.totalMoney = totalMoney;
   formData.reductionAmount = 0;
+  console.log(formData);
   return formData;
 }
 
@@ -1255,10 +1256,10 @@ async function getShipCost(orderId, quantity) {
       throw new Error("Invalid input values");
     }
 
-    const heights = 15 * quantity + 10;
-    const lengths = 15;
-    const weights = 200 * quantity;
-    const widths = 11;
+    const heights = 2 * quantity + 2;
+    const lengths =60;
+    const weights = 200 * quantity + 120;
+    const widths = 20;
     await fetch(
       "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
       {
@@ -1404,6 +1405,9 @@ async function getErrorMessage(formData) {
       }
       if (formData.specificAddress.trim() === "") {
         errorMessage += "Address không được thiếu !!!\n";
+      }
+      if (formData.totalShip < 0) {
+        errorMessage += "Xem lại hình thức vận chuyển !!!\n";
       }
     }
   }
