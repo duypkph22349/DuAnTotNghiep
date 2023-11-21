@@ -1,4 +1,4 @@
-package datn.goodboy.service.test;
+package datn.goodboy.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,13 +19,10 @@ import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayDetailRepository;
-import datn.goodboy.service.CustomerService;
-import datn.goodboy.service.PayService;
-import datn.goodboy.service.ProductDetailService;
 import jakarta.annotation.PostConstruct;
 
 @Service
-public class TestConterService {
+public class ConterService {
   @Autowired
   BillRepository billRepository;
   @Autowired

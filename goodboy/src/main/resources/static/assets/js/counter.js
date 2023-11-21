@@ -300,10 +300,9 @@ function formInOrder(id) {
                                               placeholder="Địa chỉ cụ thể">
                                       </div>
                                       <div class="col-6 online-option  d-none">
-                                          <label class="form-label">Địa
-                                              Chỉ Cụ Thể</label>
-                                          <input type="text" class="form-control" id="address"
-                                              placeholder="Địa chỉ cụ thể">
+                                          <label class="form-label"> Phương thức vận chuyển</label>
+                                              <select class="form-select"  id="shipService" onchange="updateTongTien(${id})">
+                                              </select>
                                       </div>
                                   </div>
                               </div>
@@ -429,8 +428,8 @@ function formInOrder(id) {
                                                   <div class="box-monney online-option d-none">
                                                       <span class="title">Tiền
                                                           Ship&nbsp;</span>
-                                                      <span id="amount-ship" class="fw-500 red">30.000
-                                                          ₫</span>
+                                                      <span id="amount-ship" class="fw-500 red"> đ</span>
+                                                         <input type="hidden" id="total-ship"/>
                                                   </div>
                                               </div>
                                               <div class="box-money-section s3">
@@ -663,9 +662,7 @@ function removeOrderPage(orderId) {
     }
   }
 }
-
 function findProdcut(orderId) {}
-
 //calldata
 function selectOrderType(event, id) {
   orderType = event.target.value;
@@ -688,15 +685,60 @@ function selectOrderType(event, id) {
       element.classList.add("d-none");
     });
   }
+  updateTongTien(id);
 }
 // address, shipcode
-function updateTotalPrirce(orderId) {}
-function updateshipService(orderId) {}
-function updateProvice(orderId) {}
-function updateDistric(orderId) {}
-function updateWardcode(orderId) {}
-function getTotalShip(orderId) {}
+function updateshipService(orderId) {
+  const districtSelect = document.querySelector(`#hoaDon${orderId} #district`);
+  const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+  const customAttribute = selectedOption.getAttribute("districtcode");
+  const districtto = parseInt(customAttribute);
+  const shipServiceSelect = document.querySelector(
+    `#hoaDon${orderId} #shipService`
+  );
+  fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+      body: JSON.stringify({
+        to_district: districtto,
+        shop_id: shop_id,
+        from_district: districtform,
+      }),
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      while (shipServiceSelect.firstChild) {
+        shipServiceSelect.removeChild(shipServiceSelect.firstChild);
+      }
+      const defaultOption = document.createElement("option");
+      defaultOption.value = ""; // Set the value as needed
+      defaultOption.textContent = "Chọn Hình thức vận chuyển"; // Set the text content
+      // Set the 'disabled' and 'selected' attributes to make it the default option
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      shipServiceSelect.appendChild(defaultOption);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i].service_id; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].short_name; // Set the text of the option
+        shipServiceSelect.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
 
+function resetTotalShip(orderId) {
+  document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
+  document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
+    formatToVND(0);
+}
 function getAllprovide(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   const selectCity = thisOrder.querySelector("#city");
@@ -728,12 +770,11 @@ function getAllprovide(orderId) {
     .catch((error) => console.error("Error:", error));
 }
 function getAllDistrict(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  const selectCity = thisOrder.querySelector("#city");
+  const selectCity = document.querySelector(`#hoaDon${orderId} #city`);
   const selectedOption = selectCity.options[selectCity.selectedIndex];
   const customAttribute = selectedOption.getAttribute("providecode");
   const provinceid = parseInt(customAttribute);
-  const selectDistrict = thisOrder.querySelector("#district");
+  const selectDistrict = document.querySelector(`#hoaDon${orderId} #district`);
   fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district", {
     method: "POST",
     headers: {
@@ -796,6 +837,7 @@ function getFullAddress(orderId) {
   const fullAdress =
     wardName.text + ", " + districselect.text + " ," + proselect.text;
   thisOrder.querySelector("#FullAddress").value = String(fullAdress);
+  updateshipService(orderId);
 }
 function resetDistrict(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -810,10 +852,10 @@ function resetDistrict(orderId) {
   defaultOption.selected = true;
   selectProvide.appendChild(defaultOption);
   resetWard(orderId);
+  resetServiceShip(orderId);
 }
 function resetWard(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  const wardSelect = thisOrder.querySelector("#ward");
+  const wardSelect = document.querySelector(`#hoaDon${orderId} #ward`);
   while (wardSelect.firstChild) {
     wardSelect.removeChild(wardSelect.firstChild);
   }
@@ -824,46 +866,12 @@ function resetWard(orderId) {
   defaultOption.selected = true;
   wardSelect.appendChild(defaultOption);
 }
-function getServiceShip(orderId) {
-  const selectedOption = districtSelect.options[districtSelect.selectedIndex];
-  const customAttribute = selectedOption.getAttribute("districtcode");
-  const districtto = parseInt(customAttribute);
-  fetch(
-    "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        token: token,
-      },
-      body: JSON.stringify({
-        to_district: districtto,
-        shop_id: 4676018,
-        from_district: 3440,
-      }),
-    }
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      while (shipServiceSelect.firstChild) {
-        shipServiceSelect.removeChild(shipServiceSelect.firstChild);
-      }
-      const defaultOption = document.createElement("option");
-      defaultOption.value = ""; // Set the value as needed
-      defaultOption.textContent = "Chọn Hình thức vận chuyển"; // Set the text content
-      // Set the 'disabled' and 'selected' attributes to make it the default option
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      shipServiceSelect.appendChild(defaultOption);
-      const options = data.data;
-      for (let i = 0; i < options.length; i++) {
-        const option = document.createElement("option");
-        option.value = options[i].service_id; // Set the value of the option (you can change this to any value you want)
-        option.text = options[i].short_name; // Set the text of the option
-        shipServiceSelect.appendChild(option); // Add the option to the select element
-      }
-    })
-    .catch((error) => console.error("Error:", error));
+function resetServiceShip(orderId) {
+  const shipSelect = document.querySelector(`#hoaDon${orderId} #shipService`);
+  while (shipSelect.firstChild) {
+    shipSelect.removeChild(shipSelect.firstChild);
+  }
+  resetTotalShip(orderId);
 }
 function fillAllEmployee(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -1208,9 +1216,14 @@ async function buildFormData(formId) {
   formData.changeAmount = Math.max(totalMoney - totalAmount, 0);
 
   // Other properties
-  formData.totalShip = 30000;
+  if (formData.orderTypes) {
+    formData.totalShip = form.querySelector(`#total-ship`).value;
+  } else {
+    formData.totalShip = 0;
+  }
   formData.totalMoney = totalMoney;
   formData.reductionAmount = 0;
+  console.log(formData);
   return formData;
 }
 
@@ -1231,6 +1244,7 @@ async function updateTongTien(formId) {
   const finalAmount = document.querySelector(`#hoaDon${formId} #finalAmount`);
   const totalAmount = document.querySelector(`#hoaDon${formId} #totalAmount`);
   let totalMoney = 0;
+  let quantityofproduct = 0;
   for (const row of tableRows) {
     const productId = row.getAttribute("idproduct");
     const quantityElement = row.querySelector(`input[name="quantity"]`);
@@ -1240,6 +1254,7 @@ async function updateTongTien(formId) {
       alert("Số lượng sản phẩm không đúng");
       return;
     }
+    quantityofproduct += productQuantity;
     try {
       const product = await getProductDetails(productId);
       if (product) {
@@ -1249,11 +1264,98 @@ async function updateTongTien(formId) {
       console.error("Error fetching or calculating total money:", error);
     }
   }
+  if (
+    parseInt(
+      document.querySelector(
+        `#hoaDon${formId} input[name='options-outlined']:checked`
+      ).value,
+      10
+    ) === 1
+  ) {
+    try {
+      await getShipCost(formId, quantityofproduct);
+      const totalShip = parseInt(
+        document.querySelector(`#hoaDon${formId} #total-ship`).value,
+        10
+      );
+      if (totalShip > 0) {
+        totalMoney += totalShip;
+      }
+    } catch {}
+  }
   finalAmount.innerHTML = formatToVND(totalMoney);
   totalAmount.innerHTML = formatToVND(totalMoney);
   finalPrice(formId);
 }
+async function getShipCost(orderId, quantity) {
+  try {
+    const districtInput = document.querySelector(`#hoaDon${orderId} #district`);
+    const wardInput = document.querySelector(`#hoaDon${orderId} #ward`);
+    const serviceInput = document.querySelector(
+      `#hoaDon${orderId} #shipService`
+    );
+    if (!districtInput || !wardInput || !serviceInput) {
+      throw new Error("Missing input values");
+    }
 
+    const districtto = parseInt(districtInput.value);
+    const ward_code = String(wardInput.value);
+    const service_ids = parseInt(serviceInput.value);
+
+    if (isNaN(districtto) || isNaN(service_ids)) {
+      throw new Error("Invalid input values");
+    }
+
+    const heights = 2 * quantity + 2;
+    const lengths =60;
+    const weights = 200 * quantity + 120;
+    const widths = 20;
+    await fetch(
+      "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify({
+          service_id: service_ids,
+          insurance_value: 500000,
+          coupon: null,
+          from_district_id: 3440,
+          to_district_id: districtto,
+          to_ward_code: ward_code,
+          height: heights,
+          length: lengths,
+          weight: weights,
+          width: widths,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.code == 400) {
+          document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
+            "Không tìm thấy bảng giá hợp lệ";
+          document.querySelector(`#hoaDon${orderId} #total-ship`).value = -1;
+        } else {
+          document.querySelector(`#hoaDon${orderId} #total-ship`).value =
+            data.data.total;
+          document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
+            formatToVND(data.data.total);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  } catch (error) {
+    console.error("Error:", error);
+    resetTotalShip(orderId);
+    errorShip(orderId);
+  }
+}
+function errorShip(orderId) {
+  document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
+  document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML = "Error";
+}
 async function finalPrice(formId) {
   const tableRows = document.querySelectorAll(
     `#hoaDon${formId} #cartTable tbody tr.table-body-row`
@@ -1353,6 +1455,9 @@ async function getErrorMessage(formData) {
       }
       if (formData.specificAddress.trim() === "") {
         errorMessage += "Address không được thiếu !!!\n";
+      }
+      if (formData.totalShip < 0) {
+        errorMessage += "Xem lại hình thức vận chuyển !!!\n";
       }
     }
   }

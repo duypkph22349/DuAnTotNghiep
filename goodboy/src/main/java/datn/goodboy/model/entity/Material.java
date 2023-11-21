@@ -31,4 +31,6 @@ public class Material {
     private LocalDateTime updatedAt;
     @Column(name="status")
     private int status;
+    @Column(name = "deleted")
+    private boolean deleted;
 }

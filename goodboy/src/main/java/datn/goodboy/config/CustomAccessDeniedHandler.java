@@ -1,11 +1,15 @@
 package datn.goodboy.config;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -25,7 +29,24 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
       LOG.warn("User: " + auth.getName() + " attempted to access the protected URL: " + request.getRequestURI());
     }
 
-    response.sendRedirect(request.getContextPath() + "/access-denied");
+    response.sendRedirect(request.getContextPath() + determineTargetUrl(auth));
   }
-
+ protected String determineTargetUrl(Authentication authentication) {
+        String url = "";
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> roles = new ArrayList<String>();
+        for (GrantedAuthority a : authorities) {
+            roles.add(a.getAuthority());
+        }
+        if (roles.contains("NOT_ACCTIVE")) {
+            url = "/sendvertifyemail";
+        } else if (roles.contains("ADMIN")) {
+            url = "/admin";
+        } else if (roles.contains("STAFF")) {
+            url = "/admin";
+        } else if (roles.contains("USER")) {
+            url = "/";
+        }
+        return url;
+    }
 }

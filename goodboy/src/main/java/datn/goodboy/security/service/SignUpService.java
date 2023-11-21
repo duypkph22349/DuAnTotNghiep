@@ -34,7 +34,7 @@ public class SignUpService {
   PasswordEncoder encoder;
 
   public Employee signUpAsEmployee(EmployeeSignUpRequest request) {
-    if (!emailHelper.isEmailExits(request.getEmail())) {
+    if (!emailHelper.isEmailExists(request.getEmail())) {
       Employee employee = new Employee();
       employee.setBirth_date(request.getBirthDay());
       employee.setEmail(request.getEmail());
@@ -53,7 +53,7 @@ public class SignUpService {
   }
 
   public Account signUpAsUser(UserSignUpRequest request) {
-    if (!emailHelper.isEmailExits(request.getEmail())) {
+    if (!emailHelper.isEmailExists(request.getEmail())) {
       Customer customer = new Customer();
       customer.setPhone(request.getPhone());
       customer.setName(request.getName());
