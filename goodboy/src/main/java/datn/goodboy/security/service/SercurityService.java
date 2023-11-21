@@ -67,26 +67,19 @@ public class SercurityService {
     return userDetails;
   }
 
-  public void updatePassword(String password) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Object principal = authentication.getPrincipal();
-    if (principal instanceof UserDetails) {
-      String username = ((UserDetails) principal).getUsername();
-      try {
-        Optional<Employee> employee = employeInfoRepository.getuser(username);
-        Optional<Account> account = accountInfoRepository.getuser(username);
-        if (employee.isPresent()) {
-          employee.get().setPassword(encoder.encode(password));
-          employeInfoRepository.save(employee.get());
-        } else if (account.isPresent()) {
-          account.get().setPassword(encoder.encode(password));
-          accountInfoRepository.save(account.get());
-        }
-      } catch (Exception e) {
-        // throw exeption
+  public void updatePassword(String email, String password) {
+    String username = email;
+    try {
+      Optional<Employee> employee = employeInfoRepository.getuser(username);
+      Optional<Account> account = accountInfoRepository.getuser(username);
+      if (employee.isPresent()) {
+        employee.get().setPassword(encoder.encode(password));
+        employeInfoRepository.save(employee.get());
+      } else if (account.isPresent()) {
+        account.get().setPassword(encoder.encode(password));
+        accountInfoRepository.save(account.get());
       }
-    } else {
-      // throw exeption
+    } catch (Exception e) {
     }
   }
 

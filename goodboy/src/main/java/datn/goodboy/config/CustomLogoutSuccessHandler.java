@@ -30,7 +30,7 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
       roles.add(a.getAuthority());
     }
     if (roles.contains("NOT_ACCTIVE")) {
-      url = "/home";
+      url = "/login";
     } else if (roles.contains("ADMIN")) {
       url = "/employee/login";
     } else if (roles.contains("STAFF")) {

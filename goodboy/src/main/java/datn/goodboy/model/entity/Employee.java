@@ -82,7 +82,6 @@ public class Employee {
 
     @Column(name = "status")
     int status;
-
-    public void setActived(boolean b) {
-    }
+    @Column(name = "actived")
+    private boolean actived;
 }

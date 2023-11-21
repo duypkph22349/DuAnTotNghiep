@@ -99,8 +99,13 @@ public class SpringSecurityConfig {
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
     http
+       .authorizeHttpRequests(authorize -> {
+          authorize.requestMatchers("/sendresetpasswordcode","/resetpasswordcode","/resetpassword").permitAll();
+        })
         .authorizeHttpRequests(authorize -> {
-          // delete only role admin
+          authorize.requestMatchers("/sendvertifyemail","/vertifyemail").authenticated();
+        })
+        .authorizeHttpRequests(authorize -> {
           authorize.requestMatchers("/admin/*/delete/**").hasAnyAuthority("ADMIN");
         })
         .authorizeHttpRequests((authorize) -> {

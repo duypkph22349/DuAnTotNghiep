@@ -44,6 +44,8 @@ public class Account {
 
   @Column(name = "deleted")
   private boolean deleted;
+@Column(name = "actived")
+  private boolean actived;
 
   @Column(name = "updated_at")
   LocalDateTime updated_at;
