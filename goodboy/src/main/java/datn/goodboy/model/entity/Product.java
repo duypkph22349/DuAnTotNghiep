@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Data
 @NoArgsConstructor
@@ -30,4 +33,8 @@ public class Product {
     private int status;
     @Column(name = "deleted")
     private boolean deleted;
+
+    @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
+    @JsonIgnore
+    private List<ImageProduct> imageProducts;
 }
