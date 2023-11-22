@@ -1,15 +1,13 @@
 package datn.goodboy.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.VoucherDetail;
-import datn.goodboy.model.response.BillResponse;
 import datn.goodboy.repository.VoucherDetailRepository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class VoucherDetailService {
@@ -38,13 +36,5 @@ public class VoucherDetailService {
 
   public void deleteVoucherDetail(int id) {
     voucherdetailRepository.deleteById(id);
-  }
-
-  // manager
-  // user
-  public BillResponse userVoucher(UUID id_voucher, int id_bill) {
-    UUID id_customer = UUID.randomUUID();
-
-    return null;
   }
 }

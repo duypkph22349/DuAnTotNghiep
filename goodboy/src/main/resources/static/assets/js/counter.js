@@ -304,6 +304,7 @@ function formInOrder(id) {
                                   </div>
                               </div>
                               <div class="flex-space-between">
+
                                   <div
                                       style="width: 32px; height: 32px; border: 1px solid rgb(217, 217, 217); background: rgb(255, 255, 255); cursor: pointer; margin-left: 10px; display: flex; align-items: center; justify-content: center; border-radius: 2px;">
                                       <span role="img" aria-label="more" class="anticon anticon-more">
@@ -333,6 +334,9 @@ function formInOrder(id) {
                           </style>
                           <div class="line"></div>
                           <div class="box-payment" id="box-payment-info">
+                          <div class ="container incount-option">
+                                <img src="https://api.vietqr.io/image/970407-19038515617017-PbS5ZV1.jpg?accountName=VU%20VAN%20THAT" class="rounded float-start img-fluid img-thumbnail"/>
+                              </div>
                               <div class="row g-3">
                                   <div class="col-12 d-none">
                                       <div class="input-wrapper">
@@ -347,6 +351,16 @@ function formInOrder(id) {
                                               oninput="updateDiscountAmount(this.value)">
                                       </div>
                                   </div>
+                                  <div class="col-12">
+                                      <div class="input-wrapper">
+                                          <span class="currency-symbol">
+                                          <i class="bi bi-cash-coin"></i>
+                                          </span>
+                                          <select type="number" class="form-control" id="voucher-choose" onchange="finalPrice(${id})">
+                                            <option class="text-center" disabled selected> Chọn Voucher </option>
+                                          </select>
+                                      </div>
+                                      </div>
                                   <div class="col-12 incount-option">
                                       <div class="input-wrapper">
                                           <span class="currency-symbol">
@@ -839,7 +853,6 @@ function fillAllEmployee(orderId) {
       });
     });
 }
-function getProduct(event, orderId) {}
 function getFirstProductPage(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var tbody = thisOrder.querySelector("#cartTableProduct tbody");
@@ -1414,9 +1427,51 @@ async function getErrorMessage(formData) {
 
   return errorMessage;
 }
+
+function getVoucherAble(orderId){
+ const voucherSelect = document.querySelector(`#hoaDon${orderId} #voucher-choose`);
+
+ fetch("/rest/data/counter/voucherAble", {
+   method: "GET",
+ })
+   .then((res) => res.json())
+   .then((data) => {
+     data.forEach(function (product) {
+      console.log(data)
+       var option = document.createElement("option");
+        defaultOption.value = ""; // Set the value as needed
+        defaultOption.textContent = "Chọn Voucher"; // Set the text content
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        voucherSelect.appendChild(defaultOption);
+        if(data.data.status ==200){
+          const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                option.text = `${options[i].name}`
+                selectCity.appendChild(option);
+        }
+       voucherSelect.appendChild(option);
+      }
+     });
+   });
+}
+async function getQrThanhToan(orderId){
+
+}
 window.addEventListener("beforeunload", function (event) {
   const confirmationMessage = "Are you sure you want to leave?";
   event.returnValue = confirmationMessage;
   // checkExitDataOnForm();
   return confirmationMessage;
 });
+
+//   const options = data.data;
+//   for (let i = 0; i < options.length; i++) {
+//     const option = document.createElement("option");
+//     // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+//     option.text = options[i].ProvinceName; // Set the text of the option
+//     option.setAttribute("providecode", options[i].ProvinceID);
+//     selectCity.appendChild(option); // Add the option to the select element
+//   }
+// })

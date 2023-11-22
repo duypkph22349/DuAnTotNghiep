@@ -91,14 +91,17 @@ public class VoucherService implements PanigationInterface<Voucher>,PanigationWi
     return null;
   }
 
-  // public VoucherRequest getVoucherRequetById(UUID id) {
-  // Optional<VoucherRequest> response = voucherRepository.getResponse(id);
-  // if (response.isPresent()) {
-  // return response.get();
-  // } else {
-  // return null;
-  // }
-  // }
+
+  public List<Voucher> getAllVoucherAble() {
+    return voucherRepository.getAbleVoucher();
+  }
+  public void useVoucher(int id ){
+    Optional<Voucher>  voucher = voucherRepository.findById(id);
+    if (voucher.isPresent()) {
+      voucher.get().setQuantily(voucher.get().getQuantily() - 1);
+      voucherRepository.save(voucher.get());
+    }
+  }
 
   public VoucherRequest getVoucherRequetById(int id) {
     Optional<VoucherRequest> response = voucherRepository.getResponse(id);

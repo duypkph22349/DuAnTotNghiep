@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.OrderCounterRequest;
 import datn.goodboy.service.ConterService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
+import datn.goodboy.service.VoucherService;
 
 @RestController("countercartresttest")
 @RequestMapping("rest/data/counter")
@@ -30,9 +32,15 @@ public class RestCounterController {
 
   @Autowired
   private ProductDetailService productDetailService;
+
+  @Autowired
+  private VoucherService voucherService;
   @Autowired
   private ConterService countService;
-
+  @GetMapping("voucherAble")
+    public ResponseEntity<List<Voucher>> getAbleVoucher(){
+      return ResponseEntity.ok().body(voucherService.getAllVoucherAble());
+    }
   @GetMapping("employees")
   public ResponseEntity<List<Employee>> getAllEmp() {
     return ResponseEntity.ok().body(employeeService.getAllEmployee());
