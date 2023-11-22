@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="pi-text">
                                         <div class="catagory-name" th:text="${productdetail.idProduct.name}"></div>
-                                        <a href="#">
+                                        <a th:href="@{/user/detail/{productId}(productId=${productdetail.id})}">
                                             <h5 th:text="${productdetail.name}"></h5>
                                         </a>
                                         <div class="product-price">
