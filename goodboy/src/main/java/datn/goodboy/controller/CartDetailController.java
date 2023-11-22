@@ -78,69 +78,69 @@ public class CartDetailController {
 
     CustomerService customerService;
     CartService cartService;
-//    @PostMapping("/addToCart/{id}")
-//    public String addToCart(Model model,
-//                            HttpSession session,
-//                            @PathVariable(value = "id") Integer id,
-//                            //@RequestParam  ("maKH") String maKH,//lấy mã khách hàng
-//                            @RequestParam ("soLuong") Integer soLuong,
-//                            RedirectAttributes redirectAttributes //lưu lại mã khách hàng
+//   @PostMapping("/addToCart/{id}")
+//   public String addToCart(Model model,
+//                           HttpSession session,
+//                           @PathVariable(value = "id") Integer id,
+//                           //@RequestParam  ("maKH") String maKH,//lấy mã khách hàng
+//                           @RequestParam ("soLuong") Integer soLuong,
+//                           RedirectAttributes redirectAttributes //lưu lại mã khách hàng
 //
-//    ){
-//        String maNV = (String) session.getAttribute("maNV");
-//        UUID uuidMaNV = UUID.nameUUIDFromBytes(maNV.getBytes());
-//        if (maNV != null) {
-//            // Đã đăng nhập và lưu mã nhân viên vào session
+//   ){
+//       String maNV = (String) session.getAttribute("maNV");
+//       UUID uuidMaNV = UUID.nameUUIDFromBytes(maNV.getBytes());
+//       if (maNV != null) {
+//           // Đã đăng nhập và lưu mã nhân viên vào session
 //
-//            // Tìm đối tượng User tương ứng với mã nhân viên
-//            Customer customer = customerService.customerByid(uuidMaNV);
+//           // Tìm đối tượng User tương ứng với mã nhân viên
+//           Customer customer = customerService.customerByid(uuidMaNV);
 //
-//            if (customer != null) {
+//           if (customer != null) {
 //
-//                String maNhanVienTrongUser = customer.getCode(); // Trích xuất mã nhân viên từ đối tượng User
+//               String maNhanVienTrongUser = customer.getCode(); // Trích xuất mã nhân viên từ đối tượng User
 //
-//                //how to code findByMaNV
-//                Cart cart = cartService.findByMaNV(maNhanVienTrongUser);
+//               //how to code findByMaNV
+//               Cart cart = cartService.findByMaNV(maNhanVienTrongUser);
 //
-//                if (cart == null) {
-//                    cart = new Cart();
-//                    cart.setCode(maNhanVienTrongUser); // Tạo mã giỏ hàng tự động
+//               if (cart == null) {
+//                   cart = new Cart();
+//                   cart.setCode(maNhanVienTrongUser); // Tạo mã giỏ hàng tự động
 //
-//                    // Gán mã nhân viên từ đối tượng User vào giỏ hàng
-//                    cart.setCustomer(customer);
+//                   // Gán mã nhân viên từ đối tượng User vào giỏ hàng
+//                   cart.setCustomer(customer);
 //
-//                    cartService.addGioHang(cart); // Lưu giỏ hàng vào cơ sở dữ liệu
-//                }
+//                   cartService.addGioHang(cart); // Lưu giỏ hàng vào cơ sở dữ liệu
+//               }
 //
-//                ProductDetail productDetail = productDetailService.getProductDetailById(id).orElse(null);
+//               ProductDetail productDetail = productDetailService.getProductDetailById(id).orElse(null);
 //
-//                if(productDetail != null){
+//               if(productDetail != null){
 //
-//                    CartDetail crt = cartDetailService.findByMaGHAndMaCTSP(cart,productDetail);
+//                   CartDetail crt = cartDetailService.findByMaGHAndMaCTSP(cart,productDetail);
 //
-//                    if(crt != null){
+//                   if(crt != null){
 //
-//                        crt.setQuantity(crt.getQuantity() + soLuong);
-//                        cartDetailService.saveCart(crt);
+//                       crt.setQuantity(crt.getQuantity() + soLuong);
+//                       cartDetailService.saveCart(crt);
 //
-//                    }else{
+//                   }else{
 //
-//                        crt = new CartDetail();
-//                        crt.setCart(cart);
-//                        crt.setProductDetail(productDetail);
-//                        crt.setQuantity(soLuong);
-//                        crt.setPrice(productDetail.getPrice());
+//                       crt = new CartDetail();
+//                       crt.setCart(cart);
+//                       crt.setProductDetail(productDetail);
+//                       crt.setQuantity(soLuong);
+//                       crt.setPrice(productDetail.getPrice());
 //
-//                        cartDetailService.saveCart(crt);
+//                       cartDetailService.saveCart(crt);
 //
-//                    }
-//                }
-//            }
-//        }
+//                   }
+//               }
+//           }
+//       }
 //
-//        return "redirect:/user/cart/index";
+//       return "redirect:/user/cart/index";
 //
-//    }
+//   }
 
 
 

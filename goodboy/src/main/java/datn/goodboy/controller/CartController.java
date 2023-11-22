@@ -14,7 +14,7 @@ public class CartController {
     private CartService cartService;
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerService  customerService;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {

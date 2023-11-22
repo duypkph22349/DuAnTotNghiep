@@ -69,8 +69,8 @@
                                 <div class="product-item">
                                     <div class="pi-pic">
                                         <div
-                                                th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
-                                            <img th:src="${productdetail.imageProducts[0].img}" alt="Ảnh sản phẩm"/>
+                                                th:if="${productdetail.idProduct.imageProducts !=null && productdetail.idProduct.imageProducts.size() > 0}">
+                                            <img th:src="${productdetail.idProduct?.imageProducts[0].img}" alt="Ảnh sản phẩm"/>
                                         </div>
 
                                         <ul>

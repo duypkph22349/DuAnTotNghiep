@@ -39,14 +39,14 @@
             <div class="row">
                 <div class="col-lg-6 px-5">
                     <div class="product-pic text-center mb-3">
-                        <img th:src="${productDetailRequest.image[0].img}" alt="Ảnh sản phẩm" />
+                        <img th:src="${productDetailRequest.idProduct?.imageProducts[0]?.img}" alt="Ảnh sản phẩm" />
                     </div>
                     <div class="product-thumbs">
                         <div class="product-thumbs-track ps-slider owl-carousel owl-loaded owl-drag">
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                     style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;display: flex;">
-                                    <div th:each="image,loop : ${productDetailRequest.image}">
+                                    <div th:each="image,loop : ${productDetailRequest.idProduct?.imageProducts}">
                                         <div class="owl-item" style="width: 111,6665px; margin-right: 0.5px;">
                                             <div class="pt">
                                                 <img class="p-1 image-fluid w-100" th:src="${image?.img}" id="product_image${loop.index}" alt="ảnh sản phẩm">
@@ -67,59 +67,63 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 pt-4">
-                    <div class="product-details">
-                        <div class="pd-title mb-3">
-                            <h2 class= "font-weight-bold" th:text="${productDetailRequest.name}"></h2>
-                            <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
-                        </div>
-                        <div class="pd-share mb-3">
-                            <div class="p-code" >Mã sản phẩm : ${productDetailRequest.code}</div>
-                            <div class="pd-social">
-                                <a href="#"><i class="ti-facebook"></i></a>
-                                <a href="#"><i class="ti-twitter-alt"></i></a>
-                                <a href="#"><i class="ti-linkedin"></i></a>
+                <form action="" method="post">
+                    <div class="col-lg-6 pt-4">
+                        <div class="product-details">
+                            <div class="pd-title mb-3">
+                                <h2 class= "font-weight-bold" th:text="${productDetailRequest.name}"></h2>
+                                <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                             </div>
-                        </div>
-                        <div class="pd-rating" >
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star-o text-warning"></p>
-                        </div>
-                        <div class="pd-desc">
-                            <h1 class="font-weight-bold text-danger" style="font-size: 36px">
-                                <span th:text="${productDetailRequest.price}" /> VND
-                            </h1>
-                        </div>
-                        <div class="pd-desc">
-                            <h4 class="mb-4 font-weight-bold text-dark">Mô tả</h4>
-                            <span th:text="${productDetailRequest.description}"></span>
-                        </div>
-                        <div class="pd-color row align-items-center">
-                            <h4 class="font-weight-bold col-md-2">Màu sắc</h4>
-                            <div class="pd-color-choose col-md-10">
-                                <c:forEach var="color" items="${product.colors}" varStatus="loop">
-                                    <div class="cc-item">
-                                        <input type="radio" name="color" id="cc-black${loop.index}" onchange="changeColor('${color.id}')">
-                                        <label for="cc-black${loop.index}" style="background: ${color.colorHex};"></label>
-                                    </div>
-                                </c:forEach>
+                            <div class="pd-share mb-3">
+                                <div class="p-code" >Mã sản phẩm : ${productDetailRequest.code}</div>
+                                <div class="pd-social">
+                                    <a href="#"><i class="ti-facebook"></i></a>
+                                    <a href="#"><i class="ti-twitter-alt"></i></a>
+                                    <a href="#"><i class="ti-linkedin"></i></a>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="quantity">
-                            <div class="pro-qty">
-                            	<span class="dec qtybtn" onclick="qty(0)">-</span>
-                                <input type="text" name="quantity" id="quantity" value="1">
-                                <span class="inc qtybtn" onclick="qty(1)">+</span>
+                            <div class="pd-rating" >
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star-o text-warning"></p>
                             </div>
-                            <a href="#" onclick="addToCart('${product.id}')" class="primary-btn pd-cart">Mua sản phẩm</a>
+                            <div class="pd-desc">
+                                <h1 class="font-weight-bold text-danger" style="font-size: 36px">
+                                    <span th:text="${productDetailRequest.price}" /> VND
+                                </h1>
+                            </div>
+                            <div class="pd-desc">
+                                <h4 class="mb-4 font-weight-bold text-dark">Mô tả</h4>
+                                <span th:text="${productDetailRequest.description}"></span>
+                            </div>
+                            <div class="pd-color row align-items-center">
+                                <h4 class="font-weight-bold col-md-2">Màu sắc</h4>
+                                <div class="pd-color-choose col-md-10">
+                                    <c:forEach var="color" items="${product.colors}" varStatus="loop">
+                                        <div class="cc-item">
+                                            <input type="radio" name="color" id="cc-black${loop.index}" onchange="changeColor('${color.id}')">
+                                            <label for="cc-black${loop.index}" style="background: ${color.colorHex};"></label>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <span class="dec qtybtn" onclick="qty(0)">-</span>
+                                    <input type="text" name="quantity" id="quantity" value="1">
+                                    <span class="inc qtybtn" onclick="qty(1)">+</span>
+                                </div>
+                                <a href="/user/addToCart/${}" type="submit" class="primary-btn pd-cart">Mua sản phẩm</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
+
+
         </div>
     </section>
     <!-- Product Shop Section End -->
