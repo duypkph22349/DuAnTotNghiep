@@ -34,7 +34,7 @@ public class Bill {
   @JoinColumn(name = "id_pay")
   private Pay pay;
 
-  @Column(name = "code")
+  @Column(name = "code", insertable = false, updatable = false)
   String code;
 
   @Column(name = "confirmation_date")

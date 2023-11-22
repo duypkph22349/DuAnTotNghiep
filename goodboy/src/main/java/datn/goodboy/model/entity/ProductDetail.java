@@ -33,7 +33,7 @@ public class ProductDetail {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "code")
+    @Column(name = "code" , insertable = false, updatable = false)
     private String code;
 
     @Column(name = "name")

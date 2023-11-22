@@ -21,7 +21,7 @@ public class Cart {
     @Column(name = "id")
     int id;
 
-    @Column(name = "code")
+    @Column(name = "code", insertable = false, updatable = false)
     String code;
 
     @ManyToOne

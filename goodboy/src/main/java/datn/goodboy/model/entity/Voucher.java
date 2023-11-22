@@ -32,7 +32,7 @@ public class Voucher {
   private int id;
   @Column(name = "status")
   private int status;
-  @Column(name = "code")
+  @Column(name = "code" , insertable = false, updatable = false)
   private String code;
   @Column(name = "name")
   private String name;
