@@ -74,6 +74,7 @@ public class BillService {
             bill.setCustomer(customer);
             bill.setEmployee(employee);
             bill.setPay(pay);
+            bill.setLoaiDon(billRequest.getLoaiDon());
             bill.setCode(billRequest.getCode());
             bill.setAddress(billRequest.getAddress());
             bill.setPhone(billRequest.getPhone());

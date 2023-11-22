@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <title>Bill Detail</title>
+    <title>Nhân Viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -77,6 +78,7 @@
     }
 </style>
 
+
 <body>
 <span id="status" th:data-value="${bill.status}"></span>
 <span id="id" th:data-value="${bill.id}"></span>
@@ -86,16 +88,24 @@
         <div class="top d-flex justify-content-center align-items-center">
             <div class="tabs">
                 <div data-value="1" id="tab_1" class="tab-item">
-                    <i class="tab-icon fas fa-code"></i>
-                    Tạo Đơn Hàng
+                    <i class="tab-item bi bi-cart"></i>
+                    Chờ xác nhận
                 </div>
                 <div data-value="2" id="tab_2" class="tab-item">
-                    <i class="tab-icon fas fa-cog"></i>
-                    Đang Giao
+                    <i class="tab-icon bi bi-cart-check"></i>
+                    Chờ giao hàng
                 </div>
                 <div data-value="3" id="tab_3" class="tab-item">
-                    <i class="tab-icon fas fa-plus-circle"></i>
-                    Đã Giao
+                    <i class="tab-icon bi bi-car-front-fill"></i>
+                    Đang giao hàng
+                </div>
+                <div data-value="4" id="tab_4" class="tab-item">
+                    <i class="tab-icon bi bi-box-seam"></i>
+                    Đã giao hàng
+                </div>
+                <div data-value="5" id="tab_5" class="tab-item">
+                    <i class="tab-icon bi bi-check-lg"></i>
+                    Thành công
                 </div>
                 <div class="line"></div>
             </div>
@@ -136,41 +146,43 @@
                     </div>
                     <div class="item status">
                         <label>Trạng Thái</label>
-                        <span style="background-color:gold" th:if="${bill.status == 1}">Đang tạo đơn</span>
-                        <span style="background-color:gold" th:if="${bill.status == 2}">Đang giao</span>
-                        <span style="background-color:gold" th:if="${bill.status == 3}">Đã Giao</span>
+                            <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
+                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
                     </div>
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>
-                        <span th:text="${bill.delivery_date}" style="background-color: rgb(206, 240, 240);">00000</span>
+
+                        <span th:text="${#temporals.format(bill?.delivery_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
                     </div>
                     <div class="item dateShip">
                         <label>Ngày Giao Hàng</label>
-                        <span th:text="${bill.received_date}" style="background-color: rgb(206, 240, 240);">00000</span>
+                        <span th:text="${#temporals.format(bill?.received_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
                     </div>
 
                 </div>
                 <div class="col-6">
                     <div class="item customerName">
                         <label>Tên Khách Hàng</label>
-                        <span th:text="${bill.customer_name}"  >+00000</span>
+                        <span th:text="${bill.customer_name}"  style="background-color: rgb(206, 240, 240);" >+00000</span>
                     </div>
                     <div class="item phone">
                         <label>Số Điện Thoại</label>
-                        <input id="phoneNumber" style="border: none; outline: none;color: red" th:value="${bill.phone}" />
+                        <input id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
+
+
                         <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
-                    </div>
-                    <div class="item email">
-                        <label>Email</label>
-                        <span></span>
                     </div>
                     <div class="item address">
                         <label>Địa Chỉ</label>
-                        <input id="address" style="border: none; outline: none; color: red" th:value="${bill.address}" />
+                        <input id="address" style="border:  2px solid transparent; padding-left: 3vpx; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
+
                     </div>
                     <div class="item note">
                         <label>Ghi Chú</label>
-                        <span th:text="${bill.note}">+00000</span>
+                        <span th:text="${bill.note}" style="background-color: rgb(206, 240, 240);">+00000</span>
                     </div>
                 </div>
             </div>
@@ -211,16 +223,16 @@
     // let addressElement = document.querySelector('.item.address span');
     // let noteElement = document.querySelector('.item.note span');
 
-    let statusTpye ={
-        TD :"Tạo Đơn Hàng",
-        DG :"Đang Giao Hàng",
-        GX :"Đã Giao"
-    }
-
-    let typeOrder ={
-        store : "Lấy Tại Cửa Hàng",
-        ship :"Giao Hàng"
-    }
+    // let statusTpye ={
+    //     TD :"Tạo Đơn Hàng",
+    //     DG :"Đang Giao Hàng",
+    //     GX :"Đã Giao"
+    // }
+    //
+    // let typeOrder ={
+    //     store : "Lấy Tại Cửa Hàng",
+    //     ship :"Giao Hàng"
+    // }
 
     let statusElement = document.getElementById("status");
     let status = statusElement.getAttribute("data-value");
@@ -240,7 +252,7 @@
             return;
         }
 
-        var phoneRegex = /^[0-9]{10}$/;
+        var phoneRegex = /^[0-9]{11}$/;
         if (!phoneRegex.test(phoneNumber.value)) {
             alert("Số điện thoại không hợp lệ!");
             return;

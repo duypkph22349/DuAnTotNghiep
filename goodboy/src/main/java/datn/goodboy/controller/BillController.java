@@ -1,6 +1,7 @@
 package datn.goodboy.controller;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.service.BillDetailService;
 import datn.goodboy.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,10 @@ public class BillController {
 
     @Autowired
     private BillService billService;
+
+//    @Autowired
+//    private BillDetailService billDetailService;
+
 
     @GetMapping({ "/hien-thi", "" })
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,

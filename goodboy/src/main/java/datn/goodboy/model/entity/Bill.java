@@ -1,13 +1,16 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
-import groovy.transform.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -98,4 +101,9 @@ public class Bill {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+
+  @OneToMany(mappedBy = "idBill")
+  @JsonIgnore
+  private List<BillDetail> billDetail;
+
 }

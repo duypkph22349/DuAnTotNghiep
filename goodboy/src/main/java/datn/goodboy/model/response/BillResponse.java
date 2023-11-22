@@ -53,4 +53,6 @@ public class BillResponse {
   String note;
 
   int status;
+
+  int loaiDon;
 }
