@@ -32,7 +32,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
                      "    AND voucher.start_time < CURRENT_TIMESTAMP " +
                      "    AND (voucher.end_time > CURRENT_TIMESTAMP OR voucher.end_time IS NULL) " +
                      ") OR (" +
-                     "    :status = 0 AND LOWER(voucher.code) LIKE LOWER(CONCAT('%', :search, '%'))" +
+                     "    :status = 0 AND (LOWER(voucher.code) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(voucher.name) LIKE LOWER(CONCAT('%', :search, '%')))" +
                      "))")
        Page<Voucher> searchStatus(Pageable pageable, @Param("search") String search, @Param("status") int status);
 

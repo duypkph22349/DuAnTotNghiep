@@ -45,7 +45,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         } else if (roles.contains("STAFF")) {
             url = "/admin";
         } else if (roles.contains("USER")) {
-            url = "/";
+            url = "/home";
         }
         return url;
     }

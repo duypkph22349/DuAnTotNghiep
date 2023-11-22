@@ -110,13 +110,15 @@ public class ConterService {
         payDetail.setStatus(true);
         paydetailepository.save(payDetail);
       }
+      bill.setConfirmation_date(LocalDateTime.now());
       bill.setCompletion_date(LocalDateTime.now());
       bill.setPay(counterPay);
-      bill.setStatus(1);
+      bill.setStatus(5);
     } else if (request.getOrderTypes() == 1) {
+      bill.setConfirmation_date(LocalDateTime.now());
       bill.setAddress(request.getSpecificAddress() + ", " + request.getFullAddress());
       bill.setMoney_ship(request.getTotalShip());
-      bill.setStatus(0);
+      bill.setStatus(2);
       bill.setPay(payService.getTransferMethod());
     }
     bill.setNote(request.getNote());
