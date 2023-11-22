@@ -118,10 +118,7 @@
                 id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, giới tính....">
             <button class="btn btn-info" type="button" data-bs-toggle="dropdown" aria-expanded="false">Search </button>
         </div>
-
         <Br>
-
-
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -177,8 +174,10 @@
                                                         <div class="col-12 col-sm-6 col-lg-3 mb-3">
                                                             <label class="form-label font-weight-bold">Chức vụ:</label>
                                                             <select name="roles" class="form-control">
-                                                                <option th:each="roles:${roles}" th:value="${roles.id}"
-                                                                    th:text="${roles.name}"></option>
+                                                                <option th:each="role : ${roles}" th:value="${role.id}"
+                                                                        th:selected="${role.id == roles}">
+                                                                    <span th:text="${role.name}"></span>
+                                                                </option>
                                                             </select>
                                                         </div>
                                                         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -196,13 +195,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-12 col-sm-6 col-lg-8 mb-3">
+                                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
                                                             <label class="form-label font-weight-bold">Số Căn
                                                                 Cước</label>
-                                                            <input th:name="cccd" type="email" class="form-control"
+                                                            <input th:name="cccd"   class="form-control"
                                                                 placeholder="Hãy nhập số Căn cước" />
                                                         </div>
-                                                        <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                                                        <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                                            <label class="form-label font-weight-bold">Trạng Thái</label>
+                                                            <select class="form-control" th:name="status" id="status">
+                                                                <option value="1">Hoạt Động</option>
+                                                                <option value="0">Không Hoạt Động</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6 col-lg-3 mb-3">
                                                             <label class="form-label font-weight-bold">Birth
                                                                 Date:</label>
                                                             <input type="date" th:name="birth_date"
@@ -258,7 +264,6 @@
                 </div>
             </div>
         </div>
-        <a href="/admin/employee/hien-thi" class="btn btn-warning">Reload</a>
 
         <!-- Table -->
         <div style="overflow: auto" class="mt-4">
@@ -281,9 +286,6 @@
                             <a href="#" onclick="sortTable('desc', 3)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
                         <th>Birth_Date
-                            <a href="#" onclick="sortTableDate('asc', 4)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
-                            <a href="#" onclick="sortTableDate('desc', 4)"><i
-                                    class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
                         <th>Phone
                             <a href="#" onclick="sortTable('asc', 5)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
