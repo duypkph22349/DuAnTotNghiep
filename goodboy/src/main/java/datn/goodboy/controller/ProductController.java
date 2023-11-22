@@ -3,7 +3,10 @@ package datn.goodboy.controller;
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.service.BrandService;
+import datn.goodboy.service.ImageProductService;
+import datn.goodboy.service.ImageService;
 import datn.goodboy.service.ProductService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,16 +18,28 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin/product")
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+
     private int currentProductCode = 1;
+    @Autowired
+    TrangThaiConvert convert;
+    @Autowired
+    private ImageProductService imageProductService;
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
     @GetMapping({"/dsProduct",""})
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
@@ -69,7 +84,7 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(Model model, @Valid Product b, @PathVariable Integer id) {
+    public String update(Model model, @Valid Product b, @PathVariable Integer id,@RequestParam("listimage") List<MultipartFile> listimage) {
         b.setUpdatedAt(LocalDateTime.now());
         productService.update(id, b);
         return "redirect:/admin/product/dsProduct";
@@ -83,6 +98,12 @@ public class ProductController {
         b.setStatus(1);
         currentProductCode++;
         productService.add(b);
+        return "redirect:/admin/product/dsProduct";
+    }
+
+    @GetMapping("/delete")
+    public String delete(Model model, @RequestParam("id") Integer id) {
+        productService.deleteProduct(id);
         return "redirect:/admin/product/dsProduct";
     }
 }

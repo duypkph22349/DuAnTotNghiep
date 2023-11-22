@@ -21,22 +21,12 @@ public class Cart {
     @Column(name = "id")
     int id;
 
-    @Column(name = "code")
+    @Column(name = "code", insertable = false, updatable = false)
     String code;
 
     @ManyToOne
     @JoinColumn(name = "id_customer" )
     private Customer customer;
-
-    @Column(name = "start_time")
-    private LocalDateTime start_time;
-
-
-    @Column(name = "quantity")
-    private int quantily;
-
-    @Column(name = "total_money")
-    private long money;
 
     @Column(name = "status")
     private int status;

@@ -162,32 +162,6 @@
     </div>
     <a href="/admin/roles/hien-thi" class="btn btn-warning">Reload</a>
 
-<!--    <form th:object="${roles}" th:action="@{'/admin/roles/add'}" action="#" method="post">-->
-<!--        <div class="col-12 col-sm-6 col-lg-6 mb-3">-->
-<!--            <label class="form-label font-weight-bold">Tên Chức Vụ</label>-->
-<!--            <input th:name="name" th:value="${detail.name}" type="text" class="form-control" placeholder="Hãy nhập name" required/>-->
-<!--        </div>-->
-<!--        <div class="col-12 col-sm-6 col-lg-3 mb-3">-->
-<!--            <label class="form-label font-weight-bold">Role</label>-->
-<!--            <select class="form-control" th:name="role">-->
-<!--                <option th:value="Quản Lý" th:selected="${detail.role == 'Quản Lý'}">Quản Lý</option>-->
-<!--                <option th:value="Nhân Viên" th:selected="${detail.role == 'Nhân Viên'}">Nhân Viên</option>-->
-<!--                <option th:value="Khách Hàng" th:selected="${detail.role == 'Khách Hàng'}">Khách Hàng</option>-->
-<!--                <option th:value="Admin" th:selected="${detail.role == 'Admin'}">Admin</option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--        <div class="col-12 col-sm-6 col-lg-3 mb-3">-->
-<!--            <label class="form-label font-weight-bold">Status</label>-->
-<!--            <select class="form-control" th:name="status">-->
-<!--                <option th:value="0" th:selected="${detail.status == 0}">Hoạt Động</option>-->
-<!--                <option th:value="1" th:selected="${detail.status == 1}">Không Hoạt Động</option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--        <div class="submit-btn" style="text-align: right; bottom: 1px">-->
-<!--            <button class="btn btn-primary" type="submit">Lưu</button>-->
-<!--        </div>-->
-<!--    </form>-->
-    <!-- Table -->
     <div style="height: 500px; overflow: auto;">
 
         <table class="table table-hover">
@@ -211,12 +185,21 @@
                 <td th:text="${i.index+1}"></td>
                 <td th:text="${roles.name}"></td>
                 <td th:text="${roles.role}"></td>
-                <td th:text="${roles.status} == 0 ? 'Hoạt Động' : 'Không Hoạt Động'"></td>
+
+                <td th:unless="${roles.deleted}" th:text="${convert.convertTrangThai(roles.status)}"></td>
+                <td th:if="${roles.deleted}" class="text-decoration-line-through" th:text="${convert.convertTrangThaiEmployee(roles.status)}"></td>
+
+
                 <td>
-                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a th:href="@{'/admin/roles/edit/' + ${roles.id}}" class="btn btn-danger">Detail</a>
-                        <a th:href="@{'/admin/roles/delete/' + ${roles.id}}" class="btn btn-warning">Delete</a>
-                    </div>
+                    <a th:href="@{'/admin/roles/edit/' + ${roles.id}}" class="btn btn-info"><i
+                            class="fas fa-edit"></i></a>
+
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${roles.deleted}"
+                       th:href="@{/admin/roles/delete(id=${roles.id})}" class="btn btn-danger"><i
+                            class="fas fa-trash-alt"></i></a>
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${roles.deleted}"
+                       th:href="@{/admin/roles/delete(id=${roles.id})}" class="btn btn-secondary"><i
+                            class="fas fa-undo-alt"></i></a>
                 </td>
             </tr>
             </tbody>

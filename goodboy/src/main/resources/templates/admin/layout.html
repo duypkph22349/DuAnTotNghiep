@@ -24,7 +24,7 @@
     <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
 
     <link th:href="@{/assets/css/style.css}" rel="stylesheet">
-    <title>Document</title>
+    <title>Bảng Điều Khiển</title>
 </head>
 
 <body>
@@ -32,19 +32,20 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a th:href="@{/}" class="logo d-flex align-items-center">
                 <img th:src="@{/assets/img/logo.png}" alt="">
                 <span class="d-none d-lg-block">Wamercy</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        <div class="search-bar">
+        <!-- <div class="search-bar">
             <form class="search-form d-flex align-items-center" method="POST" action="#">
                 <input type="text" name="query" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
-        </div><!-- End Search Bar -->
+        </div> -->
+        <!-- End Search Bar -->
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
@@ -73,7 +74,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" th:href="@{/updateprofile/employee}">
                                 <i class="bi bi-person"></i>
-                                <span>My Profile</span>
+                                <span>Tài khoản của bạn</span>
                             </a>
                         </li>
                         <li>
@@ -83,7 +84,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" th:href="@{/updateprofile/employee}">
                                 <i class="bi bi-gear"></i>
-                                <span>Account Settings</span>
+                                <span>Cập nhật thông tin</span>
                             </a>
                         </li>
                         <li>
@@ -92,7 +93,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" th:href="@{/signOut}">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </li>
                     </ul><!-- End Profile Dropdown Items -->
@@ -102,7 +103,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" th:href="@{/signOut}">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </li>
 
@@ -122,45 +123,32 @@
             <li class="nav-item">
                 <a class="nav-link " th:href="@{/admin/pages/dashboard}">
                     <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
+                    <span>Bảng điều khiển</span>
                 </a>
             </li><!-- End Dashboard Nav -->
-
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>Voucher</span><i class="bi bi-chevron-down ms-auto"></i>
+                <a class="nav-link " th:href="@{/admin/voucher}">
+                    <i class="bi bi-cash-coin"></i><span>Phiếu Giảm Giá</span>
                 </a>
-                <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a th:href="@{/admin/voucher}">
-                            <i class="bi bi-circle"></i><span>Voucher</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Components Nav -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/admin/counter}">
+                    <i class="bi bi-cart4"></i><span>Bán hàng tại quầy</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-journal-text"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-card-list"></i><span>Hóa Đơn</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a th:href="@{/test/counter}">
-                            <i class="bi bi-circle"></i><span>Order</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="forms-elements.html">
-                            <i class="bi bi-circle"></i><span>Pay Method</span>
+                            <i class="bi bi-circle"></i><span>Phương thức thanh toán</span>
                         </a>
                     </li>
                     <li>
-                        <a href="forms-elements.html">
-                            <i class="bi bi-circle"></i><span>Pay</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{/admin/bill/dsBill}">
-                            <i class="bi bi-circle"></i><span>Order Detail</span>
+                        <a th:href="@{/admin/bill}">
+                            <i class="bi bi-circle"></i><span>Hóa Đơn</span>
                         </a>
                     </li>
                 </ul>
@@ -168,13 +156,17 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#Customer-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Customer</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-people-fill"></i><span>Khách Hàng</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="Customer-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a th:href="@{/admin/customer/get-all}">
-                            <i class="bi bi-circle"></i><span>Customer</span>
+                            <i class="bi bi-circle"></i><span>Khách Hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/account}">
+                            <i class="bi bi-circle"></i><span>Tài Khoản</span>
                         </a>
                     </li>
                 </ul>
@@ -183,18 +175,17 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#Employee-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Employee</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-person-circle"></i><span>Nhân Viên</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="Employee-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a th:href="@{/admin/employee/hien-thi}">
-                            <i class="bi bi-circle"></i><span>Employee</span>
+                            <i class="bi bi-circle"></i><span>Nhân Viên</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/roles/hien-thi}">
-                            <i class="bi bi-circle"></i><span>Position</span>
+                            <i class="bi bi-circle"></i><span>Chức Vụ</span>
                         </a>
                     </li>
                 </ul>
@@ -202,100 +193,67 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-bar-chart"></i><span>Product</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-box-fill"></i><span>Sản Phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a th:href="@{/admin/product/dsProduct}">
-                            <i class="bi bi-circle"></i><span>Product</span>
+                            <i class="bi bi-circle"></i><span>Sản Phẩm</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/productdetail}">
-                            <i class="bi bi-circle"></i><span>Product Detail </span>
+                            <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/pattern/dsPattern}">
-                            <i class="bi bi-circle"></i><span>Pattern</span>
+                            <i class="bi bi-circle"></i><span>Kiểu Hoa Văn</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/color/dsColor}">
-                            <i class="bi bi-circle"></i><span>Color</span>
+                            <i class="bi bi-circle"></i><span>Màu Sắc</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/origin/dsOrigin}">
-                            <i class="bi bi-circle"></i><span>Origin</span>
+                            <i class="bi bi-circle"></i><span>Nhà Sản Xuất</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/size/dsSize}">
-                            <i class="bi bi-circle"></i><span>Size</span>
+                            <i class="bi bi-circle"></i><span>Kích Thước</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/style/dsStyle}">
-                            <i class="bi bi-circle"></i><span>Style</span>
+                            <i class="bi bi-circle"></i><span>Kiểu Dáng</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/material/dsMaterial}">
-                            <i class="bi bi-circle"></i><span>Material</span>
+                            <i class="bi bi-circle"></i><span>Chất Liệu</span>
                         </a>
                     </li>
                     <li>
                         <a th:href="@{/admin/brand/dsBrand}">
-                            <i class="bi bi-circle"></i><span>Brand</span>
+                            <i class="bi bi-circle"></i><span>Thương Hiệu</span>
                         </a>
                     </li>
                 </ul>
             </li><!-- End Charts Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-gem"></i><span>Cart</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="icons-remix.html">
-                            <i class="bi bi-circle"></i><span>Card</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="icons-bootstrap.html">
-                            <i class="bi bi-circle"></i><span>Card Detail</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Icons Nav -->
-
-            <li class="nav-heading">Pages</li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/login}">
-                    <i class="bi bi-box-arrow-in-right"></i>
-                    <span>Login</span>
-                </a>
-            </li><!-- End Login Page Nav -->
         </ul>
     </aside><!-- End Sidebar-->
 
     <main id="main" class="main">
-
-
-
         <section class="section dashboard">
             <div class="content-wrapper" layout:fragment="content">
-                Content is Here!
             </div>
         </section>
     </main><!-- End #main -->
-
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
-
     </footer><!-- End Footer -->
     <script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
     <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>

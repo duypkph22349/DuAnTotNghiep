@@ -1,10 +1,13 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Size;
+import datn.goodboy.model.entity.Styles;
 import datn.goodboy.repository.SizeRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,5 +45,17 @@ public class SizeService {
 
     public List<Map<Integer, String>> getCombobox() {
         return sizeRepository.getComboBoxMap();
+    }
+
+    public void deleteSize(Integer id) {
+        Optional<Size> size = sizeRepository.findById(id);
+        if (size.isPresent()) {
+            if (size.get().isDeleted()) {
+                size.get().setDeleted(false);
+            } else {
+                size.get().setDeleted(true);
+            }
+            sizeRepository.save(size.get());
+        }
     }
 }

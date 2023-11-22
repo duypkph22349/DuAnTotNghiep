@@ -1,6 +1,7 @@
 package datn.goodboy.controller;
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.service.BrandService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,13 @@ import java.time.LocalDateTime;
 public class BrandController {
     @Autowired
     private BrandService brandService;
-    private int currentProductCode = 1;
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
 
     @GetMapping("/dsBrand")
     public String hienThi(Model model,@RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
@@ -77,8 +84,13 @@ public class BrandController {
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);
-        currentProductCode++;
         brandService.add(b);
+        return "redirect:/admin/brand/dsBrand";
+    }
+
+    @GetMapping("/delete")
+    public String delete(Model model, @RequestParam("id") Integer id) {
+        brandService.deleteBrand(id);
         return "redirect:/admin/brand/dsBrand";
     }
 

@@ -91,7 +91,7 @@ public class AdminBill {
             String[] headersSheet = {"Mã hóa đơn", "Khách hàng", "Nhân viên", "Phương thức thanh toán",
                     "Ngày xác nhận", "Ngày giao hàng", "Ngày nhận hàng", "Ngày hoàn thành",
                     "Tên khách hàng", "Số điện thoại", "Địa chỉ", "Phí vận chuyển", "Tổng tiền",
-                    "Số tiền giảm giá", "Tiền đặt cọc", "Ghi chú", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
+                    "Số tiền giảm giá", "Tiền đặt cọc","Loại đơn hàng", "Ghi chú", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < headersSheet.length; i++) {
                 Cell cell = headerRow.createCell(i);
@@ -116,10 +116,11 @@ public class AdminBill {
                 row.createCell(12).setCellValue(bill.getTotal_money());
                 row.createCell(13).setCellValue(bill.getReduction_amount());
                 row.createCell(14).setCellValue(bill.getDeposit());
-                row.createCell(15).setCellValue(bill.getNote());
-                row.createCell(16).setCellValue(bill.getStatus());
-                row.createCell(17).setCellValue(bill.getCreatedAt().format(formatter));
-                row.createCell(18).setCellValue(bill.getUpdatedAt().format(formatter));
+                row.createCell(15).setCellValue(bill.getLoaiDon());
+                row.createCell(16).setCellValue(bill.getNote());
+                row.createCell(17).setCellValue(bill.getStatus());
+                row.createCell(18).setCellValue(bill.getCreatedAt().format(formatter));
+                row.createCell(19).setCellValue(bill.getUpdatedAt().format(formatter));
             }
 
             // Tạo luồng dữ liệu để ghi workbook vào

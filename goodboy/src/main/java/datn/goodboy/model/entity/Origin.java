@@ -19,7 +19,7 @@ public class Origin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
-    @Column(name="code")
+    @Column(name="code" , insertable = false, updatable = false)
     private String code;
     @NotNull
     @NotBlank
@@ -29,6 +29,9 @@ public class Origin {
     private LocalDateTime createdAt;
     @Column(name="update_at")
     private LocalDateTime updatedAt;
+    @Column(name = "deleted")
+    private boolean deleted;
     @Column(name="status")
     private int status;
+
 }

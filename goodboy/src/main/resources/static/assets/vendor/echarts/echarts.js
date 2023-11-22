@@ -52702,7 +52702,7 @@
             el.textConfig.position = [(labelXY[0] - rect.x) / rect.width * 100 + '%', (labelXY[1] - rect.y) / rect.height * 100 + '%'];
           }
         } // PENDING:
-        // If labelLayout is enabled (test/label-layout.html), el.dataIndex should be specified.
+        // If labelLayout is enabled (test/label-layout_user.html), el.dataIndex should be specified.
         // But el.dataIndex is also used to determine whether user event should be triggered,
         // where el.seriesIndex or el.dataModel must be specified. At present for a single el
         // there is not case that "only label layout enabled but user event disabled", so here

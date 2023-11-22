@@ -42,7 +42,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             Authentication authentication) throws ServletException, IOException {
         setSessionAuthenLogin(request, response, authentication);
         SavedRequest savedRequest = this.requestCache.getRequest(request, response);
-        if (savedRequest == null) {
+        if (savedRequest == null ) {
             String targetUrl = determineTargetUrl(authentication);
             this.getRedirectStrategy().sendRedirect(request, response, targetUrl);
         } else {
@@ -70,8 +70,10 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             url = "/sendvertifyemail";
         } else if (roles.contains("ADMIN")) {
             url = "/admin";
+        } else if (roles.contains("STAFF")) {
+            url = "/admin";
         } else if (roles.contains("USER")) {
-            url = "/shop";
+            url = "/home";
         }
         return url;
     }

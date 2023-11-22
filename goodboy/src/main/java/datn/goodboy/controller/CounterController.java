@@ -1,107 +1,59 @@
 package datn.goodboy.controller;
 
-import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.service.*;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.Optional;
+import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.entity.Employee;
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.EmployeeService;
+import datn.goodboy.service.ProductDetailService;
 
-@RequestMapping("/admin/counter")
-@Controller
+@Controller("countercarttest")
+@RequestMapping("admin/counter")
 public class CounterController {
-    @Autowired
-    private CartService cartService;
 
-    @Autowired
-    private CustomerService customerService;
+  @Autowired
+  private CustomerService customerService;
 
-    @Autowired
-    private EmployeeService employeeService;
+  @Autowired
+  private EmployeeService employeeService;
 
-    @Autowired
-    private ProductDetailService productDetailService;
+  @Autowired
+  private ProductDetailService productDetailService;
 
-    @Autowired
-    private ShoppingCartService cartService2;
+  @ModelAttribute("employees")
+  public List<Employee> getAllEmp() {
+    return employeeService.getAllEmployee();
+  }
 
-    @Autowired
-    private CartDetailService icartService;
+  @ModelAttribute("customers")
+  public List<Customer> getAllCustomer() {
+    return customerService.getAllCustomers();
+  }
 
+  @ModelAttribute("productDetails")
+  public List<ProductDetail> getAllProductDetails() {
+    return productDetailService.getPageNo(1, 20, "createdAt", true);
+  }
 
-    @GetMapping("/hien-thi")
-    public String hienThi(Model model) {
-        model.addAttribute("productDetailList", productDetailService.getAllProductDetail());
-        model.addAttribute("employee", employeeService.getAllEmployee());
-        model.addAttribute("sanPhamTrongGio", cartService2.getAllItems());
-        model.addAttribute("total", cartService2.getAmount());
-        return "admin/pages/cartcounter/table-counter";
-    }
+  @GetMapping("")
+  public String getOrderPage(Model model) {
+    return "admin/pages/cartcounter/counter.html";
+  }
 
-    @PostMapping("add")
-    public String addItemToCart(@PathVariable("idProduct") Integer id, @RequestParam("quantity") Integer quantity,Model model) {
-        Optional<ProductDetail> product = productDetailService.getProductDetailById(id);
-        if (product.isPresent()) {
-            if (quantity > 0) {
-                CartDetail itemToAdd = null;
-                List<CartDetail> cartItems = cartService2.getCartItems();
+  @PostMapping("viewordetail/{id}")
+  public String checkOutOrder(@PathVariable("id") int id, Model model) {
 
-                // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
-                for (CartDetail item : cartItems) {
-                    if (item.getId() == product.get().getId()) {
-                        itemToAdd = item;
-                        break;
-                    }
-                }
-
-                if (itemToAdd == null) {
-                    // Nếu sản phẩm chưa tồn tại trong giỏ hàng, tạo mới đối tượng CartItem và thêm vào giỏ hàng
-                    itemToAdd = new CartDetail();
-                    itemToAdd.setId(product.get().getId());
-                    itemToAdd.setProductDetail(product.get());
-                    itemToAdd.setProductDetail(product.get());
-                    itemToAdd.setQuantity(quantity);
-
-
-
-                    cartService2.add(itemToAdd);
-                } else {
-                    // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng theo yêu cầu
-                    itemToAdd.setQuantity(itemToAdd.getQuantity() + quantity);
-                    model.addAttribute("cart",itemToAdd.getQuantity());
-                    System.out.println(itemToAdd);
-                    cartService2.update(itemToAdd.getId(), itemToAdd.getQuantity());
-                }
-            }
-        }
-
-        return "redirect:admin/pages/cartcounter/table-counter";
-    }
-
-    @GetMapping("/clear")
-    public String clearCart() {
-        cartService2.clear();
-        return "redirect:admin/pages/cartcounter/table-counter";
-    }
-
-    @GetMapping("/delete/{idProduct}")
-    public String removeItemCart(@PathVariable("idProduct") Integer id) {
-        cartService2.remove(id);
-        return "redirect:admin/pages/cartcounter/table-counter";
-
-    }
-
-    @PostMapping("/update")
-    public String update(@RequestParam("id") Integer id, @RequestParam("qty") Integer qty) {
-        cartService2.update(id, qty);
-        return "redirect:admin/pages/cartcounter/table-counter";
-    }
-
-
-
-
+    return "admin/pages/cartcounter/order-detail.html";
+  }
 }

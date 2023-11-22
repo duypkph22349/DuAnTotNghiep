@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import datn.goodboy.model.entity.Voucher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,20 +38,28 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
+    public Customer customerByid(UUID id) {
+        return customerRepository.findById(id).get();
+    }
+
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
 
-    public void deleteCustomer(UUID id) {
-        customerRepository.deleteById(id);
+    public void deleteVoucher(UUID id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isPresent()) {
+            if (customer.get().isDeleted()) {
+                customer.get().setDeleted(false);
+            } else {
+                customer.get().setDeleted(true);
+            }
+            customerRepository.save(customer.get());
+        }
     }
 
     public List<CustomerResponse> getPageNo(int pageNo) {
         return customerRepository.getPageNo(PageRequest.of(pageNo, 3)).getContent();
-    }
-
-    public Object getComboBox() {
-        return null;
     }
 
     public Customer getCounterCustomer() {

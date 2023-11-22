@@ -25,10 +25,13 @@ public class CartDetail {
     @JoinColumn(name = "id_cart" )
     private Cart cart;
 
+    @Column(name = "price")
+    private Float price;
+
     @ManyToOne
     @JoinColumn(name = "id_product_detail" )
     private ProductDetail productDetail;
-    
+
     @Column(name = "status")
     private int status;
 

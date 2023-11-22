@@ -8,4 +8,6 @@ public interface CartService {
     public Integer getTotalQuantity(CartDto cart);
 
     public Double getTotalPrice(CartDto cart);
+
+    public CartDto save(CartDto cart);
 }

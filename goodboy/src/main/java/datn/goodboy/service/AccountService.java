@@ -52,7 +52,17 @@ public class AccountService implements PanigationInterface<Account> {
   }
 
   public void deleteAccount(UUID id) {
-    accountRepository.deleteById(id);
+    Optional<Account> account = accountRepository.findById(id);
+    if (account.isPresent()) {
+      if (account.get().isDeleted()) {
+        account.get().setDeleted(false);
+        account.get().setStatus(1);
+      } else {
+        account.get().setDeleted(true);
+        account.get().setStatus(-1);
+      }
+      accountRepository.save(account.get());
+    }
   }
 
   public Account saveAccount(AccountRequest account) {
@@ -89,12 +99,14 @@ public class AccountService implements PanigationInterface<Account> {
   }
 
   // admin
-  public Account updateAccount(AccountRequest account) {
-    Optional<Account> accountupdate = accountRepository.findById(account.idCustomer);
+  public Account updateAccount(UUID id, int status) {
+    Optional<Account> accountupdate = accountRepository.findById(id);
     if (accountupdate.isPresent()) {
       Account account2 = accountupdate.get();
-      account2.setId(account.idCustomer);
-      account2.setEmail(account.email);
+      account2.setStatus(status);
+      if (status == -1) {
+        account2.setDeleted(true);
+      }
       return accountRepository.save(account2);
     } else {
       throw new RuntimeException();

@@ -1,11 +1,10 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Employee;
-import datn.goodboy.model.response.AccountResponse;
-import datn.goodboy.model.response.EmployeeResponse;
-import datn.goodboy.model.response.VoucherResponse;
-import datn.goodboy.repository.EmployeeRepository;
-import datn.goodboy.service.serviceinterface.PanigationInterface;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,13 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import datn.goodboy.model.entity.Employee;
+import datn.goodboy.model.response.EmployeeResponse;
+import datn.goodboy.repository.EmployeeRepository;
+import datn.goodboy.service.serviceinterface.PanigationInterface;
 
 @Service
-public class EmployeeService implements PanigationInterface<EmployeeResponse> {
+public class EmployeeService implements PanigationInterface<Employee> {
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -36,9 +35,21 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
         return employeeRepository.save(employee);
     }
 
-    public void deleteEmployee(UUID id) {
+//    public void deleteEmployee(UUID id) {
+//
+//        employeeRepository.deleteById(id);
+//    }
 
-        employeeRepository.deleteById(id);
+    public void deleteEmployee(UUID id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isPresent()) {
+            if (employee.get().isDeleted()) {
+                employee.get().setDeleted(false);
+            } else {
+                employee.get().setDeleted(true);
+            }
+            employeeRepository.save(employee.get());
+        }
     }
 
     public Optional<Employee> findByIdEmployee(UUID id) {
@@ -47,11 +58,11 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
     }
 
     @Override
-    public List<EmployeeResponse> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
+    public List<Employee> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
         if (pageNo > getPageNumber(pageSize)) {
             return null;
         }
-        List<EmployeeResponse> ChiTietSanPhams;
+        List<Employee> ChiTietSanPhams;
         ChiTietSanPhams = new ArrayList<>();
         Sort sort;
         if (sortDir) {
@@ -61,7 +72,7 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
         }
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         // findAll method and pass pageable instance
-        Page<EmployeeResponse> page = employeeRepository.getResponsePage(pageable);
+        Page<Employee> page = employeeRepository.findAll(pageable);
         ChiTietSanPhams = page.getContent();
         return ChiTietSanPhams;
     }
@@ -69,7 +80,7 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
     @Override
     public int getPageNumber(int rowcount) {
         Pageable pageable = PageRequest.of(0, rowcount);
-        Page<EmployeeResponse> page = employeeRepository.getResponsePage(pageable);
+        Page<Employee> page = employeeRepository.findAll(pageable);
         int totalPage = page.getTotalPages();
         return totalPage;
     }
@@ -77,7 +88,7 @@ public class EmployeeService implements PanigationInterface<EmployeeResponse> {
     @Override
     public int[] getPanigation(int rowcount, int pageno) {
         Pageable pageable = PageRequest.of(0, rowcount);
-        Page<EmployeeResponse> page = employeeRepository.getResponsePage(pageable); // findAll()
+        Page<Employee> page = employeeRepository.findAll(pageable); // findAll()
         int totalPage = page.getTotalPages();
         int[] rs;
         if (totalPage <= 1) {

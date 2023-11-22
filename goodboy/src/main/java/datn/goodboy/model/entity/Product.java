@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,7 +19,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
-    @Column(name="code")
+    @Column(name="code", insertable = false, updatable = false)
     private String code;
     @NotNull
     @NotBlank
@@ -26,6 +29,11 @@ public class Product {
     private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+    @Column(name = "deleted")
+    private boolean deleted;
     @Column(name="status")
     private int status;
+    @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
+    @JsonIgnore
+    private List<ImageProduct> imageProducts;
 }

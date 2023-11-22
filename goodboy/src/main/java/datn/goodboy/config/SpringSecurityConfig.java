@@ -32,7 +32,7 @@ import datn.goodboy.security.service.EmployeInfoService;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-  @Value("${max-age-token-cookie}")
+  @Value("${max-login-token-time}")
   private int maxAge;
 
   @Bean
@@ -99,8 +99,13 @@ public class SpringSecurityConfig {
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
     http
+       .authorizeHttpRequests(authorize -> {
+          authorize.requestMatchers("/sendresetpasswordcode","/resetpasswordcode","/resetpassword").permitAll();
+        })
         .authorizeHttpRequests(authorize -> {
-          // delete only role admin
+          authorize.requestMatchers("/sendvertifyemail","/vertifyemail").authenticated();
+        })
+        .authorizeHttpRequests(authorize -> {
           authorize.requestMatchers("/admin/*/delete/**").hasAnyAuthority("ADMIN");
         })
         .authorizeHttpRequests((authorize) -> {
@@ -115,6 +120,7 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
+            .failureUrl("/login-fail")
             .successHandler(new CustomAuthenticationSuccessHandler(KhachHangServer(), nhanVienServer()))
             .usernameParameter("username")
             .passwordParameter("password")

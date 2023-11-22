@@ -1,8 +1,7 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"-->
-<!--    pageEncoding="UTF-8"%>-->
-<!--<%@include file="../common/common.jsp" %>-->
+
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="UTF-8">
@@ -12,43 +11,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Khăn choàng</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
-    <!-- <%@include file="../common/css.jsp" %> -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/themify-icons.css" type="text/css">
-    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/style1.css" type="text/css">
-    <script src="/js/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Header Section Begin -->
-    <%@include file="./components/header.jsp" %>
-    <!-- Header End -->
-
-    <!-- Breadcrumb Section Begin -->
+<section layout:fragment="content">
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text product-more">
                         <a href="/home"><i class="fa fa-home"></i> Trang chủ</a>
-                        <a href="/products">Sản phẩm</a>
-                        <a>${product.category.name}</a>
-                        <span>${product.name}</span>
+                        <a href="/user/products">Sản phẩm</a>
+                        <span th:text="${productDetailRequest.name}"></span>
                     </div>
                 </div>
             </div>
@@ -57,28 +32,26 @@
     <!-- Breadcrumb Section Begin -->
 
     <!-- Product Shop Section Begin -->
+
     <section class="product-shop spad page-details pt-3">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 px-5">
                     <div class="product-pic text-center mb-3">
-                        <img class="product-big-img w-100" id="product_thumbnail"
-                            src="/images/${product.category.id}/${color.images[0].image}" alt="">
+                        <img th:src="${productDetailRequest.idProduct?.imageProducts[0]?.img}" alt="Ảnh sản phẩm" />
                     </div>
                     <div class="product-thumbs">
                         <div class="product-thumbs-track ps-slider owl-carousel owl-loaded owl-drag">
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
-                                    style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;">
-                                    <c:forEach var="image"  items="${color.images}" varStatus="loop">
-                                        <div class="owl-item" style="width: 223.333px; margin-right: 10px;">
-                                            <div class="pt"
-                                                data-imgbigurl="/images/${product.category.id}/${image.image}">
-                                                <img src="/images/${product.category.id}/${image.image}" id="product_image${loop.index}"
-                                                    alt="">
+                                    style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;display: flex;">
+                                    <div th:each="image,loop : ${productDetailRequest.idProduct?.imageProducts}">
+                                        <div class="owl-item" style="width: 111,6665px; margin-right: 0.5px;">
+                                            <div class="pt">
+                                                <img class="p-1 image-fluid w-100" th:src="${image?.img}" id="product_image${loop.index}" alt="ảnh sản phẩm">
                                             </div>
                                         </div>
-                                    </c:forEach>
+                                    </div>
                                 </div>
                             </div>
                             <div class="owl-nav">
@@ -93,59 +66,63 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 pt-4">
-                    <div class="product-details">
-                        <div class="pd-title mb-3">
-                            <h2 class= "font-weight-bold">${product.name}</h2>
-                            <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
-                        </div>
-                        <div class="pd-share mb-3">
-                            <div class="p-code">Mã sản phẩm : ${product.slug}</div>
-                            <div class="pd-social">
-                                <a href="#"><i class="ti-facebook"></i></a>
-                                <a href="#"><i class="ti-twitter-alt"></i></a>
-                                <a href="#"><i class="ti-linkedin"></i></a>
+
+                    <div class="col-lg-6 pt-4">
+                        <div class="product-details">
+                            <div class="pd-title mb-3">
+                                <h2 class= "font-weight-bold" th:text="${productDetailRequest.name}"></h2>
+                                <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                             </div>
-                        </div>
-                        <div class="pd-rating" >
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star text-warning"></p>
-                            <p class="fa fa-star-o text-warning"></p>
-                        </div>
-                        <div class="pd-desc">
-                            <h1 class="font-weight-bold text-danger" style="font-size: 36px">
-                                <fmt:formatNumber type="number" value="${product.price}" /> VND
-                            </h1>
-                        </div>
-                        <div class="pd-desc">
-                            <h4 class="mb-4 font-weight-bold text-dark">Mô tả</h4>
-                            <p>${product.description}</p>
-                        </div>
-                        <div class="pd-color row align-items-center">
-                            <h4 class="font-weight-bold col-md-2">Màu sắc</h4>
-                            <div class="pd-color-choose col-md-10">
-                                <c:forEach var="color" items="${product.colors}" varStatus="loop">
-                                    <div class="cc-item">
-                                        <input type="radio" name="color" id="cc-black${loop.index}" onchange="changeColor('${color.id}')">
-                                        <label for="cc-black${loop.index}" style="background: ${color.colorHex};"></label>
-                                    </div>
-                                </c:forEach>
+                            <div class="pd-share mb-3">
+                                <div class="p-code" >Mã sản phẩm : <span th:text="${productDetailRequest.code}"></span></div>
+                                <div class="pd-social">
+                                    <a href="#"><i class="ti-facebook"></i></a>
+                                    <a href="#"><i class="ti-twitter-alt"></i></a>
+                                    <a href="#"><i class="ti-linkedin"></i></a>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="quantity">
-                            <div class="pro-qty">
-                            	<span class="dec qtybtn" onclick="qty(0)">-</span>
-                                <input type="text" name="quantity" id="quantity" value="1">
-                                <span class="inc qtybtn" onclick="qty(1)">+</span>
+                            <div class="pd-rating" >
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star text-warning"></p>
+                                <p class="fa fa-star-o text-warning"></p>
                             </div>
-                            <a href="#" onclick="addToCart('${product.id}')" class="primary-btn pd-cart">Mua sản phẩm</a>
+                            <div class="pd-desc">
+                                <h1 class="font-weight-bold text-danger" style="font-size: 36px">
+                                    <span th:text="${productDetailRequest.price}" /> VND
+                                </h1>
+                            </div>
+                            <div class="pd-desc">
+                                <h4 class="mb-4 font-weight-bold text-dark">Mô tả</h4>
+                                <span th:text="${productDetailRequest.description}"></span>
+                            </div>
+                            <div class="pd-color row align-items-center">
+                                <h4 class="font-weight-bold col-md-2">Màu sắc</h4>
+                                <div class="pd-color-choose col-md-10">
+<!--                                    <c:forEach var="color" items="${product.colors}" varStatus="loop">-->
+<!--                                        <div class="cc-item">-->
+<!--                                            <input type="radio" name="color" id="cc-black${loop.index}" onchange="changeColor('${color.id}')">-->
+<!--                                            <label for="cc-black${loop.index}" style="background: ${color.colorHex};"></label>-->
+<!--                                        </div>-->
+<!--                                    </c:forEach>-->
+                                </div>
+                            </div>
+
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <span class="dec qtybtn" onclick="qty(0)">-</span>
+                                    <input type="text" name="quantity" id="quantity" value="1">
+                                    <span class="inc qtybtn" onclick="qty(1)">+</span>
+                                </div>
+                                <a href="/user/addToCart/${}" type="submit" class="primary-btn pd-cart">Mua sản phẩm</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+
             </div>
+
+
         </div>
     </section>
     <!-- Product Shop Section End -->
@@ -191,31 +168,7 @@
             </div>
         </div>
     </div>
-    <!-- Related Products Section End -->
-
-    <!-- Footer Section Begin -->
-<!--    <%@include file="./components/footer.jsp" %>-->
-    <!-- Footer Section End -->
-
-    <!-- Js Plugins -->
-    <!-- <%@include file="../common/js.jsp" %> -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="/js/jquery-3.3.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
-    <script src="/js/jquery.countdown.min.js"></script>
-    <script src="/js/jquery.nice-select.min.js"></script>
-    <script src="/js/jquery.zoom.min.js"></script>
-    <script src="/js/jquery.dd.min.js"></script>
-    <script src="/js/jquery.slicknav.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/validate.js"></script>
+    </section>
     <script>
     
     	/* function call ajax change color */

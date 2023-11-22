@@ -282,7 +282,6 @@ public class ProductDetailController {
   @GetMapping("create")
   public String goToCreateForm(Model model) {
     productDetailRequest = new ProductDetailRequest();
-    model.addAttribute("listCustomer", customerService.getComboBox());
     productDetailRequest.resetRequest();
     model.addAttribute("productDetailRequest", productDetailRequest);
     return "/admin/pages/productdetail/form-productdetail.html";
@@ -298,7 +297,7 @@ public class ProductDetailController {
   public String storeProductDetail(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
     System.out.println(fillter.toString());
     return "redirect:index";
-  }
+  }  
 
   @GetMapping("resetfilter")
   public String resetFilter(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {

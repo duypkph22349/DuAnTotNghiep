@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-
+@RequestMapping("user")
 public class ProductDetailControllerUser {
 
     @Autowired
@@ -66,7 +66,7 @@ public class ProductDetailControllerUser {
     // return filter;
     // }
     @Autowired
-    private ImageService imageService;
+    private ImageProductService imageProductService;
 
     @ModelAttribute("brandCbb")
     public List<Map<Integer, String>> getComboboxBrand() {
@@ -158,7 +158,7 @@ public class ProductDetailControllerUser {
                 model.addAttribute("pagenumber", pagenumbers);
                 model.addAttribute("crpage", pageno);
                 model.addAttribute("rowcount", rowcount);
-                return "/admin/pages/productdetail/table-productdetail.html";
+                return "user/product";
             }
         }
         pagenumbers = service.getPanigation(rowcount, pageno);
@@ -190,7 +190,7 @@ public class ProductDetailControllerUser {
                 model.addAttribute("pagenumber", pagenumbers);
                 model.addAttribute("crpage", pageno);
                 model.addAttribute("rowcount", rowcount);
-                return "/admin/pages/productdetail/table-productdetail.html";
+                return "user/product";
             }
         }
         List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
@@ -222,7 +222,7 @@ public class ProductDetailControllerUser {
                 model.addAttribute("pagenumber", pagenumbers);
                 model.addAttribute("crpage", pageno);
                 model.addAttribute("rowcount", rowcount);
-                return "/admin/pages/productdetail/table-productdetail.html";
+                return "user/product";
             }
         }
         List<ProductDetail> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
@@ -237,7 +237,7 @@ public class ProductDetailControllerUser {
     }
 
     // end
-    @GetMapping( "products")
+    @GetMapping("products")
     public String getProductDetailIndexpages(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
         if (fillter != null) {
             if (fillter.filterAble()) {
@@ -265,26 +265,10 @@ public class ProductDetailControllerUser {
         return "user/product";
     }
 
-
-
     @ModelAttribute("productDetailRequest")
     public ProductDetailRequest setproductDetailForm() {
         return productDetailRequest;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @PostMapping("store")
     public String storeProductDetail(Model model,
@@ -292,13 +276,19 @@ public class ProductDetailControllerUser {
                                      @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
                                      BindingResult theBindingResult) throws IOException {
         if (theBindingResult.hasErrors()) {
-            return "/admin/pages/productdetail/form-productdetail.html";
+            return "user/product";
         } else {
 
             service.saveProdudct(productDetailRequest, listimage);
-            return "redirect:index";
+            return "redirect:products";
         }
     }
 
+    @GetMapping("detail/{id}")
+    public String editProductDetail(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("productDetailRequest",
+                service.getProductDetailById(id).get());
+        return "user/product_detail";
+    }
 
 }

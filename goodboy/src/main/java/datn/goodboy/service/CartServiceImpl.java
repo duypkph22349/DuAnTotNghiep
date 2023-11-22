@@ -77,4 +77,16 @@ public class CartServiceImpl implements CartService {
         }
         return totalPrice;
     }
+
+    @Override
+    public CartDto save(CartDto cart) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    }
+
+    // @Override
+    // public CartDto save(CartDto cart) {
+    //    CartDto dto =  repo.save(cart);
+    //     return cart;
+    // }
 }

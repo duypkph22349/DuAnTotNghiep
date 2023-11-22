@@ -1,22 +1,28 @@
 package datn.goodboy.controller;
 
-import datn.goodboy.model.entity.Bill;
-import datn.goodboy.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import datn.goodboy.model.entity.Bill;
+import datn.goodboy.service.BillService;
 
 @Controller
-@RequestMapping("/bill")
+@RequestMapping("admin/bill")
 public class BillController {
 
     @Autowired
     private BillService billService;
+
+//    @Autowired
+//    private BillDetailService billDetailService;
+
 
     @GetMapping({ "/hien-thi", "" })
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,

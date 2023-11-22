@@ -16,14 +16,11 @@ public class Images {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product_detail")
     private ProductDetail idProductDetail;
-
     @Column(name = "image")
     private String img;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name = "update_at")
@@ -32,5 +29,4 @@ public class Images {
     private int status;
     @Column(name = "deleted")
     private boolean deleted;
-
 }

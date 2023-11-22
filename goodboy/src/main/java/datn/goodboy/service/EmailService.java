@@ -1,7 +1,6 @@
 package datn.goodboy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -46,7 +45,7 @@ public class EmailService {
       MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
       helper.setFrom("thatdeptraivjpro@26kleft.com");
       helper.setTo(request.getEmail());
-      helper.setSubject("Active Email");
+      helper.setSubject("Khôi phục mật khẩu Email");
 
       Context context = new Context();
       context.setVariable("code", request.getCode());

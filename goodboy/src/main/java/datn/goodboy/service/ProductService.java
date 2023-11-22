@@ -1,15 +1,16 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Product;
-import datn.goodboy.repository.ProductRepository;
-
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import datn.goodboy.model.entity.Product;
+import datn.goodboy.repository.ProductRepository;
 
 @Service
 public class ProductService {
@@ -42,5 +43,17 @@ public class ProductService {
 
     public List<Map<Integer, String>> getCombobox() {
         return productRepository.getComboBoxMap();
+    }
+
+    public void deleteProduct(Integer id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            if (product.get().isDeleted()) {
+                product.get().setDeleted(false);
+            } else {
+                product.get().setDeleted(true);
+            }
+            productRepository.save(product.get());
+        }
     }
 }

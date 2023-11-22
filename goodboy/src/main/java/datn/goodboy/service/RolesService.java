@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.Roles;
 import datn.goodboy.repository.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,17 @@ public class RolesService {
         return rolesRepository.save(roles);
     }
 
-    public void deleteRoles(int id) {
 
-        rolesRepository.deleteById(id);
+    public void deleteRoles(Integer id) {
+        Optional<Roles> roles = rolesRepository.findById(id);
+        if (roles.isPresent()) {
+            if (roles.get().isDeleted()) {
+                roles.get().setDeleted(false);
+            } else {
+                roles.get().setDeleted(true);
+            }
+            rolesRepository.save(roles.get());
+        }
     }
 
     public Optional<Roles> findByIdRoles(int id) {
@@ -44,20 +53,6 @@ public class RolesService {
         return rolesRepository.findById(id);
     }
 
-    public Roles getNewEmployeeRole() {
-        Optional<Roles> roles = rolesRepository.getNewEmployeeRole();
-        if (roles.isPresent()) {
-            return roles.get();
-        } else {
-            Roles newEmpRoles = new Roles();
-            newEmpRoles.setName("NEWEMPLOYEE");
-            newEmpRoles.setRole("NEWEMPLOYEE");
-            newEmpRoles.setDeleted(false);
-            newEmpRoles.setUpdatedAt(LocalDateTime.now());
-            newEmpRoles.setStatus(0);
-            return rolesRepository.save(newEmpRoles);
-        }
-    }
 
     public Roles getEmployeeRole() {
         Optional<Roles> roles = rolesRepository.getEmployeeRole();

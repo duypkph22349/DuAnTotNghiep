@@ -1,4 +1,5 @@
 package datn.goodboy.config;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,11 +30,13 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
       roles.add(a.getAuthority());
     }
     if (roles.contains("NOT_ACCTIVE")) {
-      url = "/homepage";
+      url = "/login";
     } else if (roles.contains("ADMIN")) {
-      url = "/employee/login";
+      url = "/login";
+    } else if (roles.contains("STAFF")) {
+      url = "/login";
     } else if (roles.contains("USER")) {
-      url = "/user/login";
+      url = "/";
     }
     return url;
   }

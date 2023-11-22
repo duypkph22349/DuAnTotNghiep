@@ -30,14 +30,14 @@
             </nav>
         </div><!-- End Page Title -->
         <div class="container-fluid">
-            <div class="d-flex">
+            <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')" >
                 <a href="/admin/productdetail/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
                 <div>
-                    <div class="input-group">
+                    <!-- <div class="input-group">
                         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                             aria-describedby="search-addon" />
                         <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <form th:action="@{/admin/productdetail/filter}" th:object="${fillter}" method="get">
@@ -142,19 +142,6 @@
                 <thead class="position-sticky top-0">
                     <tr class="text-center">
                         <th class="fw-bold">STT</th>
-                        <th class="fw-bold"></th>
-                        <th scope="col">Name
-                            <a th:href="@{/admin/productdetail/sort(sortBy=name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Code
-                            <a th:href="@{/admin/productdetail/sort(sortBy=code ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=code ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
                         <th scope="col">Giá bán
                             <a th:href="@{/admin/productdetail/sort(sortBy=price ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
@@ -203,17 +190,6 @@
                 <tbody>
                     <tr th:each="productdetail, index  : ${list}">
                         <td class="fw-bold" th:text="${index.index + 1}"></td>
-                        <td class="text-center"
-                            th:if="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
-                            <img th:src="${productdetail.imageProducts[0].img}" class="image-fluid"
-                                style="height: 60px;" />
-                        </td>
-                        <td th:unless="${productdetail.imageProducts !=null && productdetail.imageProducts.size() > 0}">
-                            <img
-                                src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
-                        </td>
-                        <td th:text="${productdetail.name}"></td>
-                        <td th:text="${productdetail.code}"></td>
                         <td
                             th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                         </td>

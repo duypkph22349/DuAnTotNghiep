@@ -23,4 +23,7 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
   @Query("SELECT b FROM Bill b WHERE MONTH(b.createdAt) = :month and b.deleted=false ORDER BY YEAR(b.createdAt) DESC, b.createdAt DESC")
   Page<Bill> findAllByMonthSortedByLatest(int month, Pageable pageable);
+
+  @Query("SELECT b FROM Bill b WHERE b.status = :status")
+  Page<Bill> searchBillByStatus(Pageable pageable, @Param("status") int status);
 }

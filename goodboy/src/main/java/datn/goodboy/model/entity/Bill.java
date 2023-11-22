@@ -1,22 +1,24 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "bill")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Bill {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,7 @@ public class Bill {
   @JoinColumn(name = "id_pay")
   private Pay pay;
 
-  @Column(name = "code")
+  @Column(name = "code", insertable = false, updatable = false)
   String code;
 
   @Column(name = "confirmation_date")
@@ -99,4 +101,9 @@ public class Bill {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+
+  @OneToMany(mappedBy = "idBill")
+  @JsonIgnore
+  private List<BillDetail> billDetail;
+
 }

@@ -44,4 +44,6 @@ public class BillRequest {
   String note;
   @NotNull
   int status;
+  @NotNull
+  int loaiDon;
 }

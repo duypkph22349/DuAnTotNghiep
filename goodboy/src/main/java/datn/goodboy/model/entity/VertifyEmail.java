@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -23,7 +24,9 @@ import lombok.ToString;
 public class VertifyEmail {
   @Id
   String email;
+  @Column(name = "code")
   int code;
+  @Column(name = "request_at")
   LocalDateTime requestAt;
 
   public VertifyEmail(String email) {
