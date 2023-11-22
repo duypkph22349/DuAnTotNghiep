@@ -82,14 +82,13 @@
                                 <i class="fa fa-user"></i>Đăng nhập
                             </a>
                         </div>
-                        <div th:if="${session.account != null}">
+                        <div th:if="${session.authenuser}">
     <span class="login-panel p-0 dropdown">
         <button type="button"
                 class="btn bg-transparent px-3 py-1 w-100 dropdown-toggle text-right"
                 data-toggle="dropdown" aria-expanded="false">
-            <span class="mr-3">Chào, [[${session.account.fullname}]]</span>
-            <img th:src="@{/avatar/{avatar}(avatar=${session.account.avatar})}" class="rounded-circle mr-3"
-                 style="width: 40px; height: 40px;">
+            <span class="mr-3" th:text="${session.authenuser.getCustomer().name}">Chào, </span>
+            <img th:src="${session.authenuser.getImage()}" alt="Profile" class="rounded-circle">
         </button>
         <div class="dropdown-menu" style="left: auto; right: 0;">
             <div th:if="${session.account.isAdmin()}">

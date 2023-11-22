@@ -15,7 +15,7 @@
 </head>
 
 <body>
-
+<section layout:fragment="content">
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
@@ -23,8 +23,8 @@
                     <div class="breadcrumb-text product-more">
                         <a href="/home"><i class="fa fa-home"></i> Trang chủ</a>
                         <a href="/products">Sản phẩm</a>
-                        <a>${product.category.name}</a>
-                        <span>${product.name}</span>
+                        <a>${productDetailRequest.name}</a>
+                        <span>${productDetailRequest.name}</span>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
     <!-- Breadcrumb Section Begin -->
 
     <!-- Product Shop Section Begin -->
-    <section layout:fragment="content">
+
     <section class="product-shop spad page-details pt-3">
         <div class="container">
             <div class="row">
