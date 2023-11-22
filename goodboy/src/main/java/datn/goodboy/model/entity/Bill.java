@@ -1,11 +1,10 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
+import groovy.transform.ToString;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +13,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "bill")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Bill {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

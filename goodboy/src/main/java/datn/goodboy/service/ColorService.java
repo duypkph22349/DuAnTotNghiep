@@ -1,6 +1,5 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Color;
 import datn.goodboy.repository.ColorRepository;
 

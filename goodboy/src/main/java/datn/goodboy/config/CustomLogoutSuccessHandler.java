@@ -32,11 +32,11 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     if (roles.contains("NOT_ACCTIVE")) {
       url = "/login";
     } else if (roles.contains("ADMIN")) {
-      url = "/employee/login";
+      url = "/login";
     } else if (roles.contains("STAFF")) {
-      url = "/employee/login";
+      url = "/login";
     } else if (roles.contains("USER")) {
-      url = "/user/login";
+      url = "/";
     }
     return url;
   }
