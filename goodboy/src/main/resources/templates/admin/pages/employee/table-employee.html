@@ -5,38 +5,74 @@
 <head>
     <title>Nhân Viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
-        .bold-label {
-            font-weight: bold;
-        }
-        .break-text {
-            width: 300px;
-            overflow-wrap: break-word;
-        }
-        .dropdown-menu li {
-            position: relative;
-        }
-
-        .dropdown-menu .dropdown-submenu {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: -7px;
-        }
-
-        .dropdown-menu>li:hover>.dropdown-submenu {
-            display: block;
-        }
-
-        th {
-            white-space: nowrap;
-        }
-    </style>
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
     <section layout:fragment="content">
+        <style type="text/css">
+            .input-group.mb-3 {
+                display: flex;
+                align-items: center;
+            }
+
+            .input-group.mb-3 .btn-primary {
+                margin-right: 10px;
+            }
+
+            .dropdown-menu.dropdown-submenu {
+                position: initial;
+            }
+
+            .dropdown-menu.dropdown-submenu > li {
+                position: relative;
+            }
+
+            .dropdown-menu.dropdown-submenu ul.dropdown-menu {
+                left: 100%;
+                top: 0;
+            }
+
+            .form-control {
+                flex-grow: 1;
+                margin-right: 10px;
+            }
+
+            .btn.btn-info {
+                margin-left: 10px;
+            }
+            .bold-label {
+                font-weight: bold;
+            }
+            .break-text {
+                width: 300px;
+                overflow-wrap: break-word;
+            }
+            .dropdown-menu li {
+                position: relative;
+            }
+
+            .dropdown-menu .dropdown-submenu {
+                display: none;
+                position: absolute;
+                left: 100%;
+                top: -7px;
+            }
+
+            .dropdown-menu>li:hover>.dropdown-submenu {
+                display: block;
+            }
+            th {
+                white-space: nowrap;
+            }
+            #searchInput {
+                width: 66.67%;
+                max-width: 500px;
+                height: 43px;
+
+            }
+
+        </style>
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
@@ -46,9 +82,14 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <div class="input-group mb-3">
-            <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Search
+        <div class="input-group mb-3" style="text-align: center">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    <path fill-rule="evenodd"
+                          d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                </svg>
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Giới Tính &raquo;</a>
@@ -65,22 +106,21 @@
                     <a class="dropdown-item" href="#">Trạng Thái &raquo;</a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <a class="dropdown-item" href="#" onclick="filterAcction('Đang Làm')">Đang Làm</a>
+                            <a class="dropdown-item" href="#" onclick="filterAcction('Ngừng Hoạt Động')">Ngừng Hoạt Động</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" onclick="filterAcction('Nghỉ Việc')">Nghỉ Việc</a>
+                            <a class="dropdown-item" href="#" onclick="filterAcction('Hoạt Động')">Hoạt Động</a>
                         </li>
                     </ul>
                 </li>
             </ul>
             <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-                id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm....">
+                id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã, tên, giới tính....">
+            <button class="btn btn-info" type="button" data-bs-toggle="dropdown" aria-expanded="false">Search </button>
         </div>
 
         <Br>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Add Employee
-        </button>
+
 
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -131,19 +171,6 @@
                                                             <label class="form-label font-weight-bold">Họ và tên</label>
                                                             <input th:name="name" type="text" class="form-control"
                                                                 placeholder="Hãy nhập họ và tên" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
-                                                            <label class="form-label font-weight-bold">Mật khẩu</label>
-                                                            <input name="password" type="password" class="form-control"
-                                                                placeholder="Hãy nhập mật khẩu" />
-                                                        </div>
-                                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
-                                                            <label class="form-label font-weight-bold">Xác nhận mật
-                                                                khẩu</label>
-                                                            <input name="confirm" type="password" class="form-control"
-                                                                placeholder="Hãy nhập xác nhận mật khẩu" />
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -266,16 +293,16 @@
                             <a href="#" onclick="sortTable('asc', 6)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                             <a href="#" onclick="sortTable('desc', 6)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
-                        <th class="break-text">Address</th>
+<!--                        <th class="break-text">Address</th>-->
                         <th>Roles
-                            <a href="#" onclick="sortTableCode('asc', 8)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
-                            <a href="#" onclick="sortTableCode('desc', 8)"><i
+                            <a href="#" onclick="sortTableCode('asc', 7)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                            <a href="#" onclick="sortTableCode('desc', 7)"><i
                                     class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
                         <th>Image</th>
                         <th>Status
-                            <a href="#" onclick="sortTable('asc', 10)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
-                            <a href="#" onclick="sortTable('desc', 10)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                            <a href="#" onclick="sortTable('asc', 9)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                            <a href="#" onclick="sortTable('desc', 9)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
                         <th>Action</th>
                     </tr>
@@ -289,12 +316,21 @@
                         <td th:text="${employee.birth_date}"></td>
                         <td th:text="${employee.phone}"></td>
                         <td th:text="${employee.email}"></td>
-                        <td th:text="${employee.fulladdress}"></td>
+<!--                        <td th:text="${employee.fulladdress}"></td>-->
                         <td th:text="${employee.roles.name}"></td>
 
-                        <td class="text-center" >
+<!--                        <td class="text-center" >-->
+<!--                            <img th:src="${employee.image}" class="image-fluid"-->
+<!--                                  width="60px" height="50px" />-->
+<!--                        </td>-->
+                        <td class="text-center"
+                            th:if="${employee.image !=null}">
                             <img th:src="${employee.image}" class="image-fluid"
-                                  width="60px" height="50px" />
+                                style="height: 60px;" />
+                        </td>
+                        <td th:unless="${employee.image !=null}">
+                            <img
+                                src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
                         </td>
 <!--                            <img th:src="@{'/images/faces/' + ${employee.image}}" width="60px" height="50px">-->
 
@@ -392,22 +428,22 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="row">
-                                                                            <div class="col-md-4">
-                                                                                <label class="form-label bold-label">Thành Phố:</label>
-                                                                                <span  onchange="getDistricts()"></span>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <label class="form-label bold-label">Huyện:</label>
+<!--                                                                        <div class="row">-->
+<!--                                                                            <div class="col-md-4">-->
+<!--                                                                                <label class="form-label bold-label">Thành Phố:</label>-->
+<!--                                                                                <span  onchange="getDistricts()"></span>-->
+<!--                                                                            </div>-->
+<!--                                                                            <div class="col-md-4">-->
+<!--                                                                                <label class="form-label bold-label">Huyện:</label>-->
 
-                                                                                <span th:text="${employee.city}" onchange="getWards()"></span>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <label class="form-label bold-label">Xã:</label>
+<!--                                                                                <span th:text="${employee.city}" onchange="getWards()"></span>-->
+<!--                                                                            </div>-->
+<!--                                                                            <div class="col-md-4">-->
+<!--                                                                                <label class="form-label bold-label">Xã:</label>-->
 
-                                                                                <span th:text="${employee.country}" onchange="setFullAdress()"></span>
-                                                                            </div>
-                                                                        </div>
+<!--                                                                                <span th:text="${employee.country}" onchange="setFullAdress()"></span>-->
+<!--                                                                            </div>-->
+<!--                                                                        </div>-->
                                                                         <br>
                                                                         <div class="mb-3">
                                                                             <label class="form-label bold-label">Địa chỉ cụ thể:</label>
@@ -415,7 +451,7 @@
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label class="form-label bold-label">Trạng Thái:</label>
-                                                                            <span th:text="${employee.status} == 0? 'Hoạt Động':'Ngừng Hoạt Động'"></span>
+                                                                            <span th:text="${employee.status} == 1? 'Hoạt Động':'Ngừng Hoạt Động'"></span>
                                                                         </div>
 
                                                                     </div>
