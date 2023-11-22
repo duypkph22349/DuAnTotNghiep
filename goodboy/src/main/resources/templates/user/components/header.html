@@ -74,8 +74,8 @@
                         </li>
                     </ul>
                     <div class="ht-right">
-                        <div th:if="${session.account == null}">
-                            <a class="login-panel px-3" data-toggle="modal" data-target="#registerModal" type="button">
+                        <div th:if="${session.authenuser == null}">
+                            <a class="login-panel px-3" href="register_modal.html">
                                 <i class="fa fa-user"></i>Đăng ký
                             </a>
                             <a class="login-panel px-3" data-toggle="modal" data-target="#loginModal" type="button" >
@@ -91,14 +91,14 @@
             <img th:src="${session.authenuser.getImage()}" alt="Profile" class="rounded-circle">
         </button>
         <div class="dropdown-menu" style="left: auto; right: 0;">
-            <div th:if="${session.account.isAdmin()}">
-                <a class="dropdown-item" th:href="@{/admin/home}">Quản lý</a>
-            </div>
-            <a class="dropdown-item" th:href="@{/profile}">Thông tin</a>
-            <a class="dropdown-item" th:href="@{/change_password}">Đổi mật khẩu</a>
-            <a class="dropdown-item" th:href="@{/order_status}">Đơn hàng</a>
+<!--            <div th:if="${session.account.isAdmin()}">-->
+<!--                <a class="dropdown-item" th:href="@{/admin/home}">Quản lý</a>-->
+<!--            </div>-->
+            <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
+            <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
+            <a class="dropdown-item" th:href="@{/shop/order_status}">Đơn hàng</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+            <a class="dropdown-item" th:href="@{/signOut}">Đăng xuất</a>
         </div>
     </span>
                         </div>
@@ -204,7 +204,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="register-form">
-                        <form action="/register" method="post" id="registerForm" enctype="multipart/form-data">
+                        <form class="row g-3" enctype="multipart/form-data" th:action="@{/user/signup}" th:object="${signUpRequest}"
+                              method="post">
                             <div class="row">
                                 <div class="col-md-4 border-right">
                                     <div class="d-flex flex-column align-items-center text-center px-3 ">
