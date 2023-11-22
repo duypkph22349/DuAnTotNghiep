@@ -66,7 +66,7 @@ public class ProductDetailControllerUser {
     // return filter;
     // }
     @Autowired
-    private ImageService imageService;
+    private ImageProductService imageProductService;
 
     @ModelAttribute("brandCbb")
     public List<Map<Integer, String>> getComboboxBrand() {
@@ -145,7 +145,7 @@ public class ProductDetailControllerUser {
     // panigation and sort
     @GetMapping("/getcountrow")
     public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue,
-            @ModelAttribute("fillter") ProductDetailFilter fillter) {
+                              @ModelAttribute("fillter") ProductDetailFilter fillter) {
         System.out.println(selectedValue);
         rowcount = Integer.parseInt(selectedValue);
         if (fillter != null) {
@@ -175,8 +175,8 @@ public class ProductDetailControllerUser {
 
     @GetMapping("sort")
     public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
-            @RequestParam("sortDir") boolean sordir,
-            @ModelAttribute("fillter") ProductDetailFilter fillter) {
+                              @RequestParam("sortDir") boolean sordir,
+                              @ModelAttribute("fillter") ProductDetailFilter fillter) {
         this.sortBy = sortby;
         this.sortDir = sordir;
         this.pageno = 1;
@@ -206,7 +206,7 @@ public class ProductDetailControllerUser {
 
     @GetMapping("/page")
     public String getPageNo(Model model, @RequestParam("pageno") int pageno,
-            @ModelAttribute("fillter") ProductDetailFilter fillter) {
+                            @ModelAttribute("fillter") ProductDetailFilter fillter) {
         if (pageno <= 1) {
             this.pageno = 1;
             pageno = 1;
@@ -272,9 +272,9 @@ public class ProductDetailControllerUser {
 
     @PostMapping("store")
     public String storeProductDetail(Model model,
-            @RequestParam("listimage") List<MultipartFile> listimage,
-            @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
-            BindingResult theBindingResult) throws IOException {
+                                     @RequestParam("listimage") List<MultipartFile> listimage,
+                                     @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
+                                     BindingResult theBindingResult) throws IOException {
         if (theBindingResult.hasErrors()) {
             return "user/product";
         } else {
@@ -287,8 +287,8 @@ public class ProductDetailControllerUser {
     @GetMapping("detail/{id}")
     public String editProductDetail(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("productDetailRequest",
-                service.getProductDetailRequetById(id));
-            return "user/product_detail";
+                service.getProductDetailById(id).get());
+        return "user/product_detail";
     }
 
 }

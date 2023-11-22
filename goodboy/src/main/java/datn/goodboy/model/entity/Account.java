@@ -44,7 +44,7 @@ public class Account {
 
   @Column(name = "deleted")
   private boolean deleted;
-@Column(name = "actived")
+  @Column(name = "actived")
   private boolean actived;
 
   @Column(name = "updated_at")

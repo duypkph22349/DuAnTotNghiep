@@ -43,8 +43,17 @@
             </div>
             <div class="card mb-3">
               <div class="card-body">
+                <div class="d-flex justify-content-center py-4">
+                  <a th:href="@{index.html}" class="logo d-flex align-items-center w-auto">
+                    <img th:src="@{/assets/img/logo.png}" alt="">
+                    <span class="d-none d-lg-block">Wemercy</span>
+                  </a>
+                </div>
                 <form class="row g-3 needs-validation" novalidate th:action="@{/sendresetpasswordcode}" method="post">
                   <div class="col-12">
+                    <h2 style="text-align: center"><strong>Khôi phục mật khẩu</strong></h2>
+                    <label for="yourUsername" class="form-label">Email</label>
+
                     <label for="yourUsername" class="form-label">email</label>
                     <div class="input-group has-validation">
                       <input type="email" name="email" class="form-control" id="yourUsername" required>
@@ -52,7 +61,8 @@
                       <div></div>
                     </div>
                   </div>
-                  <input type="submit" value="Send Code">
+                  <input type="submit" class="btn btn-primary" value="Send Code">
+                  <a href="login">Tiếp tục đăng nhập</a>
                 </form>
               </div>
             </div>

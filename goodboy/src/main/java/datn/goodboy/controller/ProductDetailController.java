@@ -297,7 +297,7 @@ public class ProductDetailController {
   public String storeProductDetail(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
     System.out.println(fillter.toString());
     return "redirect:index";
-  }
+  }  
 
   @GetMapping("resetfilter")
   public String resetFilter(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {

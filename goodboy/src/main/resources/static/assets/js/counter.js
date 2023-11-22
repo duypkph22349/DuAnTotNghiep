@@ -87,12 +87,35 @@ function formInOrder(id) {
                                           <br><br><br>
                                           <!-- Search -->
                                           <div class="input-group mb-3">
-                                              <input aria-label="Text input with segmented dropdown button"
-                                                  class="form-control" id="searchInput" onkeyup="myFunction()"
-                                                  placeholder="Tìm kiếm theo mã sản phẩm, tên sản phẩm, giá bán...."
-                                                  type="text">
-                                          </div>
+    <input aria-label="Text input with segmented dropdown button"
+        class="form-control" id="searchInput" onkeyup="filterTable(${id})"
+        placeholder="Tìm kiếm theo mã sản phẩm, tên sản phẩm, giá bán...."
+        type="text">
+</div>
+<style>
+        .scrollable-table {
+            max-height: 700px; /* Đặt chiều cao tối đa của bảng */
+            overflow-y: auto;  /* Tạo thanh cuộn dọc khi vượt quá chiều cao */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+         thead {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+    </style>
                                           <!-- Sản phẩm-->
+                                          <div class="scrollable-table">
                                           <table class="table table-hover" id="cartTableProduct">
                                               <thead>
                                                   <tr>
@@ -108,6 +131,7 @@ function formInOrder(id) {
                                               </thead>
                                               <tbody></tbody>
                                           </table>
+                                           </div>
                                       </div>
                                       <div style="width: 100%; margin-top: 12px; "></div>
                                   </div>
@@ -582,6 +606,35 @@ function addnewOrderPage() {
     exitButton.className += " active";
   } else {
     alert("Tối đa 5 hóa đơn");
+  }
+}
+
+//Tìm kiếm sản phẩm
+function filterTable(orderId) {
+  var input, filter, table, tbody, tr, td, i, j, txtValue;
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  var tbody = thisOrder.querySelector("#cartTableProduct tbody");
+  input = thisOrder.querySelector("#searchInput");
+
+  filter = input.value.toUpperCase();
+  table = document.getElementById("cartTableProduct");
+  // tbody = table.getElementsByTagName("tbody")[0];
+  tr = tbody.getElementsByTagName("tr");
+
+  for (i = 0; i < tr.length; i++) {
+    // Tìm kiếm trong tất cả các cột (loại bỏ cột thứ 1, tức là stt)
+    for (j = 1; j < tr[i].cells.length; j++) {
+      td = tr[i].getElementsByTagName("td")[j];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+          break; // Nếu tìm thấy, thoát khỏi vòng lặp để hiển thị hàng
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
   }
 }
 function renderOrderPage(id) {
