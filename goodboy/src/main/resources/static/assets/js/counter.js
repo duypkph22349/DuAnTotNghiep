@@ -88,7 +88,7 @@ function formInOrder(id) {
                                           <!-- Search -->
                                           <div class="input-group mb-3">
     <input aria-label="Text input with segmented dropdown button"
-        class="form-control" id="searchInput" onkeyup="filterTable()"
+        class="form-control" id="searchInput" onkeyup="filterTable(${id})"
         placeholder="Tìm kiếm theo mã sản phẩm, tên sản phẩm, giá bán...."
         type="text">
 </div>
@@ -596,12 +596,15 @@ function addnewOrderPage() {
 }
 
 //Tìm kiếm sản phẩm
-function filterTable() {
+function filterTable(orderId) {
   var input, filter, table, tbody, tr, td, i, j, txtValue;
-  input = document.getElementById("searchInput");
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  var tbody = thisOrder.querySelector("#cartTableProduct tbody");
+  input = thisOrder.querySelector("#searchInput");
+
   filter = input.value.toUpperCase();
   table = document.getElementById("cartTableProduct");
-  tbody = table.getElementsByTagName("tbody")[0];
+  // tbody = table.getElementsByTagName("tbody")[0];
   tr = tbody.getElementsByTagName("tr");
 
   for (i = 0; i < tr.length; i++) {

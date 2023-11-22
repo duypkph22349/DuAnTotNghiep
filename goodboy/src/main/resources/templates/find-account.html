@@ -35,7 +35,12 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
+            <div class="d-flex justify-content-center py-4">
+              <a th:href="@{index.html}" class="logo d-flex align-items-center w-auto">
+                <img th:src="@{/assets/img/logo.png}" alt="">
+                <span class="d-none d-lg-block"></span>
+              </a>
+            </div>
             <div class="card mb-3">
               <div class="card-body">
                 <div class="d-flex justify-content-center py-4">
@@ -48,6 +53,8 @@
                   <div class="col-12">
                     <h2 style="text-align: center"><strong>Khôi phục mật khẩu</strong></h2>
                     <label for="yourUsername" class="form-label">Email</label>
+
+                    <label for="yourUsername" class="form-label">email</label>
                     <div class="input-group has-validation">
                       <input type="email" name="email" class="form-control" id="yourUsername" required>
                       <div class="invalid-feedback">Nhập email của bạn.</div>
