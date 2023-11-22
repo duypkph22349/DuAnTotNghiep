@@ -29,6 +29,9 @@ public class AccountInfoService implements UserDetailsService {
       throw new UsernameNotFoundException("can not find nhan vien with username khachhang");
     } else {
       String Roles = "USER";
+      if(!account.get().isActived()){
+        Roles = "NOT_ACCTIVE";
+      }
       UserInfo UserInfo = new UserInfo(account.get().getEmail(), account.get().getPassword(), Roles);
       return new UserInfoUserDetails(UserInfo);
     }

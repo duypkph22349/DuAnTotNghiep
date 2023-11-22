@@ -22,7 +22,6 @@ public class PatternController {
     @Autowired
     private PatternTypeService patternTypeService;
     private int currentProductCode = 1;
-
     @Autowired
     TrangThaiConvert convert;
 

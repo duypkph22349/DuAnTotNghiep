@@ -1,7 +1,6 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Brand;
-import datn.goodboy.model.entity.Material;
 import datn.goodboy.repository.BrandRepository;
 
 import java.util.List;
@@ -42,9 +41,17 @@ public class BrandService {
         return brandRepository.findById(id).get();
     }
 
-    public void delete(Integer id) {
-        Brand brand = brandRepository.findById(id).get();
-        brandRepository.delete(brand);
+    public void delete(int id) {
+        Optional<Brand> brand = brandRepository.findById(id);
+        if (brand.isPresent()) {
+            if (brand.get().isDeleted()) {
+                brand.get().setDeleted(false);
+            } else {
+                brand.get().setDeleted(true);
+                brand.get().setStatus(0);
+            }
+            brandRepository.save(brand.get());
+        }
     }
 
     public List<Map<Integer, String>> getCombobox() {

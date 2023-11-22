@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.repository.MaterialRepository;

@@ -20,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import datn.goodboy.security.repo.AccountInforRepository;
@@ -100,8 +99,13 @@ public class SpringSecurityConfig {
   SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager)
       throws Exception {
     http
+       .authorizeHttpRequests(authorize -> {
+          authorize.requestMatchers("/sendresetpasswordcode","/resetpasswordcode","/resetpassword").permitAll();
+        })
         .authorizeHttpRequests(authorize -> {
-          // delete only role admin
+          authorize.requestMatchers("/sendvertifyemail","/vertifyemail").authenticated();
+        })
+        .authorizeHttpRequests(authorize -> {
           authorize.requestMatchers("/admin/*/delete/**").hasAnyAuthority("ADMIN");
         })
         .authorizeHttpRequests((authorize) -> {
@@ -116,7 +120,7 @@ public class SpringSecurityConfig {
         .formLogin(formLogin -> formLogin
             .loginPage("/login")
             .loginProcessingUrl("/singin")
-            // .failureHandler(AuthenticationFailureHandler)
+            .failureUrl("/login-fail")
             .successHandler(new CustomAuthenticationSuccessHandler(KhachHangServer(), nhanVienServer()))
             .usernameParameter("username")
             .passwordParameter("password")

@@ -1,6 +1,7 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Material;
+import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.repository.PatternTypeRepository;
 

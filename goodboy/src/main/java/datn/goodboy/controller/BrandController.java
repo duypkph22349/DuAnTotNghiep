@@ -18,7 +18,13 @@ import java.time.LocalDateTime;
 public class BrandController {
     @Autowired
     private BrandService brandService;
-    private int currentProductCode = 1;
+    @Autowired
+    TrangThaiConvert convert;
+
+    @ModelAttribute("convert")
+    public TrangThaiConvert convert() {
+        return convert;
+    }
 
     @Autowired
     TrangThaiConvert convert;
@@ -86,7 +92,6 @@ public class BrandController {
         b.setCreatedAt(LocalDateTime.now());
         b.setUpdatedAt(LocalDateTime.now());
         b.setStatus(1);
-        currentProductCode++;
         brandService.add(b);
         return "redirect:/admin/brand/dsBrand";
     }

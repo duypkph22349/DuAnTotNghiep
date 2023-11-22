@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.repository.SizeRepository;

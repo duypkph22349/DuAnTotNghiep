@@ -1,6 +1,5 @@
 package datn.goodboy.utils.validate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,31 +16,13 @@ public class EmailHelper {
   EmployeeRepository employeeRepository;
   @Autowired
   AccountRepository accountRepository;
+  public boolean isEmailExists(String email) {
+    List<Employee> employees = employeeRepository.getEmployeesByEmail(email);
+    List<Account> accounts = accountRepository.getAccountByEmail(email);
+    return !employees.isEmpty() || !accounts.isEmpty();
+}
 
-  public boolean isEmailExits(String email) {
-    List<Employee> listE = employeeRepository.getEmployeesByEmail(email);
-    List<Account> listA = accountRepository.getAccountByEmail(email);
-    if (listA == null) {
-      if (listE == null) {
-        return false;
-      }
-    }
-    if (listA.isEmpty()) {
-      if (listE.isEmpty()) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public boolean isEmailNotExsits(String email) {
-    if (!employeeRepository.hasEmailis(email).isEmpty()) {
-      return false;
-    }
-    if (!accountRepository.hasEmailis(email).isEmpty()) {
-      return false;
-    }
-    return true;
-  }
-
+public boolean isEmailNotExists(String email) {
+    return employeeRepository.hasEmailis(email).isEmpty() && accountRepository.hasEmailis(email).isEmpty();
+}
 }

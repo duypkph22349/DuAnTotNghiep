@@ -27,6 +27,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+
+    private int currentProductCode = 1;
     @Autowired
     TrangThaiConvert convert;
 
@@ -34,8 +36,6 @@ public class ProductController {
     public TrangThaiConvert convert() {
         return convert;
     }
-
-    private int currentProductCode = 1;
     @GetMapping({"/dsProduct",""})
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {

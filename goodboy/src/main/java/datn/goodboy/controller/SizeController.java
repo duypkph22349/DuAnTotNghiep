@@ -22,7 +22,6 @@ public class SizeController {
     @Autowired
     private SizeService sizeService;
     private int currentProductCode = 1;
-
     @Autowired
     TrangThaiConvert convert;
 

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Color</title>
+    <title>Mamercy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
     <style>
@@ -26,7 +26,7 @@
         </nav>
     </div><!-- End Page Title -->
     <div>
-        <h1 style="text-align: center">LIST COLOR</h1>
+        <h1 style="text-align: center">DANH SÁCH MÀU SẮC</h1>
 
         <form class="search-form d-flex align-items-center" method="get" th:action="@{'/admin/color/search'}">
             <input type="text" name="keyword" placeholder="Search" title="Enter search keyword" th:value="${keyword}">
@@ -55,6 +55,12 @@
                 <td th:if="${b.deleted}" class="text-decoration-line-through" th:text="${convert.convertTrangThaiEmployee(b.status)}"></td>
 
                 <td>
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${b.deleted}"
+                       th:href="@{/admin/color/delete(id=${b.id})}" class="btn btn-danger"><i
+                            class="fas fa-trash-alt"></i></a>
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${b.deleted}"
+                       th:href="@{/admin/color/delete(id=${b.id})}" class="btn btn-secondary"><i
+                            class="fas fa-undo-alt"></i></a>
                     <a th:href="@{'/admin/color/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>
 
