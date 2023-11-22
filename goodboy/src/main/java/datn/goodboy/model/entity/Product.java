@@ -19,7 +19,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
-    @Column(name="code")
+    @Column(name="code", insertable = false, updatable = false)
     private String code;
     @NotNull
     @NotBlank
@@ -33,7 +33,6 @@ public class Product {
     private boolean deleted;
     @Column(name="status")
     private int status;
-
     @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
     @JsonIgnore
     private List<ImageProduct> imageProducts;

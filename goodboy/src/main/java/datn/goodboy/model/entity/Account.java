@@ -55,6 +55,4 @@ public class Account {
   @OneToOne
   @JoinColumn(name = "id_customer")
   private Customer customer;
-  public void setActived(boolean b) {
-  }
 }

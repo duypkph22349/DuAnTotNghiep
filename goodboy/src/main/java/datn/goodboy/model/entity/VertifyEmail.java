@@ -24,9 +24,9 @@ import lombok.ToString;
 public class VertifyEmail {
   @Id
   String email;
-  @Column(name="code")
+  @Column(name = "code")
   int code;
-  @Column(name="request_at")
+  @Column(name = "request_at")
   LocalDateTime requestAt;
 
   public VertifyEmail(String email) {

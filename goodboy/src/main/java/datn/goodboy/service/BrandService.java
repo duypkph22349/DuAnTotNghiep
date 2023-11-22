@@ -1,6 +1,7 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.repository.BrandRepository;
 
 import java.util.List;

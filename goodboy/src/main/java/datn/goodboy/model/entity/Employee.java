@@ -35,7 +35,7 @@ public class Employee {
     @JoinColumn(name = "id_roles")
     private Roles roles;
 
-    @Column(name = "code")
+    @Column(name = "code", insertable = false, updatable = false)
     String code;
 
     @Column(name = "name")

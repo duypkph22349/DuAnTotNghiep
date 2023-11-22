@@ -30,7 +30,7 @@ public class Customer {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   UUID id;
-  @Column(name = "code")
+  @Column(name = "code" , insertable = false, updatable = false)
   String code;
   @Column(name = "name")
   String name;
