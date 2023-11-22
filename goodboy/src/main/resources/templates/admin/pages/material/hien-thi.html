@@ -62,13 +62,6 @@
                             class="fas fa-undo-alt"></i></a>
                     <a th:href="@{'/admin/material/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>
-
-                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${b.deleted}"
-                       th:href="@{/admin/material/delete(id=${b.id})}" class="btn btn-danger"><i
-                            class="fas fa-trash-alt"></i></a>
-                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${b.deleted}"
-                       th:href="@{/admin/material/delete(id=${b.id})}" class="btn btn-secondary"><i
-                            class="fas fa-undo-alt"></i></a>
                 </td>
 
             </tr>

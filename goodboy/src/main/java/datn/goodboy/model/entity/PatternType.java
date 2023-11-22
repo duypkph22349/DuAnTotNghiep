@@ -32,6 +32,5 @@ public class PatternType {
     private boolean deleted;
     @Column(name="status")
     private int status;
-    @Column(name = "deleted")
-    private boolean deleted;
+
 }

@@ -33,8 +33,6 @@ public class Product {
     private boolean deleted;
     @Column(name="status")
     private int status;
-    @Column(name = "deleted")
-    private boolean deleted;
 
     @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
     @JsonIgnore
