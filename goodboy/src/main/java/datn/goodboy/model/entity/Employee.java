@@ -83,5 +83,5 @@ public class Employee {
     @Column(name = "status")
     int status;
     @Column(name = "actived")
-    private boolean actived;
+    boolean actived;
 }

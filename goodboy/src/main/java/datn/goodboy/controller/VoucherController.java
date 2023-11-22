@@ -16,7 +16,6 @@ import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.VoucherRequest;
 import datn.goodboy.service.VoucherService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
-import datn.goodboy.service.CustomerService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -34,11 +33,11 @@ public class VoucherController {
   }
 
   @Autowired
-  private CustomerService customerService;
-  @Autowired
   private VoucherRequest voucherRequest;
-  private Voucher voucherResponse;
   public int rowcount = 10;
+  public int statusfilter = -1;
+  public String textSearch = "";
+
   public int[] pagenumbers;
   public String sortBy = "name";
   public boolean sortDir = true;
@@ -47,6 +46,10 @@ public class VoucherController {
 
   @ModelAttribute("rowcount")
   public int rowcount() {
+    return rowcount;
+  }
+@ModelAttribute("statusfilter")
+  public int statusfille() {
     return rowcount;
   }
 
@@ -113,7 +116,6 @@ public class VoucherController {
     model.addAttribute("pagenumber", pagenumbers);
     model.addAttribute("crpage", pageno);
     model.addAttribute("rowcount", rowcount);
-
     return "/admin/pages/voucher/table-voucher.html";
   }
 
@@ -135,15 +137,9 @@ public class VoucherController {
     return "redirect:index";
   }
 
-  // @GetMapping("edit")
-  // public String editVoucher(Model model, @RequestParam("id") UUID id) {
-  // model.addAttribute("voucherRequest",
-  // service.getVoucherRequetById(id));
-  // return "/admin/pages/voucher/form-voucher.html";
-  // }
+
   @GetMapping("edit")
   public String editVoucher(Model model, @RequestParam("id") int id) {
-    VoucherRequest voucherRequest = service.getVoucherRequetById(id);
     model.addAttribute("voucherRequest",
         service.getVoucherRequetById(id));
     return "/admin/pages/voucher/update-voucher.html";
