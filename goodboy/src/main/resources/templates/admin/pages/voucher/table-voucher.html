@@ -17,20 +17,25 @@
             </nav>
         </div><!-- End Page Title -->
         <div class="container-fluid">
-                <form th:action="@{/admin/voucher/search}"  class="row" method="get">
-                <div class="input-group col-6 mx-2">
-                    <input type="txtSearch" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" /></div>
-                <div class="input-group col-6 mx-2">
-                    <select name="status" class="border-0 px-2">
-                        <option value="0" th:selected="${statusfilter == 0}">Tất cả</option>
-                        <option value="1" th:selected="${statusfilter == 1}">Khả dụng</option>
-                    </select>
+            <div sec:authorize="hasAnyAuthority('ADMIN')" class="py-3">
+                <a href="/admin/voucher/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
+            </div>
+                <form th:action="@{/admin/voucher/search}"  class="form row" method="get">
+                    <div class="form-floating col-5">
+                        <input type="text" name="txtSearch" id="search" class="form-control" th:value="${textSearch}">
+                        <label for="search" class="m-auto fw-bold">Tìm kiếm :</label>
+                    </div>
+                    <div class="form-floating col-5">
+                        <select name="status" class="form-control form-group-0 text-center  form-group-0 text-center" id ="statusfiter">
+                            <option value="0" th:selected="${statusfilter == 0}">Tất cả</option>
+                            <option value="1" th:selected="${statusfilter == 1}">Khả dụng</option>
+                        </select>
+                        <label for="statusfiter" class="m-auto fw-bold" id="fillter">Trạng thái:</label>
+                </div>
+                <div  class="col-2 my-3">
+                    <input type="submit" value="Tìm kiếm" class="btn btn-outline-primary">
                 </div>
                 </form>
-        </div>
-        <div sec:authorize="hasAnyAuthority('ADMIN')" class="d-flex">
-            <a href="/admin/voucher/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
         </div>
         <div style="overflow: auto" class="mt-4">
             <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
