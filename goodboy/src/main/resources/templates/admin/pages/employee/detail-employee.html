@@ -121,9 +121,9 @@
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Trạng Thái:</label>
                       <select class="form-control" th:name="status" id="status">
-                        <option value="true" th:value="${detail.status}" th:selected="${detail.status==0}">Hoạt Động
+                        <option value="true" th:value="${detail.status}" th:selected="${detail.status==1}">Hoạt Động
                         </option>
-                        <option value="false" th:value="${detail.status}" th:selected="${detail.status==1}">Ngừng Hoạt Động
+                        <option value="false" th:value="${detail.status}" th:selected="${detail.status==0}">Ngừng Hoạt Động
                         </option>
                       </select>
                     </div>

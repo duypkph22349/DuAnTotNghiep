@@ -82,11 +82,12 @@ public class EmployeeController {
     @GetMapping("/form-add")
     public String add(Model model) {
         model.addAttribute("roles", rolesService.getAllRoles());
-        return "admin/pages/employee/create-employee";
+        return "admin/pages/employee/table-employee";
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Employee employee) {
+    public String add(Model model, @ModelAttribute Employee employee) {
+        model.addAttribute("roles", rolesService.getAllRoles());
         employeeService.saveEmployee(employee);
         return "redirect:/admin/employee/hien-thi";
     }
