@@ -146,11 +146,11 @@
                     </div>
                     <div class="item status">
                         <label>Trạng Thái</label>
-                            <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
-                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                        <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
+                        <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
                     </div>
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>
@@ -206,7 +206,7 @@
         tab.onclick = function () {
             let status = this.getAttribute("data-value");
             let id = document.getElementById("id").getAttribute("data-value");
-            location.href=`/bill/bill-detail-update-status?id=${id}&status=${status}`;
+            location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
         };
     });
 
@@ -252,7 +252,7 @@
             return;
         }
 
-        var phoneRegex = /^[0-9]{11}$/;
+        var phoneRegex = /^[0-9]{10}$/;
         if (!phoneRegex.test(phoneNumber.value)) {
             alert("Số điện thoại không hợp lệ!");
             return;

@@ -1,19 +1,20 @@
 package datn.goodboy.controller;
 
-import datn.goodboy.model.entity.Bill;
-import datn.goodboy.service.BillDetailService;
-import datn.goodboy.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import datn.goodboy.model.entity.Bill;
+import datn.goodboy.service.BillService;
 
 @Controller
-@RequestMapping("/bill")
+@RequestMapping("admin/bill")
 public class BillController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class BillController {
 
     @GetMapping({ "/hien-thi", "" })
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Bill> bill = billService.getPage(pageable);
@@ -50,13 +51,13 @@ public class BillController {
 
     @GetMapping("/bill-detail-update-status")
     public String updateStatusBillDetail(@RequestParam("id") Integer id,
-            @RequestParam("status") Integer status) {
+                                         @RequestParam("status") Integer status) {
         try {
             billService.updateStatus(id, status);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/bill/bill-detail?id=" + id;
+        return "redirect:/admin/bill/bill-detail?id=" + id;
     }
 
 }

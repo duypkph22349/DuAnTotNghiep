@@ -41,243 +41,243 @@
 
 
 <body>
-    <section layout:fragment="content">
-        <div class="pagetitle">
-            <h1>Hóa Đơn</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Bill</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
-        <style>
-            * {
-                padding: 0;
-                margin: 0;
-                box-sizing: border-box;
-            }
+<section layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Hóa Đơn</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active">Bill</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
 
-            .item label {
-                display: inline-block;
-                min-width: 300px;
-                padding: 12px 0;
-                font-size: 16px;
-            }
+        .item label {
+            display: inline-block;
+            min-width: 300px;
+            padding: 12px 0;
+            font-size: 16px;
+        }
 
-            .lf .item span {
-                padding: 4px 8px;
-                border-radius: 12px;
-                text-align: center;
-            }
-            .item span, .item input {
-                font-size: 16px;
-            }
+        .lf .item span {
+            padding: 4px 8px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .item span, .item input {
+            font-size: 16px;
+        }
 
-            .tabs {
-                display: flex;
-                position: relative;
-            }
+        .tabs {
+            display: flex;
+            position: relative;
+        }
 
-            .tabs .line {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                width: 0;
-                height: 6px;
-                border-radius: 15px;
-                background-color: #36d88d;
-                transition: all 0.2s ease;
-            }
+        .tabs .line {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 6px;
+            border-radius: 15px;
+            background-color: #36d88d;
+            transition: all 0.2s ease;
+        }
 
-            .tab-item {
-                min-width: 80px;
-                padding: 16px 20px 11px 20px;
-                font-size: 20px;
-                text-align: center;
-                color: #146c43;
-                background-color: #fff;
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
-                border-bottom: 5px solid transparent;
-                opacity: 0.6;
-                cursor: pointer;
-                transition: all 0.5s ease;
-            }
+        .tab-item {
+            min-width: 80px;
+            padding: 16px 20px 11px 20px;
+            font-size: 20px;
+            text-align: center;
+            color: #146c43;
+            background-color: #fff;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom: 5px solid transparent;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
 
-            .tab-icon {
-                font-size: 24px;
-                width: 32px;
-                position: relative;
-                top: 2px;
-            }
+        .tab-icon {
+            font-size: 24px;
+            width: 32px;
+            position: relative;
+            top: 2px;
+        }
 
-            .tab-item:hover {
-                opacity: 1;
-                background-color: rgba(194, 53, 100, 0.05);
-                border-color: rgba(194, 53, 100, 0.1);
-            }
+        .tab-item:hover {
+            opacity: 1;
+            background-color: rgba(194, 53, 100, 0.05);
+            border-color: rgba(194, 53, 100, 0.1);
+        }
 
-            .tab-item.active {
-                opacity: 1;
-                font-weight: 600;
-            }
-        </style>
+        .tab-item.active {
+            opacity: 1;
+            font-weight: 600;
+        }
+    </style>
 
-        <span id="status" th:data-value="${bill.status}"></span>
-        <span id="id" th:data-value="${bill.id}"></span>
-        <div class="container-md">
-            <div class="status  mt-2 p-4 " style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                <div class="top d-flex justify-content-center align-items-center">
-                    <div class="tabs">
-                        <div data-value="1" id="tab_1" class="tab-item">
-                            <i class="tab-item bi bi-cart"></i>
-                            Chờ xác nhận
-                        </div>
-                        <div data-value="2" id="tab_2" class="tab-item">
-                            <i class="tab-icon bi bi-cart-check"></i>
-                            Chờ giao hàng
-                        </div>
-                        <div data-value="3" id="tab_3" class="tab-item">
-                            <i class="tab-icon bi bi-car-front-fill"></i>
-                            Đang giao hàng
-                        </div>
-                        <div data-value="4" id="tab_4" class="tab-item">
-                            <i class="tab-icon bi bi-box-seam"></i>
-                            Đã giao hàng
-                        </div>
-                        <div data-value="5" id="tab_5" class="tab-item">
-                            <i class="tab-icon bi bi-check-lg"></i>
-                            Thành công
-                        </div>
-                        <div class="line"></div>
+    <span id="status" th:data-value="${bill.status}"></span>
+    <span id="id" th:data-value="${bill.id}"></span>
+    <div class="container-md">
+        <div class="status  mt-2 p-4 " style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="top d-flex justify-content-center align-items-center">
+                <div class="tabs">
+                    <div data-value="1" id="tab_1" class="tab-item">
+                        <i class="tab-item bi bi-cart"></i>
+                        Chờ xác nhận
                     </div>
-                </div>
-                <hr>
-                <div style="display: none" class="bottom justify-content-between">
-                    <div class="lf">
-                        <a href="">
-                            <button class="btn btn-primary">Chờ xác nhận</button>
-                        </a>
-                        <a href="">
-                            <button class="btn btn-primary">Chờ giao hàng</button>
-                        </a>
-                        <a href="">
-                            <button class="btn btn-primary">Đang giao hàng</button>
-                        </a>
-                        <a href="">
-                            <button class="btn btn-danger">Đã giao hàng</button>
-                        </a>
-                        <a href="">
-                            <button class="btn btn-danger">Thành công</button>
-                        </a>
+                    <div data-value="2" id="tab_2" class="tab-item">
+                        <i class="tab-icon bi bi-cart-check"></i>
+                        Chờ giao hàng
                     </div>
-                    <div class="rg">
-                        <a href="">
-                            <button class="btn btn-info">Chi Tiết</button>
-                        </a>
+                    <div data-value="3" id="tab_3" class="tab-item">
+                        <i class="tab-icon bi bi-car-front-fill"></i>
+                        Đang giao hàng
                     </div>
+                    <div data-value="4" id="tab_4" class="tab-item">
+                        <i class="tab-icon bi bi-box-seam"></i>
+                        Đã giao hàng
+                    </div>
+                    <div data-value="5" id="tab_5" class="tab-item">
+                        <i class="tab-icon bi bi-check-lg"></i>
+                        Thành công
+                    </div>
+                    <div class="line"></div>
                 </div>
             </div>
-
-            <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                <div class="top d-flex justify-content-between">
-                    <h2>THÔNG TIN ĐƠN HÀNG</h2>
-                    <button onclick="update()" class="btn btn-primary" style="font-size: 16px">Update</button>
-
+            <hr>
+            <div style="display: none" class="bottom justify-content-between">
+                <div class="lf">
+                    <a href="">
+                        <button class="btn btn-primary">Chờ xác nhận</button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-primary">Chờ giao hàng</button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-primary">Đang giao hàng</button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-danger">Đã giao hàng</button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-danger">Thành công</button>
+                    </a>
                 </div>
-                <hr>
-                <div class="info-order">
-                    <div class="row">
-                        <div class="col-6 lf">
-                            <div class="item code">
-                                <label>Mã Đơn Hàng</label>
-                                <span id="code" th:text="${bill.code}" style="background-color: rgb(206, 240, 240);"></span>
-                            </div>
-                            <div class="item type">
-                                <label>Loại Đơn Hàng</label>
-                                <span th:text="${bill.loaiDon eq 0 ? 'Tại quầy' : bill.loaiDon eq 1 ? 'Online' : ''}" style="background-color: rgb(206, 240, 240);"></span>
-                            </div>
-                            <div class="item status">
-                                <label>Trạng Thái</label>
-                                <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
-                                <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
-                                <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
-                                <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
-                                <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
-                            </div>
-                            <div class="item dateOrder">
-                                <label>Ngày Đặt Hàng</label>
-
-                                <span th:text="${#temporals.format(bill?.delivery_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
-                            </div>
-                            <div class="item dateShip">
-                                <label>Ngày Giao Hàng</label>
-                                <span th:text="${#temporals.format(bill?.received_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
-                            </div>
-
-                        </div>
-                        <div class="col-6">
-                            <div class="item customerName">
-                                <label>Tên Khách Hàng</label>
-                                <span th:text="${bill.customer_name}"   >+00000</span>
-                            </div>
-                            <div class="item phone">
-                                <label>Số Điện Thoại</label>
-                                <input id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
-
-                                <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
-                            </div>
-
-                            <div class="item address">
-                                <label>Địa Chỉ</label>
-                                <input id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
-
-                            </div>
-
-                            <div class="item totalMoney">
-                                <label>Tổng tiền</label>
-<!--                                <span th:text="${bill.total_money}" >+00000</span>-->
-                              <span th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
-
-                            </div>
-                            <div class="item note">
-                                <label>Ghi Chú</label>
-                                <span th:text="${bill.note}" >+00000</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="goBack()"class="btn btn-primary" style="font-size: 16px  ;">Back</button>
-                    <script>
-                        function goBack() {
-                            window.location.href = 'http://localhost:8080/bill/hien-thi'
-                        }
-                    </script>
+                <div class="rg">
+                    <a href="">
+                        <button class="btn btn-info">Chi Tiết</button>
+                    </a>
                 </div>
+            </div>
+        </div>
+
+        <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="top d-flex justify-content-between">
+                <h2>THÔNG TIN ĐƠN HÀNG</h2>
+                <button onclick="update()" class="btn btn-primary" style="font-size: 16px">Update</button>
 
             </div>
+            <hr>
+            <div class="info-order">
+                <div class="row">
+                    <div class="col-6 lf">
+                        <div class="item code">
+                            <label>Mã Đơn Hàng</label>
+                            <span id="code" th:text="${bill.code}" style="background-color: rgb(206, 240, 240);"></span>
+                        </div>
+                        <div class="item type">
+                            <label>Loại Đơn Hàng</label>
+                            <span th:text="${bill.loaiDon eq 0 ? 'Tại quầy' : bill.loaiDon eq 1 ? 'Online' : ''}" style="background-color: rgb(206, 240, 240);"></span>
+                        </div>
+                        <div class="item status">
+                            <label>Trạng Thái</label>
+                            <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
+                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                        </div>
+                        <div class="item dateOrder">
+                            <label>Ngày Đặt Hàng</label>
 
+                            <span th:text="${#temporals.format(bill?.delivery_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+                        </div>
+                        <div class="item dateShip">
+                            <label>Ngày Giao Hàng</label>
+                            <span th:text="${#temporals.format(bill?.received_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+                        </div>
 
-            <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                <div class="top d-flex justify-content-between">
-                    <h2> Thông tin giỏ hàng </h2>
+                    </div>
+                    <div class="col-6">
+                        <div class="item customerName">
+                            <label>Tên Khách Hàng</label>
+                            <span th:text="${bill.customer_name}"   >+00000</span>
+                        </div>
+                        <div class="item phone">
+                            <label>Số Điện Thoại</label>
+                            <input id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
+
+                            <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
+                        </div>
+
+                        <div class="item address">
+                            <label>Địa Chỉ</label>
+                            <input id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
+
+                        </div>
+
+                        <div class="item totalMoney">
+                            <label>Tổng tiền</label>
+                            <!--                                <span th:text="${bill.total_money}" >+00000</span>-->
+                            <span th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
+
+                        </div>
+                        <div class="item note">
+                            <label>Ghi Chú</label>
+                            <span th:text="${bill.note}" >+00000</span>
+                        </div>
+                    </div>
                 </div>
-                <hr>
-                <div class="info-order">
-                    <table class="table table-hover" id="myTable">
-                        <thead class="position-sticky top-0">
+                <button onclick="goBack()"class="btn btn-primary" style="font-size: 16px  ;">Back</button>
+                <script>
+                    function goBack() {
+                        window.location.href = 'http://localhost:8080/admin/bill/hien-thi'
+                    }
+                </script>
+            </div>
 
-                        <tr class="ex">
-<!--                            <th>#</th>-->
-                            <th>Image</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Thương hiệu</th>
-                            <th>Màu sắc</th>
-                            <th>Tổng tiền</th>
-                            <th>Số lượng</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                        </thead>
+        </div>
+
+
+        <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="top d-flex justify-content-between">
+                <h2> Thông tin giỏ hàng </h2>
+            </div>
+            <hr>
+            <div class="info-order">
+                <table class="table table-hover" id="myTable">
+                    <thead class="position-sticky top-0">
+
+                    <tr class="ex">
+                        <!--                            <th>#</th>-->
+                        <th>Image</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Thương hiệu</th>
+                        <th>Màu sắc</th>
+                        <th>Tổng tiền</th>
+                        <th>Số lượng</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
 
 
                     <tbody>
@@ -298,123 +298,123 @@
                         <td th:text="${billDetail.totalMoney}"></td>
                         <td th:text="${billDetail.quantity}"></td>
                         <td>
-                        <span th:if="${billDetail.status == 0}">Không xác nhận</span>
-                        <span th:if="${billDetail.status == 1}">Xác nhận</span>
+                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>
+                            <span th:if="${billDetail.status == 1}">Xác nhận</span>
                         </td>
                     </tr >
                     </tbody>
 
-                    </table>
-                </div>
-
-
-
+                </table>
             </div>
 
 
+
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-        <script>
-            const $ = document.querySelector.bind(document);
-            const $$ = document.querySelectorAll.bind(document);
 
-            const tabs = $$(".tab-item");
-            console.log(tabs)
 
-            const tabActive = $(".tab-item.active");
-            const line = $(".tabs .line");
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script>
+        const $ = document.querySelector.bind(document);
+        const $$ = document.querySelectorAll.bind(document);
 
-            tabs.forEach((tab, index) => {
-                tab.onclick = function () {
-                    let status = this.getAttribute("data-value");
-                    let currentStatus = document.getElementById("status").getAttribute("data-value");
-                    if(currentStatus >= status) {
-                        return;
-                    }
-                    let id = document.getElementById("id").getAttribute("data-value");
-                    location.href=`/bill/bill-detail-update-status?id=${id}&status=${status}`;
-                };
-            });
+        const tabs = $$(".tab-item");
+        console.log(tabs)
 
-            // fill data
-            // Bắt các phần tử cần thiết trong HTML
-            // let codeElement = document.querySelector('.item.code span');
-            // let typeElement = document.querySelector('.item.type span');
-            // let statusElement = document.querySelector('.item.status span');
-            // let dateOrderElement = document.querySelector('.item.dateOrder span');
-            // let dateShipElement = document.querySelector('.item.dateShip span');
-            // let customerNameElement = document.querySelector('.item.customerName span');
-            // let phoneElement = document.querySelector('.item.phone span');
-            // let emailElement = document.querySelector('.item.email span');
-            // let addressElement = document.querySelector('.item.address span');
-            // let noteElement = document.querySelector('.item.note span');
+        const tabActive = $(".tab-item.active");
+        const line = $(".tabs .line");
 
-            let statusTpye ={
-                TD :"Tạo Đơn Hàng",
-                DG :"Đang Giao Hàng",
-                GX :"Đã Giao"
-            }
-
-            let typeOrder ={
-                store : "Lấy Tại Cửa Hàng",
-                ship :"Giao Hàng"
-            }
-
-            let statusElement = document.getElementById("status");
-            let status = Number(statusElement.getAttribute("data-value"));
-
-            for (let i = 1; i <= status; i++) {
-                let tabSelector = document.querySelector(`#tab_${i}`);
-                tabSelector.classList.add("active");
-                line.style.left = tabSelector.offsetLeft + "px";
-                line.style.width = tabSelector.offsetWidth + "px";
-            }
-
-            function update(){
-                let phoneNumber =document.querySelector('#phoneNumber');
-                let address = document.querySelector('#address');
-                let code=   document.querySelector('#code');
-                if(!phoneNumber.value && !address.value){
-                    alert('Vui lòng nhập đầy đủ thông tin địa chỉ hoặc số điện thoại!')
+        tabs.forEach((tab, index) => {
+            tab.onclick = function () {
+                let status = this.getAttribute("data-value");
+                let currentStatus = document.getElementById("status").getAttribute("data-value");
+                if(currentStatus >= status) {
                     return;
                 }
+                let id = document.getElementById("id").getAttribute("data-value");
+                location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
+            };
+        });
 
-                var phoneRegex = /^[0-9]{11}$/;
-                if (!phoneRegex.test(phoneNumber.value)) {
-                    alert("Số điện thoại không hợp lệ!");
-                    return;
-                }
-                let dataForm ={
-                    phone : phoneNumber.value,
-                    address : address.value,
-                    code : code.innerText,
-                }
-                console.log(dataForm);
+        // fill data
+        // Bắt các phần tử cần thiết trong HTML
+        // let codeElement = document.querySelector('.item.code span');
+        // let typeElement = document.querySelector('.item.type span');
+        // let statusElement = document.querySelector('.item.status span');
+        // let dateOrderElement = document.querySelector('.item.dateOrder span');
+        // let dateShipElement = document.querySelector('.item.dateShip span');
+        // let customerNameElement = document.querySelector('.item.customerName span');
+        // let phoneElement = document.querySelector('.item.phone span');
+        // let emailElement = document.querySelector('.item.email span');
+        // let addressElement = document.querySelector('.item.address span');
+        // let noteElement = document.querySelector('.item.note span');
 
-                fetch("/admin/bill/update", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(dataForm)
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert("Cập nhật thành công!");
-                        } else {
-                            throw new Error("Cập nhật thất bại!");
-                            location.reload();
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        alert("Cập nhật thất bại!");
+        let statusTpye ={
+            TD :"Tạo Đơn Hàng",
+            DG :"Đang Giao Hàng",
+            GX :"Đã Giao"
+        }
+
+        let typeOrder ={
+            store : "Lấy Tại Cửa Hàng",
+            ship :"Giao Hàng"
+        }
+
+        let statusElement = document.getElementById("status");
+        let status = Number(statusElement.getAttribute("data-value"));
+
+        for (let i = 1; i <= status; i++) {
+            let tabSelector = document.querySelector(`#tab_${i}`);
+            tabSelector.classList.add("active");
+            line.style.left = tabSelector.offsetLeft + "px";
+            line.style.width = tabSelector.offsetWidth + "px";
+        }
+
+        function update(){
+            let phoneNumber =document.querySelector('#phoneNumber');
+            let address = document.querySelector('#address');
+            let code=   document.querySelector('#code');
+            if(!phoneNumber.value && !address.value){
+                alert('Vui lòng nhập đầy đủ thông tin địa chỉ hoặc số điện thoại!')
+                return;
+            }
+
+            var phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phoneNumber.value)) {
+                alert("Số điện thoại không hợp lệ!");
+                return;
+            }
+            let dataForm ={
+                phone : phoneNumber.value,
+                address : address.value,
+                code : code.innerText,
+            }
+            console.log(dataForm);
+
+            fetch("/admin/bill/update", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dataForm)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Cập nhật thành công!");
+                    } else {
+                        throw new Error("Cập nhật thất bại!");
                         location.reload();
-                    });
-            }
-        </script>
-    </section>
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert("Cập nhật thất bại!");
+                    location.reload();
+                });
+        }
+    </script>
+</section>
 </body>
 </html>
