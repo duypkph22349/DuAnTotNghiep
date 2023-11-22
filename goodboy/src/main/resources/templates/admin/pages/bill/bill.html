@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <meta name="author" content="Bin-It">
     <meta property="og:url"/>
 
-    <title>Nhân Viên</title>
+    <title>Bill</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -33,7 +33,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
-    //Phân Trang Cho Table
+
     <script type="text/javascript" style="text-align: center">
         function Pager(tableName, itemsPerPage) {
             this.tableName = tableName;
@@ -93,24 +93,24 @@
                 }
                 var element = document.getElementById(positionId);
 
-                var pagerHtml = '<span onclick="' + pagerName +
-                    '.prev();" class="pg-normal">Trước</span> | ';
-                for (var page = 1; page <= this.pages; page++)
-                    pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName +
-                        '.showPage(' + page + ');">' + page + '</span> | ';
-                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">Sau</span>';
-
-                element.innerHTML = pagerHtml;
+                // var pagerHtml = '<span onclick="' + pagerName +
+                //     '.prev();" class="pg-normal">Trước</span> | ';
+                // for (var page = 1; page <= this.pages; page++)
+                //     pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName +
+                //         '.showPage(' + page + ');">' + page + '</span> | ';
+                // pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal">Sau</span>';
+                //
+                // element.innerHTML = pagerHtml;
             }
         }
     </script>
 </head>
 
-<h1>Quản lý nhân viên</h1>
+<h1>Quản lý Hóa Đơn</h1>
 <body>
 <section layout:fragment="content">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Hóa Đơn</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -118,6 +118,8 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
+
+
     <style type="text/css">
         .dropdown-menu li {
             position: relative;
@@ -150,6 +152,8 @@
     </style>
 
 
+
+
     <Br>
     <div class="input-group mb-3">
         <button data-value="0" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -170,7 +174,7 @@
                 item.addEventListener('click', function() {
                     reset();
                     cbbSelect.innerText = item.innerText;
-                    cbbSelect.setAttribute("data-value",item.getAttribute("data-value"));
+                     cbbSelect.setAttribute("data-value",item.getAttribute("data-value"));
                 });
             });
             function reset (){
@@ -186,51 +190,60 @@
             }
         </script>
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã hóa đơn...">
+               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
     </div>
 
     <Br>
 
-    <a href="/admin/employee/form-add" class="btn btn-primary">New</a>
-    <a href="/admin/bill/get-file-excel" class="btn bg-body-secondary">Tải File Excel</a>
-
+    <div class="d-flex">
+        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center">
+            Tải File Excel
+        </a>
+        <button class="btn btn-primary me-2" id="refreshButton">Làm mới</button>
+        <select id="statusSelect" class="form-select" style="  width: 120px; height: 38px; font-size: 0.875rem;" onchange="selectFilterAction(this.value)">
+            <option value="">Chọn trạng thái</option>
+            <option value="Chờ xác nhận">Chờ xác nhận</option>
+            <option value="Chờ giao hàng">Chờ giao hàng</option>
+            <option value="Đang giao hàng">Đang giao hàng</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+            <option value="Thành công">Thành công</option>
+        </select>
+    </div>
 
     <!-- Table -->
     <div style="height: 500px; overflow: auto;">
 
-        <table class="table table-hover" id="myTable">
-            <thead class="position-sticky top-0">
+            <table class="table table-hover" id="myTable">
+                <thead class="position-sticky top-0">
 
-            <tr class="ex">
-                <th>#</th>
-                <th>Mã hóa đơn</th>
-                <th>Khách hàng</th>
-                <th>Địa chỉ</th>
-                <th>Phương thức thanh toán</th>
-                <th>Ngày giao hàng</th>
-                <th>Ngày nhận hàng</th>
-                <th>Số điện thoại</th>
-                <th>Phí vận chuyển</th>
-                <th>Số tiền giảm giá</th>
-                <th>Trạng thái</th>
-                <th>
-                    <div class="btn-group">
-                        <button type="button" class="btn p-0 m-0"><p class="p-0 m-0 fw-bold">Ngày tạo</p></button>
-                        <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul  class="dropdown-menu">
-                            <div class="container">
-                                <div class="row" id="fillter_month">
+                <tr class="ex">
+                    <th>#</th>
+                    <th>Mã hóa đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Địa chỉ</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Số điện thoại</th>
+                    <th>Loại đơn hàng</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>'
+                    <th>Ghi chú</th>
+                    <th>
+                        <div class="btn-group">
+                            <button type="button" class="btn p-0 m-0"><p class="p-0 m-0 fw-bold">Ngày tạo</p></button>
+                            <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul  class="dropdown-menu">
+                                <div class="container">
+                                    <div class="row" id="fillter_month">
 
-                                </div>
-                        </ul>
-                    </div>
-                </th>
-                <th>Ngày cập nhật</th>
-                <th>Ghi chú</th>
-                <th></th>
-            </tr>
+                                    </div>
+                            </ul>
+                        </div>
+                    </th>
+                    <th>Action</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody class="info_bill">
             </tbody>
@@ -407,24 +420,26 @@
                     let customer = item.customer;
                     let employee = item.employee;
                     let pay = item.pay;
+
+
                     let html=
                         `
-                        <tr class="trTb${index+1}">
+                        <tr th id="myTable" class="trTb${index+1}" >
 
                             <td>${index+1+numberI}</td>
                             <td >${item.code}</td>
                             <td>${customer.name}</td>
                             <td>${item.address}</td>
                             <td >${pay.payment_method}</td>
-                            <td >${item.delivery_date}</td>
-                            <td>${item.received_date}</td>
                             <td>${item.phone}</td>
-                            <td>${item.money_ship}</td>
-                            <td>${item.reduction_amount}</td>
-                            <td>${item.status}</td>
-                            <td>${item.createdAt}</td>
-                            <td>${item.updatedAt}</td>
+                            <td>${item.loaiDon === 0 ? 'Taị quầy' : 1 ?'online':''}</td>
+                            <td >${item.total_money} VNĐ</td>
+                            <td>${item.status === 1 ? 'Chờ xác nhận' :  item.status === 2 ? 'Chờ giao hàng' :  item.status=== 3 ? 'Đang giao hàng' :  item.status === 4? 'Đã giao hàng':  item.status === 5?'Thành công':''}</td>
                             <td>${item.note}</td>
+                            <td>${item.createdAt}</td>
+
+
+
                             <th>
                                <a href="/bill/bill-detail?id=${item.id}">
                                      <button
@@ -461,6 +476,48 @@
             }
             fillTable(url);
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lấy giá trị từ item.total_money
+            var totalMoney = parseFloat('${item.total_money}');
+
+            // Định dạng số tiền sang định dạng VNĐ
+            var formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalMoney);
+
+            // Gán giá trị đã định dạng vào thẻ td
+            document.getElementById('totalMoney').innerText = formattedMoney;
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lắng nghe sự kiện click trên nút refresh
+            document.getElementById('refreshButton').addEventListener('click', function () {
+                // Tải lại trang
+                location.reload();
+            });
+        });
+//lọc
+        function selectFilterAction(selectedStatus) {
+            // Thực hiện bộ lọc dựa trên giá trị được chọn từ select
+            filterAcction(selectedStatus);
+        }
+        function filterAcction(status) {
+            var table = document.getElementById("myTable");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var statusCell = cells[8];
+
+
+                if (status === '' || statusCell.textContent.trim() === status) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+
+        }
+
 
     </script>
 
