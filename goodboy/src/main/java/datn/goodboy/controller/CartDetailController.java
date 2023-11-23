@@ -1,24 +1,21 @@
 package datn.goodboy.controller;
 
-import datn.goodboy.model.entity.Cart;
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.model.entity.Customer;
-import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.ProductDetailService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 
 @RequestMapping("user")

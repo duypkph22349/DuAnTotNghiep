@@ -1,17 +1,6 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.entity.BillDetail;
-import datn.goodboy.repository.BillDetailRepository;
-import datn.goodboy.repository.BillRepository;
-import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BillDetailService {

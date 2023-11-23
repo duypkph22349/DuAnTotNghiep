@@ -4,19 +4,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import datn.goodboy.model.entity.Voucher;
-import datn.goodboy.model.request.ProductDetailRequest;
-import datn.goodboy.model.response.EmployeeResponse;
-import datn.goodboy.utils.convert.TrangThaiConvert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import datn.goodboy.model.entity.Employee;
+import datn.goodboy.model.response.EmployeeResponse;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.RolesService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 
 @Controller
 @RequestMapping("admin/employee")

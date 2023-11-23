@@ -1,10 +1,5 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.PatternType;
-import datn.goodboy.model.entity.Size;
-import datn.goodboy.model.entity.Styles;
-import datn.goodboy.repository.SizeRepository;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import datn.goodboy.model.entity.Size;
+import datn.goodboy.repository.SizeRepository;
 
 @Service
 public class SizeService {

@@ -1,20 +1,12 @@
 package datn.goodboy.controller.usercontroller;
 
-import datn.goodboy.model.entity.Color;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.request.ProductDetailFilter;
-import datn.goodboy.model.request.ProductDetailRequest;
-import datn.goodboy.repository.ProductDetailRepository;
-import datn.goodboy.service.*;
-import datn.goodboy.utils.convert.TrangThaiConvert;
-import jakarta.validation.Valid;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.request.ProductDetailFilter;
+import datn.goodboy.model.request.ProductDetailRequest;
+import datn.goodboy.service.BrandService;
+import datn.goodboy.service.ColorService;
+import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.ImageProductService;
+import datn.goodboy.service.MaterialService;
+import datn.goodboy.service.OriginService;
+import datn.goodboy.service.PatternTypeService;
+import datn.goodboy.service.ProductDetailService;
+import datn.goodboy.service.ProductService;
+import datn.goodboy.service.SizeService;
+import datn.goodboy.service.StylesService;
+import datn.goodboy.utils.convert.TrangThaiConvert;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("user")

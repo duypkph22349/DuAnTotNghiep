@@ -1,19 +1,15 @@
 package datn.goodboy.repository;
 
-import datn.goodboy.model.entity.Product;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.request.ProductDetailFilter;
-import datn.goodboy.model.response.ProductDetailResponse;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.request.ProductDetailFilter;
+import datn.goodboy.model.response.ProductDetailResponse;
 
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {

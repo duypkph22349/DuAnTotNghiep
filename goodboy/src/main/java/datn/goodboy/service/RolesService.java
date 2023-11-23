@@ -1,16 +1,16 @@
 package datn.goodboy.service;
 
-import datn.goodboy.model.entity.Product;
-import datn.goodboy.model.entity.Roles;
-import datn.goodboy.repository.RolesRepository;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
+import datn.goodboy.model.entity.Roles;
+import datn.goodboy.repository.RolesRepository;
 
 @Service
 public class RolesService {

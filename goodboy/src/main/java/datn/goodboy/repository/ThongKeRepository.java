@@ -1,8 +1,6 @@
 package datn.goodboy.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.response.TopProductSales;
 
 @Repository
 public interface ThongKeRepository extends JpaRepository<Bill, Integer> {

@@ -1,19 +1,17 @@
 package datn.goodboy.service;
 
 
-import datn.goodboy.model.entity.Cart;
-import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.repository.CartDetailRepository;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.repository.CartDetailRepository;
 
 @Service
 public class CartDetailService {

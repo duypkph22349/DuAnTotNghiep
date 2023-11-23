@@ -1,23 +1,5 @@
 package datn.goodboy.service;
 
-import datn.goodboy.exeption.rest.ErrorCreateBill;
-import datn.goodboy.model.entity.Brand;
-import datn.goodboy.model.entity.Color;
-import datn.goodboy.model.entity.Material;
-import datn.goodboy.model.entity.Origin;
-import datn.goodboy.model.entity.PatternType;
-import datn.goodboy.model.entity.Product;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.entity.Size;
-import datn.goodboy.model.entity.Styles;
-import datn.goodboy.model.request.ProductDetailFilter;
-import datn.goodboy.model.request.ProductDetailRequest;
-import datn.goodboy.repository.ProductDetailRepository;
-import datn.goodboy.service.serviceinterface.PanigationInterface;
-import datn.goodboy.service.serviceinterface.PanigationWithSearch;
-import datn.goodboy.service.cloud.CloudinaryImageService;
-import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,9 +14,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import datn.goodboy.exeption.rest.ErrorCreateBill;
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Color;
+import datn.goodboy.model.entity.Material;
+import datn.goodboy.model.entity.Origin;
+import datn.goodboy.model.entity.PatternType;
+import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.entity.Size;
+import datn.goodboy.model.entity.Styles;
+import datn.goodboy.model.request.ProductDetailFilter;
+import datn.goodboy.model.request.ProductDetailRequest;
+import datn.goodboy.repository.ProductDetailRepository;
+import datn.goodboy.service.cloud.CloudinaryImageService;
+import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
+import datn.goodboy.service.serviceinterface.PanigationInterface;
+import datn.goodboy.service.serviceinterface.PanigationWithSearch;
 
 @Service
 public class ProductDetailService implements PanigationInterface<ProductDetail>,

@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.response.TopProductSales;
 import datn.goodboy.repository.ThongKeRepository;
 
 @Service
