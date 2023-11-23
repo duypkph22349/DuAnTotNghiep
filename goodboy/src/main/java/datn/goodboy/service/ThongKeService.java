@@ -30,9 +30,9 @@ public class ThongKeService {
     return thongKeRepository.totalProductSale(date_from, date_to);
   }
 
-  public List<TopProductSales> getTopProductSales(LocalDateTime date_from, LocalDateTime date_to) {
-    return thongKeRepository.getTopProductsSale(date_from, date_to);
-  }
+  // public List<TopProductSales> getTopProductSales(LocalDateTime date_from, LocalDateTime date_to) {
+  //   return thongKeRepository.getTopProductsSale(date_from, date_to);
+  // }
 
   public List<Bill> getRecentBill(int totalPage, int pageSize) {
     PageRequest pageRequest = PageRequest.of(totalPage, pageSize);

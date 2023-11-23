@@ -27,17 +27,17 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
             "WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.deleted = false")
     int totalProductSale(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
-    @Query("SELECT new datn.goodboy.model.response.TopProductSales(pd, pd.name, pd.price, SUM(bd.quantity), SUM(bd.totalMoney)) "
-            +
-            "FROM BillDetail bd " +
-            "JOIN bd.idBill b " +
-            "JOIN bd.productDetail pd " +
-            "WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.status != -1 AND b.deleted = false "
-            +
-            "GROUP BY pd.id, pd.name, pd.price, pd.code, pd.createdAt, pd.deleted , pd  " + // Add pd.created_at to the
-                                                                                            // GROUP BY clause
-            "ORDER BY SUM(bd.totalMoney) DESC")
-    List<TopProductSales> getTopProductsSale(@Param("dateFrom") LocalDateTime dateFrom,
-            @Param("dateTo") LocalDateTime dateTo);
+//     @Query("SELECT new datn.goodboy.model.response.TopProductSales(pd, pd.name, pd.price, SUM(bd.quantity), SUM(bd.totalMoney)) "
+//             +
+//             "FROM BillDetail bd " +
+//             "JOIN bd.idBill b " +
+//             "JOIN bd.productDetail pd " +
+//             "WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.status != -1 AND b.deleted = false "
+//             +
+//             "GROUP BY pd.id, pd.name, pd.price, pd.code, pd.createdAt, pd.deleted , pd  " + // Add pd.created_at to the
+//                                                                                             // GROUP BY clause
+//             "ORDER BY SUM(bd.totalMoney) DESC")
+//     List<TopProductSales> getTopProductsSale(@Param("dateFrom") LocalDateTime dateFrom,
+//             @Param("dateTo") LocalDateTime dateTo);
 
 }
