@@ -77,10 +77,21 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     return null;
   }
 
+  public void updateStatus(int id) {
+    Optional<ProductDetail> pOptional = productDetailRepository.findById(id);
+    if (pOptional.isPresent()) {
+      if (pOptional.get().getStatus() == 0) {
+        pOptional.get().setStatus(1);
+      } else if (pOptional.get().getStatus() == 1) {
+        pOptional.get().setStatus(0);
+      }
+      productDetailRepository.save(pOptional.get());
+    }
+  }
+
   public ProductDetail saveProdudct(ProductDetailRequest request, List<MultipartFile> listImage) throws IOException {
     ProductDetail productDetail = new ProductDetail();
     mapRequestToEntity(request, productDetail);
-    productDetail.setId(-1);
     productDetail.setCreatedAt(LocalDateTime.now());
     ProductDetail savDetail = productDetailRepository.save(productDetail);
     int idProduct = savDetail.getId();

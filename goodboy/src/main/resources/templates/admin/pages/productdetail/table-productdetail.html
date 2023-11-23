@@ -18,8 +18,8 @@
     </style>
 </head>
 
-<body>
-    <section layout:fragment="content">
+<body layout:fragment="content">
+    <section>
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
@@ -30,7 +30,7 @@
             </nav>
         </div><!-- End Page Title -->
         <div class="container-fluid">
-            <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')" >
+            <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')">
                 <a href="/admin/productdetail/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
                 <div>
                     <!-- <div class="input-group">
@@ -202,14 +202,15 @@
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
                                     th:checked="${productdetail.status}"
-                                    th:onclick="'window.location.href=/admin/productdetail/setactive/' + ${productdetail.id}"
+                                    th:onchange="'updateProductDetailStatus(' + this.checked + ',' + ${productdetail.id} + ')'"
                                     th:attr="data-productdetail-id=${productdetail.id}">
                             </div>
                         </td>
                         <td th:if="${productdetail.deleted}">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-                                    th:checked="${productdetail.status}" onclick="window.location.href='/index'">
+                                    th:checked="${productdetail.status}"
+                                    th:onchange="'updateProductDetailStatus(' + this.checked + ',' + ${productdetail.id} + ')'">
                             </div>
                         </td>
                         <td>
@@ -334,6 +335,10 @@
             </form>
         </div>
     </section>
+    <script>function updateProductDetailStatus(checked,productId) {
+            var url = '/admin/productdetail/setactive/' + productId;
+            window.location.href = url;
+        }</script>
 </body>
 
 </html>
