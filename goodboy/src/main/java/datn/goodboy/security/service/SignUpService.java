@@ -37,7 +37,7 @@ public class SignUpService {
     if (!emailHelper.isEmailExists(request.getEmail())) {
       Employee employee = new Employee();
       employee.setBirth_date(request.getBirthDay());
-      employee.setEmail(request.getEmail());
+      employee.setEmail(request.getEmail().toLowerCase());
       employee.setGender(request.isSex());
       employee.setName(request.getName());
       employee.setDeleted(false);
@@ -62,7 +62,7 @@ public class SignUpService {
       customer = customerService.saveCustomer(customer);
       Account account = new Account();
       account.setCustomer(customer);
-      account.setEmail(request.getEmail());
+      account.setEmail(request.getEmail().toLowerCase());
       account.setPassword(encoder.encode(request.getPassword()));
       account.setStatus(1);
       return accountService.saveAccount(account);

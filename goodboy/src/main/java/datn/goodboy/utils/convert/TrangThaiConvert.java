@@ -40,4 +40,29 @@ public class TrangThaiConvert {
     }
     return "Error";
   }
+
+  public static String statusOfBill(int status) {
+    if (status == 5) {
+      return "<span class=\"badge bg-success\">Thành Công</span>";
+    }
+    if (status == 1) {
+      return "<span class=\"badge text-bg-warning\">Chờ xác nhận</span>";
+    }
+    if (status == 2) {
+      return "<span class=\"badge text-bg-secondary\">Chờ giao hàng</span>";
+    }
+    if (status == 3) {
+      return "<span class=\"badge text-bg-info\">Đang giao hàng</span>";
+    }
+    if (status == 4) {
+      return "<span class=\"badge badge text-bg-light\">Đã giao hàng</span>";
+    }
+    if (status == -1) {
+      return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
+    }
+    if (status == -2) {
+      return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
+    }
+    return "<span class=\"badge text-bg-dark\">Không xác định</span>";
+  }
 }

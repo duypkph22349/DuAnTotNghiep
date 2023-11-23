@@ -18,7 +18,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     @Query(value = "SELECT emp.email FROM Employee emp ")
     List<String> getListEmail();
 
-    @Query(value = "SELECT emp FROM Employee emp WHERE emp.email LIKE :email")
+    @Query(value = "SELECT emp FROM Employee emp WHERE emp.email LIKE CONCAT('%', :email, '%')")
     List<Employee> getEmployeesByEmail(@Param("email") String email);
 
     @Query(value = "SELECT emp FROM Employee emp WHERE emp.email LIKE CONCAT('%', :email, '%')")

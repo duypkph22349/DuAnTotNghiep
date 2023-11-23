@@ -28,13 +28,14 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
                         "WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.deleted = false")
         int totalProductSale(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
-        @Query(value = "SELECT\r\n" + //
+        @Query(value = "SELECT\r\n TOP 5" + //
                         "  pd.[id] ,pd.[name] ,pd.[price]\r\n" + //
                         ",sum(bd.[quantity])\r\n" + //
                         ",sum(bd.[total_money])\r\n" + //
                         "from [bill_detail] bd join [bill] b on b.[id]=bd.[id_bill]\r\n" + //
                         "        join [product_detail] pd on pd.[id]=bd.[id_product_detail]\r\n" + //
-                        "where (b.[created_at] BETWEEN :dateFrom AND :dateTo) AND b.[status] != -1 and b.[deleted] = 0\r\n" + //
+                        "where (b.[created_at] BETWEEN :dateFrom AND :dateTo) AND b.[status] != -1 and b.[deleted] = 0\r\n"
+                        + //
                         "group by pd.[id],pd.[name],pd.[price]\r\n" + //
                         "order by sum(bd.[total_money]) desc", nativeQuery = true)
         List<Object> getTopProductsSale(@Param("dateFrom") LocalDateTime dateFrom,
