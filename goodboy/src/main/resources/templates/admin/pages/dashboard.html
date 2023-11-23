@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
   layout:decorate="~{admin/layout}">
 
 <head>
@@ -10,14 +10,14 @@
   <section layout:fragment="content">
     <div class="row">
       <!-- Left side columns -->
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <div class="row">
 
           <!-- Sales Card -->
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
 
-              <div class="filter">
+              <!-- <div class="filter">
                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                   <li class="dropdown-header text-start">
@@ -28,532 +28,96 @@
                   <li><a class="dropdown-item" href="#">Tháng này</a></li>
                   <li><a class="dropdown-item" href="#">Năm nay</a></li>
                 </ul>
-              </div>
+              </div> -->
 
               <div class="card-body">
-                <h5 class="card-title">Sản phẩm đã bán <span>| Hôm nay</span></h5>
+                <h5 class="card-title">Sản phẩm đã bán <span></span></h5>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-cart"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>145</h6>
-                  <span
-                      class="text-muted small pt-2 ps-1">increase</span>
-
+                    <h6 th:text="${totalProductSales}"></h6>
                   </div>
                 </div>
               </div>
-
             </div>
           </div><!-- End Sales Card -->
-
           <!-- Revenue Card -->
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
-
-              <div class="filter">
+              <!-- <div class="filter">
                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                   <li class="dropdown-header text-start">
                     <h6>Filter</h6>
                   </li>
-
-
                   <li><a class="dropdown-item" href="#">Hôm nay</a></li>
                   <li><a class="dropdown-item" href="#">Tháng này</a></li>
                   <li><a class="dropdown-item" href="#">Năm nay</a></li>
                 </ul>
-              </div>
-
+              </div> -->
               <div class="card-body">
-                <h5 class="card-title">Doanh thu<span>| Hôm nay</span></h5>
-
+                <h5 class="card-title">Doanh thu<span></span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-currency-dollar"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>8,346,223tr</h6>
-                     <span
-                      class="text-muted small pt-2 ps-1">increase</span>
-
+                    <h6
+                      th:text="${#strings.replace(#numbers.formatDecimal(totalIncome, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                    </h6>
                   </div>
                 </div>
               </div>
-
             </div>
           </div><!-- End Revenue Card -->
-
           <!-- Customers Card -->
           <div class="col-xxl-4 col-xl-12">
-
             <div class="card info-card customers-card">
-
-<!--              <div class="filter">-->
-<!--                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>-->
-<!--                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">-->
-<!--                  <li class="dropdown-header text-start">-->
-<!--                    <h6>Filter</h6>-->
-<!--                  </li>-->
-
-<!--                  <li><a class="dropdown-item" href="#">Today</a></li>-->
-<!--                  <li><a class="dropdown-item" href="#">This Month</a></li>-->
-<!--                  <li><a class="dropdown-item" href="#">This Year</a></li>-->
-<!--                </ul>-->
-<!--              </div>-->
-
               <div class="card-body">
-                <h5 class="card-title">Số Lượng Khách Hàng </h5>
-
+                <h5 class="card-title">Số Lượng Bill</h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-people"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>36</h6>
-                     <span
-                      class="text-muted small pt-2 ps-1">decrease</span>
+                    <h6 th:text="${totalBill}"></h6>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div><!-- End Customers Card -->
-
-          <!-- Reports -->
-          <div class="col-12">
-            <div class="card">
-
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Hôm nay</a></li>
-                  <li><a class="dropdown-item" href="#">Tháng này</a></li>
-                  <li><a class="dropdown-item" href="#">Năm nay</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Thống kê <span>/Hôm nay</span></h5>
-
-                <!-- Line Chart -->
-                <div id="reportsChart"></div>
-
-                <script>
-                  document.addEventListener("DOMContentLoaded", () => {
-                    new ApexCharts(document.querySelector("#reportsChart"), {
-                      series: [{
-                        name: 'Sản phẩm đã bán',
-                        data: [31, 40, 28, 51, 42, 82, 56],
-                      }, {
-                        name: 'Doanh thu',
-                        data: [11, 32, 45, 32, 34, 52, 41]
-                      }, {
-                        name: 'Khách hàng',
-                        data: [15, 11, 32, 18, 9, 24, 11]
-                      }],
-                      chart: {
-                        height: 350,
-                        type: 'area',
-                        toolbar: {
-                          show: false
-                        },
-                      },
-                      markers: {
-                        size: 4
-                      },
-                      colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                      fill: {
-                        type: "gradient",
-                        gradient: {
-                          shadeIntensity: 1,
-                          opacityFrom: 0.3,
-                          opacityTo: 0.4,
-                          stops: [0, 90, 100]
-                        }
-                      },
-                      dataLabels: {
-                        enabled: false
-                      },
-                      stroke: {
-                        curve: 'smooth',
-                        width: 2
-                      },
-                      xaxis: {
-                        type: 'datetime',
-                        categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                      },
-                      tooltip: {
-                        x: {
-                          format: 'dd/MM/yy HH:mm'
-                        },
-                      }
-                    }).render();
-                  });
-                </script>
-                <!-- End Line Chart -->
-
-              </div>
-
-            </div>
-          </div><!-- End Reports -->
-
-          <!-- Recent Sales -->
           <div class="col-12">
             <div class="card recent-sales overflow-auto">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Hóa Đơn <span></span></h5>
+              <table class="table table-borderless datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">Ten Khách Hàng</th>
+                    <th scope="col">Nhan Vien</th>
+                    <th scope="col">Giá Bán</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="bill : ${resentBill}">
+                    <td th:text="${bill.customer_name}"></td>
+                    <td th:text="${bill.employee?.name}"></td>
+                    <td th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></td>
 
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Hôm nay</a></li>
-                  <li><a class="dropdown-item" href="#">Tháng này</a></li>
-                  <li><a class="dropdown-item" href="#">Năm nay</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Hóa Đơn <span>| Hôm nay</span></h5>
-
-                <table class="table table-borderless datatable">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Khách Hàng</th>
-                      <th scope="col">Sản Phẩm</th>
-                      <th scope="col">Giá Bán</th>
-                      <th scope="col">Trạng Thái</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row"><a href="#">#1</a></th>
-                      <td>Nguyễn Thị Nga</td>
-                      <td><a href="#" class="text-primary">Áo Choàng Loại 1</a></td>
-                      <td>240.000 VNĐ</td>
-                      <td><span class="badge bg-success">Đã Giao</span></td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#">#2</a></th>
-                      <td>Nguyễn Văn Dũng</td>
-                      <td><a href="#" class="text-primary">Áo Choàng Loại 2</a></td>
-                      <td>340.000 VNĐ</td>
-                      <td><span class="badge bg-warning">Đang Giao</span></td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#">#3</a></th>
-                      <td>Nguyễn Văn Long</td>
-                      <td><a href="#" class="text-primary">Áo Choàng Loại 3</a></td>
-                      <td>140.000 VNĐ</td>
-                      <td><span class="badge bg-success">Đã Giao</span></td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#">#4</a></th>
-                      <td>Trần Thị Nhi</td>
-                      <td><a href="#" class="text-primar">Áo Choàng Loại 4</a></td>
-                      <td>340.000 VNĐ</td>
-                      <td><span class="badge bg-danger">Đã Hủy</span></td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#">#5</a></th>
-                      <td>Nguyễn Thị Hà</td>
-                      <td><a href="#" class="text-primary">Áo Choàng Loại 5</a></td>
-                      <td>560.000 VNĐ</td>
-                      <td><span class="badge bg-success">Đã Giao</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-
-              </div>
+                  </tr>
+                </tbody>
+              </table>
 
             </div>
-          </div><!-- End Recent Sales -->
-
-          <!-- Top Selling -->
-          <div class="col-12">
-            <div class="card top-selling overflow-auto">
-
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Hôm nay</a></li>
-                  <li><a class="dropdown-item" href="#">Tháng này</a></li>
-                  <li><a class="dropdown-item" href="#">Năm nay</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body pb-0">
-                <h5 class="card-title">Sản phẩm bán chạy <span>| Hôm nay</span></h5>
-
-                <table class="table table-borderless">
-                  <thead>
-                    <tr>
-                      <th scope="col">Ảnh</th>
-                      <th scope="col">Tên sản phẩm</th>
-                      <th scope="col">Giá bán</th>
-                      <th scope="col">Số lượng</th>
-                      <th scope="col">Tổng doanh thu</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row"><a href="#"><img   alt=""></a></th>
-                      <td><a href="#" class="text-primary fw-bold">Áo Choàng Loại 1</a></td>
-                      <td>450.000 VNĐ</td>
-                      <td class="fw-bold">5</td>
-                      <td>2.250.000 VNĐ</td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#"><img   alt=""></a></th>
-                      <td><a href="#" class="text-primary fw-bold">Áo Choàng Loại 2</a></td>
-                      <td>350.000 VNĐ</td>
-                      <td class="fw-bold">2</td>
-                      <td>700.000 VNĐ</td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#"><img   alt=""></a></th>
-                      <td><a href="#" class="text-primary fw-bold">Áo Choàng Loại 3</a></td>
-                      <td>250.000 VNĐ</td>
-                      <td class="fw-bold">1</td>
-                      <td>250.000 VNĐ</td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#"><img   alt=""></a></th>
-                      <td><a href="#" class="text-primary fw-bold">Áo Choàng Loại 4</a></td>
-                      <td>650.000 VNĐ</td>
-                      <td class="fw-bold">3</td>
-                      <td>1.950.000 VNĐ</td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#"><img   alt=""></a></th>
-                      <td><a href="#" class="text-primary fw-bold">Áo Choàng Loại 5</a></td>
-                      <td>550.000 VNĐ</td>
-                      <td class="fw-bold">1</td>
-                      <td>550.000 VNĐ</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-              </div>
-
-            </div>
-          </div><!-- End Top Selling -->
-
-        </div>
-      </div><!-- End Left side columns -->
-
-      <!-- Right side columns -->
-      <div class="col-lg-4">
-
-
-        <!-- Budget Report -->
-        <div class="card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Hôm nay</a></li>
-              <li><a class="dropdown-item" href="#">Tháng Này</a></li>
-              <li><a class="dropdown-item" href="#">Năm Nay</a></li>
-            </ul>
-          </div>
-
-          <div class="card-body pb-0">
-            <h5 class="card-title">Ngân sách <span>| Tháng Này</span></h5>
-
-            <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                  legend: {
-                    data: ['Allocated Budget', 'Actual Spending']
-                  },
-                  radar: {
-                    // shape: 'circle',
-                    indicator: [{
-                      name: 'Áo Choàng Loại 1',
-                      max: 6500
-                    },
-                    {
-                      name: 'Áo Choàng Loại 2',
-                      max: 16000
-                    },
-                    {
-                      name: 'Áo Choàng Loại 3',
-                      max: 30000
-                    },
-                    {
-                      name: 'Áo Choàng Loại 4',
-                      max: 38000
-                    },
-                    {
-                      name: 'Áo Choàng Loại 5',
-                      max: 52000
-                    },
-                    {
-                      name: 'Áo Choàng Loại 6',
-                      max: 25000
-                    }
-                    ]
-                  },
-                  series: [{
-                    name: 'Budget vs spending',
-                    type: 'radar',
-                    data: [{
-                      value: [4200, 3000, 20000, 35000, 50000, 18000],
-                      name: 'Ngân sách phân bổ'
-                    },
-                    {
-                      value: [5000, 14000, 28000, 26000, 42000, 21000],
-                      name: 'Chi tiêu thực tế'
-                    }
-                    ]
-                  }]
-                });
-              });
-            </script>
 
           </div>
-        </div><!-- End Budget Report -->
-
-        <!-- Website Traffic -->
-        <div class="card">
-
-
-          <div class="card-body pb-0">
-            <h5 class="card-title">Biểu Đồ Đơn Hàng </h5>
-
-            <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                echarts.init(document.querySelector("#trafficChart")).setOption({
-                  tooltip: {
-                    trigger: 'item'
-                  },
-                  legend: {
-                    top: '5%',
-                    left: 'center'
-                  },
-                  series: [{
-                    name: 'Access From',
-                    type: 'pie',
-                    radius: ['40%', '70%'],
-                    avoidLabelOverlap: false,
-                    label: {
-                      show: false,
-                      position: 'center'
-                    },
-                    emphasis: {
-                      label: {
-                        show: true,
-                        fontSize: '18',
-                        fontWeight: 'bold'
-                      }
-                    },
-                    labelLine: {
-                      show: false
-                    },
-                    data: [{
-                      value: 1048,
-                      name: 'Thành công'
-                    },
-                    {
-                      value: 735,
-                      name: 'Chờ xác nhận'
-                    },
-                    {
-                      value: 580,
-                      name: 'Đang giao'
-                    },
-                    {
-                      value: 484,
-                      name: 'Đã hủy'
-                    },
-
-                    ]
-                  }]
-                });
-              });
-            </script>
-
-          </div>
-        </div><!-- End Website Traffic -->
-
-        <!-- News & Updates Traffic -->
-        <div class="card">
-<!--          <div class="filter">-->
-<!--            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>-->
-<!--            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">-->
-<!--              <li class="dropdown-header text-start">-->
-<!--                <h6>Filter</h6>-->
-<!--              </li>-->
-
-<!--              <li><a class="dropdown-item" href="#">Today</a></li>-->
-<!--              <li><a class="dropdown-item" href="#">This Month</a></li>-->
-<!--              <li><a class="dropdown-item" href="#">This Year</a></li>-->
-<!--            </ul>-->
-<!--          </div>-->
-
-          <div class="card-body pb-0">
-            <h5 class="card-title">SẢN PHẨM NEW & UPDATE</h5>
-
-            <div class="news">
-              <div class="post-item clearfix">
-                <img   alt="">
-                <h4><a href="#">Khăn Choàng Vắt Vai</a></h4>
-                <p>Loại hàng quảng châu cao cấp mua tặng người yêu tuyệt vời...</p>
-              </div>
-
-              <div class="post-item clearfix">
-                <img  alt="">
-                <h4><a href="#">Khăn Choàng Chùm Đầu</a></h4>
-                <p>Loại hoàng loại 1 dùng tơ tằm mới dệt bao chùm đầu mưa vẫn ướt...</p>
-              </div>
-
-              <div class="post-item clearfix">
-                <img  alt="">
-                <h4><a href="#">Khăn Choàng Hình Con Cọp</a></h4>
-                <p>Hàng loại 2 chuyên cho các bé cute dễ thương...</p>
-              </div>
-
-              <div class="post-item clearfix">
-                <img  alt="">
-                <h4><a href="#">Khăn Choàng Hình Con Bướm</a></h4>
-                <p>Hàng loại 1 chuyên cho các cô em bánh bèo checkin siu cute...</p>
-              </div>
-
-              <div class="post-item clearfix">
-                <img  alt="">
-                <h4><a href="#">Khăn Choàng Tơ Nhện</a></h4>
-                <p>Được dệt từ 1000 sợi tơ nhện buổi sáng tinh mơ bao sạch...</p>
-              </div>
-
-            </div><!-- End sidebar recent posts-->
-
-          </div>
-        </div><!-- End News & Updates -->
-
-      </div><!-- End Right side columns -->
-
+        </div><!-- End Recent Sales -->
+      </div>
+    </div><!-- End Left side columns -->
     </div>
   </section>
 </body>

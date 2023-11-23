@@ -42,12 +42,12 @@ public class ThongkeController {
     return thongKeService.getTotalProductSale(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
   }
 
-  @GetMapping("/topproductsales")
-  public List<TopProductSales> getTopProductSales(
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_from,
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_to) {
-    return thongKeService.getTopProductSales(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
-  }
+  // @GetMapping("/topproductsales")
+  // public List<TopProductSales> getTopProductSales(
+  //     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_from,
+  //     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_to) {
+  //   return thongKeService.getTopProductSales(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
+  // }
 
   @GetMapping("/recentbills")
   public List<Bill> getRecentBills(@RequestParam int totalPage, @RequestParam int pageSize) {
