@@ -1,56 +1,42 @@
-It looks like you have a combination of code snippets and directives related to a Java project, specifically involving authentication, authorization, and formatting in a Spring application. Additionally, you've mentioned some Thymeleaf expressions for formatting currency and date/time.
 
-Let's break down your README file to include relevant information:
+```markdown
 
----
+## Formatting giá tiền
 
-# Project Title (DuAnTotNghiep)
+Biểu thức này sử dụng các chức năng định dạng số và thao tác chuỗi của Thymeleaf để hiển thị phiếu giảm giá bằng Đồng Việt Nam (VND), loại bỏ mọi dấu '.00'.
 
-## Overview
-Briefly describe the purpose and scope of the project.
-
-## Authentication and Authorization
-
-### Using `@PreAuthorize`
-In your Java code, you are using the `@PreAuthorize` annotation to restrict access to a method with the 'ADMIN' authority. Ensure that only users with the 'ADMIN' authority can execute the annotated method.
-
-Example:
-```java
-@PreAuthorize("hasAuthority('ADMIN')")
-public void adminOnlyMethod() {
-    // Your code here
-}
-```
-
-## Formatting
-
-### Currency Formatting
-You are using Thymeleaf expressions to format a currency value. The expression includes replacing trailing '.00' and appending ' VNĐ'.
-
-Example:
 ```html
 th:text="${#strings.replace(#numbers.formatDecimal(voucher?.discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
 ```
 
-### Date/Time Formatting
-You are using Thymeleaf to format a date/time value in the 'dd-MM-yyyy HH:mm' format.
+## Formatting ngày và giờ
 
-Example:
+Biểu thức này sử dụng định dạng thời gian của Thymeleaf để hiển thị thời gian bắt đầu của phiếu thưởng ở định dạng 'dd-MM-yyyy HH:mm'.
+
 ```html
 td th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"
 ```
 
-## How to Use
-Provide instructions on how to clone, set up, and run the project. Include any dependencies or configurations needed for successful execution.
+## Order Types
 
-## Additional Notes
-Any other relevant information, tips, or special considerations can be added here.
+Mã này đại diện cho phương pháp đặt hàng.
 
----
+- 0: Tại quầy (At the counter)
+- 1: Online
 
-This is a basic structure, and you should tailor it to fit the specifics of your project. Include more details about your project, dependencies, and any special considerations that users might need to know.
-# DuAnTotNghiep
-In OrderCounter Code
- OrderTypes
-0 is in Counter
-1 is Online
+## Status cho tất cả bảng
+
+Mã này áp dụng vào status cho tất cả bảng
+
+- 0: Ngừng kích hoạt (Deactivated)
+- 1: Kích hoạt (Activated)
+
+## Bill Status Timeline
+
+Mã này áp dụng cho timeline trạng thái đơn hàng
+
+- 1:Chờ xác nhận (Confirmed successfully)
+- 2: Chờ giao hàng (Pending delivery)
+- 3: Đang giao hàng (In transit)
+- 4: Đã giao hàng (Delivered)
+- 5: Thành công (Successful)

@@ -1,0 +1,16 @@
+name: Display READMEDB
+
+on:
+  push:
+    branches:
+      - master1.1  # Thay thế "main" bằng tên nhánh chính của bạn
+
+jobs:
+  display-readme:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Display READMEDB
+      run: echo "<meta http-equiv='refresh' content='0;url=READMEDB.md'>" > indexx.html
