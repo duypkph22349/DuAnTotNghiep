@@ -424,7 +424,9 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   public Optional<ProductDetail> getProductDetailById(Integer id) {
     return productDetailRepository.findById(id);
   }
-
+  public Optional<ProductDetail> getProductByLong(Long id) {
+    return productDetailRepository.getProductByLongId(id);
+  }
   public boolean enoughtProduct(int productId, int quantity) {
     Optional<ProductDetail> productDetail = this.getProductDetailById(productId);
     if (productDetail.isPresent()) {

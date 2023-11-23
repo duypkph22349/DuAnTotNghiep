@@ -1,10 +1,9 @@
 package datn.goodboy.controller.testcontroller;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,34 +21,73 @@ public class ThongkeController {
   @Autowired
   private ThongKeService thongKeService;
 
-  @GetMapping("/doanhthu")
-  public ResponseEntity<Integer> getDoanhThu(
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_from,
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_to) {
-    int totalDoanhThu = thongKeService.getToTalDoanhThu(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
+  // today
+  @GetMapping("/todaydoanhthu")
+  public ResponseEntity<BigDecimal> getToDayDoanhThu() {
+    BigDecimal totalDoanhThu = thongKeService.getTodayToTalDoanhThu();
     return ResponseEntity.ok(totalDoanhThu);
   }
 
-  @GetMapping("/totalbill")
-  public int getTotalBill(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_from,
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_to) {
-    return thongKeService.getTotalBill(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
+  @GetMapping("/todaytotalbill")
+  public int getToDayTotalBill() {
+    return thongKeService.getTodayTotalBill();
   }
 
-  @GetMapping("/totalproductsale")
-  public int getTotalProductSale(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_from,
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_to) {
-    return thongKeService.getTotalProductSale(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
+  @GetMapping("/todaytotalproductsale")
+  public int getTotalToDayProductSale() {
+    return thongKeService.getTodayToProducSales();
   }
 
-  // @GetMapping("/topproductsales")
-  // public List<TopProductSales> getTopProductSales(
-  //     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_from,
-  //     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date_to) {
-  //   return thongKeService.getTopProductSales(date_from.atStartOfDay(), date_to.atTime(23, 59, 59));
-  // }
+  @GetMapping("/todaytopproductsales")
+  public List<TopProductSales> getToDayTopProductSales() {
+    return thongKeService.getToDayTopProductSales();
+  }
+  // mouth
 
-  @GetMapping("/recentbills")
+  @GetMapping("/thismouthdoanhthu")
+  public ResponseEntity<BigDecimal> getThisMouthDoanhThu() {
+    BigDecimal totalDoanhThu = thongKeService.getThisMouthToTalDoanhThu();
+    return ResponseEntity.ok(totalDoanhThu);
+  }
+
+  @GetMapping("/thismouthtotalbill")
+  public int getThisMouthTotalBill() {
+    return thongKeService.getThisMouthTotalBill();
+  }
+
+  @GetMapping("/thismouthtotalproductsale")
+  public int getThisMouthTotalProductSale() {
+    return thongKeService.getThisMouthToProducSales();
+  }
+
+  @GetMapping("/thismouthtopproductsales")
+  public List<TopProductSales> getThisMouthTopProductSales() {
+    return thongKeService.getThisMouthTopProductSales();
+  }
+  // year
+
+  @GetMapping("/thisyeardoanhthu")
+  public ResponseEntity<BigDecimal> getThisYearDoanhThu() {
+    BigDecimal totalDoanhThu = thongKeService.getThisYearToTalDoanhThu();
+    return ResponseEntity.ok(totalDoanhThu);
+  }
+
+  @GetMapping("/thisyeartotalbill")
+  public int getThisYearTotalBill() {
+    return thongKeService.getThisYearTotalBill();
+  }
+
+  @GetMapping("/thisyeartotalproductsale")
+  public int getThisYearTotalProductSale() {
+    return thongKeService.getThisYearToProducSales();
+  }
+
+  @GetMapping("/thisyeartopproductsales")
+  public List<TopProductSales> getThisYearTopProductSales() {
+    return thongKeService.getThisYearTopProductSales();
+  }
+
+  @GetMapping("/thisyearrecentbills")
   public List<Bill> getRecentBills(@RequestParam int totalPage, @RequestParam int pageSize) {
     return thongKeService.getRecentBill(totalPage, pageSize);
   }

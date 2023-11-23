@@ -1,5 +1,7 @@
 package datn.goodboy.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -60,6 +62,9 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
         // List<ProductDetail> findByCategoryId(Integer categoryId , Sort sort);
 
         Page<ProductDetail> findAll(Pageable pageable);
+
+        @Query("SELECT pd FROM ProductDetail pd WHERE pd.id = :id")
+        Optional<ProductDetail> getProductByLongId(@Param("id") Long id);
 
         // Page<ProductDetail> findByCategoryId(Integer categoryId, Pageable pageable);
 }
