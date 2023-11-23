@@ -88,8 +88,7 @@ public class AdminBill {
             List<Bill> billList = billService.getAllBill();
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Thông tin billl");
-            String[] headersSheet = {"Mã hóa đơn", "Khách hàng", "Nhân viên", "Phương thức thanh toán",
-                    "Ngày xác nhận", "Ngày giao hàng", "Ngày nhận hàng", "Ngày hoàn thành",
+            String[] headersSheet = {"Mã hóa đơn", "Khách hàng", "Nhân viên", "Phương thức thanh toán", "Ngày hoàn thành",
                     "Tên khách hàng", "Số điện thoại", "Địa chỉ", "Phí vận chuyển", "Tổng tiền",
                     "Số tiền giảm giá", "Tiền đặt cọc","Loại đơn hàng", "Ghi chú", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
             Row headerRow = sheet.createRow(0);
@@ -106,21 +105,18 @@ public class AdminBill {
                 row.createCell(2).setCellValue(bill.getEmployee().getName());
                 row.createCell(3).setCellValue(bill.getPay().getPayment_method());
                 row.createCell(4).setCellValue(bill.getCompletion_date().format(formatter));
-                row.createCell(5).setCellValue(bill.getDelivery_date().format(formatter));
-                row.createCell(6).setCellValue(bill.getReceived_date().format(formatter));
-                row.createCell(7).setCellValue(bill.getCompletion_date().format(formatter));
-                row.createCell(8).setCellValue(bill.getCustomer_name());
-                row.createCell(9).setCellValue(bill.getPhone());
-                row.createCell(10).setCellValue(bill.getAddress());
-                row.createCell(11).setCellValue(bill.getMoney_ship());
-                row.createCell(12).setCellValue(bill.getTotal_money());
-                row.createCell(13).setCellValue(bill.getReduction_amount());
-                row.createCell(14).setCellValue(bill.getDeposit());
-                row.createCell(15).setCellValue(bill.getLoaiDon());
-                row.createCell(16).setCellValue(bill.getNote());
-                row.createCell(17).setCellValue(bill.getStatus());
-                row.createCell(18).setCellValue(bill.getCreatedAt().format(formatter));
-                row.createCell(19).setCellValue(bill.getUpdatedAt().format(formatter));
+                row.createCell(5).setCellValue(bill.getCustomer_name());
+                row.createCell(6).setCellValue(bill.getPhone());
+                row.createCell(7).setCellValue(bill.getAddress());
+                row.createCell(8).setCellValue(bill.getMoney_ship());
+                row.createCell(9).setCellValue(bill.getTotal_money());
+                row.createCell(10).setCellValue(bill.getReduction_amount());
+                row.createCell(11).setCellValue(bill.getDeposit());
+                row.createCell(12).setCellValue(bill.getLoaiDon());
+                row.createCell(13).setCellValue(bill.getNote());
+                row.createCell(14).setCellValue(bill.getStatus());
+                row.createCell(15).setCellValue(bill.getCreatedAt().format(formatter));
+                row.createCell(16).setCellValue(bill.getUpdatedAt().format(formatter));
             }
 
             // Tạo luồng dữ liệu để ghi workbook vào
