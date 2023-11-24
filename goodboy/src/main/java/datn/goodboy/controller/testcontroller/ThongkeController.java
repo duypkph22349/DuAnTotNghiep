@@ -29,18 +29,18 @@ public class ThongkeController {
   }
 
   @GetMapping("/todaytotalbill")
-  public int getToDayTotalBill() {
-    return thongKeService.getTodayTotalBill();
+  public ResponseEntity<Integer> getToDayTotalBill() {
+    return ResponseEntity.ok(thongKeService.getTodayTotalBill());
   }
 
   @GetMapping("/todaytotalproductsale")
-  public int getTotalToDayProductSale() {
-    return thongKeService.getTodayToProducSales();
+  public ResponseEntity<Integer> getTotalToDayProductSale() {
+    return ResponseEntity.ok(thongKeService.getTodayToProducSales());
   }
 
   @GetMapping("/todaytopproductsales")
-  public List<TopProductSales> getToDayTopProductSales() {
-    return thongKeService.getToDayTopProductSales();
+  public ResponseEntity<List<TopProductSales>> getToDayTopProductSales() {
+    return ResponseEntity.ok(thongKeService.getToDayTopProductSales());
   }
   // mouth
 
@@ -51,18 +51,18 @@ public class ThongkeController {
   }
 
   @GetMapping("/thismouthtotalbill")
-  public int getThisMouthTotalBill() {
-    return thongKeService.getThisMouthTotalBill();
+  public ResponseEntity<Integer> getThisMouthTotalBill() {
+    return ResponseEntity.ok(thongKeService.getThisMouthTotalBill());
   }
 
   @GetMapping("/thismouthtotalproductsale")
-  public int getThisMouthTotalProductSale() {
-    return thongKeService.getThisMouthToProducSales();
+  public ResponseEntity<Integer> getThisMouthTotalProductSale() {
+    return ResponseEntity.ok(thongKeService.getThisMouthToProducSales());
   }
 
   @GetMapping("/thismouthtopproductsales")
-  public List<TopProductSales> getThisMouthTopProductSales() {
-    return thongKeService.getThisMouthTopProductSales();
+  public ResponseEntity<List<TopProductSales>> getThisMouthTopProductSales() {
+    return ResponseEntity.ok(thongKeService.getThisMouthTopProductSales());
   }
   // year
 
@@ -73,22 +73,22 @@ public class ThongkeController {
   }
 
   @GetMapping("/thisyeartotalbill")
-  public int getThisYearTotalBill() {
-    return thongKeService.getThisYearTotalBill();
+  public ResponseEntity<Integer> getThisYearTotalBill() {
+    return ResponseEntity.ok(thongKeService.getThisYearTotalBill());
   }
 
   @GetMapping("/thisyeartotalproductsale")
-  public int getThisYearTotalProductSale() {
-    return thongKeService.getThisYearToProducSales();
+  public ResponseEntity<Integer> getThisYearTotalProductSale() {
+    return ResponseEntity.ok(thongKeService.getThisYearToProducSales());
   }
 
   @GetMapping("/thisyeartopproductsales")
-  public List<TopProductSales> getThisYearTopProductSales() {
-    return thongKeService.getThisYearTopProductSales();
+  public ResponseEntity<List<TopProductSales>> getThisYearTopProductSales() {
+    return ResponseEntity.ok(thongKeService.getThisYearTopProductSales());
   }
 
   @GetMapping("/thisyearrecentbills")
-  public List<Bill> getRecentBills(@RequestParam int totalPage, @RequestParam int pageSize) {
-    return thongKeService.getRecentBill(totalPage, pageSize);
+  public ResponseEntity<List<Bill>> getRecentBills(@RequestParam int totalPage, @RequestParam int pageSize) {
+    return ResponseEntity.ok(thongKeService.getRecentBill(totalPage, pageSize));
   }
 }

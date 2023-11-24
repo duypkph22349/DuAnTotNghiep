@@ -19,7 +19,7 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
         int totalBill(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
         @Query(value = "SELECT SUM(b.total_money) FROM Bill b WHERE b.createdAt BETWEEN :dateFrom AND :dateTo")
-        BigDecimal totalIncome(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
+        Long totalIncome(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
         @Query(value = "SELECT SUM(bd.quantity) " +
                         "FROM BillDetail bd " +

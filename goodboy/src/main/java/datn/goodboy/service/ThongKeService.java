@@ -24,8 +24,10 @@ public class ThongKeService {
   private ProductDetailService productDetailService;
 
   public BigDecimal getToTalDoanhThu(LocalDateTime date_from, LocalDateTime date_to) {
+    BigDecimal totalIncom = BigDecimal.valueOf(0);
     try {
-      return thongKeRepository.totalIncome(date_from, date_to);
+      totalIncom = BigDecimal.valueOf(thongKeRepository.totalIncome(date_from, date_to));
+      return totalIncom;
     } catch (Exception e) {
       System.out.println(e);
       return BigDecimal.valueOf(0);
@@ -33,8 +35,10 @@ public class ThongKeService {
   }
 
   public int getTotalBill(LocalDateTime date_from, LocalDateTime date_to) {
+    int totalBill = 0;
     try {
-      return thongKeRepository.totalBill(date_from, date_to);
+      totalBill = thongKeRepository.totalBill(date_from, date_to);
+      return totalBill;
     } catch (Exception e) {
       System.out.println(e);
       return 0;
@@ -75,12 +79,7 @@ public class ThongKeService {
   }
 
   public int getTodayToProducSales() {
-    try {
-      return this.getTotalProductSale(LocalDate.now().atStartOfDay(), LocalDate.now().atTime(23, 59, 59));
-    } catch (Exception e) {
-      System.out.println(e);
-      return 0;
-    }
+    return this.getTotalProductSale(LocalDate.now().atStartOfDay(), LocalDate.now().atTime(23, 59, 59));
   }
 
   public BigDecimal getTodayToTalDoanhThu() {
