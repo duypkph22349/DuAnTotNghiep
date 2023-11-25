@@ -47,7 +47,6 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setTypes(voucher.isTypes());
     voucher1.setMax_discount(voucher.getMaxDiscount());
     voucher1.setMin_order(voucher.getMinOrder());
-    voucher1.setCreated_at(LocalDateTime.now());
     voucher1.setDeleted(false);
     System.out.println(voucher1.toString());
     return voucherRepository.save(voucher1);
@@ -79,7 +78,6 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucher1.setTypes(request.isTypes());
       voucher1.setMax_discount(request.getMaxDiscount());
       voucher1.setMin_order(request.getMinOrder());
-      voucher1.setUpdate_at(LocalDateTime.now());
       return voucherRepository.save(voucher1);
     } else {
       return null;
