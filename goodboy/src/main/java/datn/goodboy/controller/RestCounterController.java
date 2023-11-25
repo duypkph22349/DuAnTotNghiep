@@ -37,10 +37,17 @@ public class RestCounterController {
   private VoucherService voucherService;
   @Autowired
   private ConterService countService;
+
   @GetMapping("voucherAble")
-    public ResponseEntity<List<Voucher>> getAbleVoucher(){
-      return ResponseEntity.ok().body(voucherService.getAllVoucherAble());
-    }
+  public ResponseEntity<List<Voucher>> getAbleVoucher() {
+    return ResponseEntity.ok().body(voucherService.getAllVoucherAble());
+  }
+
+  @GetMapping("voucher/{id}")
+  public ResponseEntity<Voucher> getVoucher(@PathVariable("id") int id) {
+    return ResponseEntity.ok().body(voucherService.getVoucherByIde(id));
+  }
+
   @GetMapping("employees")
   public ResponseEntity<List<Employee>> getAllEmp() {
     return ResponseEntity.ok().body(employeeService.getAllEmployee());
