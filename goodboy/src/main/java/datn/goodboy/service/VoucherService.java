@@ -36,6 +36,14 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     return voucherRepository.findById(id);
   }
 
+  public Voucher getVoucherByIde(int id) {
+    Optional<Voucher> voucher = voucherRepository.findById(id);
+    if (voucher.isPresent()) {
+      return voucher.get();
+    }
+    return null;
+  }
+
   public Voucher saveVoucher(VoucherRequest voucher) {
     Voucher voucher1 = new Voucher();
     voucher1.setName(voucher.getName());

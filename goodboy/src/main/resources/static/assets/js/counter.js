@@ -380,8 +380,7 @@ function formInOrder(id) {
                                           <span class="currency-symbol">
                                           <i class="bi bi-cash-coin"></i>
                                           </span>
-                                          <select type="number" class="form-control" id="voucher-choose" onchange="finalPrice(${id})">
-                                            <option class="text-center" disabled selected> Chọn Voucher </option>
+                                          <select type="number" class="form-control text-center" id="voucher-choose" onchange="finalPrice(${id})">
                                           </select>
                                       </div>
                                       </div>
@@ -434,7 +433,7 @@ function formInOrder(id) {
                                                       <span class="fw-500" id="totalAmount">0
                                                           đ</span>
                                                   </div>
-                                                  <div class="box-monney d-none">
+                                                  <div class="box-monney">
                                                       <span class="title">Giảm
                                                           giá&nbsp;</span>
                                                       <span id="discount-amount" class="fw-500 red">0 ₫</span>
@@ -592,6 +591,7 @@ function addnewOrderPage() {
     getAllprovide(id);
     fillAllEmployee(id);
     getFirstProductPage(id);
+    getVoucherAble(id);
     var i, taborder, tabbutton;
     taborder = document.getElementsByClassName("taborder");
     for (i = 0; i < taborder.length; i++) {
@@ -1323,7 +1323,7 @@ async function getShipCost(orderId, quantity) {
     }
 
     const heights = 2 * quantity + 2;
-    const lengths =60;
+    const lengths = 60;
     const weights = 200 * quantity + 120;
     const widths = 20;
     await fetch(
@@ -1379,6 +1379,9 @@ async function finalPrice(formId) {
   const finalAmount = document.querySelector(`#hoaDon${formId} #final-price`);
   const remainPrice = document.querySelector(`#hoaDon${formId} #remain-price`);
   const changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`);
+  const discountAmount = document.querySelector(
+    `#hoaDon${formId} #discount-amount`
+  );
   const transferAmount = document.querySelector(
     `#hoaDon${formId} #transfer-amount`
   );
@@ -1415,6 +1418,7 @@ async function finalPrice(formId) {
   }
   finalAmount.innerHTML = formatToVND(transferAmountvl + surchargeAmountvl);
   const calMoney = transferAmountvl + surchargeAmountvl - totalMoney;
+  checkVoucher(formId, totalMoney);
   if (calMoney > 0) {
     remainPrice.innerHTML = formatToVND(calMoney);
     changeAmount.innerHTML = formatToVND(0);
@@ -1481,37 +1485,70 @@ async function getErrorMessage(formData) {
   return errorMessage;
 }
 
-function getVoucherAble(orderId){
- const voucherSelect = document.querySelector(`#hoaDon${orderId} #voucher-choose`);
-
- fetch("/rest/data/counter/voucherAble", {
-   method: "GET",
- })
-   .then((res) => res.json())
-   .then((data) => {
-     data.forEach(function (product) {
-      console.log(data)
-       var option = document.createElement("option");
-        defaultOption.value = ""; // Set the value as needed
-        defaultOption.textContent = "Chọn Voucher"; // Set the text content
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        voucherSelect.appendChild(defaultOption);
-        if(data.data.status ==200){
-          const options = data.data;
-            for (let i = 0; i < options.length; i++) {
-                const option = document.createElement("option");
-                option.text = `${options[i].name}`
-                selectCity.appendChild(option);
-        }
-       voucherSelect.appendChild(option);
+async function checkVoucher(orderId, totalMoney) {
+  console.log(totalMoney);
+  const voucherSelect = document.querySelector(
+    `#hoaDon${orderId} #voucher-choose`
+  );
+  const discountAmount = document.querySelector(
+    `#hoaDon${orderId} #discount-amount`
+  );
+  const voucCherId = parseInt(voucherSelect.value);
+  if (!isNaN(voucCherId)) {
+    try {
+      const response = await fetch(`/rest/data/counter/voucher/${voucCherId}`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-     });
-   });
+      const data = await response.json();
+      console.log(data);
+      if (data.code == 400) {
+        discountAmount.value = 0;
+        getVoucherAble(orderId);
+      } else {
+        if(data.min_order < totalMoney){
+          if(data.
+        }
+        console.log("app dung thanh cong")
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 }
-async function getQrThanhToan(orderId){
 
+async function getVoucherAble(orderId) {
+  const voucherSelect = document.querySelector(
+    `#hoaDon${orderId} #voucher-choose`
+  );
+  voucherSelect.innerHTML = "";
+  var option = document.createElement("option");
+  option.text = "Chọn Voucher"; // Set the text content
+  option.disabled = true;
+  option.selected = true;
+  voucherSelect.appendChild(option);
+  try {
+    const response = await fetch("/rest/data/counter/voucherAble", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data);
+    data.forEach((product) => {
+      const option = document.createElement("option");
+      option.value = product.id;
+      option.text = `${product.name}`;
+      voucherSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
+async function getQrThanhToan(orderId) {}
 window.addEventListener("beforeunload", function (event) {
   const confirmationMessage = "Are you sure you want to leave?";
   event.returnValue = confirmationMessage;
