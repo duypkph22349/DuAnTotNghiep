@@ -87,8 +87,8 @@ public class ThongkeController {
     return ResponseEntity.ok(thongKeService.getThisYearTopProductSales());
   }
 
-  @GetMapping("/thisyearrecentbills")
-  public ResponseEntity<List<Bill>> getRecentBills(@RequestParam int totalPage, @RequestParam int pageSize) {
-    return ResponseEntity.ok(thongKeService.getRecentBill(totalPage, pageSize));
+  @GetMapping("/recentbills")
+  public ResponseEntity<List<Bill>> getRecentBills() {
+    return ResponseEntity.ok(thongKeService.getRecentBill(0, 10));
   }
 }

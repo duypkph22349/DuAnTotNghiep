@@ -6,9 +6,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.ldap.SortControl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
@@ -73,7 +76,8 @@ public class ThongKeService {
   }
 
   public List<Bill> getRecentBill(int totalPage, int pageSize) {
-    PageRequest pageRequest = PageRequest.of(totalPage, pageSize);
+    Sort sort = Sort.by("createdAt").descending();
+    PageRequest pageRequest = PageRequest.of(totalPage, pageSize, sort);
     Page<Bill> billPage = thongKeRepository.findAll(pageRequest);
     return billPage.getContent();
   }
