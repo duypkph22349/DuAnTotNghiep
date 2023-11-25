@@ -117,10 +117,6 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     }
   }
 
-  public void calDiscount() {
-
-  }
-
   public boolean isVoucherAbleToUse(int totalMoney, int id) {
     LocalDateTime now = LocalDateTime.now();
     Optional<Voucher> voucherOp = voucherRepository.findById(id);
