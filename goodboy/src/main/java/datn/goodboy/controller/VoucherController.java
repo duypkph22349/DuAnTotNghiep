@@ -40,8 +40,8 @@ public class VoucherController {
   public String textSearch = "";
 
   public int[] pagenumbers;
-  public String sortBy = "name";
-  public boolean sortDir = true;
+  public String sortBy = "updated_at";
+  public boolean sortDir = false;
   public int pageno = 0;
   public int totalpage = 0;
 

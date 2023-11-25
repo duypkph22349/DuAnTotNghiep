@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +34,7 @@ public class Voucher {
   private int id;
   @Column(name = "status")
   private int status;
-  @Column(name = "code" , insertable = false, updatable = false)
+  @Column(name = "code", insertable = false, updatable = false)
   private String code;
   @Column(name = "name")
   private String name;
@@ -49,7 +51,7 @@ public class Voucher {
   @Column(name = "created_at")
   LocalDateTime created_at;
   @Column(name = "update_at")
-  LocalDateTime update_at;
+  LocalDateTime updated_at;
   @Column(name = "types")
   boolean types;
   @Column(name = "deleted")
@@ -58,4 +60,16 @@ public class Voucher {
   Double max_discount;
   @Column(name = "min_order")
   Double min_order;
+
+  @PrePersist
+  protected void onCreate() {
+    this.created_at = LocalDateTime.now();
+    this.updated_at = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    this.updated_at = LocalDateTime.now();
+  }
+
 }
