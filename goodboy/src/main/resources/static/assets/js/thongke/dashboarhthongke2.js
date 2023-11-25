@@ -171,7 +171,10 @@ async function getThisMouthTopProductSale() {
       const imageCell = document.createElement("th");
       imageCell.setAttribute("scope", "row");
 
-      if (!product.productDetail?.idProduct?.imageProducts?.isEmpty()) {
+      if (
+        product.productDetail?.idProduct?.imageProducts &&
+        product.productDetail.idProduct.imageProducts.length > 0
+      ) {
         const img = document.createElement("img");
         img.setAttribute(
           "src",
@@ -335,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function getResentBill() {
   try {
-    const response = await fetch("/api/thongke/todaytopproductsales");
+    const response = await fetch("/api/thongke/recentbills");
     const data = await response.json();
 
     const tbody = document.getElementById("resentBillTable");

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import datn.goodboy.controller.testcontroller.ThongkeController;
 import datn.goodboy.service.ThongKeService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 
@@ -30,7 +29,7 @@ public class DashboardController {
     @GetMapping(value = "admin/pages/dashboard")
     public String mmDashboard(Model model) {
         model.addAttribute("resentBill",
-                thongKeService.getRecentBill(0, 5));
+                thongKeService.getRecentBill(0, 10));
         return "admin/pages/dashboard.html";
     }
 }
