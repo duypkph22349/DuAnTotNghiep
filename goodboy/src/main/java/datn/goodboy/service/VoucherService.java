@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class VoucherService implements PanigationInterface<Voucher>,PanigationWithSearchStatus<Voucher> {
+public class VoucherService implements PanigationInterface<Voucher>, PanigationWithSearchStatus<Voucher> {
   @Autowired
   VoucherRepository voucherRepository;
 
@@ -91,16 +91,30 @@ public class VoucherService implements PanigationInterface<Voucher>,PanigationWi
     return null;
   }
 
-
   public List<Voucher> getAllVoucherAble() {
     return voucherRepository.getAbleVoucher();
   }
-  public void useVoucher(int id ){
-    Optional<Voucher>  voucher = voucherRepository.findById(id);
+
+  public void useVoucher(int id) {
+    Optional<Voucher> voucher = voucherRepository.findById(id);
     if (voucher.isPresent()) {
       voucher.get().setQuantily(voucher.get().getQuantily() - 1);
       voucherRepository.save(voucher.get());
     }
+  }
+
+  public boolean isVoucherAbleToUse(int totalMoney, int id) {
+    LocalDateTime now = LocalDateTime.now();
+    Optional<Voucher> voucherOp = voucherRepository.findById(id);
+    if (voucherOp.isPresent()) {
+      Voucher vc = voucherOp.get();
+      if (vc.getQuantily() > 0) {
+        if (vc.getStart_time().isBefore(now) && vc.getEnd_time().isAfter(now)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public VoucherRequest getVoucherRequetById(int id) {
@@ -153,7 +167,7 @@ public class VoucherService implements PanigationInterface<Voucher>,PanigationWi
   @Override
   public List<Voucher> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir, String txtSearch,
       int status) {
-   if (pageNo > getPageNumber(pageSize)) {
+    if (pageNo > getPageNumber(pageSize)) {
       return null;
     }
     List<Voucher> ChiTietSanPhams;
@@ -166,7 +180,7 @@ public class VoucherService implements PanigationInterface<Voucher>,PanigationWi
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
     // findAll method and pass pageable instance
-    Page<Voucher> page = voucherRepository.searchStatus(pageable,txtSearch,status);
+    Page<Voucher> page = voucherRepository.searchStatus(pageable, txtSearch, status);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
   }
@@ -175,7 +189,7 @@ public class VoucherService implements PanigationInterface<Voucher>,PanigationWi
   public int getPageNumber(int rowcount, String txtSearch, int status) {
 
     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<Voucher> page = voucherRepository.searchStatus(pageable,txtSearch,status);
+    Page<Voucher> page = voucherRepository.searchStatus(pageable, txtSearch, status);
     int totalPage = page.getTotalPages();
     return totalPage;
   }
@@ -183,10 +197,11 @@ public class VoucherService implements PanigationInterface<Voucher>,PanigationWi
   @Override
   public int[] getPanigation(int rowcount, int pageno, String txtSearch, int status) {
     Pageable pageable = PageRequest.of(0, rowcount);
-    Page<Voucher> page = voucherRepository.searchStatus(pageable,txtSearch,status); // findAll()
+    Page<Voucher> page = voucherRepository.searchStatus(pageable, txtSearch, status); // findAll()
     int totalPage = page.getTotalPages();
     return Panigation(pageno, totalPage);
   }
+
   public int[] Panigation(int pageno, int totalPage) {
     int[] rs;
     if (totalPage <= 1) {
