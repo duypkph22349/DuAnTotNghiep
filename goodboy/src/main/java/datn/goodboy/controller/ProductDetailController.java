@@ -150,7 +150,6 @@ public class ProductDetailController {
   @GetMapping("/getcountrow")
   public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue,
       @ModelAttribute("fillter") ProductDetailFilter fillter) {
-    System.out.println(selectedValue);
     rowcount = Integer.parseInt(selectedValue);
     if (fillter != null) {
       if (fillter.filterAble()) {
@@ -295,7 +294,6 @@ public class ProductDetailController {
 
   @GetMapping("filter")
   public String storeProductDetail(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
-    System.out.println(fillter.toString());
     return "redirect:index";
   }
 
@@ -303,7 +301,6 @@ public class ProductDetailController {
   public String resetFilter(Model model, @ModelAttribute("fillter") ProductDetailFilter fillter) {
     fillter.resetFilter();
     model.addAttribute("fillter", fillter);
-    System.out.println(fillter.toString());
     return "redirect:index";
   }
 
@@ -319,7 +316,6 @@ public class ProductDetailController {
       @RequestParam("listimage") List<MultipartFile> listimage,
       @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
       BindingResult theBindingResult) throws IOException {
-    System.out.println(productDetailRequest);
     if (theBindingResult.hasErrors()) {
       return "/admin/pages/productdetail/update-productdetail.html";
     } else {

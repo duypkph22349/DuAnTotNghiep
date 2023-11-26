@@ -32,7 +32,6 @@ public class ThongKeService {
       totalIncom = BigDecimal.valueOf(thongKeRepository.totalIncome(date_from, date_to));
       return totalIncom;
     } catch (Exception e) {
-      System.out.println(e);
       return BigDecimal.valueOf(0);
     }
   }
@@ -43,7 +42,6 @@ public class ThongKeService {
       totalBill = thongKeRepository.totalBill(date_from, date_to);
       return totalBill;
     } catch (Exception e) {
-      System.out.println(e);
       return 0;
     }
   }
@@ -52,7 +50,6 @@ public class ThongKeService {
     try {
       return thongKeRepository.totalProductSale(date_from, date_to);
     } catch (Exception e) {
-      System.out.println(e);
       return 0;
     }
   }
@@ -61,7 +58,6 @@ public class ThongKeService {
     List<TopProductSales> lisTopProductSales = new ArrayList();
     for (Object object : thongKeRepository.getTopProductsSale(date_from, date_to)) {
       Object[] objectArray = (Object[]) object;
-      System.out.println(objectArray);
       TopProductSales topProductSales = new TopProductSales();
       topProductSales.setId_product_detail((Long) objectArray[0]);
       topProductSales.setProductDetail(

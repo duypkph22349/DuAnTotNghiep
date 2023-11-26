@@ -48,7 +48,7 @@
                         <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=false)}"><i
                                 class="fas fa-arrow-down"></i></a>
                     </th>
-                    <th scope="col">Ngày bắt đầu
+                    <!-- <th scope="col">Ngày bắt đầu
                         <a th:href="@{/admin/voucher/sort(sortBy=start_time ,sortDir=true)}"><i
                                 class="fas fa-arrow-up"></i></a>
                         <a th:href="@{/admin/voucher/sort(sortBy=start_time ,sortDir=false)}"><i
@@ -59,7 +59,7 @@
                                 class="fas fa-arrow-up"></i></a>
                         <a th:href="@{/admin/voucher/sort(sortBy=end_time ,sortDir=false)}"><i
                                 class="fas fa-arrow-down"></i></a>
-                    </th>
+                    </th> -->
                     <th scope="col">Số Lượng
                         <a th:href="@{/admin/voucher/sort(sortBy=quantily ,sortDir=true)}"><i
                                 class="fas fa-arrow-up"></i></a>
@@ -72,12 +72,12 @@
                         <a th:href="@{/admin/voucher/sort(sortBy=discount ,sortDir=false)}"><i
                                 class="fas fa-arrow-down"></i></a>
                     </th>
-                    <th scope="col">Giảm tối da
+                    <!-- <th scope="col">Giảm tối da
                         <a th:href="@{/admin/voucher/sort(sortBy=max_discount ,sortDir=true)}"><i
                                 class="fas fa-arrow-up"></i></a>
                         <a th:href="@{/admin/voucher/sort(sortBy=max_discount ,sortDir=false)}"><i
                                 class="fas fa-arrow-down"></i></a>
-                    </th>
+                    </th> -->
                     <th scope="col">Hóa đơn tối thiểu
                         <a th:href="@{/admin/voucher/sort(sortBy=min_order ,sortDir=true)}"><i
                                 class="fas fa-arrow-up"></i></a>
@@ -96,16 +96,16 @@
             <tbody>
                 <tr th:each="voucher : ${list}">
                     <td th:text="${voucher.name}"></td>
-                    <td th:text="${#temporals.format(voucher?.start_time, 'HH:mm dd-MM-yyyy')}"></td>
-                    <td th:text="${#temporals.format(voucher?.end_time, 'HH:mm dd-MM-yyyy')}"></td>
+                    <!-- <td th:text="${#temporals.format(voucher?.start_time, 'HH:mm dd-MM-yyyy')}"></td> -->
+                    <!-- <td th:text="${#temporals.format(voucher?.end_time, 'HH:mm dd-MM-yyyy')}"></td> -->
                     <td th:text="${voucher?.quantily}"></td>
                     <td th:if="${voucher.types}" th:text="${voucher?.discount} +' %'"></td>
                     <td th:unless="${voucher.types}"
                         th:text="${#strings.replace(#numbers.formatDecimal(voucher?.discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                     </td>
-                    <td
+                    <!-- <td
                         th:text="${#strings.replace(#numbers.formatDecimal(voucher?.max_discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
-                    </td>
+                    </td> -->
                     <td
                         th:text="${#strings.replace(#numbers.formatDecimal(voucher?.min_order, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                     </td>
@@ -133,7 +133,7 @@
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                        <h5 class="modal-title" id="staticBackdropLabel" th:text="${voucher.name}"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -159,10 +159,10 @@
                                                 </span></p>
 
                                             <p> <strong>Trạng Thái :</strong> <span th:unless="${voucher.deleted}"
-                                                    th:text="${convert.convertTrangThai(voucher.status)}">
+                                                    th:utext="${convert.statusOfVoucher(voucher)}">
                                                 </span>
                                                 <span th:if="${voucher.deleted}" class="text-decoration-line-through"
-                                                    th:text="${convert.convertTrangThai(voucher.status)}">
+                                                    th:utext="${convert.statusOfVoucher(voucher)}">
                                                 </span>
                                             </p>
 

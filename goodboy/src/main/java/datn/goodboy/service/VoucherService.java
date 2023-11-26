@@ -11,8 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.model.entity.VoucherDetail;
 import datn.goodboy.model.request.VoucherRequest;
+import datn.goodboy.repository.VoucherDetailRepository;
 import datn.goodboy.repository.VoucherRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 import datn.goodboy.service.serviceinterface.PanigationWithSearchStatus;
@@ -27,6 +30,8 @@ import java.util.UUID;
 public class VoucherService implements PanigationInterface<Voucher>, PanigationWithSearchStatus<Voucher> {
   @Autowired
   VoucherRepository voucherRepository;
+  @Autowired
+  VoucherDetailRepository voucherdetailRepository;
 
   public List<Voucher> getAllVouchers() {
     return voucherRepository.findAll();
@@ -56,7 +61,6 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setMax_discount(voucher.getMaxDiscount());
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setDeleted(false);
-    System.out.println(voucher1.toString());
     return voucherRepository.save(voucher1);
   }
 
@@ -101,12 +105,20 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     return voucherRepository.getAbleVoucher();
   }
 
-  public void useVoucher(int id) {
+  public void useVoucher(Bill bill, int id) {
     Optional<Voucher> voucher = voucherRepository.findById(id);
     if (voucher.isPresent()) {
       voucher.get().setQuantily(voucher.get().getQuantily() - 1);
+      VoucherDetail voucherDetail = new VoucherDetail();
+      voucherDetail.setBill(bill);
+      voucherDetail.setVoucher(voucher.get());
+      voucherdetailRepository.save(voucherDetail);
       voucherRepository.save(voucher.get());
     }
+  }
+
+  public void calDiscount() {
+
   }
 
   public boolean isVoucherAbleToUse(int totalMoney, int id) {

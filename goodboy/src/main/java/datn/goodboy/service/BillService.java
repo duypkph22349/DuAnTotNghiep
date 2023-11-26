@@ -98,7 +98,6 @@ public class BillService {
     }
 
     public Page<Bill> filerByMonth(Integer month, Integer numberSize) {
-        System.out.println(month);
         Pageable pageable = PageRequest.of(numberSize, 5);
         return billRepository.findAllByMonthSortedByLatest(month, pageable);
     }
@@ -107,7 +106,6 @@ public class BillService {
         Bill billSys = billRepository.findByCode(bill.getCode())
                 .orElseThrow(() -> new Exception("Not found"));
         billSys.setAddress(bill.getAddress());
-        System.out.println(bill.getAddress());
         billSys.setPhone(bill.getPhone());
         billRepository.save(billSys);
     }

@@ -380,7 +380,7 @@ function formInOrder(id) {
                                           <span class="currency-symbol">
                                           <i class="bi bi-cash-coin"></i>
                                           </span>
-                                          <select type="number" class="form-control text-center" id="voucher-choose" onchange="finalPrice(${id})">
+                                          <select type="number" class="form-control text-center" id="voucher-choose" onchange="updateTongTien(${id})">
                                           </select>
                                       </div>
                                       </div>
@@ -531,45 +531,46 @@ function formInOrder(id) {
                               }
                           </style>
                           <div class="box-order-status">
-                              <div style="font-size: 16px;">
-                              </div>
-                              <div style="display: flex;">
-                                  <span class="order-action-button" style="margin-right: 8px;"><button type="button"
-                                          class="ant-btn ant-btn-primary"
-                                          style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
-                                                  role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                                      viewBox="64 64 896 896" focusable="false" data-icon="printer"
-                                                      width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                      <path
-                                                          d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                                      </path>
-                                                  </svg></span> In (F4)</span></button>
-                                      <button type="button" class="ant-btn ant-btn-primary"
-                                          onclick="removeOrderPage(${id})"
-                                          style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
-                                                  role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                                      viewBox="64 64 896 896" focusable="false" data-icon="printer"
-                                                      width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                      <path
-                                                          d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                                      </path>
-                                                  </svg></span> Xóa (F5)</span></button>
-                                      <div id="order-print-div"></div>
-                                      <div></div>
-                                  </span><span id="order-action-button" class="order-action-button"><button
-                                          type="submit" class="ant-btn ant-btn-primary"
-                                          style="font-size: 14px; height: 100%;"><span><span role="img"
-                                                  aria-label="save" class="anticon anticon-save"><svg
-                                                      viewBox="64 64 896 896" focusable="false" data-icon="save"
-                                                      width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                      <path
-                                                          d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
-                                                      </path>
-                                                  </svg></span> Thanh Toán</span></button>
-                                      <div></div>
-                                  </span>
-                              </div>
-                          </div>
+        <div style="display: flex;">
+                <span class="order-action-button" style="margin-right: 8px;">
+                        <button type="button" class="ant-btn ant-btn-primary"
+                                style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
+                                                role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                        viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                        width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                        <path
+                                                                d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                        </path>
+                                                </svg></span> In (F4)</span>
+                        </button>
+                </span>
+                <span class="order-action-button" style="margin-right: 8px;">
+                        <button type="button" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
+                                style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
+                                                role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                        viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                        width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                        <path
+                                                                d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                        </path>
+                                                </svg></span> Xóa (F5)</span>
+                        </button>
+                </span>
+                <span class="order-action-button" style="margin-right: 8px;">
+                        <button type="submit" class="ant-btn ant-btn-primary"
+                                style="font-size: 14px; height: 100%;"><span><span role="img" aria-label="save"
+                                                class="anticon anticon-save"><svg viewBox="64 64 896 896"
+                                                        focusable="false" data-icon="save" width="1em" height="1em"
+                                                        fill="currentColor" aria-hidden="true">
+                                                        <path
+                                                                d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
+                                                        </path>
+                                                </svg></span> Thanh Toán</span>
+                        </button>
+                </span>
+        </div>
+</div>
+
                       </section>
                   </div>
               </div>
@@ -659,7 +660,6 @@ function removeOrderPage(orderId) {
     if (indexToRemove !== -1) {
       listtab.splice(indexToRemove, 1);
     }
-    const orderbtnRemove = document.getElementById(`hd${orderId}`);
     const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
     const orderToRemove = document.getElementById(`hoaDon${orderId}`);
     if (orderToRemove) {
@@ -669,11 +669,6 @@ function removeOrderPage(orderId) {
     }
     if (orderbtnrmRemove) {
       orderbtnrmRemove.remove();
-    } else {
-      console.log(`Order with ID ${orderId} not found.`);
-    }
-    if (orderbtnRemove) {
-      orderbtnRemove.remove();
     } else {
       console.log(`Order with ID ${orderId} not found.`);
     }
@@ -1136,7 +1131,6 @@ async function thanhtoan(formValuesJSON, idform) {
         if (indexToRemove !== -1) {
           listtab.splice(indexToRemove, 1);
         }
-        const orderbtnRemove = document.getElementById(`hd${idform}`);
         const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
         const orderToRemove = document.getElementById(`hoaDon${idform}`);
         if (orderToRemove) {
@@ -1146,11 +1140,6 @@ async function thanhtoan(formValuesJSON, idform) {
         }
         if (orderbtnrmRemove) {
           orderbtnrmRemove.remove();
-        } else {
-          console.log(`Order with ID ${idform} not found.`);
-        }
-        if (orderbtnRemove) {
-          orderbtnRemove.remove();
         } else {
           console.log(`Order with ID ${idform} not found.`);
         }
@@ -1191,8 +1180,10 @@ async function buildFormData(formId) {
   formData.fullAddress = form.querySelector("#FullAddress").value;
   formData.specificAddress = form.querySelector("input#address").value;
   formData.note = form.querySelector("textarea#note").value;
-
-  // Calculate totalMoney
+  formData.voucherid = parseInt(
+    form.querySelector("#voucher-choose").value,
+    10
+  );
   let totalMoney = 0;
   for (const row of form.querySelectorAll(
     `#cartTable tbody tr.table-body-row`
@@ -1202,7 +1193,7 @@ async function buildFormData(formId) {
     const productQuantity = parseInt(quantityElement.value, 10);
     if (productQuantity <= 0 || isNaN(productQuantity)) {
       alert("Số lượng sản phẩm không đúng");
-      return;
+      return 0;
     }
     try {
       const product = await getProductDetails(productId);
@@ -1237,7 +1228,8 @@ async function buildFormData(formId) {
   } else {
     formData.totalShip = 0;
   }
-  formData.totalMoney = totalMoney;
+  const discountValue = await checkVoucher(formId, totalMoney);
+  formData.totalMoney = totalMoney - discountValue;
   formData.reductionAmount = 0;
   console.log(formData);
   return formData;
@@ -1268,7 +1260,7 @@ async function updateTongTien(formId) {
 
     if (productQuantity <= 0 || isNaN(productQuantity)) {
       alert("Số lượng sản phẩm không đúng");
-      return;
+      return 0;
     }
     quantityofproduct += productQuantity;
     try {
@@ -1280,6 +1272,7 @@ async function updateTongTien(formId) {
       console.error("Error fetching or calculating total money:", error);
     }
   }
+  totalAmount.innerHTML = formatToVND(totalMoney);
   if (
     parseInt(
       document.querySelector(
@@ -1299,8 +1292,9 @@ async function updateTongTien(formId) {
       }
     } catch {}
   }
-  finalAmount.innerHTML = formatToVND(totalMoney);
-  totalAmount.innerHTML = formatToVND(totalMoney);
+
+  const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
+  finalAmount.innerHTML = formatToVND(totalMoney - discountValue);
   finalPrice(formId);
 }
 async function getShipCost(orderId, quantity) {
@@ -1397,7 +1391,7 @@ async function finalPrice(formId) {
 
     if (productQuantity <= 0 || isNaN(productQuantity)) {
       alert("Số lượng sản phẩm không đúng");
-      return;
+      return 0;
     }
     try {
       const product = await getProductDetails(productId);
@@ -1417,15 +1411,16 @@ async function finalPrice(formId) {
     surchargeAmountvl = 0;
   }
   finalAmount.innerHTML = formatToVND(transferAmountvl + surchargeAmountvl);
-  const calMoney = transferAmountvl + surchargeAmountvl - totalMoney;
-  checkVoucher(formId, totalMoney);
+  const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
+  const calMoney =
+    transferAmountvl + surchargeAmountvl + discountValue - totalMoney;
   if (calMoney > 0) {
     remainPrice.innerHTML = formatToVND(calMoney);
     changeAmount.innerHTML = formatToVND(0);
   } else {
     remainPrice.innerHTML = formatToVND(0);
     changeAmount.innerHTML = formatToVND(
-      totalMoney - (transferAmountvl + surchargeAmountvl)
+      totalMoney - (transferAmountvl + surchargeAmountvl + discountValue)
     );
   }
 }
@@ -1485,16 +1480,12 @@ async function getErrorMessage(formData) {
   return errorMessage;
 }
 
-async function checkVoucher(orderId, totalMoney) {
-  console.log(totalMoney);
-  const voucherSelect = document.querySelector(
-    `#hoaDon${orderId} #voucher-choose`
-  );
-  const discountAmount = document.querySelector(
-    `#hoaDon${orderId} #discount-amount`
-  );
+async function checkVoucher(formId, totalMoney) {
+  const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   const voucCherId = parseInt(voucherSelect.value);
-  if (!isNaN(voucCherId)) {
+  const discountAmount = document.querySelector(`#${formId} #discount-amount`);
+  discountAmount.innerHTML = formatToVND(0);
+  if (voucCherId != -1) {
     try {
       const response = await fetch(`/rest/data/counter/voucher/${voucCherId}`, {
         method: "GET",
@@ -1503,22 +1494,59 @@ async function checkVoucher(orderId, totalMoney) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       if (data.code == 400) {
-        discountAmount.value = 0;
+        discountAmount.innerHTML = formatToVND(0);
         getVoucherAble(orderId);
       } else {
-        if(data.min_order < totalMoney){
-          if(data.
+        if (data.min_order > totalMoney) {
+          alert("Không đủ điều kiện để áp dụng voucher này");
+          getVoucherAble(orderId);
+          return 0;
         }
-        console.log("app dung thanh cong")
+        if (data.quantily <= 0) {
+          alert("Voucher đã hết hạn sử dụng");
+          getVoucherAble(orderId);
+          return 0;
+        }
+        var currentTime = new Date().getTime();
+        if (data.end_time <= currentTime) {
+          alert("Voucher đã hết hạn sử dụng");
+          getVoucherAble(orderId);
+          return 0;
+        }
+        if (data.status != 1) {
+          alert("Voucher đã bị xóa");
+          getVoucherAble(orderId);
+          return 0;
+        }
+        if (data.types == true) {
+          // giam theo %
+          const discountValue = (totalMoney / 100) * data.discount;
+          if (discountValue < data.max_discount) {
+            discountAmount.innerHTML = "-" + formatToVND(discountValue);
+            return discountValue;
+          } else {
+            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+            return data.max_discount;
+          }
+        } else {
+          const discountValue = data.discount;
+          if (discountValue < data.max_discount) {
+            discountAmount.innerHTML = "-" + formatToVND(discountValue);
+            return discountValue;
+          } else {
+            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+            return data.max_discount;
+          }
+        }
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  } else {
+    return 0;
   }
 }
-
 async function getVoucherAble(orderId) {
   const voucherSelect = document.querySelector(
     `#hoaDon${orderId} #voucher-choose`
@@ -1526,8 +1554,9 @@ async function getVoucherAble(orderId) {
   voucherSelect.innerHTML = "";
   var option = document.createElement("option");
   option.text = "Chọn Voucher"; // Set the text content
-  option.disabled = true;
+  // option.disabled = true;
   option.selected = true;
+  option.value = -1;
   voucherSelect.appendChild(option);
   try {
     const response = await fetch("/rest/data/counter/voucherAble", {
