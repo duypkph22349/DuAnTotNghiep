@@ -437,7 +437,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   }
 
   public void saleProduct(int productId, int quantity) {
-    System.out.println("idprc " + productId + " quantity " + quantity);
     Optional<ProductDetail> productDetail = this.getProductDetailById(productId);
     if (productDetail.isPresent()) {
       ProductDetail exitProductDetail = productDetail.get();

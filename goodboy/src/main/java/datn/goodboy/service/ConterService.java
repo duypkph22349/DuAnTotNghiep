@@ -38,6 +38,8 @@ public class ConterService {
   @Autowired
   CustomerService cusService;
 
+  @Autowired
+  VoucherService voucherService;
   public Pay cashpay;
   public Pay transderPay;
   public Pay counterPay;
@@ -90,6 +92,11 @@ public class ConterService {
       }
     }
     bill.setTotal_money(total);
+
+    // appy voucher
+    if (request.getVoucher() > 0) {
+      voucherService.useVoucher(bill, request.getVoucher());
+    }
     // thanh toan
     if (request.getOrderTypes() == 0) {
       if (request.getCashMoney() > 0) {
@@ -122,7 +129,6 @@ public class ConterService {
       bill.setPay(payService.getTransferMethod());
     }
     bill.setNote(request.getNote());
-
     return billRepository.save(bill);
   }
 }

@@ -329,12 +329,6 @@ async function getThisYearTotalProductSale() {
     totalSalesProduct.innerText = 0;
   }
 }
-document.addEventListener("DOMContentLoaded", function () {
-  getToDayTotalProductSale();
-  getToDayToTalIncome();
-  getToDayTotalBill();
-  getToDayTopProductSale();
-});
 
 async function getResentBill() {
   try {
@@ -421,3 +415,8 @@ function getStatusBadge(status) {
   badge.textContent = "Không xác định";
   return badge;
 }
+// call first
+getToDayTotalProductSale();
+getToDayToTalIncome();
+getToDayTotalBill();
+getToDayTopProductSale();

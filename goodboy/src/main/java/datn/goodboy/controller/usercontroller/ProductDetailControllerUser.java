@@ -150,7 +150,6 @@ public class ProductDetailControllerUser {
     @GetMapping("/getcountrow")
     public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue,
                               @ModelAttribute("fillter") ProductDetailFilter fillter) {
-        System.out.println(selectedValue);
         rowcount = Integer.parseInt(selectedValue);
         if (fillter != null) {
             if (fillter.filterAble()) {

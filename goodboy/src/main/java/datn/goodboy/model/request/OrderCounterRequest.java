@@ -73,6 +73,9 @@ public class OrderCounterRequest {
   @JsonProperty("changeAmount")
   private float changeAmount;
 
+  @JsonProperty("voucherid")
+  private int voucher;
+
   @Getter
   @Setter
   @AllArgsConstructor
@@ -105,6 +108,7 @@ public class OrderCounterRequest {
       @JsonProperty("changeAmount") float changeAmount,
       @JsonProperty("totalShip") float totalShip,
       @JsonProperty("totalMoney") float totalMoney,
+      @JsonProperty("voucherid") int voucher,
       @JsonProperty("reductionAmount") float reductionAmount) { // Added the missing field
     this.products = products;
     this.customerName = customerName;
@@ -123,6 +127,7 @@ public class OrderCounterRequest {
     this.changeAmount = changeAmount;
     this.totalShip = totalShip;
     this.totalMoney = totalMoney;
+    this.voucher = voucher;
     this.reductionAmount = reductionAmount; // Added the missing field
   }
 

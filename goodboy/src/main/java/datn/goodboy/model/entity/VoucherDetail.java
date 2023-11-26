@@ -1,5 +1,7 @@
 package datn.goodboy.model.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,11 +36,35 @@ public class VoucherDetail {
   @JoinColumn(name = "id_voucher")
   private Voucher voucher;
   @Column(name = "money_before_reduction")
-  private float money_before_reduction;
+  private Double money_before_reduction;
   @Column(name = "money_after_reduction")
-  private float money_after_reduction;
+  private Double money_after_reduction;
   @Column(name = "money_reduction")
-  private float money_reduction;
+  private Double money_reduction;
   @Column(name = "status")
   private int status;
+
+  @PrePersist
+  protected void onCreate() {
+    this.money_before_reduction = bill.getTotal_money();
+    if (voucher.types) {
+      Double discount = bill.getTotal_money() * voucher.getDiscount();
+      if (discount < voucher.getMax_discount()) {
+        this.money_after_reduction = bill.getTotal_money() - discount;
+        this.money_reduction = discount;
+      } else {
+        this.money_after_reduction = bill.getTotal_money() - voucher.getMax_discount();
+        this.money_reduction = voucher.getMax_discount();
+      }
+    } else {
+      Double discount = (double) voucher.getDiscount();
+      if (discount < voucher.getMax_discount()) {
+        this.money_after_reduction = bill.getTotal_money() - discount;
+        this.money_reduction = discount;
+      } else {
+        this.money_after_reduction = bill.getTotal_money() - voucher.getMax_discount();
+        this.money_reduction = voucher.getMax_discount();
+      }
+    }
+  }
 }
