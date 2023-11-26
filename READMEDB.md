@@ -10,11 +10,15 @@ Ngày 18/11 1h00
 +Chỉnh sửa lại trigger  
 +Chỉnh sửa lại data code  
 +....
-Ngày 22/11 3h
-+Chỉnh sửa lại trigger bill
-+Chỉnh sửa lại data image_product, image
-+thêm default cho image_product
-+...
+Ngày 22/11 3h  
++Chỉnh sửa lại trigger bill  
++Chỉnh sửa lại data image_product, image  
++thêm default cho image_product  
++...  
+Ngày 27/11 12h  
++Thêm status_pay trong bảng bill  
++thêm default cho status_pay  
++...  
 
 
 
