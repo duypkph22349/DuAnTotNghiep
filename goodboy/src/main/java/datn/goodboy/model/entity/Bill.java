@@ -68,7 +68,7 @@ public class Bill {
   Double total_money;
 
   @Column(name = "reduction_amount")
-  float reduction_amount;
+  Double reduction_amount;
 
   @Column(name = "deposit")
   float deposit;

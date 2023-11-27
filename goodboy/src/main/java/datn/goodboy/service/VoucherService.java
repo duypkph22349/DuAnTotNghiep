@@ -112,8 +112,8 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       VoucherDetail voucherDetail = new VoucherDetail();
       voucherDetail.setBill(bill);
       voucherDetail.setVoucher(voucher.get());
-      voucherdetailRepository.save(voucherDetail);
       voucherRepository.save(voucher.get());
+      bill.setReduction_amount(voucherdetailRepository.save(voucherDetail).getMoney_reduction());
     }
   }
 
