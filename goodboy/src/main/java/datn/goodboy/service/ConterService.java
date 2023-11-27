@@ -59,7 +59,7 @@ public class ConterService {
     bill.setConfirmation_date(LocalDateTime.now());
     bill.setLoaiDon(request.getOrderTypes());
     bill.setDeleted(false);
-    bill.setReduction_amount(0);
+    bill.setReduction_amount(0d);
     bill.setDeposit(0);
     bill.setCustomer(cusService.getCounterCustomer());
     Optional<Employee> emp = empRepository.findById(request.getEmployeeID());
