@@ -531,45 +531,45 @@ function formInOrder(id) {
                               }
                           </style>
                           <div class="box-order-status">
-        <div style="display: flex;">
-                <span class="order-action-button" style="margin-right: 8px;">
-                        <button type="button" class="ant-btn ant-btn-primary"
-                                style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
-                                                role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                                        viewBox="64 64 896 896" focusable="false" data-icon="printer"
-                                                        width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                        <path
-                                                                d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                                        </path>
-                                                </svg></span> In (F4)</span>
-                        </button>
-                </span>
-                <span class="order-action-button" style="margin-right: 8px;">
-                        <button type="button" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
-                                style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
-                                                role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                                        viewBox="64 64 896 896" focusable="false" data-icon="printer"
-                                                        width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                        <path
-                                                                d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                                        </path>
-                                                </svg></span> Xóa (F5)</span>
-                        </button>
-                </span>
-                <span class="order-action-button" style="margin-right: 8px;">
-                        <button type="submit" class="ant-btn ant-btn-primary"
-                                style="font-size: 14px; height: 100%;"><span><span role="img" aria-label="save"
-                                                class="anticon anticon-save"><svg viewBox="64 64 896 896"
-                                                        focusable="false" data-icon="save" width="1em" height="1em"
-                                                        fill="currentColor" aria-hidden="true">
-                                                        <path
-                                                                d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
-                                                        </path>
-                                                </svg></span> Thanh Toán</span>
-                        </button>
-                </span>
-        </div>
-</div>
+                            <div style="display: flex;">
+                                    <span class="order-action-button" style="margin-right: 8px;">
+                                            <button type="button" class="ant-btn ant-btn-primary"
+                                                    style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
+                                                                    role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                                            viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                                            width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                                            <path
+                                                                                    d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                                            </path>
+                                                                    </svg></span> In (F4)</span>
+                                            </button>
+                                    </span>
+                                    <span class="order-action-button" style="margin-right: 8px;">
+                                            <button type="button" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
+                                                    style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
+                                                                    role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                                            viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                                            width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                                            <path
+                                                                                    d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                                            </path>
+                                                                    </svg></span> Xóa (F5)</span>
+                                            </button>
+                                    </span>
+                                    <span class="order-action-button" style="margin-right: 8px;">
+                                            <button type="submit" class="ant-btn ant-btn-primary"
+                                                    style="font-size: 14px; height: 100%;"><span><span role="img" aria-label="save"
+                                                                    class="anticon anticon-save"><svg viewBox="64 64 896 896"
+                                                                            focusable="false" data-icon="save" width="1em" height="1em"
+                                                                            fill="currentColor" aria-hidden="true">
+                                                                            <path
+                                                                                    d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
+                                                                            </path>
+                                                                    </svg></span> Thanh Toán</span>
+                                            </button>
+                                    </span>
+                            </div>
+                    </div>
 
                       </section>
                   </div>
@@ -592,7 +592,7 @@ function addnewOrderPage() {
     getAllprovide(id);
     fillAllEmployee(id);
     getFirstProductPage(id);
-    getVoucherAble(id);
+    getVoucherAble(`hoaDon${id}`);
     var i, taborder, tabbutton;
     taborder = document.getElementsByClassName("taborder");
     for (i = 0; i < taborder.length; i++) {
@@ -674,7 +674,6 @@ function removeOrderPage(orderId) {
     }
   }
 }
-function findProdcut(orderId) {}
 //calldata
 function selectOrderType(event, id) {
   orderType = event.target.value;
@@ -1041,7 +1040,19 @@ function createProductRow(product, idorderdetail) {
     product.idColor?.name ?? ""
   } <strong>Hoa văn:</strong> ${product.idPattern?.name ?? ""} </td>
         <td>${product.price}</td>
-        <td><input name="quantity" type="number" value=1 disabled></td>
+        <td>
+        <div class="d-flex w-100">
+          <a class="btn btn-link px-2"
+          onclick="giamProductIntoOrder(${idorderdetail},${product.id})">
+           <i class="fas fa-minus"></i>
+          </a>
+          <input name="quantity" type="number" value=1 min="0" disabled class="form-control form-control-sm text-center">
+          <a class="btn btn-link px-2"
+          onclick="addProductIntoOrder(${idorderdetail},${product.id})">
+            <i class="fas fa-plus"></i>
+          </a>
+        </div>
+        </td>
         <td>
           <button type="button" class="btn btn-danger" onclick="removeProduct(${idorderdetail}, ${
     product.id
@@ -1097,7 +1108,41 @@ function increaseProductQuantity(productExists, product) {
     console.error("Product element not found.");
   }
 }
-
+async function giamProductIntoOrder(idorderdetail, id) {
+  try {
+    const product = await getProductDetails(id);
+    const productExists = await findInExitOrder(idorderdetail, product.id);
+    if (productExists !== null) {
+      descreaseProductQuantity(productExists, product);
+    }
+    updateTongTien(idorderdetail);
+  } catch (error) {
+    console.error(error);
+  }
+}
+function descreaseProductQuantity(productExists, product) {
+  if (productExists instanceof Element) {
+    const inputNumber = productExists.querySelector("td:nth-child(3) input");
+    if (inputNumber instanceof Element) {
+      const currentValue = parseInt(inputNumber.value, 10) || 0;
+      if (currentValue >= product.quantity) {
+        alert(
+          `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`
+        );
+      } else {
+        if (inputNumber.value <= 1) {
+          productExists.remove();
+        } else {
+          inputNumber.value = currentValue - 1;
+        }
+      }
+    } else {
+      console.error("Input number element not found.");
+    }
+  } else {
+    console.error("Product element not found.");
+  }
+}
 async function handleOrderSubmit(event) {
   event.preventDefault();
   const formId = event.currentTarget.id;
@@ -1231,7 +1276,6 @@ async function buildFormData(formId) {
   const discountValue = await checkVoucher(formId, totalMoney);
   formData.totalMoney = totalMoney - discountValue;
   formData.reductionAmount = 0;
-  console.log(formData);
   return formData;
 }
 
@@ -1433,7 +1477,6 @@ function formatToVND(amount) {
   return formatter.format(amount);
 }
 async function getErrorMessage(formData) {
-  console.log(formData);
   let errorMessage = "";
   if (!formData.products || formData.products.length === 0) {
     errorMessage += "Chưa có sản phẩm nào \n";
@@ -1496,27 +1539,27 @@ async function checkVoucher(formId, totalMoney) {
       const data = await response.json();
       if (data.code == 400) {
         discountAmount.innerHTML = formatToVND(0);
-        getVoucherAble(orderId);
+        getVoucherAble(formId);
       } else {
         if (data.min_order > totalMoney) {
           alert("Không đủ điều kiện để áp dụng voucher này");
-          getVoucherAble(orderId);
+          getVoucherAble(formId);
           return 0;
         }
         if (data.quantily <= 0) {
           alert("Voucher đã hết hạn sử dụng");
-          getVoucherAble(orderId);
+          getVoucherAble(formId);
           return 0;
         }
         var currentTime = new Date().getTime();
         if (data.end_time <= currentTime) {
           alert("Voucher đã hết hạn sử dụng");
-          getVoucherAble(orderId);
+          getVoucherAble(formId);
           return 0;
         }
         if (data.status != 1) {
           alert("Voucher đã bị xóa");
-          getVoucherAble(orderId);
+          getVoucherAble(formId);
           return 0;
         }
         if (data.types == true) {
@@ -1547,10 +1590,8 @@ async function checkVoucher(formId, totalMoney) {
     return 0;
   }
 }
-async function getVoucherAble(orderId) {
-  const voucherSelect = document.querySelector(
-    `#hoaDon${orderId} #voucher-choose`
-  );
+async function getVoucherAble(formId) {
+  const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   voucherSelect.innerHTML = "";
   var option = document.createElement("option");
   option.text = "Chọn Voucher"; // Set the text content
@@ -1566,7 +1607,6 @@ async function getVoucherAble(orderId) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
     data.forEach((product) => {
       const option = document.createElement("option");
       option.value = product.id;
