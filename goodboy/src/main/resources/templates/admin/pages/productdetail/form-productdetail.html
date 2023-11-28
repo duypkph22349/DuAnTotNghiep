@@ -10,12 +10,12 @@
   <div class="pagetitle">
     <h1>Dashboard</h1>
     <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-            <li class="breadcrumb-item active">Add Product Detail</li>
-        </ol>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+        <li class="breadcrumb-item active">Add Product Detail</li>
+      </ol>
     </nav>
-</div><!-- End Page Title -->
+  </div><!-- End Page Title -->
   <div th:if="${validateerrors}" class="alert alert-danger" role="alert" th:text="${validateerrors}">
   </div>
   <form enctype="multipart/form-data" th:action="@{/admin/productdetail/store}" th:object="${productDetailRequest}"
