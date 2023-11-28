@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Product;
-import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.service.BrandService;
-import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.ColorService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
@@ -61,9 +58,6 @@ public class ProductDetailControllerUser {
 
     @Autowired
     private StylesService stylesService;
-
-    @Autowired
-    private CartDetailService cartDetailService;
 
     @ModelAttribute("brandCbb")
     public List<Map<Integer, String>> getComboboxBrand() {
@@ -281,13 +275,14 @@ public class ProductDetailControllerUser {
 
     @PostMapping("addtocart/{id}")
     public String addtocart(Model model, @PathVariable("id") Integer id, @RequestParam int quantity) {
-        ProductDetail productDetail = productDetailService.getProductDetailById(id).orElse(null);
-        if (productDetail != null) {
-            CartDetail cartDetail = new CartDetail();
-            cartDetail.setProductDetail(productDetail);
-            cartDetail.setQuantity(quantity);
-            cartDetailService.saveCart(cartDetail);
-        }
+        // ProductDetail productDetail = service.getProductDetailById(id).orElse(null);
+        // if (productDetail != null) {
+        // CartDetail cartDetail = new CartDetail();
+        // cartDetail.setProductDetail(productDetail);
+        // cartDetail.setQuantity(quantity);
+        // cartDetailService.saveCart(cartDetail);
+        // }
+        // System.out.println(productDetail);
         return "user/cart";
     }
 }
