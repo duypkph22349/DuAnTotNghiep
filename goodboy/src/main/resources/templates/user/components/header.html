@@ -23,31 +23,32 @@
                     <ul class="nav-right">
                         <li class="heart-icon"><a href="#"> <i class="icon_heart_alt"></i> <span>0</span>
                             </a></li>
-                        <li class="cart-icon"><a href="/cart"> <i class="icon_bag_alt"></i> <span
-                                    id="totalQuantity">${cart.totalQuantity}</span>
+                        <!--                        HIện thị quantity số lượng sản phẩm trong giỏ-->
+                        <li class="cart-icon"><a href="/cart"> <i class="icon_bag_alt"></i> <span id="totalQuantity"
+                                    th:text="${quantity}"></span>
                             </a>
                             <div class="cart-hover">
                                 <div class="select-items">
                                     <table>
                                         <tbody id="cartShow">
-                                            <c:forEach var="detail" items="${cart.listDetail}">
+                                            <div th:each="cartDetail, loop : ${cartDetails}">
                                                 <tr>
-                                                    <td class="si-pic"><img style="width: 60px"
-                                                            src="/images/${detail.value.cateId}/${detail.value.image}"
-                                                            alt=""></td>
+                                                    <td class="si-pic"><img style="width: 60px" th:src="@{cartDetail}"
+                                                            alt="aaa"></td>
                                                     <td class="si-text">
                                                         <div class="product-selected">
-                                                            <p>
-                                                                <fmt:formatNumber type="number"
-                                                                    value="${detail.value.price}" />
-                                                                VND
+                                                            <p
+                                                                th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price * cartDetail.quantity, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+
                                                             </p>
-                                                            <h6>${detail.value.quantity}x${detail.value.name}</h6>
+                                                            <h6
+                                                                th:text="${cartDetail.quantity + 'x ' + cartDetail.productDetail.name}">
+                                                            </h6>
                                                         </div>
                                                     </td>
                                                     <td class="si-close"><i class="ti-close"></i></td>
                                                 </tr>
-                                            </c:forEach>
+                                            </div>
 
                                         </tbody>
                                     </table>
@@ -55,19 +56,19 @@
                                 <div class="select-total">
                                     <span>Tổng:</span>
                                     <h5 id="totalPrice1">
-                                        <fmt:formatNumber type="number" value="${cart.totalPrice}" />
-                                        VND
+                                        <span
+                                            th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
                                     </h5>
                                 </div>
                                 <div class="select-button">
-                                    <a href="/cart" class="primary-btn view-card">Giỏ hàng </a> <a href="/checkout"
-                                        class="primary-btn checkout-btn">Thanh toán</a>
+                                    <a href="/cart" class="primary-btn view-card">Giỏ hàng </a>
+                                    <a href="/checkout" class="primary-btn checkout-btn">Thanh toán</a>
                                 </div>
                             </div>
                         </li>
                         <li class="cart-price" id="totalPrice2">
-                            <fmt:formatNumber type="number" value="${cart.totalPrice}" />
-                            VND
+                            <span
+                                th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
                         </li>
                     </ul>
                     <div class="ht-right">

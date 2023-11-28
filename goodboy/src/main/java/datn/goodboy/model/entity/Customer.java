@@ -11,12 +11,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -25,6 +28,7 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,5 +64,7 @@ public class Customer {
   @Column(name="deleted")
   private boolean deleted;
 
+  @OneToOne(mappedBy = "customer")
+  private Cart cart;
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,20 +25,20 @@ public class Cart {
     @Column(name = "code", insertable = false, updatable = false)
     String code;
 
-    @ManyToOne
-    @JoinColumn(name = "id_customer" )
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_customer", referencedColumnName = "id")
     private Customer customer;
 
     @Column(name = "status")
     private int status;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
 
     private static List<ProductDetail> cartItems = new ArrayList<>();
@@ -50,6 +51,8 @@ public class Cart {
         return cartItems;
     }
 
+    @OneToMany(mappedBy = "cart")
+    public static List<CartDetail> cartDetails = new ArrayList<>();
 
 
 }
