@@ -1,17 +1,16 @@
 package datn.goodboy.repository;
 
-import datn.goodboy.model.entity.Product;
-
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import datn.goodboy.model.entity.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
@@ -23,17 +22,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT new map(e.id as key, e.name as value) FROM Product e")
     List<Map<Integer, String>> getComboBoxMap();
 
-
-    //User
-//    Product findBySlug(String slug);
-//
-//    List<Product> findByCategoryIsMale(boolean gender);
-//
-//    List<Product> findByCategoryId(Integer categoryId , Sort sort);
-
+    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0")
+    Page<Product> getProductSales(Pageable pageable);
 
     Page<Product> findAll(Pageable pageable);
-
-//    Page<Product> findByCategoryId(Integer categoryId, Pageable pageable);
-
 }
