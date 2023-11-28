@@ -10,15 +10,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.ColorService;
 import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.ImageProductService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.PatternTypeService;
@@ -59,6 +64,15 @@ public class ProductDetailControllerUser {
 
     @Autowired
     private StylesService stylesService;
+
+    @Autowired
+    private CartDetailService cartDetailService;
+    // @ModelAttribute("brand-combobox")
+    // public ProductDetailFilter fillter() {
+    // return filter;
+    // }
+    @Autowired
+    private ImageProductService imageProductService;
 
     @ModelAttribute("brandCbb")
     public List<Map<Integer, String>> getComboboxBrand() {
@@ -207,5 +221,19 @@ public class ProductDetailControllerUser {
         Product product = service.getById(id);
         model.addAttribute("product", product);
         return "user/product_detail.html";
-    }
+    }<<<<<<<HEAD=======
+
+    @PostMapping("addtocart/{id}")
+    public String addtocart(Model model, @PathVariable("id") Integer id,@RequestParam int quantity) {
+        ProductDetail productDetail = service.getProductDetailById(id).orElse(null);
+        if (productDetail != null) {
+            CartDetail cartDetail = new CartDetail();
+            cartDetail.setProductDetail(productDetail);
+            cartDetail.setQuantity(quantity);
+            cartDetailService.saveCart(cartDetail);
+        }
+        System.out.println(productDetail);
+
+        return "user/cart";
+    }>>>>>>>474de1f (checkout)
 }

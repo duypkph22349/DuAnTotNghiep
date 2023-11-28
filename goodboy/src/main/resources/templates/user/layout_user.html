@@ -58,10 +58,66 @@
         const myModal = document.getElementById('myModal')
         const myInput = document.getElementById('myInput')
 
-        myModal.addEventListener('shown.bs.modal',() => {
-            myInput.focus()
-        })
-    </script> -->
+    myModal.addEventListener('shown.bs.modal', () => {
+        myInput.focus()
+    })
+</script>
+<script>
+    function readURL(input) {
+        var imagePreview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            imagePreview.src = '/images/faces/no_image.jpg';
+        }
+    }
+</script>
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var output = document.getElementById('preview');
+            output.src = e.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+<script>
+    $('.item_nav').eq(2).addClass('active');
+    function addToCart(productId) {
+        var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=1&isReplace=false';
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data){
+                $('#totalQuantity').html(data.totalQuantity);
+                $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                $.ajax({
+                    url: '/products',
+                    type: 'GET',
+                    success: function(data){
+                        $('#cartShow').html($(data).find('#cartShow').children());
+                    },
+                    error: function(error){
+                        alert('Error: ' + error);
+                    }
+                })
+                alert('Add product to cart success.');
+            },
+            error: function(error){
+                alert('Add product to cart fail. Error: ' + error);
+            }
+
+        });
+        return false;
+    }
+</script>
 </body>
 
 </html>

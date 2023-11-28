@@ -1,8 +1,7 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"-->
-<!--    pageEncoding="UTF-8"%>-->
-<!--<%@include file="../common/common.jsp" %>-->
+
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta name="description" content="Fashi Template">
@@ -10,35 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Khăn choàng</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
-    <!-- <%@include file="../common/css.jsp" %> -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="/css/themify-icons.css" type="text/css">
-<link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
-<link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
-<link rel="stylesheet" href="/css/nice-select.css" type="text/css">
-<link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
-<link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
-<link rel="stylesheet" href="/css/style1.css" type="text/css">
-<script src="/js/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Header Section Begin -->
-    <%@include file="./components/header.jsp" %>
-    <!-- Header End -->
-
-    <!-- Breadcrumb Section Begin -->
+<section layout:fragment="content">
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
@@ -56,7 +30,8 @@
     <!-- Profile Section Begin -->
     <section class="profile p-3">
         <div class="container rounded bg-white mt-3 mb-3">
-            <form action="/edit_profile" method="post" id="edit_profile" enctype="multipart/form-data">
+            <form th:action="@{/shop/edit_profile}" method="post" id="edit_profile" enctype="multipart/form-data" >
+                <input type="hidden" th:name="${session.authenuser.id}">
                 <div class="py-5">
                     <h2 class="font-weight text-center"><strong>Thông tin</strong> </h2>
                 </div>
@@ -69,18 +44,18 @@
                                     <label for="imageUpload"></label>
                                 </div>
                                 <div class="avatar-preview">
-                                    <div id="imagePreview" style="background-image: url('avatar/${sessionScope.account.avatar}');">
+                                    <div id="imagePreview" style="background-image: url('${session.authenuser.image}');">
                                     </div>
                                 </div>
                                 <div class="mt-3">
-                                    <label class="h3"> <strong>${sessionScope.account.fullname}</strong> </label>
+                                    <label class="h3" th:text="${session.authenuser.getCustomer().name}"> <strong></strong> </label>
                                 </div>
                             </div>
                             <div class="mb-3 text-left">
                                 <nav class="nav flex-column">
                                     <a class="nav-link active" aria-current="page" href="/profile"><i class="fa fa-drivers-license-o"></i>&nbsp; Thông tin</a>
                                     <a class="nav-link" href="/order_status"><i class="fa fa-shopping-bag"></i>&nbsp; Đơn hàng</a>
-                                    <a class="nav-link" href="/change_password"><i class="fa fa-key"></i>&nbsp; Đổi mật khẩu</a>
+                                    <a class="nav-link" href="/shop/change_password"><i class="fa fa-key"></i>&nbsp; Đổi mật khẩu</a>
                                 </nav>
                             </div>
                         </div>
@@ -88,100 +63,236 @@
                     <div class="col-md-8 border-right">
                         <div class="p-3 pb-5">
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold">Tên tài khoản</label>
-                                <label  class="ml-5 border-0">${sessionScope.account.username}</label>
-                            </div>
-                            <div class="mb-3">
                                 <label class="form-label font-weight-bold">Họ và tên</label>
-                                <input name="fullname" type="text" class="form-control" value="${sessionScope.account.fullname}" placeholder="Hãy nhập họ và tên" />
+                                <input name="fullname" type="text" class="form-control" th:value="${session.authenuser.getCustomer().name}" placeholder="Hãy nhập họ và tên" />
                             </div>
                             <div class="row">
                                 <div class="col-12 col-sm-6 col-lg-6 mb-3">
                                     <label class="form-label font-weight-bold">Giới tính</label>
-                                    <select class="form-control" name="gender" id="gender" value="${sessionScope.account.isGender()}">
+                                    <select class="form-control" name="gender" id="gender" th:value="${session.authenuser.getCustomer().gender}">
                                         <option value="true">Nam</option>
                                         <option value="false">Nữ</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-6 mb-3">
                                     <label class="form-label font-weight-bold">Điện thoại</label>
-                                    <input name="phone" type="text" class="form-control" value="${sessionScope.account.phone}" placeholder="Hãy nhập số điện thoại" />
+                                    <input name="phone" type="text" class="form-control" th:value="${session.authenuser.getCustomer().phone}" placeholder="Hãy nhập số điện thoại" />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label font-weight-bold">Email</label>
-                                <input name="email" type="email" class="form-control" value="${sessionScope.account.email}" placeholder="Hãy nhập Email" />
+                                <input name="email" type="email" class="form-control" th:value="${session.authenuser.email}" placeholder="Hãy nhập Email" />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold">Địa chỉ</label>
-                                <input name="address" type="text" class="form-control" value="${sessionScope.account.address}" placeholder="Hãy nhập địa chỉ" />
+<!--                                <label class="form-label font-weight-bold">Địa chỉ</label>-->
+<!--                                <input name="address" type="text" class="form-control" th:value="${session.authenuser.email}" placeholder="Hãy nhập địa chỉ" />-->
+                                <div class="row align-items-start">
+                                    <div class="col">
+                                        <label><b>Thành phố</b></label>
+                                        <select class="form-control" id="Provinces" onchange="getDistricts()"></select>
+                                    </div>
+                                    <div class="col">
+                                        <label><b>Huyện</b></label>
+                                        <select class="form-control" id="Districts" th:name="city" onchange="getWards()">
+
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label><b>Xã</b></label>
+                                        <select class="form-control" th:name="country" onchange="setFullAdress()" id="Wards">
+                                            Chọn
+                                            Thị trấn/ Xã/ Phường
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="FullAddress" th:name="fulladdress">
+                            </div>
                             </div>
                             <div class="mt-5">
                                 <button class="btn btn-primary profile-button" type="submit">Cập nhật</button>
                             </div>
                         </div>
                     </div>
-                </div>
+
             </form>
         </div>
     </section>
-    <!-- Profile Form Section End -->
-
-    <!-- Footer Section Begin -->
-    <%@include file="./components/footer.jsp" %>
-    <!-- Footer Section End -->
-
-    <!-- Js Plugins -->
-    <!-- <%@include file="../common/js.jsp" %> -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="/js/jquery-3.3.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
-    <script src="/js/jquery.countdown.min.js"></script>
-    <script src="/js/jquery.nice-select.min.js"></script>
-    <script src="/js/jquery.zoom.min.js"></script>
-    <script src="/js/jquery.dd.min.js"></script>
-    <script src="/js/jquery.slicknav.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
-    	$('.item_nav').eq(2).addClass('active');
-    	function addToCart(productId) {
-    		var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=1&isReplace=false';
-    		$.ajax({
-    			url: apiUrl,
-    			type: 'POST',
-    			dataType: 'json',
-    			success: function(data){
-    				$('#totalQuantity').html(data.totalQuantity);
-    				$('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-    				$('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-    				$.ajax({
-    					url: '/products',
-    	    			type: 'GET',
-    	    			success: function(data){
-    	    				$('#cartShow').html($(data).find('#cartShow').children());
-    	    			},
-    	    			error: function(error){
-    	    				alert('Error: ' + error);
-    	    			}
-    				})
-    				alert('Add product to cart success.');
-    			},
-    			error: function(error){
-    				alert('Add product to cart fail. Error: ' + error);
-    			}
-    		
-    		});
-    		return false;
-		}
+        const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
+        const shop_id = 4676018;
+        const districtform = 3440; // quận nam từ liêm
+        const districtto = 3308; // huyện trực ninh
+        const WardCodeninhcuong = "800083";
+        const provinceSelect = document.getElementById("Provinces");
+        const districtSelect = document.getElementById("Districts");
+        const wardSelect = document.getElementById("Wards");
+        const shipServiceSelect = document.getElementById("shipService");
+        const giaship = document.getElementById("giaship");
+
+        function getProvinces() {
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    const defaultOption = document.createElement("option");
+                    defaultOption.value = ""; // Set the value as needed
+                    defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+                    // Set the 'disabled' and 'selected' attributes to make it the default option
+                    defaultOption.disabled = true;
+                    defaultOption.selected = true;
+                    provinceSelect.appendChild(defaultOption);
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].ProvinceName; // Set the text of the option
+                        option.setAttribute("providecode", options[i].ProvinceID);
+                        provinceSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:", error));
+        }
+
+        function getDistricts() {
+            const selectedOption = provinceSelect.options[provinceSelect.selectedIndex];
+            const customAttribute = selectedOption.getAttribute("providecode");
+            const provinceid = parseInt(customAttribute);
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({province_id: provinceid}),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    //remove all child
+                    resetDistrict();
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].DistrictName; // Set the text of the option
+                        option.setAttribute("districtcode", options[i].DistrictID);
+                        districtSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:", error));
+        }
+
+        function getWards() {
+            const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+            const customAttribute = selectedOption.getAttribute("districtcode");
+            const districtid = parseInt(customAttribute);
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({district_id: districtid}),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    //remove all child
+                    resetWard();
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].WardName;
+                        // Set the text of the option
+                        wardSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:", error));
+        }
+
+        function setFullAdress() {
+            const proselect = provinceSelect.options[provinceSelect.selectedIndex];
+            const proname = proselect.text;
+            const districselect = districtSelect.options[districtSelect.selectedIndex];
+            const distname = districselect.text;
+            const wardName = wardSelect.options[wardSelect.selectedIndex];
+            const wardname = wardName.text;
+            const fullAdress = wardname + ", " + distname + " ," + proname;
+            document.getElementById("FullAddress").value = String(fullAdress);
+            console.log(fullAdress)
+        }
+
+        function resetDistrict() {
+            while (districtSelect.firstChild) {
+                districtSelect.removeChild(districtSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
+
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+
+            districtSelect.appendChild(defaultOption);
+            resetWard();
+        }
+
+        function resetWard() {
+            while (wardSelect.firstChild) {
+                wardSelect.removeChild(wardSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
+
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+
+            wardSelect.appendChild(defaultOption);
+        }
+
+        getProvinces();
     </script>
-    
+    <script>
+        $('.item_nav').eq(2).addClass('active');
+        function addToCart(productId) {
+            var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=1&isReplace=false';
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function(data){
+                    $('#totalQuantity').html(data.totalQuantity);
+                    $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                    $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                    $.ajax({
+                        url: '/products',
+                        type: 'GET',
+                        success: function(data){
+                            $('#cartShow').html($(data).find('#cartShow').children());
+                        },
+                        error: function(error){
+                            alert('Error: ' + error);
+                        }
+                    })
+                    alert('Add product to cart success.');
+                },
+                error: function(error){
+                    alert('Add product to cart fail. Error: ' + error);
+                }
+
+            });
+            return false;
+        }
+    </script>
+
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -197,9 +308,12 @@
         $("#imageUpload").change(function() {
             readURL(this);
         });
-        
+
         $(`#gender option[value='${sessionScope.account.isGender()}']`).prop('selected', true);
     </script>
+</section>
+
+
 </body>
 
 </html>

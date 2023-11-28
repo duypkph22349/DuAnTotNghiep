@@ -6,10 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.repository.AccountRepository;
 import datn.goodboy.repository.CartDetailRepository;
 import datn.goodboy.repository.CartRepository;
 
@@ -20,15 +25,16 @@ public class CartService {
 
     @Autowired
     private CartRepository cartRp;
+    @Autowired
+    private AccountRepository accountRepository;
 
-    public Page<CartDetail> getPage(Pageable pageable){
+    public Page<CartDetail> getPage(Pageable pageable) {
         return cartRepository.findAll(pageable);
     }
 
-    public ArrayList<CartDetail> getAllCart(){
+    public ArrayList<CartDetail> getAllCart() {
         return (ArrayList<CartDetail>) cartRepository.findAll();
     }
-
 
     public CartDetail saveCart(CartDetail cart) {
 
@@ -37,7 +43,7 @@ public class CartService {
 
     public void addGioHang(Cart cart) {
 
-         cartRp.save(cart);
+        cartRp.save(cart);
     }
 
     public void deleteCart(int id) {
@@ -50,13 +56,20 @@ public class CartService {
         return cartRepository.findById(id);
     }
 
-//    public Cart findByMaNV(String maNV) {
-//        Employee employee = new Employee();
-//        employee.setCode(maNV);
-//        return cartRp.findByMaNV(employee);
-//    }
-
-
-
-
+    public Cart getCart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+            Cart cart = null;
+            if (account.getCustomer().getCart() == null) {
+                cart = new Cart();
+                cart.setCustomer(account.getCustomer());
+                return cartRp.save(cart);
+            } else {
+                return account.getCustomer().getCart();
+            }
+        }
+        return null;
+    }
 }
