@@ -11,8 +11,8 @@
         <h1>Dashboard</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                <li class="breadcrumb-item active">Voucher</li>
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                <li class="breadcrumb-item active">Phiếu giảm giá</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -42,7 +42,7 @@
         <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
             <thead class="position-sticky top-0">
                 <tr>
-                    <th scope="col">Name
+                    <th scope="col">Tên
                         <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=true)}"><i
                                 class="fas fa-arrow-up"></i></a>
                         <a th:href="@{/admin/voucher/sort(sortBy=name ,sortDir=false)}"><i
@@ -90,7 +90,7 @@
                         <a th:href="@{/admin/voucher/sort(sortBy=status ,sortDir=false)}"><i
                                 class="fas fa-arrow-down"></i></a>
                     </th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -139,22 +139,22 @@
                                     </div>
                                     <div class="modal-body">
                                         <div>
-                                            <p><strong>Name</strong>: <span th:text="${voucher.name}"></span>
+                                            <p><strong>Tên</strong>: <span th:text="${voucher.name}"></span>
                                             </p>
-                                            <p><strong>code</strong>: <span th:text="${voucher.code}"></span>
+                                            <p><strong>Mã</strong>: <span th:text="${voucher.code}"></span>
                                             </p>
-                                            <p><strong>start time:</strong> <span
+                                            <p><strong>Ngày bắt đầu:</strong> <span
                                                     th:text="${#temporals.format(voucher?.start_time, 'dd-MM-yyyy HH:mm')}"></span>
                                             </p>
-                                            <p><strong>end time</strong>: <span
+                                            <p><strong>Ngày kết thúc</strong>: <span
                                                     th:text="${#temporals.format(voucher?.end_time, 'dd-MM-yyyy HH:mm')}"></span>
                                             </p>
-                                            <p> <strong>Quantily :</strong> <span th:text="${voucher?.quantily}"></span>
+                                            <p> <strong>Số lượng :</strong> <span th:text="${voucher?.quantily}"></span>
                                             </p>
-                                            <p> <strong>Max Discount:</strong> <span
+                                            <p> <strong>Giảm tối đa:</strong> <span
                                                     th:text="${#strings.replace(#numbers.formatDecimal(voucher?.max_discount, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                                                 </span></p>
-                                            <p> <strong>Min Order:</strong> <span
+                                            <p> <strong>Hóa đơn tối thiểu:</strong> <span
                                                     th:text="${#strings.replace(#numbers.formatDecimal(voucher?.min_order, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                                                 </span></p>
 
@@ -170,7 +170,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
+                                            data-bs-dismiss="modal">Đóng</button>
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@
         </table>
     </div>
     <div class="table-footer d-flex justify-content-between mt-3">
-        <div class="text-start">This page is <span th:text="${crpage}"></span> of <span th:text="${totalpage}"></span>
+        <div class="text-start">Trang <span th:text="${crpage}"></span> / <span th:text="${totalpage}"></span>
         </div>
         <div class="text-center">
             <nav aria-label="Page navigation example">
@@ -211,12 +211,12 @@
             </nav><!-- End Centered Pagination -->
         </div>
         <form action="#" class="mx-2" th:action="@{/admin/voucher/getcountrow}" method="get" id="rowCountForm">
-            Number of rows
+            Hiển thị
             <select name="selectedValue" class="border-0 px-2"
                 onchange="document.getElementById('rowCountForm').submit();">
-                <option value="10" th:selected="${rowcount == 10}">10</option>
-                <option value="20" th:selected="${rowcount == 20}">20</option>
-                <option value="50" th:selected="${rowcount == 50}">50</option>
+                <option value="10" th:selected="${rowcount == 10}">10 hàng</option>
+                <option value="20" th:selected="${rowcount == 20}">20 hàng</option>
+                <option value="50" th:selected="${rowcount == 50}">50 hàng</option>
             </select>
         </form>
     </div>
