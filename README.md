@@ -40,3 +40,8 @@ Mã này áp dụng cho timeline trạng thái đơn hàng
 - 3: Đang giao hàng (In transit)
 - 4: Đã giao hàng (Delivered)
 - 5: Thành công (Successful)
+
+## Bill Status_pay
+
+- 0: Chưa thanh toán
+- 1: Đã thanh toán 
