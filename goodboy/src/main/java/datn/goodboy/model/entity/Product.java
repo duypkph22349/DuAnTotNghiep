@@ -64,6 +64,7 @@ public class Product {
         return maxPrice.get().getPrice();
     }
 
+    @JsonIgnore
     public List<List<ProductDetail>> getListOptionProduct() {
         List<List<ProductDetail>> options = ColerOn().stream()
                 .map(color -> productDetails.stream()
@@ -73,6 +74,7 @@ public class Product {
         return options;
     }
 
+    @JsonIgnore
     public List<Color> ColerOn() {
         List<Color> colors = productDetails.stream()
                 .map(ProductDetail::getIdColor)
