@@ -12,6 +12,11 @@
 </head>
 
 <body layout:fragment="content">
+    <style>
+        .select-product {
+            background-color: aquamarine;
+        }
+    </style>
     <section>
         <div class="breacrumb-section">
             <div class="container">
@@ -78,14 +83,15 @@
                             <div th:each=" productdetailincolor : ${product.getListOptionProduct()}">
                                 <div class="font-weight-bold" th:text="${productdetailincolor.get(0).idColor.name}">
                                 </div>
-                                <div th:each="pddt : ${productdetailincolor}">
+                                <div th:each="pddt : ${productdetailincolor}" th:if="${pddt.ableToSales()}">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
                                         th:attr="data-bs-target='#staticBackdrop'+ ${pddt.id}"
                                         th:text="${pddt.getIdSize().getName()}">
                                     </button>
-                                    <div class="modal fade" th:id="'staticBackdrop' + ${pddt.id}"
-                                        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div th:if="${pddt.imageProducts.size() > 0}" class="modal fade"
+                                        th:id="'staticBackdrop' + ${pddt.id}" data-bs-backdrop="static"
+                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
                                         <div
                                             class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
@@ -98,8 +104,7 @@
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-6">
-                                                            <div class="product-pic text-center mb-3"
-                                                                th:if="${pddt.imageProducts.size() > 0}">
+                                                            <div class="product-pic text-center mb-3">
                                                                 <img th:src="${pddt.imageProducts[0]?.img}"
                                                                     alt="Ảnh sản phẩm" />
                                                             </div>
@@ -154,24 +159,44 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <div class="quantity">
-                                                        <div class="pro-qty">
-                                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                                <span class="dec qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                                    -
-                                                                </span>
-                                                                <input id="form1" min="1" name="quantity" value="1"
-                                                                    th:max="${pddt.quantity}" type="number"
-                                                                    onchange="checkQuantity()" />
-                                                                <span class="inc qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                                    +
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <a href="/user/addToCart/${pddt.id}" type="submit"
+                                                        <a th:href="@{'/user/buynow/'+${pddt.id}}" type="submit"
                                                             class="primary-btn pd-cart mx-3">Mua sản phẩm</a>
-                                                        <a href="/user/addToCart/${pddt.id}" type="submit"
+                                                        <a th:href="@{'/user/addToCart/'+${pddt.id}}" type="submit"
+                                                            class="primary-btn pd-cart  mx-3">Thêm vào giỏ hàng</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:unless="${pddt.imageProducts.size() > 0}" class="modal fade"
+                                        th:id="'staticBackdrop' + ${pddt.id}" data-bs-backdrop="static"
+                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel"
+                                                        th:text="${pddt.idProduct?.name}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"> x </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Giá :</strong>
+                                                        <span
+                                                            th:text="${#strings.replace(#numbers.formatDecimal(pddt.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                                        </span>
+                                                    </p>
+                                                    </p>
+                                                    <p><strong>Số lượng :</strong>
+                                                        <span th:text="${pddt.quantity}"></span>
+                                                    </p>
+                                                    <span th:text="${pddt.description}"></span>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="quantity">
+                                                        <a th:href="@{'/user/buynow/'+${pddt.id}}" type="submit"
+                                                            class="primary-btn pd-cart mx-3">Mua sản phẩm</a>
+                                                        <a th:href="@{'/user/addToCart/'+${pddt.id}}" type="submit"
                                                             class="primary-btn pd-cart  mx-3">Thêm vào giỏ hàng</a>
                                                     </div>
                                                 </div>
@@ -187,61 +212,61 @@
                                 <button class="primary-btn pd-cart btn" data-bs-toggle="modal"
                                     data-bs-target='#addtocart'>Thêm vào giỏ
                                     hàng</button>
-                                <div class=" modal fade" id="addtocart" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                        <!--  set link buy now to cart -->
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <form action="" method="get" id="cartform"
-                                                    onsubmit="return validateCartForm()">
-                                                    <div
-                                                        th:each=" productdetailincolor : ${product.getListOptionProduct()}">
-                                                        <div class="font-weight-bold"
-                                                            th:text="${productdetailincolor.get(0).idColor.name}">
-                                                        </div>
-                                                        <div th:each="pddt : ${productdetailincolor}">
-                                                            <label th:for="'productcart'+${pddt.id}"
-                                                                class="cartlabel btn border"
-                                                                th:text="${pddt.getIdSize().getName()}">
-                                                            </label>
-                                                            <input type="radio" name="productcart"
-                                                                th:id="'productcart'+${pddt.id}" class="d-none"
-                                                                th:value="${pddt.id}"
-                                                                th:attr="product-quantity=${pddt.quantity}"
-                                                                onchange="cartChoose()">
+                            </div>
+                            <div class="modal fade" id="addtocart" data-bs-backdrop="static" data-bs-keyboard="false"
+                                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <!--  set link buy now to cart -->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <form action="" method="get" id="cartform"
+                                                onsubmit="return validateCartForm()">
+                                                <div
+                                                    th:each=" productdetailincolor : ${product.getListOptionProduct()}">
+                                                    <div class="font-weight-bold"
+                                                        th:text="${productdetailincolor.get(0).idColor.name}">
+                                                    </div>
+                                                    <div th:each="pddt : ${productdetailincolor}">
+                                                        <label th:for="'productcart'+${pddt.id}"
+                                                            class="cartlabel btn border"
+                                                            th:text="${pddt.getIdSize().getName()}">
+                                                        </label>
+                                                        <input type="radio" name="productcart"
+                                                            th:id="'productcart'+${pddt.id}" class="d-none"
+                                                            th:value="${pddt.id}"
+                                                            th:attr="product-quantity=${pddt.quantity}"
+                                                            onchange="cartChoose()">
+                                                    </div>
+                                                </div>
+                                                <p id="carterror" class="text-danger"></p>
+                                                <div class="quantity mt-3">
+                                                    <div class="pro-qty">
+                                                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                            <span class="dec qtybtn"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown(),checkcartQuantity()">
+                                                                -
+                                                            </span>
+                                                            <input min="1" name="quantity" value="1" type="number"
+                                                                onchange="checkcartQuantity()" />
+                                                            <span class="inc qtybtn"
+                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp(),checkcartQuantity()">
+                                                                +
+                                                            </span>
                                                         </div>
                                                     </div>
-                                                    <p id="carterror" class="text-danger"></p>
-                                                    <div class="quantity mt-3">
-                                                        <div class="pro-qty">
-                                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                                <span class="dec qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown(),checkcartQuantity()">
-                                                                    -
-                                                                </span>
-                                                                <input min="1" name="quantity" value="1" type="number"
-                                                                    onchange="checkcartQuantity()" />
-                                                                <span class="inc qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp(),checkcartQuantity()">
-                                                                    +
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <button type="submit" class="primary-btn pd-cart btn">Thêm vào
-                                                            giỏ hàng</button>
-                                                </form>
-                                            </div>
+                                                    <button type="submit" class="primary-btn pd-cart btn">Thêm
+                                                        vào
+                                                        giỏ hàng</button>
+                                            </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class=" modal fade" id="buynow" data-bs-backdrop="static" data-bs-keyboard="false"
+                            <div class="modal fade" id="buynow" data-bs-backdrop="static" data-bs-keyboard="false"
                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
@@ -302,6 +327,18 @@
     <script>
         const carterror = document.querySelector(`#cartform #carterror`);
         const buyerror = document.querySelector(`#buyform #buyerror`);
+        function addToCart(productId) {
+            var quantity = document.getElementById('quantityInput').value;
+            var addToCartUrl = '/user/addToCart/' + productId + '?quantity=' + quantity;
+            // You can now use addToCartUrl for your further actions, like redirecting or making an AJAX request.
+            console.log('Add to Cart URL:',addToCartUrl);
+        }
+        function buynow(productId) {
+            var quantity = document.getElementById('quantityInput').value;
+            var addToCartUrl = '/user/addToCart/' + productId + '?quantity=' + quantity;
+            // You can now use addToCartUrl for your further actions, like redirecting or making an AJAX request.
+            console.log('Add to Cart URL:',addToCartUrl);
+        }
         function setMessage(errorElement,message) {
             errorElement.classList.add("d-invalid-message");
             errorElement.innerHTML = message;
@@ -323,12 +360,12 @@
                     var label = document.querySelector('label[for="' + labelId + '"]');
                     var cartlables = document.querySelectorAll('label.cartlabel');
                     cartlables.forEach(function (label) {
-                        label.classList.remove('border-warning-subtle');
+                        label.classList.remove('select-product');
                     });
                     if (this.checked) {
-                        label.classList.add('border-warning-subtle'); // Change this line
+                        label.classList.add('select-product'); // Change this line
                     } else {
-                        label.classList.remove('border-warning-subtle'); // Change this line
+                        label.classList.remove('select-product'); // Change this line
                     }
                 });
             });
@@ -356,12 +393,12 @@
                     var label = document.querySelector('label[for="' + labelId + '"]');
                     var buylables = document.querySelectorAll('label.buylabel');
                     buylables.forEach(function (label) {
-                        label.classList.remove('border-warning-subtle');
+                        label.classList.remove('select-product');
                     });
                     if (this.checked) {
-                        label.classList.add('border-warning-subtle'); // Change this line
+                        label.classList.add('select-product'); // Change this line
                     } else {
-                        label.classList.remove('border-warning-subtle'); // Change this line
+                        label.classList.remove('select-product'); // Change this line
                     }
                 });
             });
@@ -381,7 +418,6 @@
                 quantityInput.value = 1;
             }
         }
-        function checkQuantity() { }
         function beforeAddtoCart() {
 
         }

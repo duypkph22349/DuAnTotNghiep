@@ -60,7 +60,7 @@ public class RestCounterController {
 
   @GetMapping("productDetails")
   public ResponseEntity<List<ProductDetail>> getAllProductDetails() {
-    return ResponseEntity.ok().body(productDetailService.getPageNo(1, 20, "createdAt", true));
+    return ResponseEntity.ok().body(productDetailService.getAllProductDetail());
   }
 
   @GetMapping("productDetails/{id}")

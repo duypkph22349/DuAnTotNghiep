@@ -22,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT new map(e.id as key, e.name as value) FROM Product e")
     List<Map<Integer, String>> getComboBoxMap();
 
-    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0")
+    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND  p.deleted = false")
     Page<Product> getProductSales(Pageable pageable);
 
     Page<Product> findAll(Pageable pageable);
