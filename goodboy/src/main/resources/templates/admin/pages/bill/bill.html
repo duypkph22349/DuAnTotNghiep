@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Bin-It">
-    <meta property="og:url"/>
+    <meta property="og:url" />
 
     <title>Bill</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
@@ -28,10 +28,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
 
 
     <script type="text/javascript" style="text-align: center">
@@ -107,14 +112,15 @@
 </head>
 
 <h1>Quản lý Hóa Đơn</h1>
+
 <body>
 <section layout:fragment="content">
     <div class="pagetitle">
         <h1>Hóa Đơn</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active">Bill</li>
+                <li class="breadcrumb-item"><a href="http://localhost:8080/admin/bill/dsBill">Hóa Đơn</a></li>
+
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -137,16 +143,19 @@
             left: auto;
         }
 
-        .dropdown-menu > li:hover > .dropdown-submenu {
+        .dropdown-menu>li:hover>.dropdown-submenu {
             display: block;
         }
-        .month{
+
+        .month {
             cursor: pointer;
         }
-        .month:hover{
+
+        .month:hover {
             background-color: #e3e3e3;
         }
-        .updatebtn:hover{
+
+        .updatebtn:hover {
             transform: scale(1.2);
         }
     </style>
@@ -156,8 +165,8 @@
 
     <Br>
     <div class="input-group mb-3">
-        <button data-value="0" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Chọn loại tìm kiếm
+        <button data-value="0" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">Chọn loại tìm kiếm
         </button>
         <ul class="dropdown-menu">
             <li>
@@ -171,36 +180,37 @@
             let cbbSelect = document.querySelector(".cbbSelect");
             let dropdownMenu = document.querySelector(".dropdown-menu");
             document.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     reset();
                     cbbSelect.innerText = item.innerText;
-                    cbbSelect.setAttribute("data-value",item.getAttribute("data-value"));
+                    cbbSelect.setAttribute("data-value", item.getAttribute("data-value"));
                 });
             });
-            function reset (){
-                if( document.getElementById("pagination_wrapper")){
-                    paginationWrapper =document.getElementById("pagination_wrapper");
+            function reset() {
+                if (document.getElementById("pagination_wrapper")) {
+                    paginationWrapper = document.getElementById("pagination_wrapper");
                 }
-                if(paginationWrapper.querySelector(".active")){
+                if (paginationWrapper.querySelector(".active")) {
                     getPage(paginationWrapper.querySelector(".active"))
-                }else{
+                } else {
                     let url = "/admin/bill/all-bill";
                     fillTable(url);
                 }
             }
         </script>
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
+               id="searchInput" onkeyup="myFunction()" style="font-size: 12px" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
     </div>
 
     <Br>
 
     <div class="d-flex">
-        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center">
+        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 12px">
             Tải File Excel
         </a>
-        <button class="btn btn-primary me-2" id="refreshButton">Làm mới</button>
-        <select id="statusSelect" class="form-select" style="  width: 120px; height: 38px; font-size: 0.875rem;" onchange="selectFilterAction(this.value)">
+        <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 12px">Làm mới</button>
+        <select id="statusSelect" class="form-select" style="  width: 120px; height: 38px; font-size: 11px;"
+                onchange="selectFilterAction(this.value)">
             <option value="">Chọn trạng thái</option>
             <option value="Chờ xác nhận">Chờ xác nhận</option>
             <option value="Chờ giao hàng">Chờ giao hàng</option>
@@ -211,16 +221,16 @@
     </div>
 
     <!-- Table -->
-    <div style="height: 500px; overflow: auto;">
+    <div style="height: 500px; overflow: auto; ">
 
-        <table class="table table-hover" id="myTable">
+        <table class="table table-hover" id="myTable" style="font-size: 13px" >
             <thead class="position-sticky top-0">
 
             <tr class="ex">
                 <th>#</th>
                 <th>Mã hóa đơn</th>
                 <th>Khách hàng</th>
-                <th>Địa chỉ</th>
+                <th>Trạng thái thanh toán</th>
                 <th>Phương thức thanh toán</th>
                 <th>Số điện thoại</th>
                 <th>Loại đơn hàng</th>
@@ -229,11 +239,14 @@
                 <th>Ghi chú</th>
                 <th>
                     <div class="btn-group">
-                        <button type="button" class="btn p-0 m-0"><p class="p-0 m-0 fw-bold">Ngày tạo</p></button>
-                        <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn p-0 m-0" style="font-size: 12px" >
+                            <p class="p-0 m-0 fw-bold" style="font-size: 12px" >Ngày tạo</p>
+                        </button>
+                        <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split"
+                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
-                        <ul  class="dropdown-menu">
+                        <ul class="dropdown-menu">
                             <div class="container">
                                 <div class="row" id="fillter_month">
 
@@ -265,14 +278,14 @@
         // Tìm kiếm
 
         function myFunction() {
-            var input, filter, table, tr, td, i, txtValue,td2,txtValue2;
+            var input, filter, table, tr, td, i, txtValue, td2, txtValue2;
             let value = document.querySelector(".cbbSelect").getAttribute("data-value");
             input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
             tr = table.getElementsByTagName("tr");
-            if(!filter) reset();
-            if(value === "2" ){
+            if (!filter) reset();
+            if (value === "2") {
                 for (i = 0; i < tr.length; i++) {
                     td = tr[i].getElementsByTagName("td")[1];
                     td2 = tr[i].getElementsByTagName("td")[2];
@@ -286,8 +299,8 @@
                         }
                     }
                 }
-            }else if(value ==="1"){
-                let url =`/admin/bill/search-by-code?code=${filter}`
+            } else if (value === "1") {
+                let url = `/admin/bill/search-by-code?code=${filter}`
                 fillTable(url);
             }
         }
@@ -335,25 +348,25 @@
             let formUpdate = document.querySelector("#form_update");
             let inputs = formUpdate.querySelectorAll("input");
             console.log(rows);
-            let data=[];
-            rows.forEach((item, index) =>{
+            let data = [];
+            rows.forEach((item, index) => {
                 data.push(item.innerText);
             })
             data.shift();
-            inputs.forEach((item, index) =>{
-                item.style.fontSize="16px";
-                item.style.fontWeight="bold";
+            inputs.forEach((item, index) => {
+                item.style.fontSize = "16px";
+                item.style.fontWeight = "bold";
                 item.value = data[index];
             })
             let note = document.querySelector("#noteText");
-            note.innerText = data[data.length-1];
+            note.innerText = data[data.length - 1];
 
         }
-        function update(){
-            let phoneNumber =document.querySelector('#phoneNumber');
+        function update() {
+            let phoneNumber = document.querySelector('#phoneNumber');
             let address = document.querySelector('#address');
-            let code=   document.querySelector('#code');
-            if(!phoneNumber.value && !address.value){
+            let code = document.querySelector('#code');
+            if (!phoneNumber.value && !address.value) {
                 alert('Vui lòng nhập đầy đủ thông tin địa chỉ hoặc số điện thoại!')
                 return;
             }
@@ -363,10 +376,10 @@
                 alert("Số điện thoại không hợp lệ!");
                 return;
             }
-            let dataForm ={
-                phone : phoneNumber.value,
-                address : address.value,
-                code : code.value,
+            let dataForm = {
+                phone: phoneNumber.value,
+                address: address.value,
+                code: code.value,
             }
 
             $.ajax({
@@ -374,11 +387,11 @@
                 method: "POST",
                 data: JSON.stringify(dataForm),
                 contentType: "application/json",
-                success: function(response) {
+                success: function (response) {
                     alert("Cập nhật thành công!");
                     reset();
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log(error);
                     alert("Cập nhật thất bại!");
                 }
@@ -392,94 +405,124 @@
         let fiiterMounth = document.getElementById("fillter_month");
         let tableInfoBill = document.querySelector(".info_bill");
         let paginationWrapper = document.getElementById("pagination_wrapper");
-        let currentUrl ="/admin/bill/all-bill";
-        let isStus =true;
-        let urlAllBill ="/admin/bill/all-bill";
+        let currentUrl = "/admin/bill/all-bill";
+        let isStus = true;
+        let urlAllBill = "/admin/bill/all-bill";
         fillTable(urlAllBill);
-        let fillterByMonth =(element,pageNumber=0)=>{
+        let fillterByMonth = (element, pageNumber = 0) => {
             let mounth = element.innerText;
-            let urlFillter =`/admin/bill/filter-by-month?month=${mounth}&pageNumber=${pageNumber}`
-            currentUrl =`/admin/bill/filter-by-month?month=${mounth}`;
-            isStus=false;
+            let urlFillter = `/admin/bill/filter-by-month?month=${mounth}&pageNumber=${pageNumber}`
+            currentUrl = `/admin/bill/filter-by-month?month=${mounth}`;
+            isStus = false;
             fillTable(urlFillter);
         }
-        for (let i =1; i<=12 ; i++){
-            let html =`<div onclick="fillterByMonth(this)"  class="col-md-3 month">${i}</div>`
-            fiiterMounth.innerHTML +=html;
+        for (let i = 1; i <= 12; i++) {
+            let html = `<div onclick="fillterByMonth(this)"  class="col-md-3 month">${i}</div>`
+            fiiterMounth.innerHTML += html;
         }
-        function fillTable(url){
-            $.getJSON(url, function(response) {
+        function fillTable(url) {
+            $.getJSON(url, function (response) {
                 let data = response.content;
                 let totalPages = response.totalPages;
                 let currentPage = response.number;
                 let size = response.size;
-                let numberI = size*currentPage ;
-                console.log(size, numberI,currentPage)
-                tableInfoBill.innerHTML="";
-                data.forEach((item,index)=>{
+                let numberI = size * currentPage;
+                console.log(size, numberI, currentPage)
+                tableInfoBill.innerHTML = "";
+
+                // Sắp xếp mảng theo ngày giảm dần
+                data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                data.forEach((item, index) => {
                     let customer = item.customer;
                     let employee = item.employee;
                     let pay = item.pay;
 
+                    // Định dạng ngày giờ
+                    let formatterTime = new Intl.DateTimeFormat('vi-VN', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    });
+                    let formattedDate = formatterTime.format(new Date(item.createdAt));
 
-                    let html=
+                    // Định dạng số tiền
+                    let formatterMoney = new Intl.NumberFormat('vi-VN', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0, // Số chữ số thập phân tối thiểu
+                        maximumFractionDigits: 0, // Số chữ số thập phân tối đa
+                    });
+
+                    let formattedTotalMoney = formatterMoney.format(item.total_money);
+
+
+                    let html =
                         `
-                        <tr th id="myTable" class="trTb${index+1}" >
+                        <tr th id="myTable" class="trTb${index + 1}" >
 
-                            <td>${index+1+numberI}</td>
+                            <td>${index + 1 + numberI}</td>
                             <td >${item.code}</td>
                             <td>${customer.name}</td>
-                            <td>${item.address}</td>
+                            <td>${item.status_pay  === 0 ? 'Chưa thanh toán' : 1 ? 'Đã thanh toán' : '' }</td>
                             <td >${pay.payment_method}</td>
                             <td>${item.phone}</td>
-                            <td>${item.loaiDon === 0 ? 'Taị quầy' : 1 ?'online':''}</td>
-                            <td >${item.total_money} VNĐ</td>
-                            <td>${item.status === 1 ? 'Chờ xác nhận' :  item.status === 2 ? 'Chờ giao hàng' :  item.status=== 3 ? 'Đang giao hàng' :  item.status === 4? 'Đã giao hàng':  item.status === 5?'Thành công':''}</td>
+                            <td>${item.loaiDon === 0 ? 'Taị quầy' : 1 ? 'online' : ''}</td>
+                            <td >${formattedTotalMoney} VNĐ</td>
+                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
                             <td>${item.note}</td>
-                            <td  >${item.createdAt}</td>
+                            <td  >${formattedDate}</td>
 
 
 
                             <th>
                                <a href="/admin/bill/bill-detail?id=${item.id}">
                                      <button
-                                        type="button" class="btn btn-primary"
+                                        type="button" class="btn btn-primary" style="font-size: 12px"
                                      >
                                         Chi tiết
                                     </button>
                                </a>
+
+                                     <button onclick="payment_VNPay(${item.total_money},${item.id})"
+                                        type="button" class="btn btn-success" style="font-size: 12px"
+                                     >
+                                        Thanh toán
+                                    </button>
+
                              </th>
                          </tr>
                     `
-                    tableInfoBill.innerHTML +=html;
+                    tableInfoBill.innerHTML += html;
                 })
-                paginationWrapper.innerHTML="";
-                for (let i= 0; i<totalPages; i++){
-                    let active ="";
-                    if(i===currentPage)active ="active";
-                    else{
-                        active ="";
+                paginationWrapper.innerHTML = "";
+                for (let i = 0; i < totalPages; i++) {
+                    let active = "";
+                    if (i === currentPage) active = "active";
+                    else {
+                        active = "";
                     }
-                    let html =`<li class="page-item ${active}"><a class="page-link" onclick="getPage(this)">${i+1}</a></li>`
-                    paginationWrapper.innerHTML+=html;
+                    let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage(this)">${i + 1}</a></li>`
+                    paginationWrapper.innerHTML += html;
                 }
             })
         }
 
 
-        var currentNumber ;
-        function getPage(element){
-            let number = Number(element.innerText) -1;
+        var currentNumber;
+        function getPage(element) {
+            let number = Number(element.innerText) - 1;
             let url;
-            if(isStus){
+            if (isStus) {
                 url = currentUrl + `?pageNumber=${number}`
-            }else{
-                url=currentUrl + `&pageNumber=${number}`
+            } else {
+                url = currentUrl + `&pageNumber=${number}`
             }
             fillTable(url);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Lấy giá trị từ item.total_money
             var totalMoney = parseFloat('${item.total_money}');
 
@@ -519,6 +562,16 @@
             }
 
         }
+        function payment_VNPay(amount, id) {
+            var numericValue = parseInt(amount);
+            console.log(numericValue)
+            let VNPaymentUrl = "/payment/create_payment/" + numericValue + "/" + id;
+            $.getJSON(VNPaymentUrl, function (response) {
+                console.log(response.url);
+                location.href = response.url;
+            });
+        }
+
         //
         // document.addEventListener('DOMContentLoaded', function() {
         //     var createdAtCell = document.getElementById('createdAtCell');
@@ -545,4 +598,5 @@
 
 </section>
 </body>
+
 </html>

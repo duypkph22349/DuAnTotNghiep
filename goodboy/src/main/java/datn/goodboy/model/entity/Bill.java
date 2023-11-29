@@ -91,6 +91,9 @@ public class Bill {
   @Column(name = "order_type")
   int loaiDon;
 
+  @Column(name = "status_pay")
+  int status_pay;
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();

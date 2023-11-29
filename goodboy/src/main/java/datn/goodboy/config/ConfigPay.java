@@ -15,7 +15,6 @@ import java.util.Random;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-
 /**
  *
  * @author CTT VNPAY
@@ -23,7 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class ConfigPay {
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-//    public static String vnp_ReturnUrl = "http://localhost:8080/vnpay_jsp/vnpay_return.jsp";
+    public static String vnp_ReturnUrl = "http://localhost:8080/payment/payment-callback";
     public static String vnp_TmnCode = "LCW64KGS";
     public static String secretKey = "OLCJTYXAUBTUICJWLBNEVUMQFQODIYWD";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
@@ -64,7 +63,7 @@ public class ConfigPay {
         return digest;
     }
 
-    //Util for VNPAY
+    // Util for VNPAY
     public static String hashAllFields(Map fields) {
         List fieldNames = new ArrayList(fields.keySet());
         Collections.sort(fieldNames);
@@ -82,7 +81,7 @@ public class ConfigPay {
                 sb.append("&");
             }
         }
-        return hmacSHA512(secretKey,sb.toString());
+        return hmacSHA512(secretKey, sb.toString());
     }
 
     public static String hmacSHA512(final String key, final String data) {
