@@ -1,9 +1,16 @@
 package datn.goodboy.controller;
 
 import datn.goodboy.config.ConfigPay;
+import datn.goodboy.model.DTO.PaymentResDTO;
 import datn.goodboy.model.entity.Pay;
+import datn.goodboy.service.BillService;
 import datn.goodboy.service.PayService;
+import jakarta.servlet.http.HttpServletResponse;
+import javassist.NotFoundException;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,20 +28,28 @@ public class PayController {
     @Autowired
     private BillController billController;
 
+    @Autowired
+    BillService billService;
     private final PayService payService;
+
+    private static int pay_id;
 
     @Autowired
     public PayController(PayService payService) {
         this.payService = payService;
     }
 
-        @GetMapping("/create_payment")
-    public String getPay() throws UnsupportedEncodingException {
+    @GetMapping("/create_payment/{amount}/{id}")
+    public ResponseEntity<?> getPay(@PathVariable int amount, @PathVariable int id)
+            throws UnsupportedEncodingException {
+
+        pay_id = id;
+        // long totalPrice = Long.parseLong(String.valueOf(amount)) * 100;
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = 10000 * 100;
+
         String bankCode = "NCB";
 
         String vnp_TxnRef = ConfigPay.getRandomNumber(8);
@@ -46,16 +61,16 @@ public class PayController {
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
         vnp_Params.put("vnp_CurrCode", "VND");
 
         vnp_Params.put("vnp_BankCode", bankCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);
-
+        vnp_Params.put("vnp_ReturnUrl", ConfigPay.vnp_ReturnUrl);
         vnp_Params.put("vnp_Locale", "vn");
-//        vnp_Params.put("vnp_ReturnURL",ConfigPay.vnp_ReturnUrl);
+        // vnp_Params.put("vnp_ReturnURL",ConfigPay.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -76,11 +91,11 @@ public class PayController {
             String fieldName = (String) itr.next();
             String fieldValue = (String) vnp_Params.get(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                //Build hash data
+                // Build hash data
                 hashData.append(fieldName);
                 hashData.append('=');
                 hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                //Build query
+                // Build query
                 query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
                 query.append('=');
                 query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
@@ -94,24 +109,50 @@ public class PayController {
         String vnp_SecureHash = ConfigPay.hmacSHA512(ConfigPay.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = ConfigPay.vnp_PayUrl + "?" + queryUrl;
+        PaymentResDTO paymentResDTO = new PaymentResDTO();
+        paymentResDTO.setUrl(paymentUrl);
+        System.out.println(paymentResDTO);
 
-        return paymentUrl;
+        return ResponseEntity.ok(paymentResDTO);
     }
 
+    @GetMapping("/payment-callback")
+    public ResponseEntity<?> transaction(
+            @RequestParam(value = "vnp_Amount") String vnpAmount,
+            @RequestParam(value = "vnp_BankCode") String vnpBankCode,
+            @RequestParam(value = "vnp_OrderInfo") String vnpOrderInfo,
+            @RequestParam(value = "vnp_ResponseCode") String vnpResponseCode,
+            HttpServletResponse httpResponse) throws NotFoundException {
+        if ("00".equals(vnpResponseCode)) {
+            billService.updateStatusPay(pay_id, 1);
+        }
 
-//    @GetMapping("/hien-thi")
-//    public String hienThi(Model model,@RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-//                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-//
-//            Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-//            Page<Pay> pay = payService.getPage(pageable);
-//            model.addAttribute("totalPage", pay.getTotalPages());
-//            model.addAttribute("payPage", pay.getContent());
-//        model.addAttribute("customer", customerService.getAllCustomers());
-//        model.addAttribute("employee", employeeService.getAllEmployee());
-//        model.addAttribute("pay", payService.getAllPay());
-//        return "/admin/pages/pay/pay";
-//    }
+        String responseJSON = null;
+
+        if ("00".equals(vnpResponseCode)) {
+            // Chuyển sang trang đơn hàng
+            responseJSON = "<script>window.location.href='http://localhost:8080/admin/bill';</script>";
+        } else {
+            responseJSON = "<script>window.location.href='http://localhost:8080/admin/bill';</script>";
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseJSON);
+    }
+    // @GetMapping("/hien-thi")
+    // public String hienThi(Model model,@RequestParam(name = "pageSize",
+    // defaultValue = "5") Integer pageSize,
+    // @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer
+    // pageNum) {
+    //
+    // Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+    // Page<Pay> pay = payService.getPage(pageable);
+    // model.addAttribute("totalPage", pay.getTotalPages());
+    // model.addAttribute("payPage", pay.getContent());
+    // model.addAttribute("customer", customerService.getAllCustomers());
+    // model.addAttribute("employee", employeeService.getAllEmployee());
+    // model.addAttribute("pay", payService.getAllPay());
+    // return "/admin/pages/pay/pay";
+    // }
 
     @GetMapping
     public String showPaymentPage() {
@@ -146,9 +187,4 @@ public class PayController {
         return "/admin/pages/dashboard"; // Dẫn đến URL THANH TOÁN
     }
 
-
-
 }
-
-
-

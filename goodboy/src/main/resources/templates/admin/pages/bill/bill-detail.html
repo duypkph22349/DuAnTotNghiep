@@ -155,11 +155,14 @@
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>
 
-                        <span th:text="${#temporals.format(bill?.delivery_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+                        <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
                     </div>
-                    <div class="item dateShip">
-                        <label>Ngày Giao Hàng</label>
-                        <span th:text="${#temporals.format(bill?.received_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+
+                    <div class="item statusPay">
+                        <label>Trạng thái thanh toán</label>
+                        <span style="background-color:gold" th:if="${bill.status_pay == 0}">Chưa thanh toán</span>
+                        <span style="background-color:gold" th:if="${bill.status_pay == 1}">Đã thanh toán</span>
+
                     </div>
 
                 </div>

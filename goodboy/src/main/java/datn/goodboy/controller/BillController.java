@@ -14,17 +14,16 @@ import datn.goodboy.model.entity.Bill;
 import datn.goodboy.service.BillService;
 
 @Controller
-@RequestMapping("admin/bill")
+@RequestMapping("/admin/bill")
 public class BillController {
 
     @Autowired
     private BillService billService;
 
-//    @Autowired
-//    private BillDetailService billDetailService;
+    // @Autowired
+    // private BillDetailService billDetailService;
 
-
-    @GetMapping({ "/hien-thi", "" })
+    @GetMapping({ "/dsBill", "" })
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 

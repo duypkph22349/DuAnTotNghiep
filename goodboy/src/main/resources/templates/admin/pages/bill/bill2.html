@@ -43,11 +43,11 @@
 <body>
 <section layout:fragment="content">
     <div class="pagetitle">
-        <h1>Hóa Đơn</h1>
+        <h1>Chi Tiết Hóa Đơn </h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active">Bill</li>
+                <li class="breadcrumb-item"><a href="http://localhost:8080/admin/bill/dsBill">Hóa Đơn</a></li>
+                <li class="breadcrumb-item active">Chi Tiết Hóa Đơn</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -209,11 +209,14 @@
                         <div class="item dateOrder">
                             <label>Ngày Đặt Hàng</label>
 
-                            <span th:text="${#temporals.format(bill?.delivery_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+                            <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
                         </div>
-                        <div class="item dateShip">
-                            <label>Ngày Giao Hàng</label>
-                            <span th:text="${#temporals.format(bill?.received_date, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+
+                        <div class="item statusPay">
+                            <label>Trạng thái thanh toán</label>
+                            <span style="background-color:gold" th:if="${bill.status_pay == 0}">Chưa thanh toán</span>
+                            <span style="background-color:gold" th:if="${bill.status_pay == 1}">Đã thanh toán</span>
+
                         </div>
 
                     </div>
@@ -250,7 +253,7 @@
                 <button onclick="goBack()"class="btn btn-primary" style="font-size: 16px  ;">Back</button>
                 <script>
                     function goBack() {
-                        window.location.href = 'http://localhost:8080/admin/bill/hien-thi'
+                        window.location.href = 'http://localhost:8080/admin/bill/dsBill'
                     }
                 </script>
             </div>
@@ -264,7 +267,7 @@
             </div>
             <hr>
             <div class="info-order">
-                <table class="table table-hover" id="myTable">
+                <table class="table table-hover" id="myTable" style="font-size: 13px">
                     <thead class="position-sticky top-0">
 
                     <tr class="ex">

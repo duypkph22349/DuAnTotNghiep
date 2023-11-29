@@ -115,4 +115,10 @@ public class BillService {
         bill.setStatus(status);
         billRepository.save(bill);
     }
+
+    public void updateStatusPay(Integer id, Integer status_pay) throws NotFoundException {
+        Bill bill = getBillById(id);
+        bill.setStatus_pay(status_pay);
+        billRepository.save(bill);
+    }
 }
