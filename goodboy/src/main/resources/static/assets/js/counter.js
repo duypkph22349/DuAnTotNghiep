@@ -121,11 +121,10 @@ function formInOrder(id) {
                                                   <tr>
                                                       <th>#</th>
                                                       <th>Tên sản phẩm</th>
-                                                      <th>Code</th>
                                                       <th>Giá</th>
                                                       <th>Số lượng</th>
                                                       <th>Hoa Văn</th>
-                                                      <th>màu sắc</th>
+                                                      <th>Màu sắc</th>
                                                       <th>Action</th>
                                                   </tr>
                                               </thead>
@@ -163,11 +162,6 @@ function formInOrder(id) {
                           </div>
                           <div style="padding: 4px 16px 16px;">
                               <div id="processor-body">
-                                  <div class="processor" id="processor-insert-at">
-                                      <div>Tạo lúc:</div>
-                                      <div id="timeline"></div>
-                                  </div>
-                                  <br>
                                   <div class="processor" id="processor-assign-seller">
                                       <div id="title-assign-seller">NV xử lý:&nbsp;</div>
                                       <div style="display: flex;">
@@ -916,7 +910,6 @@ function getFirstProductPage(orderId) {
             product.imageUrl || defaultImage
           }" class="image-fluid" style="height: 60px;">`,
           product.name,
-          product.code,
           product.price,
           product.quantity,
           product.idPattern.name,

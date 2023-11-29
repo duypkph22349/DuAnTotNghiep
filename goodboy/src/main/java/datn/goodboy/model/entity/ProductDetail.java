@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,6 +98,19 @@ public class ProductDetail {
     @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
     @JsonIgnore
     private List<Images> imageProducts;
+
+    public boolean ableToSales() {
+        if (this.getQuantity() <= 0) {
+            return false;
+        }
+        if (this.isDeleted()) {
+            return false;
+        }
+        if (this.getStatus() != 1) {
+            return false;
+        }
+        return true;
+    }
 
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
