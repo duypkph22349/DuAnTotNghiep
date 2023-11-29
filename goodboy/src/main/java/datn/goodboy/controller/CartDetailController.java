@@ -45,13 +45,13 @@ public class CartDetailController {
 
     @RequestMapping("/updateSoLuong/{id}")
     public String updateSoLuong(Model model,
-                                @PathVariable("id") int id,
-                                @RequestParam("actions") String actions,
-                                @RequestParam("quantity") Integer quantity
+            @PathVariable("id") int id,
+            @RequestParam("actions") String actions,
+            @RequestParam("quantity") Integer quantity
 
-    ){
+    ) {
 
-         CartDetail  cartDetail = cartDetailService.findByIdCart(id);
+        CartDetail cartDetail = cartDetailService.findByIdCart(id);
 
         if (cartDetail != null) {
             if ("tang".equals(actions)) {
@@ -66,10 +66,10 @@ public class CartDetailController {
             cartDetailService.saveCart(cartDetail);
         }
 
-
         return "redirect:/user/cart/index";
 
     }
+}
 //
 // import datn.goodboy.model.entity.Cart;
 // import datn.goodboy.model.entity.CartDetail;

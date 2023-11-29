@@ -221,11 +221,11 @@ public class ProductDetailControllerUser {
         Product product = service.getById(id);
         model.addAttribute("product", product);
         return "user/product_detail.html";
-    }<<<<<<<HEAD=======
+    }
 
     @PostMapping("addtocart/{id}")
-    public String addtocart(Model model, @PathVariable("id") Integer id,@RequestParam int quantity) {
-        ProductDetail productDetail = service.getProductDetailById(id).orElse(null);
+    public String addtocart(Model model, @PathVariable("id") Integer id, @RequestParam int quantity) {
+        ProductDetail productDetail = productDetailService.getProductDetailById(id).orElse(null);
         if (productDetail != null) {
             CartDetail cartDetail = new CartDetail();
             cartDetail.setProductDetail(productDetail);
@@ -235,5 +235,5 @@ public class ProductDetailControllerUser {
         System.out.println(productDetail);
 
         return "user/cart";
-    }>>>>>>>474de1f (checkout)
+    }
 }
