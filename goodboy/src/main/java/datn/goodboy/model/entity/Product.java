@@ -104,7 +104,7 @@ public class Product {
 
     @JsonIgnore
     public List<List<ProductDetail>> getListOptionProduct() {
-        List<List<ProductDetail>> options = ColerOn().stream()
+        List<List<ProductDetail>> options = patternTypes().stream()
                 .map(color -> productDetails.stream()
                         .filter(p -> p.getIdPattern().equals(color))
                         .collect(Collectors.toList()))
@@ -113,7 +113,7 @@ public class Product {
     }
 
     @JsonIgnore
-    public List<PatternType> ColerOn() {
+    public List<PatternType> patternTypes() {
         List<PatternType> colors = productDetails.stream()
                 .map(ProductDetail::getIdPattern)
                 .distinct()
