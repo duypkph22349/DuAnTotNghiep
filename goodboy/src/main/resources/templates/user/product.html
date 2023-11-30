@@ -11,10 +11,8 @@
     <title>Khăn choàng</title>
 </head>
 
-<body>
-
-
-    <section layout:fragment="content">
+<body layout:fragment="content">
+    <section>
         <div class="breacrumb-section">
             <div class="container">
                 <div class="row">
@@ -28,7 +26,6 @@
             </div>
         </div>
         <!-- Breadcrumb Section Begin -->
-
         <!-- Product Shop Section Begin -->
         <section class="product-shop spad">
             <div class="container">
@@ -94,7 +91,8 @@
                                             </ul>
                                         </div>
                                         <div class="pi-text">
-                                            <div class="catagory-name" th:text="${product.name}"></div>
+                                            <div class="catagory-name" th:if="${product.idCategory}"
+                                                th:text="${product.idCategory.name}"></div>
                                             <a th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">
                                                 <h5 th:text="${product.name}"></h5>
                                             </a>
@@ -120,91 +118,6 @@
             </div>
         </section>
     </section>
-    <script>
-        $('.item_nav').eq(2).addClass('active');
-
-        function addToCart(productId) {
-            var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=1&isReplace=false';
-            $.ajax({
-                url: apiUrl,
-                type: 'POST',
-                dataType: 'json',
-                success: function (data) {
-                    $('#totalQuantity').html(data.totalQuantity);
-                    $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-                    $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-                    $.ajax({
-                        url: '/products',
-                        type: 'GET',
-                        success: function (data) {
-                            $('#cartShow').html($(data).find('#cartShow').children());
-                        },
-                        error: function (error) {
-                            alert('Error: ' + error);
-                        }
-                    })
-                    alert('Add product to cart success.');
-                },
-                error: function (error) {
-                    alert('Add product to cart fail. Error: ' + error);
-                }
-
-            });
-            return false;
-        }
-    </script>
-    <script>
-        function submitForm(p,gender) {
-            document.querySelector('#p').value = p;
-            document.querySelector('#gender').value = gender;
-        }
-
-
-        function select(ele,page) {
-            $.ajax({
-                url: '/products',
-                method: 'GET',
-                data: {
-                    price: $('#sort .selected').attr('data-value'),
-                    categoryId: $('#category .selected').attr('data-value'),
-                    page: page
-                },
-                success: function (data) {
-                    $('#product-content').html($(data).find('#product-content').html());
-                },
-                error: function error() {
-
-                }
-            })
-        }
-
-        $('#sort .option').on("click",function () {
-            $.ajax({
-                url: "/products",
-                method: 'GET',
-                data: {
-                    price: $(this).attr('data-value'),
-                    categoryId: $('#category .selected').attr('data-value')
-                },
-                success: function (data) {
-                    $('#product-content').html($(data).find('#product-content').html());
-                }
-            })
-        });
-        $('#category .option').on("click",function () {
-            $.ajax({
-                url: "/products",
-                method: 'GET',
-                data: {
-                    price: $('#sort .selected').attr('data-value'),
-                    categoryId: $(this).attr('data-value'),
-                },
-                success: function (data) {
-                    $('#product-content').html($(data).find('#product-content').html());
-                }
-            })
-        });
-    </script>
 </body>
 
 </html>

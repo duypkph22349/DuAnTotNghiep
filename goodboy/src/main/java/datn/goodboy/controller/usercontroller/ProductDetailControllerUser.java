@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.request.ProductDetailFilter;
-import datn.goodboy.model.request.ProductDetailRequest;
+import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.ColorService;
-import datn.goodboy.service.CustomerService;
-import datn.goodboy.service.ImageProductService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.PatternTypeService;
@@ -67,12 +64,6 @@ public class ProductDetailControllerUser {
 
     @Autowired
     private CartDetailService cartDetailService;
-    // @ModelAttribute("brand-combobox")
-    // public ProductDetailFilter fillter() {
-    // return filter;
-    // }
-    @Autowired
-    private ImageProductService imageProductService;
 
     @ModelAttribute("brandCbb")
     public List<Map<Integer, String>> getComboboxBrand() {
@@ -118,11 +109,11 @@ public class ProductDetailControllerUser {
     TrangThaiConvert convert;
 
     @Autowired
-    @Qualifier("filternew")
-    private ProductDetailFilter filter;
+    @Qualifier("filterproductnew")
+    private ProductFilter filter;
 
-    @ModelAttribute("fillter")
-    public ProductDetailFilter fillter() {
+    @ModelAttribute("filter")
+    public ProductFilter filter() {
         return filter;
     }
 
@@ -131,11 +122,6 @@ public class ProductDetailControllerUser {
         return convert;
     }
 
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    @Qualifier("newrequest")
-    private ProductDetailRequest productDetailRequest;
     public int rowcount = 10;
     public int[] pagenumbers;
     public String sortBy = "createdAt";
@@ -150,6 +136,7 @@ public class ProductDetailControllerUser {
 
     @GetMapping({ "index", "" })
     public String getIndexpage(Model model) {
+        filter.resetFilter();
         this.pageno = 1;
         this.rowcount = 10;
         this.sortBy = "createdAt";
@@ -165,35 +152,87 @@ public class ProductDetailControllerUser {
         return "user/product.html";
     }
 
+    @GetMapping("search")
+    public String getSearch(Model model, @RequestParam("txtSearch") String search) {
+        System.out.println(search);
+        filter.resetFilter();
+        filter.setTxtSearch(search);
+        return getPageNo(model, 1);
+    }
+
+    @GetMapping("category/{idcategory}")
+    public String getSearch(Model model, @PathVariable("idcategory") int idcategory) {
+        System.out.println(idcategory);
+        filter.resetFilter();
+        filter.setIdCategory(idcategory);
+        return getPageNo(model, 1);
+    }
+
     // panigation and sort
     @GetMapping("getcountrow")
     public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
+
         rowcount = Integer.parseInt(selectedValue);
         pagenumbers = service.getPanigation(rowcount, pageno);
         this.pageno = 1;
+        if (filter != null) {
+            if (filter.filterAble()) {
+                List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, filter);
+                pagenumbers = service.getPanigation(rowcount, pageno, filter);
+                totalpage = service.getPageNumber(rowcount, filter);
+                model.addAttribute("totalpage", totalpage);
+                model.addAttribute("list", list);
+                model.addAttribute("pagenumber", pagenumbers);
+                model.addAttribute("crpage", pageno);
+                model.addAttribute("sortBy", sortBy);
+                model.addAttribute("sortDir", sortDir);
+                model.addAttribute("rowcount", rowcount);
+                return "user/product";
+            }
+        }
         List<Product> list = service.getPageNo(1, rowcount, sortBy, sortDir);
         totalpage = service.getPageNumber(rowcount);
         model.addAttribute("totalpage", totalpage);
         model.addAttribute("list", list);
         model.addAttribute("pagenumber", pagenumbers);
         model.addAttribute("crpage", pageno);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
         model.addAttribute("rowcount", rowcount);
         return "user/product.html";
     }
 
+    // @ModelAttribute("filter") ProductFilter filter
     @GetMapping("sort")
     public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
             @RequestParam("sortDir") boolean sordir) {
         this.sortBy = sortby;
         this.sortDir = sordir;
         this.pageno = 1;
-        List<Product> list = service.getPageNo(this.pageno, rowcount, this.sortBy, this.sortDir);
+        if (filter != null) {
+            if (filter.filterAble()) {
+                List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, filter);
+                pagenumbers = service.getPanigation(rowcount, pageno, filter);
+                totalpage = service.getPageNumber(rowcount, filter);
+                model.addAttribute("totalpage", totalpage);
+                model.addAttribute("list", list);
+                model.addAttribute("pagenumber", pagenumbers);
+                model.addAttribute("crpage", pageno);
+                model.addAttribute("sortBy", sortBy);
+                model.addAttribute("sortDir", sortDir);
+                model.addAttribute("rowcount", rowcount);
+                return "user/product";
+            }
+        }
+        List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, this.sortDir);
         totalpage = service.getPageNumber(rowcount);
         pagenumbers = service.getPanigation(rowcount, pageno);
         model.addAttribute("list", list);
         model.addAttribute("totalpage", totalpage);
         model.addAttribute("pagenumber", pagenumbers);
         model.addAttribute("crpage", pageno);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
         model.addAttribute("rowcount", rowcount);
         return "user/product";
     }
@@ -205,12 +244,29 @@ public class ProductDetailControllerUser {
             pageno = 1;
         }
         this.pageno = pageno;
+        if (filter != null) {
+            if (filter.filterAble()) {
+                List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, filter);
+                pagenumbers = service.getPanigation(rowcount, pageno, filter);
+                totalpage = service.getPageNumber(rowcount, filter);
+                model.addAttribute("totalpage", totalpage);
+                model.addAttribute("list", list);
+                model.addAttribute("pagenumber", pagenumbers);
+                model.addAttribute("crpage", pageno);
+                model.addAttribute("sortBy", sortBy);
+                model.addAttribute("sortDir", sortDir);
+                model.addAttribute("rowcount", rowcount);
+                return "user/product";
+            }
+        }
         List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
         totalpage = service.getPageNumber(rowcount);
         model.addAttribute("totalpage", totalpage);
         pagenumbers = service.getPanigation(rowcount, this.pageno);
         model.addAttribute("pagenumber", pagenumbers);
         model.addAttribute("crpage", this.pageno);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
         model.addAttribute("list", list);
         model.addAttribute("rowcount", rowcount);
         return "user/product";
@@ -232,8 +288,6 @@ public class ProductDetailControllerUser {
             cartDetail.setQuantity(quantity);
             cartDetailService.saveCart(cartDetail);
         }
-        System.out.println(productDetail);
-
         return "user/cart";
     }
 }
