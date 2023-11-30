@@ -1,20 +1,29 @@
 package datn.goodboy.model.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @ToString
 @Entity
@@ -29,6 +38,23 @@ public class Product {
     private Integer id;
     @Column(name = "code", insertable = false, updatable = false)
     private String code;
+
+    @ManyToOne
+    @JoinColumn(name = "id_origin")
+    private Origin idOrigin;
+
+    @ManyToOne
+    @JoinColumn(name = "id_brand")
+    private Brand idBrand;
+
+    @ManyToOne
+    @JoinColumn(name = "id_material")
+    private Material idMaterial;
+
+    @ManyToOne
+    @JoinColumn(name = "id_style")
+    private Styles idStyles;
+
     @NotNull
     @NotBlank
     @Column(name = "name")
@@ -41,10 +67,22 @@ public class Product {
     private boolean deleted;
     @Column(name = "status")
     private int status;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
     @JsonIgnore
     private List<ImageProduct> imageProducts;
-    @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
+    @OneToMany(mappedBy = "idProduct") // Define the relationship with ProductDetail
     @JsonIgnore
     private List<ProductDetail> productDetails;
 
@@ -68,16 +106,16 @@ public class Product {
     public List<List<ProductDetail>> getListOptionProduct() {
         List<List<ProductDetail>> options = ColerOn().stream()
                 .map(color -> productDetails.stream()
-                        .filter(p -> p.getIdColor().equals(color))
+                        .filter(p -> p.getIdPattern().equals(color))
                         .collect(Collectors.toList()))
                 .collect(Collectors.toList());
         return options;
     }
 
     @JsonIgnore
-    public List<Color> ColerOn() {
-        List<Color> colors = productDetails.stream()
-                .map(ProductDetail::getIdColor)
+    public List<PatternType> ColerOn() {
+        List<PatternType> colors = productDetails.stream()
+                .map(ProductDetail::getIdPattern)
                 .distinct()
                 .collect(Collectors.toList());
         return colors;

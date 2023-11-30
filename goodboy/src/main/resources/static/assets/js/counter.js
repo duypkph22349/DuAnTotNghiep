@@ -123,8 +123,8 @@ function formInOrder(id) {
                                                       <th>Tên sản phẩm</th>
                                                       <th>Giá</th>
                                                       <th>Số lượng</th>
-                                                      <th>Hoa Văn</th>
-                                                      <th>Màu sắc</th>
+                                                      <th>Hoa văn</th>
+                                                      <th>Kích thước</th>
                                                       <th>Action</th>
                                                   </tr>
                                               </thead>
@@ -913,7 +913,7 @@ function getFirstProductPage(orderId) {
           product.price,
           product.quantity,
           product.idPattern.name,
-          product.idColor.name,
+          product.idSize.name,
           `
           <div class="d-flex">
           <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop${
@@ -956,22 +956,19 @@ function getFirstProductPage(orderId) {
                     <span>${product.idPattern?.name ?? ""}</span>
                   </p>
                   <p><strong>Color :</strong>
-                    <span>${product.idColor?.name ?? ""}</span>
-                  </p>
-                  <p><strong>Origin :</strong>
-                    <span>${product.idOrigin?.name ?? ""}</span>
-                  </p>
-                  <p><strong>Brand :</strong>
-                    <span>${product.idBrand?.name ?? ""}</span>
-                  </p>
-                  <p><strong>Material :</strong>
-                    <span>${product.idMaterial?.name ?? ""}</span>
-                  </p>
-                  <p><strong>Size :</strong>
                     <span>${product.idSize?.name ?? ""}</span>
                   </p>
+                  <p><strong>Origin :</strong>
+                    <span>${product.idProduct?.idOrigin?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Brand :</strong>
+                    <span>${product.idProduct?.idBrand?.name ?? ""}</span>
+                  </p>
+                  <p><strong>Material :</strong>
+                    <span>${product.idProduct?.idMaterial?.name ?? ""}</span>
+                  </p>
                   <p><strong>Styles :</strong>
-                    <span>${product.idStyles?.name ?? ""}</span>
+                    <span>${product.idProduct?.idStyles?.name ?? ""}</span>
                   </p>
                   <p><strong>description :</strong>
                     <span>${product.description}</span>
@@ -1029,9 +1026,9 @@ function createProductRow(product, idorderdetail) {
   newProductRow.classList.add("table-body-row", "order-product");
   newProductRow.setAttribute("idproduct", product.id);
   newProductRow.innerHTML = `
-        <td><strong>Tên:</strong> ${product.name} <strong>Màu sắc:</strong> ${
-    product.idColor?.name ?? ""
-  } <strong>Hoa văn:</strong> ${product.idPattern?.name ?? ""} </td>
+        <td><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
+    product.idPattern?.name ?? ""
+  } </td>
         <td>${product.price}</td>
         <td>
         <div class="d-flex w-100">

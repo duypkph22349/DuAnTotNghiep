@@ -2,10 +2,6 @@ package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,32 +54,12 @@ public class ProductDetail {
     private Product idProduct;
 
     @ManyToOne
-    @JoinColumn(name = "id_pattern")
-    private PatternType idPattern;
-
-    @ManyToOne
-    @JoinColumn(name = "id_color")
-    private Color idColor;
-
-    @ManyToOne
-    @JoinColumn(name = "id_origin")
-    private Origin idOrigin;
-
-    @ManyToOne
-    @JoinColumn(name = "id_brand")
-    private Brand idBrand;
-
-    @ManyToOne
-    @JoinColumn(name = "id_material")
-    private Material idMaterial;
-
-    @ManyToOne
     @JoinColumn(name = "id_size")
     private Size idSize;
 
     @ManyToOne
-    @JoinColumn(name = "id_styles")
-    private Styles idStyles;
+    @JoinColumn(name = "id_pattern")
+    private PatternType idPattern;
 
     @Column(name = "status")
     private int status;
@@ -98,6 +76,17 @@ public class ProductDetail {
     @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
     @JsonIgnore
     private List<Images> imageProducts;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public boolean ableToSales() {
         if (this.getQuantity() <= 0) {

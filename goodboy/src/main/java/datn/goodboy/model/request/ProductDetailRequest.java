@@ -43,8 +43,6 @@ public class ProductDetailRequest {
   @Min(value = 0, message = "Vui lòng chọn")
   int idPattern;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idColor;
-  @Min(value = 0, message = "Vui lòng chọn")
   int idOrigin;
   @Min(value = 0, message = "Vui lòng chọn")
   int idBrand;
@@ -75,7 +73,6 @@ public class ProductDetailRequest {
     }
     this.idProduct = -1;
     this.idPattern = -1;
-    this.idColor = -1;
     this.idOrigin = -1;
     this.idBrand = -1;
     this.idMaterial = -1;

@@ -15,15 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import datn.goodboy.exeption.rest.ErrorCreateBill;
-import datn.goodboy.model.entity.Brand;
-import datn.goodboy.model.entity.Color;
-import datn.goodboy.model.entity.Material;
-import datn.goodboy.model.entity.Origin;
+// import datn.goodboy.model.entity.Brand;
+// import datn.goodboy.model.entity.Color;
+// import datn.goodboy.model.entity.Material;
+// import datn.goodboy.model.entity.Origin;
+// import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Size;
-import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.repository.ProductDetailRepository;
@@ -36,18 +36,20 @@ import datn.goodboy.service.serviceinterface.PanigationWithSearch;
 public class ProductDetailService implements PanigationInterface<ProductDetail>,
     IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
 
-  @Autowired
-  private BrandService brandService;
+  // @Autowired
+  // private BrandService brandService;
 
-  @Autowired
-  private ColorService colorService;
+  // @Autowired
+  // private ColorService colorService;
 
-  @Autowired
-  private MaterialService materialService;
+  // @Autowired
+  // private MaterialService materialService;
 
-  @Autowired
-  private OriginService originService;
+  // @Autowired
+  // private OriginService originService;
 
+  // @Autowired
+  // private StylesService stylesService;
   @Autowired
   private PatternTypeService patternTypeService;
 
@@ -56,9 +58,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
 
   @Autowired
   private SizeService sizeService;
-
-  @Autowired
-  private StylesService stylesService;
 
   @Autowired
   private ImageService imageService;
@@ -144,10 +143,10 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetailRequest.setId(productDetail.getId());
     productDetailRequest.setDescription(productDetail.getDescription());
     productDetailRequest.setDeleted(productDetail.isDeleted());
-    productDetailRequest.setIdBrand(productDetail.getIdBrand().getId());
-    productDetailRequest.setIdMaterial(productDetail.getIdMaterial().getId());
-    productDetailRequest.setIdColor(productDetail.getIdColor().getId());
-    productDetailRequest.setIdOrigin(productDetail.getIdOrigin().getId());
+    // productDetailRequest.setIdBrand(productDetail.getIdBrand().getId());
+    // productDetailRequest.setIdMaterial(productDetail.getIdMaterial().getId());
+    // productDetailRequest.setIdColor(productDetail.getIdColor().getId());
+    // productDetailRequest.setIdOrigin(productDetail.getIdOrigin().getId());
     productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
     productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
     productDetailRequest.setQuantity(productDetail.getQuantity());
@@ -158,22 +157,22 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   }
 
   public void mapRequestToEntity(ProductDetailRequest request, ProductDetail entity) {
-    Brand brand = brandService.getById(request.getIdBrand());
-    Color color = colorService.getById(request.getIdColor());
-    Material material = materialService.getById(request.getIdMaterial());
-    Origin origin = originService.getById(request.getIdOrigin());
+    // Color color = colorService.getById(request.getIdColor());
+    // Brand brand = brandService.getById(request.getIdBrand());
+    // Material material = materialService.getById(request.getIdMaterial());
+    // Origin origin = originService.getById(request.getIdOrigin());
+    // Styles styles = stylesService.getById(request.getIdStyles());
     PatternType pattern = patternTypeService.getById(request.getIdPattern());
     Product product = productService.getById(request.getIdProduct());
     Size size = sizeService.getById(request.getIdSize());
-    Styles styles = stylesService.getById(request.getIdStyles());
-    entity.setIdBrand(brand);
-    entity.setIdColor(color);
-    entity.setIdMaterial(material);
-    entity.setIdOrigin(origin);
+    // entity.setIdBrand(brand);
+    // entity.setIdColor(color);
+    // entity.setIdMaterial(material);
+    // entity.setIdOrigin(origin);
+    // entity.setIdStyles(styles);
     entity.setIdPattern(pattern);
     entity.setIdProduct(product);
     entity.setIdSize(size);
-    entity.setIdStyles(styles);
     entity.setDeleted(request.isDeleted());
     entity.setName(request.getName());
     entity.setPrice(request.getPrice());
@@ -201,12 +200,12 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     color1.setDescription(color.getDescription());
     color1.setIdProduct(color.getIdProduct());
     color1.setIdPattern(color.getIdPattern());
-    color1.setIdColor(color.getIdColor());
-    color1.setIdOrigin(color.getIdOrigin());
-    color1.setIdBrand(color.getIdBrand());
-    color1.setIdMaterial(color.getIdMaterial());
+    // color1.setIdColor(color.getIdColor());
+    // color1.setIdOrigin(color.getIdOrigin());
+    // color1.setIdBrand(color.getIdBrand());
+    // color1.setIdMaterial(color.getIdMaterial());
+    // color1.setIdStyles(color.getIdStyles());
     color1.setIdSize(color.getIdSize());
-    color1.setIdStyles(color.getIdStyles());
     color1.setStatus(color.getStatus());
     color1.setUpdatedAt(color.getUpdatedAt());
     return productDetailRepository.save(color1);
@@ -227,7 +226,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       sort = Sort.by(sortBy).descending();
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-    // findAll method and pass pageable instance
     Page<ProductDetail> page = productDetailRepository.findAll(pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
@@ -238,9 +236,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     Pageable pageable = PageRequest.of(0, rowcount);
     Page<ProductDetail> page = productDetailRepository.findAll(pageable);
     int totalPage = page.getTotalPages();
-    // if(totalPage <=1){
-    // totalPage =1;
-    // }
     return totalPage;
   }
 
@@ -278,11 +273,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       return rs;
     }
   }
-  // panigation no fillter end
-  // panigation no with Seach end
-  // panigation no with Seach
 
-  // panigation no with fillter
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
       ProductDetailFilter filter) {
@@ -424,9 +415,11 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   public Optional<ProductDetail> getProductDetailById(Integer id) {
     return productDetailRepository.findById(id);
   }
+
   public Optional<ProductDetail> getProductByLong(Long id) {
     return productDetailRepository.getProductByLongId(id);
   }
+
   public boolean enoughtProduct(int productId, int quantity) {
     Optional<ProductDetail> productDetail = this.getProductDetailById(productId);
     if (productDetail.isPresent()) {

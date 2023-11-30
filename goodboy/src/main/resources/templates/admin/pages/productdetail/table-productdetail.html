@@ -71,16 +71,15 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <!-- <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
                         <label for="idColor" class="m-auto fw-bold">Color</label>
                         <select class="form-control   form-group-0 text-center" id="idColor" name="idColor"
                             th:field="*{idColor}">
                             <option value="-1"> Chọn Color </option>
-                            <!-- Add options for pattern selection -->
                             <option th:each="option : ${colorCbb}" th:value="${option.key}" th:text="${option.value}">
                             </option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
                         <label for="" class="m-auto fw-bold">Origin</label>
                         <select class="form-control form-group-0 text-center" id="idOrigin" name="idOrigin"
@@ -161,9 +160,9 @@
                                     class="fas fa-arrow-down"></i></a>
                         </th>
                         <th scope="col">Chất liệu
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=true)}"><i
+                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idMaterial.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idMaterial.name ,sortDir=false)}"><i
+                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idMaterial.name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
                         <th scope="col">Kích thước
@@ -173,9 +172,9 @@
                                     class="fas fa-arrow-down"></i></a>
                         </th>
                         <th scope="col">Kiểu dáng
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idStyles.name ,sortDir=true)}"><i
+                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idStyles.name ,sortDir=true)}"><i
                                     class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idStyles.name ,sortDir=false)}"><i
+                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idStyles.name ,sortDir=false)}"><i
                                     class="fas fa-arrow-down"></i></a>
                         </th>
                         <th scope="col" class="text-center">Trạng thái
@@ -195,9 +194,9 @@
                         </td>
                         <td th:text="${productdetail.quantity}"></td>
                         <td th:text="${productdetail.idProduct?.name}"></td>
-                        <td th:text="${productdetail.idMaterial?.name}"></td>
+                        <td th:text="${productdetail.idProduct?.idMaterial?.name}"></td>
                         <td th:text="${productdetail.idSize?.name}"></td>
-                        <td th:text="${productdetail.idStyles?.name}"></td>
+                        <td th:text="${productdetail.idProduct?.idStyles?.name}"></td>
                         <td th:unless="${productdetail.deleted}" class="text-center">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
@@ -256,23 +255,23 @@
                                             <p><strong>Pattern :</strong>
                                                 <span th:text="${productdetail.idPattern?.name}"></span>
                                             </p>
-                                            <p><strong>Color :</strong>
+                                            <!-- <p><strong>Color :</strong>
                                                 <span th:text="${productdetail.idColor?.name}"></span>
-                                            </p>
+                                            </p> -->
                                             <p><strong>Origin :</strong>
-                                                <span th:text="${productdetail.idOrigin?.name}"></span>
+                                                <span th:text="${productdetail.idProduct?.idOrigin?.name}"></span>
                                             </p>
                                             <p><strong>Brand :</strong>
-                                                <span th:text="${productdetail.idBrand?.name}"></span>
+                                                <span th:text="${productdetail.idProduct?.idBrand?.name}"></span>
                                             </p>
                                             <p><strong>Material :</strong>
-                                                <span th:text="${productdetail.idMaterial?.name}"></span>
+                                                <span th:text="${productdetail.idProduct?.idMaterial?.name}"></span>
                                             </p>
                                             <p><strong>Size :</strong>
                                                 <span th:text="${productdetail.idSize?.name}"></span>
                                             </p>
                                             <p><strong>Styles :</strong>
-                                                <span th:text="${productdetail.idStyles?.name}"></span>
+                                                <span th:text="${productdetail.idProduct?.idStyles?.name}"></span>
                                             </p>
                                             <p><strong>description :</strong>
                                                 <span th:text="${productdetail.description}"></span>
