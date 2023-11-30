@@ -52,6 +52,10 @@ public class Product {
     private Material idMaterial;
 
     @ManyToOne
+    @JoinColumn(name = "id_category")
+    private Category idCategory;
+
+    @ManyToOne
     @JoinColumn(name = "id_style")
     private Styles idStyles;
 

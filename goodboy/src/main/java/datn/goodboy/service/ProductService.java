@@ -1,6 +1,5 @@
 package datn.goodboy.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,11 +12,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.repository.ProductRepository;
+import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
 @Service
-public class ProductService implements PanigationInterface<Product> {
+public class ProductService implements PanigationInterface<Product>, IPanigationWithFIllter<Product, ProductFilter> {
     @Autowired
     private ProductRepository productRepository;
 
@@ -63,21 +64,33 @@ public class ProductService implements PanigationInterface<Product> {
 
     @Override
     public List<Product> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir) {
-        if (pageNo > getPageNumber(pageSize)) {
-            return null;
-        }
-        List<Product> products;
-        products = new ArrayList<>();
-        Sort sort;
-        if (sortDir) {
-            sort = Sort.by(sortBy).ascending();
+        if (!sortBy.equals("price")) {
+            if (pageNo > getPageNumber(pageSize)) {
+                return null;
+            }
+            Sort sort;
+            if (sortDir) {
+                sort = Sort.by(sortBy).ascending();
+            } else {
+                sort = Sort.by(sortBy).descending();
+            }
+            Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+            Page<Product> page = productRepository.getProductSales(pageable);
+            return page.getContent();
         } else {
-            sort = Sort.by(sortBy).descending();
+            if (pageNo > getPageNumber(pageSize)) {
+                return null;
+            }
+            if (sortDir) {
+                Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+                Page<Product> page = productRepository.getProductSalesByPriceAsc(pageable);
+                return page.getContent();
+            } else {
+                Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+                Page<Product> page = productRepository.getProductSalesByPriceDesc(pageable);
+                return page.getContent();
+            }
         }
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-        Page<Product> page = productRepository.getProductSales(pageable);
-        products = page.getContent();
-        return products;
     }
 
     @Override
@@ -125,6 +138,50 @@ public class ProductService implements PanigationInterface<Product> {
             }
             return rs;
         }
+    }
+
+    @Override
+    public List<Product> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir, ProductFilter filter) {
+        if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
+            return null;
+        }
+        if (!sortBy.equals("price")) {
+            Sort sort;
+            if (sortDir) {
+                sort = Sort.by(sortBy).ascending();
+            } else {
+                sort = Sort.by(sortBy).descending();
+            }
+            Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+            Page<Product> page = productRepository.filter(filter, pageable);
+            return page.getContent();
+        } else {
+            if (sortDir) {
+                Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+                Page<Product> page = productRepository.filter(filter, pageable);
+                return page.getContent();
+            } else {
+                Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+                Page<Product> page = productRepository.filter(filter, pageable);
+                return page.getContent();
+            }
+        }
+    }
+
+    @Override
+    public int getPageNumber(int rowcount, ProductFilter filter) {
+        Pageable pageable = PageRequest.of(0, rowcount);
+        Page<Product> page = productRepository.filter(filter, pageable);
+        int totalPage = page.getTotalPages();
+        return totalPage;
+    }
+
+    @Override
+    public int[] getPanigation(int rowcount, int pageno, ProductFilter filter) {
+        Pageable pageable = PageRequest.of(0, rowcount);
+        Page<Product> page = productRepository.filter(filter, pageable); // findAll()
+        int totalPage = page.getTotalPages();
+        return Panigation(pageno, totalPage);
     }
 
 }

@@ -9,21 +9,22 @@
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7">
-                    <div class="advanced-search">
-                        <button type="button" class="category-btn">Danh mục</button>
-                        <div class="input-group">
-                            <input type="text" placeholder="Bạn cần tìm kiếm gì?">
-                            <button type="button">
-                                <i class="ti-search"></i>
-                            </button>
+                    <form th:action="@{/shop/product/search}" method="get">
+                        <div class="advanced-search">
+                            <button type="button" class="category-btn">Danh mục</button>
+                            <div class="input-group">
+                                <input type="text" name="txtSearch" placeholder="Bạn cần tìm kiếm gì?">
+                                <button type="submit">
+                                    <i class="ti-search"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-lg-3 text-right col-md-3">
                     <ul class="nav-right">
                         <li class="heart-icon"><a href="#"> <i class="icon_heart_alt"></i> <span>0</span>
                             </a></li>
-                        <!--                        HIện thị quantity số lượng sản phẩm trong giỏ-->
                         <li class="cart-icon"><a href="/cart"> <i class="icon_bag_alt"></i> <span id="totalQuantity"
                                     th:text="${quantity}"></span>
                             </a>
@@ -102,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="nav-item">
@@ -110,10 +110,9 @@
                 <div class="nav-depart">
                     <div class="depart-btn">
                         <i class="ti-menu"></i> <span>Tất cả danh mục</span>
-                        <ul class="depart-hover">
-                            <li><a href="/product/shirt">Áo</a></li>
-                            <li><a href="/product/trouser">Quần</a></li>
-                            <li><a href="/product/accessory">Phụ kiện</a></li>
+                        <ul class="depart-hover" th:if="${categories}">
+                            <li th:each="cate : ${categories}"><a th:href="@{'/shop/product/category/'+${cate.id}}"
+                                    th:text="${cate.name}"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -129,8 +128,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- Modal -->
     <div class="modal fade align-items-center justify-content-center" id="loginModal" tabindex="-1"
         aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -190,10 +187,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     <!-- Modal đăng kí -->
     <div class="modal fade align-items-center justify-content-center" id="registerModal" tabindex="-1"
         aria-labelledby="registerModalLabel" aria-hidden="true">
