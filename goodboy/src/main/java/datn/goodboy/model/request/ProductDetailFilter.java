@@ -29,7 +29,6 @@ public class ProductDetailFilter {
   String txtSearch;
   int idProduct;
   int idPattern;
-  int idColor;
   int idOrigin;
   int idBrand;
   int idMaterial;
@@ -47,9 +46,6 @@ public class ProductDetailFilter {
       return true;
     }
     if (idPattern != -1) {
-      return true;
-    }
-    if (idColor != -1) {
       return true;
     }
     if (idOrigin != -1) {
@@ -74,7 +70,6 @@ public class ProductDetailFilter {
     txtSearch = "";
     idProduct = -1;
     idPattern = -1;
-    idColor = -1;
     idOrigin = -1;
     idBrand = -1;
     idMaterial = -1;

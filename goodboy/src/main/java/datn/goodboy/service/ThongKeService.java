@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.ldap.SortControl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +53,7 @@ public class ThongKeService {
   }
 
   public List<TopProductSales> getTopProductSales(LocalDateTime date_from, LocalDateTime date_to) {
-    List<TopProductSales> lisTopProductSales = new ArrayList();
+    List<TopProductSales> lisTopProductSales = new ArrayList<TopProductSales>();
     for (Object object : thongKeRepository.getTopProductsSale(date_from, date_to)) {
       Object[] objectArray = (Object[]) object;
       TopProductSales topProductSales = new TopProductSales();

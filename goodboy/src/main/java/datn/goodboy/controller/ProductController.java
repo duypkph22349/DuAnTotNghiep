@@ -1,6 +1,5 @@
 package datn.goodboy.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import datn.goodboy.model.entity.Product;
-import datn.goodboy.service.ImageProductService;
 import datn.goodboy.service.ProductService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
@@ -29,20 +27,18 @@ import jakarta.validation.Valid;
 public class ProductController {
     @Autowired
     private ProductService productService;
-
-
-    private int currentProductCode = 1;
     @Autowired
     TrangThaiConvert convert;
+
     @Autowired
-    private ImageProductService imageProductService;
     @ModelAttribute("convert")
     public TrangThaiConvert convert() {
         return convert;
     }
-    @GetMapping({"/dsProduct",""})
+
+    @GetMapping({ "/dsProduct", "" })
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Product> brandPage = productService.findAll(pageable);
@@ -52,9 +48,9 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public String searchByKeyWork(Model model,@RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                  @RequestParam(name="keyword",required = false) String keyword) {
+    public String searchByKeyWork(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
+            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+            @RequestParam(name = "keyword", required = false) String keyword) {
 
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Product> brandPage;
@@ -65,7 +61,6 @@ public class ProductController {
             // Nếu không có từ khóa, lấy tất cả thương hiệu
             brandPage = productService.findAll(pageable);
         }
-
         model.addAttribute("totalPage", brandPage.getTotalPages());
         model.addAttribute("brandPage", brandPage.getContent());
         model.addAttribute("keyword", keyword); // Truyền từ khóa để hiển thị lại trên giao diện
@@ -79,24 +74,20 @@ public class ProductController {
 
     @GetMapping("/view-update/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("brand",productService.getById(id));
+        model.addAttribute("brand", productService.getById(id));
         return "admin/pages/product/update-product";
     }
 
     @PostMapping("/update/{id}")
-    public String update(Model model, @Valid Product b, @PathVariable Integer id,@RequestParam("listimage") List<MultipartFile> listimage) {
-        b.setUpdatedAt(LocalDateTime.now());
+    public String update(Model model, @Valid Product b, @PathVariable Integer id,
+            @RequestParam("listimage") List<MultipartFile> listimage) {
         productService.update(id, b);
         return "redirect:/admin/product/dsProduct";
     }
 
     @PostMapping("/add")
-    public String add(Model model,@Valid Product b, BindingResult result) {
-
-        b.setCreatedAt(LocalDateTime.now());
-        b.setUpdatedAt(LocalDateTime.now());
+    public String add(Model model, @Valid Product b, BindingResult result) {
         b.setStatus(1);
-        currentProductCode++;
         productService.add(b);
         return "redirect:/admin/product/dsProduct";
     }

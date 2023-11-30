@@ -35,7 +35,6 @@
             <select class="form-control form-group-0 text-center  form-group-0 text-center" id="idProduct"
               th:field="*{idProduct}" name="idProduct">
               <option value="-1"> Chọn Product</option>
-              <!-- Add options for product selection -->
               <option th:each="option : ${productCbb}" th:value="${option.key}" th:text="${option.value}">
               </option>
             </select>
@@ -46,27 +45,25 @@
             <select class="form-control   form-group-0 text-center" id="idPattern" name="idPattern"
               th:field="*{idPattern}">
               <option value="-1"> Chọn Pattern </option>
-              <!-- Add options for pattern selection -->
               <option th:each="option : ${pattenCbb}" th:value="${option.key}" th:text="${option.value}">
               </option>
             </select>
             <div th:if="${#fields.hasErrors('idPattern')}" class="text-danger form-text" th:errors="*{idPattern}"></div>
           </div>
-          <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
-            <label for="idColor" class="m-auto fw-bold">Color</label>
-            <select class="form-control   form-group-0 text-center" id="idColor" name="idColor" th:field="*{idColor}">
-              <option value="-1"> Chọn Color </option>
-              <!-- Add options for pattern selection -->
-              <option th:each="option : ${colorCbb}" th:value="${option.key}" th:text="${option.value}">
-              </option>
-            </select>
-            <div th:if="${#fields.hasErrors('idColor')}" class="text-danger form-text" th:errors="*{idColor}"></div>
-          </div>
-          <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+          <!--
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+              <label for="idColor" class="m-auto fw-bold">Color</label>
+              <select class="form-control   form-group-0 text-center" id="idColor" name="idColor" th:field="*{idColor}">
+                <option value="-1"> Chọn Color </option>
+                <option th:each="option : ${colorCbb}" th:value="${option.key}" th:text="${option.value}">
+                </option>
+              </select>
+              <div th:if="${#fields.hasErrors('idColor')}" class="text-danger form-text" th:errors="*{idColor}"></div>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="" class="m-auto fw-bold">Origin</label>
             <select class="form-control form-group-0 text-center" id="idOrigin" name="idOrigin" th:field="*{idOrigin}">
               <option value="-1"> Chọn Origin </option>
-              <!-- Add options for pattern selection -->
               <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
               </option>
             </select>
@@ -76,7 +73,6 @@
             <label for="" class="m-auto fw-bold">Brand</label>
             <select class="form-control form-group-0 text-center" id="idBrand" name="idBrand" th:field="*{idBrand}">
               <option value="-1"> Chọn Brand </option>
-              <!-- Add options for pattern selection -->
               <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
               </option>
             </select>
@@ -87,22 +83,10 @@
             <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
               th:field="*{idMaterial}">
               <option value="-1"> Chọn MeTerial </option>
-              <!-- Add options for pattern selection -->
               <option th:each="option : ${materialCbb}" th:value="${option.key}" th:text="${option.value}">
               </option>
             </select>
             <div th:if="${#fields.hasErrors('idMaterial')}" class="text-danger form-text" th:errors="*{idMaterial}">
-            </div>
-          </div>
-          <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
-            <label for="" class="m-auto fw-bold">Size</label>
-            <select class="form-control   form-group-0 text-center" id="idSize" name="idSize" th:field="*{idSize}">
-              <option value="-1"> Chọn Size </option>
-              <option th:each="option : ${sizeCbb}" th:value="${option.key}" th:text="${option.value}">
-              </option>
-              <!-- Add options for pattern selection -->
-            </select>
-            <div th:if="${#fields.hasErrors('idSize')}" class="text-danger form-text" th:errors="*{idSize}">
             </div>
           </div>
           <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
@@ -111,16 +95,20 @@
               <option value="-1"> Chọn Styles </option>
               <option th:each="option : ${stylesCbb}" th:value="${option.key}" th:text="${option.value}">
               </option>
-              <!-- Add options for pattern selection -->
             </select>
             <div th:if="${#fields.hasErrors('idStyles')}" class="text-danger form-text" th:errors="*{idStyles}">
             </div>
+          </div> -->
+          <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <label for="" class="m-auto fw-bold">Size</label>
+            <select class="form-control   form-group-0 text-center" id="idSize" name="idSize" th:field="*{idSize}">
+              <option value="-1"> Chọn Size </option>
+              <option th:each="option : ${sizeCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+            <div th:if="${#fields.hasErrors('idSize')}" class="text-danger form-text" th:errors="*{idSize}">
+            </div>
           </div>
-
-
-          <!-- int status;
-          int id;
-        String name; -->
           <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-3">
             <label for="" class="m-auto fw-bold">Name</label>
             <input type="text" name="" id="" class="form-control " th:field="*{name}">
@@ -153,8 +141,7 @@
           </div>
           <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
             <label for="description" class="m-auto fw-bold">Description</label>
-            <textarea class="form-control form-group-0" id="description" name="idStyles" th:field="*{description}">
-            <!-- Add options for pattern selection -->
+            <textarea class="form-control form-group-0" id="description" name="description" th:field="*{description}">
             </textarea>
             <div th:if="${#fields.hasErrors('description')}" class="text-danger form-text" th:errors="*{description}">
             </div>
