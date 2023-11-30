@@ -19,6 +19,10 @@ Ngày 27/11 12h
 +Thêm status_pay trong bảng bill  
 +thêm default cho status_pay  
 +...  
+Ngày 30/11 1h  
++Chỉnh sửa các trường đặc trưng là pattern và size nối bảng productDetail  
++Chỉnh sửa các trường phụ nối sang bảng product  
++...  
 
 
 
