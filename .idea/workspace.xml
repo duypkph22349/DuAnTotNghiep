@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="89c25bf0-44a9-4934-8f31-416038480c40" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/controller/rest/AdminBill.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/controller/rest/AdminBill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/repository/BillRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/repository/BillRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillService.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/bill/bill.html" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/bill/bill.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/product/hien-thi.html" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/product/hien-thi.html" afterDir="false" />
-    </list>
+    <list default="true" id="89c25bf0-44a9-4934-8f31-416038480c40" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,45 +18,20 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProjectId" id="2VQWWcL3PUnMIWBPklD33CCGrhd" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;duyhi22&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/SweeeTJ/Downloads/thinh3011&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;57e7f266bb0dc62f2cb0f25976c14e93&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "duyhi22",
+    "last_opened_file_path": "D:/DATN/goodboy",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="GoodboyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="goodboy" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="datn.goodboy.GoodboyApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -81,51 +44,10 @@
       <workItem from="1694773908103" duration="3000" />
       <workItem from="1699722580585" duration="37000" />
       <workItem from="1700145848258" duration="56000" />
-      <workItem from="1700498790285" duration="11994000" />
-      <workItem from="1700543240364" duration="6241000" />
-      <workItem from="1700550896945" duration="3769000" />
-      <workItem from="1700577502697" duration="9098000" />
-      <workItem from="1700642068721" duration="8930000" />
-      <workItem from="1700668769953" duration="3807000" />
-      <workItem from="1700675999171" duration="264000" />
-      <workItem from="1700677079995" duration="2356000" />
-      <workItem from="1700704614250" duration="55000" />
-      <workItem from="1701364964307" duration="3119000" />
-      <workItem from="1701535425485" duration="6049000" />
-      <workItem from="1701626802049" duration="2434000" />
-      <workItem from="1701629768753" duration="127000" />
-      <workItem from="1701898767259" duration="485000" />
-      <workItem from="1701907706501" duration="558000" />
     </task>
-    <task id="LOCAL-00001" summary="update thinh 22/11">
-      <created>1700668832113</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1700668832113</updated>
-    </task>
-    <task id="LOCAL-00002" summary="update thinh 22/11">
-      <created>1700679594021</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1700679594021</updated>
-    </task>
-    <task id="LOCAL-00003" summary="update thinh 22/11">
-      <created>1701543762835</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1701543762835</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="update thinh 22/11" />
-    <option name="LAST_COMMIT_MESSAGE" value="update thinh 22/11" />
   </component>
 </project>
