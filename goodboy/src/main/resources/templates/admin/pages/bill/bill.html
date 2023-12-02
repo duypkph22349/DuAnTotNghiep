@@ -166,7 +166,7 @@
     <Br>
     <div class="input-group mb-3">
         <button data-value="0" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">Chọn loại tìm kiếm
+                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">Chọn loại tìm kiếm
         </button>
         <ul class="dropdown-menu">
             <li>
@@ -199,16 +199,16 @@
             }
         </script>
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" style="font-size: 12px" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
+               id="searchInput" onkeyup="myFunction()" style="font-size: 14px" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
     </div>
 
     <Br>
 
     <div class="d-flex">
-        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 12px">
+        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">
             Tải File Excel
         </a>
-        <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 12px">Làm mới</button>
+        <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 14px">Làm mới</button>
         <select id="statusSelect" class="form-select" style="  width: 120px; height: 38px; font-size: 11px;"
                 onchange="selectFilterAction(this.value)">
             <option value="">Chọn trạng thái</option>
@@ -223,7 +223,7 @@
     <!-- Table -->
     <div style="height: 500px; overflow: auto; ">
 
-        <table class="table table-hover" id="myTable" style="font-size: 13px" >
+        <table class="table table-hover" id="myTable" style="font-size: 15px" >
             <thead class="position-sticky top-0">
 
             <tr class="ex">
@@ -239,14 +239,14 @@
                 <th>Ghi chú</th>
                 <th>
                     <div class="btn-group">
-                        <button type="button" class="btn p-0 m-0" style="font-size: 12px" >
-                            <p class="p-0 m-0 fw-bold" style="font-size: 12px" >Ngày tạo</p>
+                        <button type="button" class="btn p-0 m-0" style="font-size: 14px" >
+                            <p class="p-0 m-0 fw-bold" style="font-size: 14px" >Ngày tạo</p>
                         </button>
                         <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split"
-                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
+                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" style="font-size: 14px">
                             <div class="container">
                                 <div class="row" id="fillter_month">
 
@@ -479,14 +479,14 @@
                             <th>
                                <a href="/admin/bill/bill-detail?id=${item.id}">
                                      <button
-                                        type="button" class="btn btn-primary" style="font-size: 12px"
+                                        type="button" class="btn btn-primary" style="font-size: 14px"
                                      >
                                         Chi tiết
                                     </button>
                                </a>
 
                                      <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                        type="button" class="btn btn-success" style="font-size: 12px"
+                                        type="button" class="btn btn-success" style="font-size: 14px"
                                      >
                                         Thanh toán
                                     </button>
