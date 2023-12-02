@@ -33,7 +33,7 @@
     <!-- Shopping Cart Section Begin -->
     <section class="checkout-section spad pt-4">
         <div class="container">
-            <form action="/checkout" method="post" id="checkout" class="checkout-form" onsubmit="return checkout()">
+            <form th:action="@{/checkout}" method="post" id="checkout"  class="checkout-form"  onsubmit="return checkout()">
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
@@ -44,25 +44,26 @@
                                         <label for="tenKhachHang" class="form-label"><b>Tên
                                             Khách Hàng</b></label>
                                         <input type="text" class="form-control" placeholder="Tên khách hàng"
-                                               th:value="${session.authenuser.getCustomer().name}" id="tenKhachHang">
+                                               th:value="${session.authenuser.customer.name}" name="tenKhachHang" id="tenKhachHang">
+                                        <input type="text" name="idkhachhang" th:value="${session.authenuser.customer.id}">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="soDienThoai" class="form-label"><b>Số
                                             Điện Thoại</b></label>
                                         <input type="text" class="form-control" placeholder="Số điện thoại"
-                                               th:value="${session.authenuser.getCustomer().phone}" id="soDienThoai">
+                                               th:value="${session.authenuser.customer.phone}" name="soDienThoai" id="soDienThoai">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="email" class="form-label"><b>Email</b></label>
                                         <input type="text" class="form-control" placeholder="Email"
-                                               th:value="${session.authenuser.email}" id="email">
+                                               name="email"  th:value="${session.authenuser.email}" id="email">
                                     </div>
                                     <!-- Địa chỉ -->
                                     <div class="col-md-6">
                                         <div class="row align-items-start">
                                             <div class="col">
                                                 <label class="form-label"><b>Thành phố</b></label>
-                                                <select class="form-control" id="Provinces" onchange="getDistricts()">
+                                                <select class="form-control" id="Provinces"  onchange="getDistricts()">
                                                     <option selected="">Chọn Thành Phố
                                                     </option>
                                                 </select>
@@ -83,7 +84,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" id="FullAddress" th:name="fulladdress">
+                                    <input type="hidden" id="FullAddress" name="fulladdress">
                                     <div class="col">
                                         <label class="form-label"><b>Địa
                                             Chỉ Cụ Thể</b></label>
@@ -92,8 +93,8 @@
                                     </div>
                                     <div class="col">
                                         <label class="form-label"> <b>Phương thức vận chuyển</b></label>
-                                        <select class="form-control" id="shipService" onchange="updateTongTien()">
-                                            <option selected="">Phương thức vận chuyển</option>
+                                        <select class="form-control" id="shipService" onchange="updateShippingCost()">
+                                            <option selected="">Chọn phương thức vận chuyển</option>
                                         </select>
                                     </div>
                                 </div>
@@ -124,6 +125,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
+        debugger
         const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
         const shop_id = 4676018;
         const districtform = 3440; // quận nam từ liêm
@@ -262,7 +264,44 @@
 
             wardSelect.appendChild(defaultOption);
         }
+        function updateShippingCost() {
+            const districtto = parseInt(districtSelect.value);
+            const ward_code = String(wardSelect.value);
+            const service_ids = parseInt(shipServiceSelect.value);
+            const heights = 15;
+            const lengths = 15;
+            const weights = 1000;
+            const widths = 11;
 
+            fetch(
+                "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        token: token,
+                    },
+                    body: JSON.stringify({
+                        service_id: service_ids,
+                        insurance_value: 500000,
+                        coupon: null,
+                        from_district_id: districtform,
+                        to_district_id: districtto,
+                        to_ward_code: ward_code,
+                        height: heights,
+                        length: lengths,
+                        weight: weights,
+                        width: widths,
+                    }),
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    document.getElementById("giaship").innerText = data.data.total;
+                })
+                .catch((error) => console.error("Error:", error));
+        }
         getProvinces();
     </script>
 </section>

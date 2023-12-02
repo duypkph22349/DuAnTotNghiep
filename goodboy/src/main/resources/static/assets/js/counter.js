@@ -1,7 +1,7 @@
 // 80 %
 // globle Variable
 const defaultImage =
-  "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
+    "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
 const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
 const shop_id = 4676018;
 const districtform = 3440; // quận nam từ liêm
@@ -11,15 +11,16 @@ const listtab = [0];
 const viewOrderTab = document.getElementById("taborders");
 const formOrder = document.getElementById("formorders");
 const OrderDetailJson = [];
+
 // element gennerate
 function buttonOrderTab(id) {
-  const buttontmp = document.createElement("button");
-  buttontmp.classList.add("btn");
-  buttontmp.classList.add("btn-info");
-  buttontmp.classList.add("tabbutton");
-  buttontmp.id = `vieworder${id}`;
-  buttontmp.setAttribute("onclick", `selectOrder(event,${id})`);
-  const innerbtn = `
+    const buttontmp = document.createElement("button");
+    buttontmp.classList.add("btn");
+    buttontmp.classList.add("btn-info");
+    buttontmp.classList.add("tabbutton");
+    buttontmp.id = `vieworder${id}`;
+    buttontmp.setAttribute("onclick", `selectOrder(event,${id})`);
+    const innerbtn = `
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"
@@ -36,17 +37,18 @@ function buttonOrderTab(id) {
     </svg>
     <span>Hóa Đơn ${id}</span>
     `;
-  buttontmp.innerHTML = innerbtn;
-  return buttontmp;
+    buttontmp.innerHTML = innerbtn;
+    return buttontmp;
 }
+
 function formInOrder(id) {
-  viewOrderTab.appendChild(buttonOrderTab(id));
-  const form = document.createElement("form");
-  form.id = `hoaDon${id}`;
-  form.classList.add("taborder");
-  form.setAttribute("idofform", id);
-  form.setAttribute("onsubmit", `handleOrderSubmit(event)`);
-  form.innerHTML = `<div class="form-container">
+    viewOrderTab.appendChild(buttonOrderTab(id));
+    const form = document.createElement("form");
+    form.id = `hoaDon${id}`;
+    form.classList.add("taborder");
+    form.setAttribute("idofform", id);
+    form.setAttribute("onsubmit", `handleOrderSubmit(event)`);
+    form.innerHTML = `<div class="form-container">
   <div class="boxes-model" style="height: calc(100vh - 162px);">
       <div class="box-row-order">
           <div class="col-100">
@@ -575,10 +577,12 @@ function formInOrder(id) {
 </div>
 
 `;
-  return form;
+    return form;
 }
+
 // ui processtion
 function addnewOrderPage() {
+<<<<<<< HEAD
   if (listtab.length <= 5) {
     const id = Math.max(...listtab) + 1;
     listtab.push(id);
@@ -591,313 +595,186 @@ function addnewOrderPage() {
     taborder = document.getElementsByClassName("taborder");
     for (i = 0; i < taborder.length; i++) {
       taborder[i].style.display = "none";
+=======
+    if (listtab.length <= 5) {
+        const id = Math.max(...listtab) + 1;
+        listtab.push(id);
+        renderOrderPage(id);
+        getAllprovide(id);
+        fillAllEmployee(id);
+        getFirstProductPage(id);
+        getVoucherAble(id);
+        var i, taborder, tabbutton;
+        taborder = document.getElementsByClassName("taborder");
+        for (i = 0; i < taborder.length; i++) {
+            taborder[i].style.display = "none";
+        }
+        tabbutton = document.getElementsByClassName("tabbutton");
+        for (i = 0; i < tabbutton.length; i++) {
+            tabbutton[i].className = tabbutton[i].className.replace(" active", "");
+        }
+        document.getElementById(`hoaDon${id}`).style.display = "block";
+        const exitButton = document.getElementById(`vieworder${id}`);
+        exitButton.className += " active";
+    } else {
+        alert("Tối đa 5 hóa đơn");
+>>>>>>> 77b70e4 (fix checkout)
     }
-    tabbutton = document.getElementsByClassName("tabbutton");
-    for (i = 0; i < tabbutton.length; i++) {
-      tabbutton[i].className = tabbutton[i].className.replace(" active", "");
-    }
-    document.getElementById(`hoaDon${id}`).style.display = "block";
-    const exitButton = document.getElementById(`vieworder${id}`);
-    exitButton.className += " active";
-  } else {
-    alert("Tối đa 5 hóa đơn");
-  }
 }
 
 //Tìm kiếm sản phẩm
 function filterTable(orderId) {
-  var input, filter, table, tbody, tr, td, i, j, txtValue;
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  var tbody = thisOrder.querySelector("#cartTableProduct tbody");
-  input = thisOrder.querySelector("#searchInput");
+    var input, filter, table, tbody, tr, td, i, j, txtValue;
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    var tbody = thisOrder.querySelector("#cartTableProduct tbody");
+    input = thisOrder.querySelector("#searchInput");
 
-  filter = input.value.toUpperCase();
-  table = document.getElementById("cartTableProduct");
-  // tbody = table.getElementsByTagName("tbody")[0];
-  tr = tbody.getElementsByTagName("tr");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("cartTableProduct");
+    // tbody = table.getElementsByTagName("tbody")[0];
+    tr = tbody.getElementsByTagName("tr");
 
-  for (i = 0; i < tr.length; i++) {
-    // Tìm kiếm trong tất cả các cột (loại bỏ cột thứ 1, tức là stt)
-    for (j = 1; j < tr[i].cells.length; j++) {
-      td = tr[i].getElementsByTagName("td")[j];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-          break; // Nếu tìm thấy, thoát khỏi vòng lặp để hiển thị hàng
-        } else {
-          tr[i].style.display = "none";
+    for (i = 0; i < tr.length; i++) {
+        // Tìm kiếm trong tất cả các cột (loại bỏ cột thứ 1, tức là stt)
+        for (j = 1; j < tr[i].cells.length; j++) {
+            td = tr[i].getElementsByTagName("td")[j];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break; // Nếu tìm thấy, thoát khỏi vòng lặp để hiển thị hàng
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
         }
-      }
     }
-  }
 }
+
 function renderOrderPage(id) {
-  formOrder.appendChild(formInOrder(id));
+    formOrder.appendChild(formInOrder(id));
 }
+
 function selectOrder(evt, id) {
-  var i, taborder, tabbutton;
-  taborder = document.getElementsByClassName("taborder");
-  for (i = 0; i < taborder.length; i++) {
-    taborder[i].style.display = "none";
-  }
-  tabbutton = document.getElementsByClassName("tabbutton");
-  for (i = 0; i < tabbutton.length; i++) {
-    tabbutton[i].className = tabbutton[i].className.replace(" active", "");
-  }
-  document.getElementById(`hoaDon${id}`).style.display = "block";
-  evt.currentTarget.className += " active";
+    var i, taborder, tabbutton;
+    taborder = document.getElementsByClassName("taborder");
+    for (i = 0; i < taborder.length; i++) {
+        taborder[i].style.display = "none";
+    }
+    tabbutton = document.getElementsByClassName("tabbutton");
+    for (i = 0; i < tabbutton.length; i++) {
+        tabbutton[i].className = tabbutton[i].className.replace(" active", "");
+    }
+    document.getElementById(`hoaDon${id}`).style.display = "block";
+    evt.currentTarget.className += " active";
 }
+
 function removeOrderPage(orderId) {
-  if (confirm("Bạn Muốn xóa sáo")) {
-    let indexToRemove = listtab.indexOf(orderId);
-    if (indexToRemove !== -1) {
-      listtab.splice(indexToRemove, 1);
+    if (confirm("Bạn Muốn xóa sáo")) {
+        let indexToRemove = listtab.indexOf(orderId);
+        if (indexToRemove !== -1) {
+            listtab.splice(indexToRemove, 1);
+        }
+        const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
+        const orderToRemove = document.getElementById(`hoaDon${orderId}`);
+        if (orderToRemove) {
+            orderToRemove.remove();
+        } else {
+            console.log(`Order with ID ${orderId} not found.`);
+        }
+        if (orderbtnrmRemove) {
+            orderbtnrmRemove.remove();
+        } else {
+            console.log(`Order with ID ${orderId} not found.`);
+        }
     }
-    const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
-    const orderToRemove = document.getElementById(`hoaDon${orderId}`);
-    if (orderToRemove) {
-      orderToRemove.remove();
-    } else {
-      console.log(`Order with ID ${orderId} not found.`);
-    }
-    if (orderbtnrmRemove) {
-      orderbtnrmRemove.remove();
-    } else {
-      console.log(`Order with ID ${orderId} not found.`);
-    }
-  }
 }
+<<<<<<< HEAD
+=======
+
+function findProdcut(orderId) {
+}
+
+>>>>>>> 77b70e4 (fix checkout)
 //calldata
 function selectOrderType(event, id) {
-  orderType = event.target.value;
-  const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
-  const Optionincount = document.querySelectorAll(
-    `#hoaDon${id} .incount-option`
-  );
-  if (orderType == 0) {
-    OptionOnline.forEach(function (element) {
-      element.classList.add("d-none");
-    });
-    Optionincount.forEach(function (element) {
-      element.classList.remove("d-none");
-    });
-  } else if (orderType == 1) {
-    OptionOnline.forEach(function (element) {
-      element.classList.remove("d-none");
-    });
-    Optionincount.forEach(function (element) {
-      element.classList.add("d-none");
-    });
-  }
-  updateTongTien(id);
+    orderType = event.target.value;
+    const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
+    const Optionincount = document.querySelectorAll(
+        `#hoaDon${id} .incount-option`
+    );
+    if (orderType == 0) {
+        OptionOnline.forEach(function (element) {
+            element.classList.add("d-none");
+        });
+        Optionincount.forEach(function (element) {
+            element.classList.remove("d-none");
+        });
+    } else if (orderType == 1) {
+        OptionOnline.forEach(function (element) {
+            element.classList.remove("d-none");
+        });
+        Optionincount.forEach(function (element) {
+            element.classList.add("d-none");
+        });
+    }
+    updateTongTien(id);
 }
+
 // address, shipcode
 function updateshipService(orderId) {
-  const districtSelect = document.querySelector(`#hoaDon${orderId} #district`);
-  const selectedOption = districtSelect.options[districtSelect.selectedIndex];
-  const customAttribute = selectedOption.getAttribute("districtcode");
-  const districtto = parseInt(customAttribute);
-  const shipServiceSelect = document.querySelector(
-    `#hoaDon${orderId} #shipService`
-  );
-  fetch(
-    "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        token: token,
-      },
-      body: JSON.stringify({
-        to_district: districtto,
-        shop_id: shop_id,
-        from_district: districtform,
-      }),
-    }
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      while (shipServiceSelect.firstChild) {
-        shipServiceSelect.removeChild(shipServiceSelect.firstChild);
-      }
-      const defaultOption = document.createElement("option");
-      defaultOption.value = ""; // Set the value as needed
-      defaultOption.textContent = "Chọn Hình thức vận chuyển"; // Set the text content
-      // Set the 'disabled' and 'selected' attributes to make it the default option
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      shipServiceSelect.appendChild(defaultOption);
-      const options = data.data;
-      for (let i = 0; i < options.length; i++) {
-        const option = document.createElement("option");
-        option.value = options[i].service_id; // Set the value of the option (you can change this to any value you want)
-        option.text = options[i].short_name; // Set the text of the option
-        shipServiceSelect.appendChild(option); // Add the option to the select element
-      }
-    })
-    .catch((error) => console.error("Error:", error));
+    const districtSelect = document.querySelector(`#hoaDon${orderId} #district`);
+    const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+    const customAttribute = selectedOption.getAttribute("districtcode");
+    const districtto = parseInt(customAttribute);
+    const shipServiceSelect = document.querySelector(
+        `#hoaDon${orderId} #shipService`
+    );
+    fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                token: token,
+            },
+            body: JSON.stringify({
+                to_district: districtto,
+                shop_id: shop_id,
+                from_district: districtform,
+            }),
+        }
+    )
+        .then((res) => res.json())
+        .then((data) => {
+            while (shipServiceSelect.firstChild) {
+                shipServiceSelect.removeChild(shipServiceSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Hình thức vận chuyển"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            shipServiceSelect.appendChild(defaultOption);
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                option.value = options[i].service_id; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].short_name; // Set the text of the option
+                shipServiceSelect.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
 }
 
 function resetTotalShip(orderId) {
-  document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
-  document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
-    formatToVND(0);
+    document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
+    document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
+        formatToVND(0);
 }
-function getAllprovide(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  const selectCity = thisOrder.querySelector("#city");
-  fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      token: token,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      const defaultOption = document.createElement("option");
-      defaultOption.value = ""; // Set the value as needed
-      defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
-      // Set the 'disabled' and 'selected' attributes to make it the default option
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      selectCity.appendChild(defaultOption);
-      const options = data.data;
-      for (let i = 0; i < options.length; i++) {
-        const option = document.createElement("option");
-        // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
-        option.text = options[i].ProvinceName; // Set the text of the option
-        option.setAttribute("providecode", options[i].ProvinceID);
-        selectCity.appendChild(option); // Add the option to the select element
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-}
-function getAllDistrict(orderId) {
-  const selectCity = document.querySelector(`#hoaDon${orderId} #city`);
-  const selectedOption = selectCity.options[selectCity.selectedIndex];
-  const customAttribute = selectedOption.getAttribute("providecode");
-  const provinceid = parseInt(customAttribute);
-  const selectDistrict = document.querySelector(`#hoaDon${orderId} #district`);
-  fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      token: token,
-    },
-    body: JSON.stringify({ province_id: provinceid }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      resetDistrict(orderId);
-      const options = data.data;
-      for (let i = 0; i < options.length; i++) {
-        const option = document.createElement("option");
-        option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
-        option.text = options[i].DistrictName; // Set the text of the option
-        option.setAttribute("districtcode", options[i].DistrictID);
-        selectDistrict.appendChild(option); // Add the option to the select element
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-}
-function getFullWardCode(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  const selecteDistrict = thisOrder.querySelector("#district");
-  const selectWardCode = thisOrder.querySelector("#ward");
-  const selectedOption = selecteDistrict.options[selecteDistrict.selectedIndex];
-  const customAttribute = selectedOption.getAttribute("districtcode");
-  const districtid = parseInt(customAttribute);
-  fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      token: token,
-    },
-    body: JSON.stringify({ district_id: districtid }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      //remove all child
-      resetWard(orderId);
-      const options = data.data;
-      for (let i = 0; i < options.length; i++) {
-        const option = document.createElement("option");
-        option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
-        option.text = options[i].WardName; // Set the text of the option
-        selectWardCode.appendChild(option); // Add the option to the select element
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-}
-function getFullAddress(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  const selectCity = thisOrder.querySelector("#city");
-  const selectDistrict = thisOrder.querySelector("#district");
-  const selectWards = thisOrder.querySelector("#ward");
-  const proselect = selectCity.options[selectCity.selectedIndex];
-  const districselect = selectDistrict.options[selectDistrict.selectedIndex];
-  const wardName = selectWards.options[selectWards.selectedIndex];
-  const fullAdress =
-    wardName.text + ", " + districselect.text + " ," + proselect.text;
-  thisOrder.querySelector("#FullAddress").value = String(fullAdress);
-  updateshipService(orderId);
-}
-function resetDistrict(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  const selectProvide = thisOrder.querySelector("#district");
-  while (selectProvide.firstChild) {
-    selectProvide.removeChild(selectProvide.firstChild);
-  }
-  const defaultOption = document.createElement("option");
-  defaultOption.value = ""; // Set the value as needed
-  defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  selectProvide.appendChild(defaultOption);
-  resetWard(orderId);
-  resetServiceShip(orderId);
-}
-function resetWard(orderId) {
-  const wardSelect = document.querySelector(`#hoaDon${orderId} #ward`);
-  while (wardSelect.firstChild) {
-    wardSelect.removeChild(wardSelect.firstChild);
-  }
-  const defaultOption = document.createElement("option");
-  defaultOption.value = ""; // Set the value as needed
-  defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  wardSelect.appendChild(defaultOption);
-}
-function resetServiceShip(orderId) {
-  const shipSelect = document.querySelector(`#hoaDon${orderId} #shipService`);
-  while (shipSelect.firstChild) {
-    shipSelect.removeChild(shipSelect.firstChild);
-  }
-  resetTotalShip(orderId);
-}
-function fillAllEmployee(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  var select = thisOrder.querySelector('select[name="employee"]');
-  fetch("/rest/data/counter/customers", {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      data.forEach(function (employee) {
-        var option = document.createElement("option");
-        option.value = employee.id;
-        option.text = employee.name;
-        select.appendChild(option);
-      });
-    });
-}
-function getFirstProductPage(orderId) {
-  const thisOrder = document.getElementById(`hoaDon${orderId}`);
-  var tbody = thisOrder.querySelector("#cartTableProduct tbody");
 
+<<<<<<< HEAD
   fetch("/rest/data/counter/productDetails", {
     method: "GET",
   })
@@ -915,22 +792,204 @@ function getFirstProductPage(orderId) {
           product.idPattern.name,
           product.idSize.name,
           `
+=======
+function getAllprovide(orderId) {
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    const selectCity = thisOrder.querySelector("#city");
+    fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            token: token,
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            selectCity.appendChild(defaultOption);
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].ProvinceName; // Set the text of the option
+                option.setAttribute("providecode", options[i].ProvinceID);
+                selectCity.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function getAllDistrict(orderId) {
+    const selectCity = document.querySelector(`#hoaDon${orderId} #city`);
+    const selectedOption = selectCity.options[selectCity.selectedIndex];
+    const customAttribute = selectedOption.getAttribute("providecode");
+    const provinceid = parseInt(customAttribute);
+    const selectDistrict = document.querySelector(`#hoaDon${orderId} #district`);
+    fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            token: token,
+        },
+        body: JSON.stringify({province_id: provinceid}),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            resetDistrict(orderId);
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].DistrictName; // Set the text of the option
+                option.setAttribute("districtcode", options[i].DistrictID);
+                selectDistrict.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function getFullWardCode(orderId) {
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    const selecteDistrict = thisOrder.querySelector("#district");
+    const selectWardCode = thisOrder.querySelector("#ward");
+    const selectedOption = selecteDistrict.options[selecteDistrict.selectedIndex];
+    const customAttribute = selectedOption.getAttribute("districtcode");
+    const districtid = parseInt(customAttribute);
+    fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            token: token,
+        },
+        body: JSON.stringify({district_id: districtid}),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            //remove all child
+            resetWard(orderId);
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].WardName; // Set the text of the option
+                selectWardCode.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function getFullAddress(orderId) {
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    const selectCity = thisOrder.querySelector("#city");
+    const selectDistrict = thisOrder.querySelector("#district");
+    const selectWards = thisOrder.querySelector("#ward");
+    const proselect = selectCity.options[selectCity.selectedIndex];
+    const districselect = selectDistrict.options[selectDistrict.selectedIndex];
+    const wardName = selectWards.options[selectWards.selectedIndex];
+    const fullAdress =
+        wardName.text + ", " + districselect.text + " ," + proselect.text;
+    thisOrder.querySelector("#FullAddress").value = String(fullAdress);
+    updateshipService(orderId);
+}
+
+function resetDistrict(orderId) {
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    const selectProvide = thisOrder.querySelector("#district");
+    while (selectProvide.firstChild) {
+        selectProvide.removeChild(selectProvide.firstChild);
+    }
+    const defaultOption = document.createElement("option");
+    defaultOption.value = ""; // Set the value as needed
+    defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    selectProvide.appendChild(defaultOption);
+    resetWard(orderId);
+    resetServiceShip(orderId);
+}
+
+function resetWard(orderId) {
+    const wardSelect = document.querySelector(`#hoaDon${orderId} #ward`);
+    while (wardSelect.firstChild) {
+        wardSelect.removeChild(wardSelect.firstChild);
+    }
+    const defaultOption = document.createElement("option");
+    defaultOption.value = ""; // Set the value as needed
+    defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    wardSelect.appendChild(defaultOption);
+}
+
+function resetServiceShip(orderId) {
+    const shipSelect = document.querySelector(`#hoaDon${orderId} #shipService`);
+    while (shipSelect.firstChild) {
+        shipSelect.removeChild(shipSelect.firstChild);
+    }
+    resetTotalShip(orderId);
+}
+
+function fillAllEmployee(orderId) {
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    var select = thisOrder.querySelector('select[name="employee"]');
+    fetch("/rest/data/counter/customers", {
+        method: "GET",
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            data.forEach(function (employee) {
+                var option = document.createElement("option");
+                option.value = employee.id;
+                option.text = employee.name;
+                select.appendChild(option);
+            });
+        });
+}
+
+function getFirstProductPage(orderId) {
+    const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    var tbody = thisOrder.querySelector("#cartTableProduct tbody");
+
+    fetch("/rest/data/counter/productDetails", {
+        method: "GET",
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            data.forEach(function (product) {
+                var row = document.createElement("tr");
+                var cells = [
+                    `<img src="${
+                        product.imageUrl || defaultImage
+                    }" class="image-fluid" style="height: 60px;">`,
+                    product.name,
+                    product.code,
+                    product.price,
+                    product.quantity,
+                    product.idPattern.name,
+                    product.idColor.name,
+                    `
+>>>>>>> 77b70e4 (fix checkout)
           <div class="d-flex">
           <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop${
-            product.id
-          }">
+                        product.id
+                    }">
           <i class="fas fa-eye fa-xs"></i>
         </button>
         <div class="modal fade" id="staticBackdrop${
-          product.id
-        }" data-bs-backdrop="static" data-bs-keyboard="false"
+                        product.id
+                    }" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="staticBackdropLabel" ${
-                    product.idProduct?.name ?? ""
-                  }>
+                        product.idProduct?.name ?? ""
+                    }>
                     ${product.idProduct?.name ?? ""}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -940,8 +999,8 @@ function getFirstProductPage(orderId) {
                   </p>
                   <p><strong>price :</strong>
                     <span> ${product.price.toLocaleString("it-IT", {
-                      style: "currency",
-                      currency: "VND",
+                        style: "currency",
+                        currency: "VND",
                     })}
                     </span>
                   </p>
@@ -981,47 +1040,50 @@ function getFirstProductPage(orderId) {
             </div>
           </div>
           <button type="button" class="btn btn-success  mx-1"  onclick="addProductIntoOrder(${orderId},${
-            product.id
-          })"><i class="far fa-plus"></i></button>
+                        product.id
+                    })"><i class="far fa-plus"></i></button>
           </div>`,
-        ];
-        cells.forEach(function (cellContent) {
-          var cell = document.createElement("td");
-          cell.innerHTML = cellContent;
-          row.appendChild(cell);
+                ];
+                cells.forEach(function (cellContent) {
+                    var cell = document.createElement("td");
+                    cell.innerHTML = cellContent;
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
         });
-
-        tbody.appendChild(row);
-      });
-    });
 }
+
 async function addProductIntoOrder(idorderdetail, id) {
-  const form = document.getElementById(`hoaDon${idorderdetail}`);
-  try {
-    const product = await getProductDetails(id);
-    const productExists = await findInExitOrder(idorderdetail, product.id);
+    const form = document.getElementById(`hoaDon${idorderdetail}`);
+    try {
+        const product = await getProductDetails(id);
+        const productExists = await findInExitOrder(idorderdetail, product.id);
 
-    if (productExists !== null) {
-      increaseProductQuantity(productExists, product);
-    } else {
-      if (product.quantity < 1) {
-        alert(
-          `Sản phẩm: " ${product.name} Màu sắc: ${
-            product.idColor?.name ?? ""
-          } Hoa văn: ${product.idPattern?.name ?? ""} Đã Hết`
-        );
-      } else {
-        const productsOnOrder = form.querySelector("#cartTable tbody");
-        const newProductRow = createProductRow(product, idorderdetail);
-        productsOnOrder.appendChild(newProductRow);
-      }
+        if (productExists !== null) {
+            increaseProductQuantity(productExists, product);
+        } else {
+            if (product.quantity < 1) {
+                alert(
+                    `Sản phẩm: " ${product.name} Màu sắc: ${
+                        product.idColor?.name ?? ""
+                    } Hoa văn: ${product.idPattern?.name ?? ""} Đã Hết`
+                );
+            } else {
+                const productsOnOrder = form.querySelector("#cartTable tbody");
+                const newProductRow = createProductRow(product, idorderdetail);
+                productsOnOrder.appendChild(newProductRow);
+            }
+        }
+        updateTongTien(idorderdetail);
+    } catch (error) {
+        console.error(error);
     }
-    updateTongTien(idorderdetail);
-  } catch (error) {
-    console.error(error);
-  }
 }
+
 function createProductRow(product, idorderdetail) {
+<<<<<<< HEAD
   const newProductRow = document.createElement("tr");
   newProductRow.classList.add("table-body-row", "order-product");
   newProductRow.setAttribute("idproduct", product.id);
@@ -1029,6 +1091,15 @@ function createProductRow(product, idorderdetail) {
         <td><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
     product.idPattern?.name ?? ""
   } </td>
+=======
+    const newProductRow = document.createElement("tr");
+    newProductRow.classList.add("table-body-row", "order-product");
+    newProductRow.setAttribute("idproduct", product.id);
+    newProductRow.innerHTML = `
+        <td><strong>Tên:</strong> ${product.name} <strong>Màu sắc:</strong> ${
+        product.idColor?.name ?? ""
+    } <strong>Hoa văn:</strong> ${product.idPattern?.name ?? ""} </td>
+>>>>>>> 77b70e4 (fix checkout)
         <td>${product.price}</td>
         <td>
         <div class="d-flex w-100">
@@ -1045,58 +1116,60 @@ function createProductRow(product, idorderdetail) {
         </td>
         <td>
           <button type="button" class="btn btn-danger" onclick="removeProduct(${idorderdetail}, ${
-    product.id
-  })">Remove</button>
+        product.id
+    })">Remove</button>
         </td>
       `;
-  return newProductRow;
+    return newProductRow;
 }
-function removeProduct(orderId, idproduct) {
-  const productsOnOrder = document.querySelector(
-    `#hoaDon${orderId} #cartTable tbody`
-  );
-  const rows = productsOnOrder.getElementsByClassName("table-body-row");
-  for (const row of rows) {
-    const rowProductId = row.getAttribute("idproduct");
-    if (rowProductId == idproduct) {
-      productsOnOrder.removeChild(row);
-    }
-  }
-  updateTongTien(orderId);
-}
-async function findInExitOrder(idorderdetail, productId) {
-  const productsOnOrder = document.querySelector(
-    `#hoaDon${idorderdetail} #cartTable tbody`
-  );
-  const rows = productsOnOrder.getElementsByClassName("table-body-row");
 
-  for (const row of rows) {
-    const rowProductId = row.getAttribute("idproduct");
-    if (rowProductId == productId) {
-      return row;
+function removeProduct(orderId, idproduct) {
+    const productsOnOrder = document.querySelector(
+        `#hoaDon${orderId} #cartTable tbody`
+    );
+    const rows = productsOnOrder.getElementsByClassName("table-body-row");
+    for (const row of rows) {
+        const rowProductId = row.getAttribute("idproduct");
+        if (rowProductId == idproduct) {
+            productsOnOrder.removeChild(row);
+        }
     }
-  }
-  return null;
+    updateTongTien(orderId);
+}
+
+async function findInExitOrder(idorderdetail, productId) {
+    const productsOnOrder = document.querySelector(
+        `#hoaDon${idorderdetail} #cartTable tbody`
+    );
+    const rows = productsOnOrder.getElementsByClassName("table-body-row");
+
+    for (const row of rows) {
+        const rowProductId = row.getAttribute("idproduct");
+        if (rowProductId == productId) {
+            return row;
+        }
+    }
+    return null;
 }
 
 function increaseProductQuantity(productExists, product) {
-  if (productExists instanceof Element) {
-    const inputNumber = productExists.querySelector("td:nth-child(3) input");
-    if (inputNumber instanceof Element) {
-      const currentValue = parseInt(inputNumber.value, 10) || 0;
-      if (currentValue >= product.quantity) {
-        alert(
-          `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`
-        );
-      } else {
-        inputNumber.value = currentValue + 1;
-      }
+    if (productExists instanceof Element) {
+        const inputNumber = productExists.querySelector("td:nth-child(3) input");
+        if (inputNumber instanceof Element) {
+            const currentValue = parseInt(inputNumber.value, 10) || 0;
+            if (currentValue >= product.quantity) {
+                alert(
+                    `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`
+                );
+            } else {
+                inputNumber.value = currentValue + 1;
+            }
+        } else {
+            console.error("Input number element not found.");
+        }
     } else {
-      console.error("Input number element not found.");
+        console.error("Product element not found.");
     }
-  } else {
-    console.error("Product element not found.");
-  }
 }
 async function giamProductIntoOrder(idorderdetail, id) {
   try {
@@ -1134,129 +1207,132 @@ function descreaseProductQuantity(productExists, product) {
   }
 }
 async function handleOrderSubmit(event) {
-  event.preventDefault();
-  const formId = event.currentTarget.id;
-  const idform = event.currentTarget.getAttribute("idofform");
-  const formValuesJSON = await buildFormData(formId);
-  let errors = await getErrorMessage(formValuesJSON);
-  if (errors.trim() != "") {
-    alert(errors);
-  } else {
-    if (confirm("Xác Nhận Thanh Toán")) {
-      thanhtoan(JSON.stringify(formValuesJSON), idform);
+    event.preventDefault();
+    const formId = event.currentTarget.id;
+    const idform = event.currentTarget.getAttribute("idofform");
+    const formValuesJSON = await buildFormData(formId);
+    let errors = await getErrorMessage(formValuesJSON);
+    if (errors.trim() != "") {
+        alert(errors);
+    } else {
+        if (confirm("Xác Nhận Thanh Toán")) {
+            thanhtoan(JSON.stringify(formValuesJSON), idform);
+        }
     }
-  }
 }
+
 async function thanhtoan(formValuesJSON, idform) {
-  await fetch("/rest/data/counter/checkout", {
-    method: "POST",
-    body: formValuesJSON,
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data?.status === "BAD_REQUEST") {
-        alert(data?.message);
-        return;
-      } else {
-        confirm("Bạn có muốn in hoa đơn không?");
-        let indexToRemove = listtab.indexOf(idform);
-        if (indexToRemove !== -1) {
-          listtab.splice(indexToRemove, 1);
-        }
-        const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
-        const orderToRemove = document.getElementById(`hoaDon${idform}`);
-        if (orderToRemove) {
-          orderToRemove.remove();
-        } else {
-          console.log(`Order with ID ${idform} not found.`);
-        }
-        if (orderbtnrmRemove) {
-          orderbtnrmRemove.remove();
-        } else {
-          console.log(`Order with ID ${idform} not found.`);
-        }
-      }
+    await fetch("/rest/data/counter/checkout", {
+        method: "POST",
+        body: formValuesJSON,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            if (data?.status === "BAD_REQUEST") {
+                alert(data?.message);
+                return;
+            } else {
+                confirm("Bạn có muốn in hoa đơn không?");
+                let indexToRemove = listtab.indexOf(idform);
+                if (indexToRemove !== -1) {
+                    listtab.splice(indexToRemove, 1);
+                }
+                const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
+                const orderToRemove = document.getElementById(`hoaDon${idform}`);
+                if (orderToRemove) {
+                    orderToRemove.remove();
+                } else {
+                    console.log(`Order with ID ${idform} not found.`);
+                }
+                if (orderbtnrmRemove) {
+                    orderbtnrmRemove.remove();
+                } else {
+                    console.log(`Order with ID ${idform} not found.`);
+                }
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }
+
 async function buildFormData(formId) {
-  const formData = {};
-  const form = document.getElementById(formId);
+    const formData = {};
+    const form = document.getElementById(formId);
 
-  // Extract product information
-  formData.products = Array.from(
-    form.querySelectorAll("#cartTable tbody tr.table-body-row")
-  ).map((row) => {
-    const productId = row.getAttribute("idproduct");
-    const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10);
-    return {
-      id: parseInt(productId, 10),
-      quantity: productQuantity,
-    };
-  });
+    // Extract product information
+    formData.products = Array.from(
+        form.querySelectorAll("#cartTable tbody tr.table-body-row")
+    ).map((row) => {
+        const productId = row.getAttribute("idproduct");
+        const quantityElement = row.querySelector(`input[name="quantity"]`);
+        const productQuantity = parseInt(quantityElement.value, 10);
+        return {
+            id: parseInt(productId, 10),
+            quantity: productQuantity,
+        };
+    });
 
-  // Extract customer information
-  formData.customerName = form.querySelector("#tenKhachHang").value;
-  formData.employeeID = form.querySelector("select[name='employee']").value;
-  formData.orderTypes = parseInt(
-    form.querySelector("input[name='options-outlined']:checked").value,
-    10
-  );
-  formData.phoneNumber = form.querySelector("#soDienThoai").value;
-  formData.city = form.querySelector("#city").value;
-  formData.district = form.querySelector("#district").value;
-  formData.ward = form.querySelector("#ward").value;
-  formData.fullAddress = form.querySelector("#FullAddress").value;
-  formData.specificAddress = form.querySelector("input#address").value;
-  formData.note = form.querySelector("textarea#note").value;
-  formData.voucherid = parseInt(
-    form.querySelector("#voucher-choose").value,
-    10
-  );
-  let totalMoney = 0;
-  for (const row of form.querySelectorAll(
-    `#cartTable tbody tr.table-body-row`
-  )) {
-    const productId = row.getAttribute("idproduct");
-    const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10);
-    if (productQuantity <= 0 || isNaN(productQuantity)) {
-      alert("Số lượng sản phẩm không đúng");
-      return 0;
+    // Extract customer information
+    formData.customerName = form.querySelector("#tenKhachHang").value;
+    formData.employeeID = form.querySelector("select[name='employee']").value;
+    formData.orderTypes = parseInt(
+        form.querySelector("input[name='options-outlined']:checked").value,
+        10
+    );
+    formData.phoneNumber = form.querySelector("#soDienThoai").value;
+    formData.city = form.querySelector("#city").value;
+    formData.district = form.querySelector("#district").value;
+    formData.ward = form.querySelector("#ward").value;
+    formData.fullAddress = form.querySelector("#FullAddress").value;
+    formData.specificAddress = form.querySelector("input#address").value;
+    formData.note = form.querySelector("textarea#note").value;
+    formData.voucherid = parseInt(
+        form.querySelector("#voucher-choose").value,
+        10
+    );
+    let totalMoney = 0;
+    for (const row of form.querySelectorAll(
+        `#cartTable tbody tr.table-body-row`
+    )) {
+        const productId = row.getAttribute("idproduct");
+        const quantityElement = row.querySelector(`input[name="quantity"]`);
+        const productQuantity = parseInt(quantityElement.value, 10);
+        if (productQuantity <= 0 || isNaN(productQuantity)) {
+            alert("Số lượng sản phẩm không đúng");
+            return 0;
+        }
+        try {
+            const product = await getProductDetails(productId);
+            if (product) {
+                totalMoney += product.price * productQuantity;
+            }
+        } catch (error) {
+            console.error("Error fetching or calculating total money:", error);
+        }
     }
-    try {
-      const product = await getProductDetails(productId);
-      if (product) {
-        totalMoney += product.price * productQuantity;
-      }
-    } catch (error) {
-      console.error("Error fetching or calculating total money:", error);
+    const transferAmount = form.querySelector(`#transfer-amount`);
+    const surchargeAmount = form.querySelector(`#surcharge-amount`);
+    var transferAmountvl = parseInt(transferAmount.value.trim(), 10);
+    var surchargeAmountvl = parseInt(surchargeAmount.value.trim(), 10);
+    if (isNaN(transferAmountvl)) {
+        transferAmountvl = 0;
     }
-  }
-  const transferAmount = form.querySelector(`#transfer-amount`);
-  const surchargeAmount = form.querySelector(`#surcharge-amount`);
-  var transferAmountvl = parseInt(transferAmount.value.trim(), 10);
-  var surchargeAmountvl = parseInt(surchargeAmount.value.trim(), 10);
-  if (isNaN(transferAmountvl)) {
-    transferAmountvl = 0;
-  }
-  if (isNaN(surchargeAmountvl)) {
-    surchargeAmountvl = 0;
-  }
-  formData.transferMoney = transferAmountvl;
-  formData.cashMoney = surchargeAmountvl;
+    if (isNaN(surchargeAmountvl)) {
+        surchargeAmountvl = 0;
+    }
+    formData.transferMoney = transferAmountvl;
+    formData.cashMoney = surchargeAmountvl;
 
-  // Calculate and assign cashReturn and changeAmount
-  const totalAmount = transferAmountvl + surchargeAmountvl;
-  formData.cashReturn = Math.max(totalAmount - totalMoney, 0);
-  formData.changeAmount = Math.max(totalMoney - totalAmount, 0);
+    // Calculate and assign cashReturn and changeAmount
+    const totalAmount = transferAmountvl + surchargeAmountvl;
+    formData.cashReturn = Math.max(totalAmount - totalMoney, 0);
+    formData.changeAmount = Math.max(totalMoney - totalAmount, 0);
 
+<<<<<<< HEAD
   // Other properties
   if (formData.orderTypes) {
     formData.totalShip = form.querySelector(`#total-ship`).value;
@@ -1267,167 +1343,89 @@ async function buildFormData(formId) {
   formData.totalMoney = totalMoney - discountValue;
   formData.reductionAmount = 0;
   return formData;
+=======
+    // Other properties
+    if (formData.orderTypes) {
+        formData.totalShip = form.querySelector(`#total-ship`).value;
+    } else {
+        formData.totalShip = 0;
+    }
+    const discountValue = await checkVoucher(formId, totalMoney);
+    formData.totalMoney = totalMoney - discountValue;
+    formData.reductionAmount = 0;
+    console.log(formData);
+    return formData;
+>>>>>>> 77b70e4 (fix checkout)
 }
 
 async function getProductDetails(id) {
-  try {
-    const response = await fetch(`/rest/data/counter/productDetails/${id}`);
-    const data = response.json();
-    return data;
-  } catch (error) {
-    alert("Không thể tìm thấy sản phẩm !!!");
-    throw error;
-  }
-}
-async function updateTongTien(formId) {
-  const tableRows = document.querySelectorAll(
-    `#hoaDon${formId} #cartTable tbody tr.table-body-row`
-  );
-  const finalAmount = document.querySelector(`#hoaDon${formId} #finalAmount`);
-  const totalAmount = document.querySelector(`#hoaDon${formId} #totalAmount`);
-  let totalMoney = 0;
-  let quantityofproduct = 0;
-  for (const row of tableRows) {
-    const productId = row.getAttribute("idproduct");
-    const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10);
-
-    if (productQuantity <= 0 || isNaN(productQuantity)) {
-      alert("Số lượng sản phẩm không đúng");
-      return 0;
-    }
-    quantityofproduct += productQuantity;
     try {
-      const product = await getProductDetails(productId);
-      if (product) {
-        totalMoney += product.price * productQuantity;
-      }
+        const response = await fetch(`/rest/data/counter/productDetails/${id}`);
+        const data = response.json();
+        return data;
     } catch (error) {
-      console.error("Error fetching or calculating total money:", error);
+        alert("Không thể tìm thấy sản phẩm !!!");
+        throw error;
     }
-  }
-  totalAmount.innerHTML = formatToVND(totalMoney);
-  if (
-    parseInt(
-      document.querySelector(
-        `#hoaDon${formId} input[name='options-outlined']:checked`
-      ).value,
-      10
-    ) === 1
-  ) {
-    try {
-      await getShipCost(formId, quantityofproduct);
-      const totalShip = parseInt(
-        document.querySelector(`#hoaDon${formId} #total-ship`).value,
-        10
-      );
-      if (totalShip > 0) {
-        totalMoney += totalShip;
-      }
-    } catch {}
-  }
-
-  const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
-  finalAmount.innerHTML = formatToVND(totalMoney - discountValue);
-  finalPrice(formId);
 }
-async function getShipCost(orderId, quantity) {
-  try {
-    const districtInput = document.querySelector(`#hoaDon${orderId} #district`);
-    const wardInput = document.querySelector(`#hoaDon${orderId} #ward`);
-    const serviceInput = document.querySelector(
-      `#hoaDon${orderId} #shipService`
+
+async function updateTongTien(formId) {
+    const tableRows = document.querySelectorAll(
+        `#hoaDon${formId} #cartTable tbody tr.table-body-row`
     );
-    if (!districtInput || !wardInput || !serviceInput) {
-      throw new Error("Missing input values");
-    }
+    const finalAmount = document.querySelector(`#hoaDon${formId} #finalAmount`);
+    const totalAmount = document.querySelector(`#hoaDon${formId} #totalAmount`);
+    let totalMoney = 0;
+    let quantityofproduct = 0;
+    for (const row of tableRows) {
+        const productId = row.getAttribute("idproduct");
+        const quantityElement = row.querySelector(`input[name="quantity"]`);
+        const productQuantity = parseInt(quantityElement.value, 10);
 
-    const districtto = parseInt(districtInput.value);
-    const ward_code = String(wardInput.value);
-    const service_ids = parseInt(serviceInput.value);
-
-    if (isNaN(districtto) || isNaN(service_ids)) {
-      throw new Error("Invalid input values");
-    }
-
-    const heights = 2 * quantity + 2;
-    const lengths = 60;
-    const weights = 200 * quantity + 120;
-    const widths = 20;
-    await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          token: token,
-        },
-        body: JSON.stringify({
-          service_id: service_ids,
-          insurance_value: 500000,
-          coupon: null,
-          from_district_id: 3440,
-          to_district_id: districtto,
-          to_ward_code: ward_code,
-          height: heights,
-          length: lengths,
-          weight: weights,
-          width: widths,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.code == 400) {
-          document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
-            "Không tìm thấy bảng giá hợp lệ";
-          document.querySelector(`#hoaDon${orderId} #total-ship`).value = -1;
-        } else {
-          document.querySelector(`#hoaDon${orderId} #total-ship`).value =
-            data.data.total;
-          document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
-            formatToVND(data.data.total);
+        if (productQuantity <= 0 || isNaN(productQuantity)) {
+            alert("Số lượng sản phẩm không đúng");
+            return 0;
         }
-      })
-      .catch((error) => console.error("Error:", error));
-  } catch (error) {
-    console.error("Error:", error);
-    resetTotalShip(orderId);
-    errorShip(orderId);
-  }
-}
-function errorShip(orderId) {
-  document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
-  document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML = "Error";
-}
-async function finalPrice(formId) {
-  const tableRows = document.querySelectorAll(
-    `#hoaDon${formId} #cartTable tbody tr.table-body-row`
-  );
-  const finalAmount = document.querySelector(`#hoaDon${formId} #final-price`);
-  const remainPrice = document.querySelector(`#hoaDon${formId} #remain-price`);
-  const changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`);
-  const discountAmount = document.querySelector(
-    `#hoaDon${formId} #discount-amount`
-  );
-  const transferAmount = document.querySelector(
-    `#hoaDon${formId} #transfer-amount`
-  );
-  const surchargeAmount = document.querySelector(
-    `#hoaDon${formId} #surcharge-amount`
-  );
-
-  let totalMoney = 0;
-  for (const row of tableRows) {
-    const productId = row.getAttribute("idproduct");
-    const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10);
-
-    if (productQuantity <= 0 || isNaN(productQuantity)) {
-      alert("Số lượng sản phẩm không đúng");
-      return 0;
+        quantityofproduct += productQuantity;
+        try {
+            const product = await getProductDetails(productId);
+            if (product) {
+                totalMoney += product.price * productQuantity;
+            }
+        } catch (error) {
+            console.error("Error fetching or calculating total money:", error);
+        }
     }
+    totalAmount.innerHTML = formatToVND(totalMoney);
+    if (
+        parseInt(
+            document.querySelector(
+                `#hoaDon${formId} input[name='options-outlined']:checked`
+            ).value,
+            10
+        ) === 1
+    ) {
+        try {
+            await getShipCost(formId, quantityofproduct);
+            const totalShip = parseInt(
+                document.querySelector(`#hoaDon${formId} #total-ship`).value,
+                10
+            );
+            if (totalShip > 0) {
+                totalMoney += totalShip;
+            }
+        } catch {
+        }
+    }
+
+    const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
+    finalAmount.innerHTML = formatToVND(totalMoney - discountValue);
+    finalPrice(formId);
+}
+
+async function getShipCost(orderId, quantity) {
     try {
+<<<<<<< HEAD
       const product = await getProductDetails(productId);
       if (product) {
         totalMoney += product.price * productQuantity;
@@ -1482,38 +1480,195 @@ async function getErrorMessage(formData) {
         const allmoney = cashMoney + transferMoney;
         if (allmoney < totalMoney) {
           errorMessage += "Tiền chưa đủ !!! \n";
+=======
+        const districtInput = document.querySelector(`#hoaDon${orderId} #district`);
+        const wardInput = document.querySelector(`#hoaDon${orderId} #ward`);
+        const serviceInput = document.querySelector(
+            `#hoaDon${orderId} #shipService`
+        );
+        if (!districtInput || !wardInput || !serviceInput) {
+            throw new Error("Missing input values");
+>>>>>>> 77b70e4 (fix checkout)
         }
-      }
-    }
-    if (formData.orderTypes === 1) {
-      if (formData.phoneNumber.trim() === "") {
-        errorMessage += "Số điện thoại không được thiếu !!!\n";
-      }
-      if (formData.customerName.trim() === "") {
-        errorMessage += "Tên khách hàng không được thiếu !!!\n";
-      }
-      if (formData.district.trim() === "") {
-        errorMessage += "Thành Phố không được thiếu !!!\n";
-      }
-      if (formData.ward.trim() === "") {
-        errorMessage += "Xã không được thiếu !!!\n";
-      }
-      if (formData.fullAddress.trim() === "") {
-        errorMessage += "Kiểm tra lại địa chỉ !!!\n";
-      }
-      if (formData.specificAddress.trim() === "") {
-        errorMessage += "Address không được thiếu !!!\n";
-      }
-      if (formData.totalShip < 0) {
-        errorMessage += "Xem lại hình thức vận chuyển !!!\n";
-      }
-    }
-  }
 
-  return errorMessage;
+        const districtto = parseInt(districtInput.value);
+        const ward_code = String(wardInput.value);
+        const service_ids = parseInt(serviceInput.value);
+
+        if (isNaN(districtto) || isNaN(service_ids)) {
+            throw new Error("Invalid input values");
+        }
+
+        const heights = 2 * quantity + 2;
+        const lengths = 60;
+        const weights = 200 * quantity + 120;
+        const widths = 20;
+        await fetch(
+            "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({
+                    service_id: service_ids,
+                    insurance_value: 500000,
+                    coupon: null,
+                    from_district_id: 3440,
+                    to_district_id: districtto,
+                    to_ward_code: ward_code,
+                    height: heights,
+                    length: lengths,
+                    weight: weights,
+                    width: widths,
+                }),
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.code == 400) {
+                    document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
+                        "Không tìm thấy bảng giá hợp lệ";
+                    document.querySelector(`#hoaDon${orderId} #total-ship`).value = -1;
+                } else {
+                    document.querySelector(`#hoaDon${orderId} #total-ship`).value =
+                        data.data.total;
+                    document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
+                        formatToVND(data.data.total);
+                }
+            })
+            .catch((error) => console.error("Error:", error));
+    } catch (error) {
+        console.error("Error:", error);
+        resetTotalShip(orderId);
+        errorShip(orderId);
+    }
+}
+
+function errorShip(orderId) {
+    document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
+    document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML = "Error";
+}
+
+async function finalPrice(formId) {
+    const tableRows = document.querySelectorAll(
+        `#hoaDon${formId} #cartTable tbody tr.table-body-row`
+    );
+    const finalAmount = document.querySelector(`#hoaDon${formId} #final-price`);
+    const remainPrice = document.querySelector(`#hoaDon${formId} #remain-price`);
+    const changeAmount = document.querySelector(`#hoaDon${formId} #changeAmount`);
+    const discountAmount = document.querySelector(
+        `#hoaDon${formId} #discount-amount`
+    );
+    const transferAmount = document.querySelector(
+        `#hoaDon${formId} #transfer-amount`
+    );
+    const surchargeAmount = document.querySelector(
+        `#hoaDon${formId} #surcharge-amount`
+    );
+
+    let totalMoney = 0;
+    for (const row of tableRows) {
+        const productId = row.getAttribute("idproduct");
+        const quantityElement = row.querySelector(`input[name="quantity"]`);
+        const productQuantity = parseInt(quantityElement.value, 10);
+
+        if (productQuantity <= 0 || isNaN(productQuantity)) {
+            alert("Số lượng sản phẩm không đúng");
+            return 0;
+        }
+        try {
+            const product = await getProductDetails(productId);
+            if (product) {
+                totalMoney += product.price * productQuantity;
+            }
+        } catch (error) {
+            console.error("Error fetching or calculating total money:", error);
+        }
+    }
+    var transferAmountvl = parseInt(transferAmount.value.trim(), 10);
+    var surchargeAmountvl = parseInt(surchargeAmount.value.trim(), 10);
+    if (isNaN(transferAmountvl)) {
+        transferAmountvl = 0;
+    }
+    if (isNaN(surchargeAmountvl)) {
+        surchargeAmountvl = 0;
+    }
+    finalAmount.innerHTML = formatToVND(transferAmountvl + surchargeAmountvl);
+    const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
+    const calMoney =
+        transferAmountvl + surchargeAmountvl + discountValue - totalMoney;
+    if (calMoney > 0) {
+        remainPrice.innerHTML = formatToVND(calMoney);
+        changeAmount.innerHTML = formatToVND(0);
+    } else {
+        remainPrice.innerHTML = formatToVND(0);
+        changeAmount.innerHTML = formatToVND(
+            totalMoney - (transferAmountvl + surchargeAmountvl + discountValue)
+        );
+    }
+}
+
+function formatToVND(amount) {
+    const formatter = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+        minimumFractionDigits: 0, // Set to 0 to display whole numbers
+    });
+    return formatter.format(amount);
+}
+
+async function getErrorMessage(formData) {
+    console.log(formData);
+    let errorMessage = "";
+    if (!formData.products || formData.products.length === 0) {
+        errorMessage += "Chưa có sản phẩm nào \n";
+    } else {
+        if (formData.employeeID == "null") {
+            errorMessage += "Employee cần được chọn !!! \n";
+        }
+        const cashMoney = parseInt(formData.cashMoney, 10);
+        const transferMoney = parseInt(formData.transferMoney, 10);
+        const totalMoney = parseInt(formData.totalMoney, 10);
+        if (formData.orderTypes === 0) {
+            if (!isNaN(cashMoney) && !isNaN(transferMoney) && !isNaN(totalMoney)) {
+                const allmoney = cashMoney + transferMoney;
+                if (allmoney < totalMoney) {
+                    errorMessage += "Tiền chưa đủ !!! \n";
+                }
+            }
+        }
+        if (formData.orderTypes === 1) {
+            if (formData.phoneNumber.trim() === "") {
+                errorMessage += "Số điện thoại không được thiếu !!!\n";
+            }
+            if (formData.customerName.trim() === "") {
+                errorMessage += "Tên khách hàng không được thiếu !!!\n";
+            }
+            if (formData.district.trim() === "") {
+                errorMessage += "Thành Phố không được thiếu !!!\n";
+            }
+            if (formData.ward.trim() === "") {
+                errorMessage += "Xã không được thiếu !!!\n";
+            }
+            if (formData.fullAddress.trim() === "") {
+                errorMessage += "Kiểm tra lại địa chỉ !!!\n";
+            }
+            if (formData.specificAddress.trim() === "") {
+                errorMessage += "Address không được thiếu !!!\n";
+            }
+            if (formData.totalShip < 0) {
+                errorMessage += "Xem lại hình thức vận chuyển !!!\n";
+            }
+        }
+    }
+
+    return errorMessage;
 }
 
 async function checkVoucher(formId, totalMoney) {
+<<<<<<< HEAD
   const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   const voucCherId = parseInt(voucherSelect.value);
   const discountAmount = document.querySelector(`#${formId} #discount-amount`);
@@ -1575,11 +1730,75 @@ async function checkVoucher(formId, totalMoney) {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+=======
+    const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
+    const voucCherId = parseInt(voucherSelect.value);
+    const discountAmount = document.querySelector(`#${formId} #discount-amount`);
+    discountAmount.innerHTML = formatToVND(0);
+    if (voucCherId != -1) {
+        try {
+            const response = await fetch(`/rest/data/counter/voucher/${voucCherId}`, {
+                method: "GET",
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            if (data.code == 400) {
+                discountAmount.innerHTML = formatToVND(0);
+                getVoucherAble(orderId);
+            } else {
+                if (data.min_order > totalMoney) {
+                    alert("Không đủ điều kiện để áp dụng voucher này");
+                    getVoucherAble(orderId);
+                    return 0;
+                }
+                if (data.quantily <= 0) {
+                    alert("Voucher đã hết hạn sử dụng");
+                    getVoucherAble(orderId);
+                    return 0;
+                }
+                var currentTime = new Date().getTime();
+                if (data.end_time <= currentTime) {
+                    alert("Voucher đã hết hạn sử dụng");
+                    getVoucherAble(orderId);
+                    return 0;
+                }
+                if (data.status != 1) {
+                    alert("Voucher đã bị xóa");
+                    getVoucherAble(orderId);
+                    return 0;
+                }
+                if (data.types == true) {
+                    // giam theo %
+                    const discountValue = (totalMoney / 100) * data.discount;
+                    if (discountValue < data.max_discount) {
+                        discountAmount.innerHTML = "-" + formatToVND(discountValue);
+                        return discountValue;
+                    } else {
+                        discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+                        return data.max_discount;
+                    }
+                } else {
+                    const discountValue = data.discount;
+                    if (discountValue < data.max_discount) {
+                        discountAmount.innerHTML = "-" + formatToVND(discountValue);
+                        return discountValue;
+                    } else {
+                        discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+                        return data.max_discount;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    } else {
+        return 0;
+>>>>>>> 77b70e4 (fix checkout)
     }
-  } else {
-    return 0;
-  }
 }
+<<<<<<< HEAD
 async function getVoucherAble(formId) {
   const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   voucherSelect.innerHTML = "";
@@ -1606,13 +1825,48 @@ async function getVoucherAble(formId) {
   } catch (error) {
     console.error("Error fetching data:", error);
   }
+=======
+
+async function getVoucherAble(orderId) {
+    const voucherSelect = document.querySelector(
+        `#hoaDon${orderId} #voucher-choose`
+    );
+    voucherSelect.innerHTML = "";
+    var option = document.createElement("option");
+    option.text = "Chọn Voucher"; // Set the text content
+    // option.disabled = true;
+    option.selected = true;
+    option.value = -1;
+    voucherSelect.appendChild(option);
+    try {
+        const response = await fetch("/rest/data/counter/voucherAble", {
+            method: "GET",
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+        data.forEach((product) => {
+            const option = document.createElement("option");
+            option.value = product.id;
+            option.text = `${product.name}`;
+            voucherSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+>>>>>>> 77b70e4 (fix checkout)
 }
-async function getQrThanhToan(orderId) {}
+
+async function getQrThanhToan(orderId) {
+}
+
 window.addEventListener("beforeunload", function (event) {
-  const confirmationMessage = "Are you sure you want to leave?";
-  event.returnValue = confirmationMessage;
-  // checkExitDataOnForm();
-  return confirmationMessage;
+    const confirmationMessage = "Are you sure you want to leave?";
+    event.returnValue = confirmationMessage;
+    // checkExitDataOnForm();
+    return confirmationMessage;
 });
 
 //   const options = data.data;
