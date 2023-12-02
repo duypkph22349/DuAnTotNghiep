@@ -94,11 +94,12 @@ function getHoaVan() {
         const newCheckbox = document.createElement("input");
         newCheckbox.type = "checkbox";
         newCheckbox.classList.add("form-check-input", "hoavanchoose");
-        newCheckbox.id = "gridCheck" + response.data.id; // Use a unique ID based on the response data
+        newCheckbox.setAttribute("nametext", response.data[i].name);
+        newCheckbox.id = "gridCheck" + response.data[i].id; // Use a unique ID based on the response data
         newCheckbox.value = response.data[i].id;
         const newLabel = document.createElement("label");
         newLabel.classList.add("form-check-label");
-        newLabel.setAttribute("for", "gridCheck" + response.data.id); // Match the checkbox ID
+        newLabel.setAttribute("for", "gridCheck" + response.data[i].id); // Match the checkbox ID
         newLabel.textContent = response.data[i].name;
         const newDiv = document.createElement("div");
         newDiv.classList.add("form-check", "col-sm-6");
@@ -111,7 +112,22 @@ function getHoaVan() {
       console.error("Error getting chatlieu:", error);
     });
 }
-function getKichThuoc(idKichThuocDiv) {}
+function getKichThuoc(kichthuocSelect) {
+  axios;
+  axios
+    .get("/admin/managerproduct/size")
+    .then(function (response) {
+      for (var i = 0; i < response.data.length; i++) {
+        const newOption = document.createElement("option");
+        newOption.value = response.data[i].id;
+        newOption.text = response.data[i].name;
+        kichthuocSelect.appendChild(newOption);
+      }
+    })
+    .catch(function (error) {
+      console.error("Error getting size:", error);
+    });
+}
 // add new properties by form properties
 function AddLoaiSanPham(event) {
   event.preventDefault();
@@ -203,6 +219,7 @@ function AddHoaVan(event) {
       $("#formAddHoaVan").modal("hide");
       const newCheckbox = document.createElement("input");
       newCheckbox.type = "checkbox";
+      newCheckbox.setAttribute("nametext", response.data.name);
       newCheckbox.classList.add("form-check-input", "hoavanchoose");
       newCheckbox.id = "gridCheck" + response.data.id; // Use a unique ID based on the response data
       newCheckbox.value = response.data.id;
@@ -306,14 +323,15 @@ function submitForm(event) {
     }
     const description = element.querySelector('textarea[name="mota"]').value;
     hoavanDetails.push({
-      patternName: patternName,
-      size: size.value,
+      idPattern: patternName,
+      idSize: size.value,
       quantity: quantity.value,
       price: price.value,
       description: description,
     });
   });
   if (errorcount > 0) {
+    $("#modalThemThatBai").modal("show");
     return false;
   } else {
     const productAddRequest = {
@@ -326,6 +344,16 @@ function submitForm(event) {
       productDetails: hoavanDetails,
     };
     console.log(productAddRequest);
+    axios
+      .post("/admin/managerproduct/saveproduct", productAddRequest)
+      .then((response) => {
+        $("#modelThemProductThanhCong").modal("show");
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        $("#modalThemThatBai").modal("show");
+        console.error("Error:", error);
+      });
   }
 }
 // Function to handle UI product detail form
@@ -336,7 +364,8 @@ function getAllHoaVanChoose() {
       checkbox.disabled = true;
       if (!listhoavan.includes(checkbox.value)) {
         listhoavan.push(checkbox.value);
-        addNewDivHoaVan(`${checkbox.value}`);
+        text = checkbox.getAttribute("nametext");
+        addNewDivHoaVan(`${checkbox.value}`, text);
       }
     } else {
       checkbox.disabled = false;
@@ -365,7 +394,7 @@ function removeHoaVanChoose(idHoaVan) {
   }
   return listhoavan;
 }
-function addNewDivHoaVan(idhoavan) {
+function addNewDivHoaVan(idhoavan, hoavanname) {
   const hoavanexits = document.getElementById(idhoavan);
   if (hoavanexits) {
     return;
@@ -377,7 +406,7 @@ function addNewDivHoaVan(idhoavan) {
   // Set the HTML content for the new div
   newDiv.innerHTML = `
     <hr>
-    <div class="hoavannamemb-3 mb-2">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">In Hoa</span><button
+    <div class="hoavannamemb-3 mb-2">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">${hoavanname}</span><button
         class="btn btn-secondary mx-2" type="button" onclick="addNewFormProductDetail('${idhoavan}')">Thêm</button>
         <button
         class="btn btn-danger mx-2" type="button" onclick="removeHoaVanChoose('${idhoavan}')">Xóa</button></div>
@@ -398,11 +427,6 @@ function addNewFormProductDetail(idhoavan) {
                       <div class="col-sm-6">
                         <select class="form-select kichthuocselect" aria-label="Default select example" name="khichthuoc" id="kichthuocInput">
                           <option value="-1" selected="selected" disabled > Chọn kích thước </option>
-                          <option value="0">90*180cm</option>
-                          <option value="1">130*180cm</option>
-                          <option value="2">72*188cm</option>
-                          <option value="3">70*70cm</option>
-                          <option value="4">50*195cm</option>
                         </select>
                       </div>
                       <div class="col-sm-3">
@@ -437,6 +461,8 @@ function addNewFormProductDetail(idhoavan) {
   `;
   const targetElement = document.getElementById(`hoavan${idhoavan}`);
   targetElement.appendChild(newFormDiv);
+  const kichthuocselect = newFormDiv.querySelector(".kichthuocselect");
+  getKichThuoc(kichthuocselect);
 }
 function removeProductDetail(element) {
   const productDetailDiv = element.closest(".productdetail");

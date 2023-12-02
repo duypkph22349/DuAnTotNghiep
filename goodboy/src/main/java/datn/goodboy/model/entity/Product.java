@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -83,10 +84,10 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
+    @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with Images
     @JsonIgnore
     private List<ImageProduct> imageProducts;
-    @OneToMany(mappedBy = "idProduct") // Define the relationship with ProductDetail
+    @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with ProductDetail
     @JsonIgnore
     private List<ProductDetail> productDetails;
 

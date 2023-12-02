@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Category;
+import datn.goodboy.model.entity.Material;
 import datn.goodboy.repository.CategoryRepository;
 
 @Service
@@ -29,5 +30,9 @@ public class CategoryService {
 
     public List<Category> getCategoryList() {
         return categoryRepository.getCategoryList();
+    }
+
+    public Category getById(int idCategory) {
+        return categoryRepository.findById(idCategory).get();
     }
 }

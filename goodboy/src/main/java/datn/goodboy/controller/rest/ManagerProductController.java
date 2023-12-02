@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +15,10 @@ import datn.goodboy.model.entity.Category;
 import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.PatternType;
+import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
+import datn.goodboy.model.request.ProductAddRequest;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ManagerProductService;
@@ -51,6 +54,12 @@ public class ManagerProductController {
 
   @Autowired
   private CategoryService categoryService;
+
+  @PostMapping("saveproduct")
+  public Product addProduct(@RequestBody ProductAddRequest request) {
+    System.out.println(request.toString());
+    return service.saveProduct(request);
+  }
 
   @PostMapping("addbrand")
   public Brand addNewBrand(@RequestParam("name") String name) {

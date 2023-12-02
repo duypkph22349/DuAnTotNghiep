@@ -91,11 +91,13 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     ProductDetail savDetail = productDetailRepository.save(productDetail);
     int idProduct = savDetail.getId();
     List<String> listURL = new ArrayList<>();
-    for (MultipartFile multipartFile : listImage) {
-      String url = cloudService.saveImage(multipartFile);
-      listURL.add(url);
+    if (!listImage.isEmpty()) {
+      for (MultipartFile multipartFile : listImage) {
+        String url = cloudService.saveImage(multipartFile);
+        listURL.add(url);
+      }
+      imageService.saveImageForNewProductDetail(listURL, idProduct);
     }
-    imageService.saveImageForNewProductDetail(listURL, idProduct);
     return savDetail;
   }
 
@@ -143,10 +145,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetailRequest.setId(productDetail.getId());
     productDetailRequest.setDescription(productDetail.getDescription());
     productDetailRequest.setDeleted(productDetail.isDeleted());
-    // productDetailRequest.setIdBrand(productDetail.getIdBrand().getId());
-    // productDetailRequest.setIdMaterial(productDetail.getIdMaterial().getId());
-    // productDetailRequest.setIdColor(productDetail.getIdColor().getId());
-    // productDetailRequest.setIdOrigin(productDetail.getIdOrigin().getId());
     productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
     productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
     productDetailRequest.setQuantity(productDetail.getQuantity());
@@ -157,19 +155,9 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   }
 
   public void mapRequestToEntity(ProductDetailRequest request, ProductDetail entity) {
-    // Color color = colorService.getById(request.getIdColor());
-    // Brand brand = brandService.getById(request.getIdBrand());
-    // Material material = materialService.getById(request.getIdMaterial());
-    // Origin origin = originService.getById(request.getIdOrigin());
-    // Styles styles = stylesService.getById(request.getIdStyles());
     PatternType pattern = patternTypeService.getById(request.getIdPattern());
     Product product = productService.getById(request.getIdProduct());
     Size size = sizeService.getById(request.getIdSize());
-    // entity.setIdBrand(brand);
-    // entity.setIdColor(color);
-    // entity.setIdMaterial(material);
-    // entity.setIdOrigin(origin);
-    // entity.setIdStyles(styles);
     entity.setIdPattern(pattern);
     entity.setIdProduct(product);
     entity.setIdSize(size);
@@ -178,6 +166,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     entity.setPrice(request.getPrice());
     entity.setStatus(request.getStatus());
     entity.setId(request.getId());
+    System.out.println(request);
   }
 
   public Page<ProductDetail> findAllProductDetail(Pageable pageable) {

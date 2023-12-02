@@ -130,8 +130,6 @@ public class ProductDetailController {
   }
 
   @Autowired
-  private CustomerService customerService;
-  @Autowired
   @Qualifier("newrequest")
   private ProductDetailRequest productDetailRequest;
   public int rowcount = 10;
@@ -341,6 +339,7 @@ public class ProductDetailController {
       @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
       BindingResult theBindingResult) throws IOException {
     if (theBindingResult.hasErrors()) {
+      System.out.println(theBindingResult.getAllErrors());
       return "/admin/pages/productdetail/form-productdetail.html";
     } else {
 

@@ -17,7 +17,7 @@
         </ol>
       </nav>
     </div>
-    <form method="post" onsubmit="submitForm(event)" id="formaddproudct">
+    <form onsubmit="submitForm(event)" id="formaddproudct">
       <div class="row mb-3">
         <label for="inputEmail3" class="col-sm-3 col-form-label">Tên sản phẩm mới</label>
         <div class="col-sm-16">
@@ -282,6 +282,32 @@
                 <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modelThemProductThanhCong" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm sản phẩm thành công</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p> Thêm sản phẩm thành công !!! </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modalThemThatBai" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm sản phẩm thất bại</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p> Thêm sản phẩm Thất bại xem lại lỗi !!! </p>
           </div>
         </div>
       </div>

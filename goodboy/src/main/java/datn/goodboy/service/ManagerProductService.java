@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,7 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.entity.Size;
+import datn.goodboy.model.request.ProductAddRequest;
+import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
+import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
@@ -19,6 +27,28 @@ import datn.goodboy.service.serviceinterface.PanigationInterface;
 public class ManagerProductService implements PanigationInterface<Product> {
   @Autowired
   private ProductRepository productRepository;
+  @Autowired
+  private ProductDetailRepository productDetailRepository;
+  @Autowired
+  private BrandService brandService;
+
+  @Autowired
+  private MaterialService materialService;
+
+  @Autowired
+  private OriginService originService;
+
+  @Autowired
+  private PatternTypeService patternService;
+
+  @Autowired
+  private SizeService sizeService;
+
+  @Autowired
+  private StylesService stylesService;
+
+  @Autowired
+  private CategoryService categoryService;
 
   public Page<Product> findAll(Pageable pageable) {
     return productRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -121,6 +151,35 @@ public class ManagerProductService implements PanigationInterface<Product> {
       }
       return rs;
     }
+  }
+
+  public Product saveProduct(ProductAddRequest request) {
+    Product product = new Product();
+    product.setName(request.getName());
+    product.setIdOrigin(originService.getById(request.getIdOrigin()));
+    product.setIdBrand(brandService.getById(request.getIdBrand()));
+    product.setIdMaterial(materialService.getById(request.getIdMaterial()));
+    product.setIdCategory(categoryService.getById(request.getIdCategory()));
+    product.setIdStyles(stylesService.getById(request.getIdStyles()));
+    product.setStatus(1);
+    product.setDeleted(false);
+    Product productsave = productRepository.save(product);
+    for (ProductDetailAdd productDetailAdd : request.getProductDetails()) {
+      ProductDetail productDetail = new ProductDetail();
+      PatternType pattern = patternService.getById(productDetailAdd.getIdPattern());
+      Size size = sizeService.getById(productDetailAdd.getIdSize());
+      productDetail.setId(0);
+      productDetail.setIdProduct(productsave);
+      productDetail.setIdPattern(pattern);
+      productDetail.setIdSize(size);
+      productDetail.setDescription(productDetailAdd.getDescription());
+      productDetail.setPrice(productDetailAdd.getPrice());
+      productDetail.setQuantity(productDetailAdd.getQuantity());
+      productDetail.setStatus(1);
+      productDetail.setDeleted(false);
+      productDetailRepository.save(productDetail);
+    }
+    return product;
   }
 
 }
