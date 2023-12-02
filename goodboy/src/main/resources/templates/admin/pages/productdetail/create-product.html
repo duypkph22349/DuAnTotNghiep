@@ -5,6 +5,7 @@
 <head>
   <title>Thêm Sản phẩm mới</title>
 </head>
+
 <body layout:fragment="content">
   <section>
     <div class="pagetitle">
@@ -16,327 +17,277 @@
         </ol>
       </nav>
     </div>
-    <form>
+    <form method="post" onsubmit="submitForm(event)" id="formaddproudct">
       <div class="row mb-3">
         <label for="inputEmail3" class="col-sm-3 col-form-label">Tên sản phẩm mới</label>
         <div class="col-sm-16">
-          <input type="text" class="form-control" id="inputText">
+          <input type="text" class="form-control" id="productname">
         </div>
       </div>
       <div class="row">
         <div class="col-6 row mb-3">
           <label for="inputPassword3" class="col-sm-3 col-form-label">Loại sản phẩm</label>
           <div class="col-sm-6">
-            <select class="form-select" aria-label="Default select example">
-              <option selected="">Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" aria-label="Default select example" id="loaisanphamInput">
+              <option value="-1" selected="selected" disabled> Chọn Loại sản phẩm </option>
             </select>
           </div>
           <div class="col-sm-3">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
               data-bs-target="#modelAddLoaiSanPham">
               Thêm</button>
-            <div class="modal fade" id="modelAddLoaiSanPham" tabindex="-1" aria-hidden="true" style="display: none;">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Thêm loại Sản phẩm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="" id="addLoaiSanPham">
-                      <div class="row mb-3">
-                        <label for="inputLoaiSanPham" class="col-sm-4 col-form-label">Tên loại Sản phẩm</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" id="inputLoaiSanPham">
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Thêm</button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="col-6 row mb-3">
           <label for="inputEmail3" class="col-sm-3 col-form-label">Nguồn gốc</label>
           <div class="col-sm-6">
-            <select class="form-select" aria-label="Default select example">
-              <option selected="">Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" aria-label="Default select example" id="nguongocInput">
+              <option value="-1" selected="selected" disabled> Chọn nguồn gốc </option>
             </select>
           </div>
           <div class="col-sm-3">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddNguonGoc">
               Thêm</button>
-            <div class="modal fade" id="modelAddNguonGoc" tabindex="-1" aria-hidden="true" style="display: none;">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Thêm nguồn gốc</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="" id="addNguonGoc">
-                      <div class="row mb-3">
-                        <label for="inputNguonGoc" class="col-sm-4 col-form-label">Tên nguồn gốc</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" id="inputNguonGoc">
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Thêm</button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="col-6 row mb-3">
           <label for="inputPassword3" class="col-sm-3 col-form-label">Thương hiệu</label>
           <div class="col-sm-6">
-            <select class="form-select" aria-label="Default select example">
-              <option selected="">Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" aria-label="Default select example" id="thuonghieuInput">
+              <option value="-1" selected="selected" disabled> Chọn Thương hiệu </option>
             </select>
           </div>
           <div class="col-sm-3">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddThonghieu">
               Thêm</button>
-            <div class="modal fade" id="modelAddThonghieu" tabindex="-1" aria-hidden="true" style="display: none;">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Thêm Thương hiệu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="" id="addThonghieu">
-                      <div class="row mb-3">
-                        <label for="inputThonghieu" class="col-sm-4 col-form-label">Tên Thương hiệu</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" id="inputThonghieu">
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Thêm</button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="col-6 row mb-3">
           <label for="inputPassword3" class="col-sm-3 col-form-label">Chất liệu</label>
           <div class="col-sm-6">
-            <select class="form-select" aria-label="Default select example">
-              <option selected="">Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" aria-label="Default select example" id="chatlieuInput">
+              <option value="-1" selected="selected" disabled> Chọn chất liệu </option>
             </select>
           </div>
           <div class="col-sm-3">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddChatLieu">
               Thêm</button>
-            <div class="modal fade" id="modelAddChatLieu" tabindex="-1" aria-hidden="true" style="display: none;">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Thêm chất liệu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="" id="addChatLieu">
-                      <div class="row mb-3">
-                        <label for="inputChatLieu" class="col-sm-4 col-form-label">Tên chất liệu</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" id="inputChatLieu">
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Thêm</button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="col-6 row mb-3">
           <label for="inputPassword3" class="col-sm-3 col-form-label">Kiểu dáng</label>
           <div class="col-sm-6">
-            <select class="form-select" aria-label="Default select example">
-              <option selected="">Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select class="form-select" aria-label="Default select example" id="kieudangInput">
+              <option value="-1" selected="selected" disabled> Chọn Kiểu dáng </option>
             </select>
           </div>
           <div class="col-sm-3">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddKieuDang">
               Thêm</button>
-            <div class="modal fade" id="modelAddKieuDang" tabindex="-1" aria-hidden="true" style="display: none;">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Thêm kiểu dáng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="" id="addkieudang">
-                      <div class="row mb-3">
-                        <label for="inputkieudang3" class="col-sm-4 col-form-label">Tên kiểu dáng</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control" id="inputText">
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Thêm</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
       <div>
-        <button class="btn btn-primary" data-bs-toggle="modal" href="#hoavanadd">Thêm hoa văn</button>
-        <div class="modal fade" id="hoavanadd" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-          tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalToggleLabel">Chọn hoa văn mới</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="row mb-3">
-                  <label for="inputPassword3" class="col-sm-3 col-form-label">Kiểu dáng</label>
-                  <div class="col-sm-6">
-                    <select class="form-select" aria-label="Default select example">
-                      <option selected="">Open this select menu</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                  <div class="col-sm-3">
-                    <button type="button" class="btn btn-secondary" data-bs-target="#formAddHoaVan"
-                      data-bs-toggle="modal" data-bs-dismiss="modal">
-                      Thêm</button>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-success">
-                  Thêm</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade" id="formAddHoaVan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-          tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalToggleLabel2">Thêm hoa văn mới</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form action="" id="addChatLieu">
-                  <div class="row mb-3">
-                    <label for="inputChatLieu" class="col-sm-4 col-form-label">Tên chất liệu</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="inputChatLieu">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-success" data-bs-target="#hoavanadd" data-bs-toggle="modal"
-                  data-bs-dismiss="modal">Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" href="#hoavanadd">Thêm hoa văn</button>
       </div>
+      <!-- hoavan div -->
       <div id="productdetailAdd">
-        <div class="parrtenadd" id="hoavan1">
-          <hr>
-          <div class="hoavannamemb-3 mb-2">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">In Hoa</span><button
-              class="btn btn-secondary mx-2">Thêm</button><button
-              class="btn btn-danger mx-2">Xoá</button></div>
-          <div class="row border py-3 productdetail">
-            <div class="col-6 row mb-3">
-              <label for="inputEmail3" class="col-sm-3 col-form-label">Kích thước</label>
-              <div class="col-sm-6">
-                <select class="form-select" aria-label="Default select example">
-                  <option selected="">Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>
-              <div class="col-sm-3">
-                <button class="btn btn-secondary">Thêm</button>
-              </div>
-            </div>
-            <div class="col-6 row mb-3">
-              <div class="mb-3">
-                <input class="form-control" type="file" id="formFile">
-              </div>
-            </div>
-            <div class="col-6 row mb-3">
-              <label for="inputNumber" class="col-sm-4 col-form-label">Số lượng</label>
-              <div class="col-sm-8">
-                <input type="number" class="form-control">
-              </div>
-            </div>
-            <div class="col-6 row mb-3">
-              <label for="inputNumber" class="col-sm-3 col-form-label">Giá</label>
-              <div class="col-sm-9">
-                <div class="input-group mb-3">
-                  <span class="input-group-text">đ</span>
-                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                  <span class="input-group-text">Vnđ</span>
-                </div>
-              </div>
-            </div>
-            <div class="form-floating mb-3 col-12">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-                style="height: 18px;"></textarea>
-              <label for="floatingTextarea">Mô tả</label>
-            </div>
-            <div class="col-2">
-              <button class="btn btn-danger">Xóa</button>
-            </div>
-          </div>
-          <br>
-        </div>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-success px-4">Lưu</button>
+        <button type="submit" class="btn btn-success">Lưu</button>
       </div>
     </form>
+
+    <!-- modal add nguon goc -->
+    <div class="modal fade" id="modelAddNguonGoc" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal- modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm nguồn gốc</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddNguonGoc(event)" id="addNguonGoc">
+              <div class="row mb-3">
+                <label for="inputNguonGoc" class="col-sm-4 col-form-label">Tên nguồn gốc</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputNguonGoc">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add thuonghieu -->
+    <div class="modal fade" id="modelAddThonghieu" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm Thương hiệu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddThuongHieu(event)" id="addThonghieu">
+              <div class="row mb-3">
+                <label for="inputThonghieu" class="col-sm-4 col-form-label">Tên Thương hiệu</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputThonghieu">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add hoavan -->
+    <div class="modal fade" id="hoavanadd" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel">Chọn hoa văn mới</h5>
+            <button type="button" class="btn btn-secondary mx-2" data-bs-target="#formAddHoaVan" data-bs-toggle="modal"
+              data-bs-dismiss="modal">
+              Thêm</button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="row mb-3" id="hoavanmuladd">
+            </div>
+            <div class="">
+              <button type="button" class="btn btn-success" onclick="getAllHoaVanChoose()">
+                Thêm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add chat lieu -->
+    <div class="modal fade" id="modelAddChatLieu" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm chất liệu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddChatLieu(event)" id="addChatLieu">
+              <div class="row mb-3">
+                <label for="inputChatLieu" class="col-sm-4 col-form-label">Tên chất liệu</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputChatLieu">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add kieu dang -->
+    <div class="modal fade" id="modelAddKieuDang" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm kiểu dáng</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddKieuDang(event)" id="addkieudang">
+              <div class="row mb-3">
+                <label for="inputkieudang3" class="col-sm-4 col-form-label">Tên kiểu dáng</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputText">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add hoa van -->
+    <div class="modal fade" id="formAddHoaVan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel2">Thêm hoa văn mới</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddHoaVan(event)" id="addHoaVan">
+              <div class="row mb-3">
+                <label for="inputChatLieu" class="col-sm-4 col-form-label">Tên hoa văn mới</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputChatLieu">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success" data-bs-target="#hoavanadd" data-bs-toggle="modal"
+              data-bs-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add loai san phẩm -->
+    <div class="modal fade" id="modelAddLoaiSanPham" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm loại Sản phẩm</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddLoaiSanPham(event)" id="addLoaiSanPham">
+              <div class="row mb-3">
+                <label for="inputLoaiSanPham" class="col-sm-4 col-form-label">Tên loại Sản phẩm</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputLoaiSanPham">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal add Kich thuoc -->
+    <div class="modal fade" id="modelAddKichThuoc" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm kích thước</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddKichThuoc(event)" id="addKichThuoc">
+              <div class="row mb-3">
+                <label for="inputKichThuoc" class="col-sm-4 col-form-label">Tên kiểu dáng</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputKichThuoc">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
   <script th:src="@{/assets/js/product/productadd.js}"></script>
 </body>
+
 </html>

@@ -11,4 +11,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
   @Query("SELECT ca FROM Category ca WHERE  ca.deleted = false")
   List<Category> getCategoryAble();
+
+  @Query("SELECT ca FROM Category ca WHERE ca.status = 1 AND ca.deleted = false")
+  List<Category> getCategoryList();
 }

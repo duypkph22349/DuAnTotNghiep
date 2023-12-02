@@ -23,4 +23,11 @@ public class CategoryService {
         return categoryRepository.getCategoryAble();
     }
 
+    public Category add(Category entity) {
+        return categoryRepository.save(entity);
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryRepository.getCategoryList();
+    }
 }

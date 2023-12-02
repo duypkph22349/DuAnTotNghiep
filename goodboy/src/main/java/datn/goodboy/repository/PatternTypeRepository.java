@@ -22,4 +22,7 @@ public interface PatternTypeRepository extends JpaRepository<PatternType, Intege
     @Query("SELECT new map(e.id as key, e.name as value) FROM PatternType e")
     List<Map<Integer, String>> getComboBoxMap();
 
+    @Query("SELECT b FROM PatternType b WHERE b.status = 1 AND b.deleted = false")
+    List<PatternType> getPatternTypeList();
+
 }
