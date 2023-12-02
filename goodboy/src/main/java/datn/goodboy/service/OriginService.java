@@ -56,4 +56,8 @@ public class OriginService {
             originRepository.save(origin.get());
         }
     }
+
+    public List<Origin> getOriginList() {
+        return originRepository.getOriginList();
+    }
 }

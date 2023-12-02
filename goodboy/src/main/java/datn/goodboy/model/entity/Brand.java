@@ -8,30 +8,39 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="brand")
+@Table(name = "brand")
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Integer id;
-    @Column(name="code")
+    @Column(name = "code", insertable = false, updatable = false)
     private String code;
-
     @NotNull
     @NotBlank
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     @Column(name = "deleted")
     private boolean deleted;
-    @Column(name="status")
+    @Column(name = "status")
     private int status;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

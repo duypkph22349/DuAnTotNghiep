@@ -56,4 +56,8 @@ public class MaterialService {
             materialRepository.save(material.get());
         }
     }
+
+    public List<Material> getMaterialList() {
+        return materialRepository.getMaterialList();
+    }
 }

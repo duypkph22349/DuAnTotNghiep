@@ -56,4 +56,8 @@ public class SizeService {
             sizeRepository.save(size.get());
         }
     }
+
+    public List<Size> getSizeList() {
+        return sizeRepository.getSizeList();
+    }
 }

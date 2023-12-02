@@ -56,4 +56,8 @@ public class PatternTypeService {
             patternTypeRepository.save(patternType.get());
         }
     }
+
+    public List<PatternType> getPatternTypeList() {
+        return patternTypeRepository.getPatternTypeList();
+    }
 }

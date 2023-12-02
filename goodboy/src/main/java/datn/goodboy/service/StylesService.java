@@ -55,4 +55,8 @@ public class StylesService {
             stylesRepository.save(styles.get());
         }
     }
+
+    public List<Styles> getStylesList() {
+      return stylesRepository.getStylesList();
+    }
 }
