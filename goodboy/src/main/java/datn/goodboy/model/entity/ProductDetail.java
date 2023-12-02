@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import groovy.transform.ToString;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,15 +50,15 @@ public class ProductDetail {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_product")
     private Product idProduct;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_size")
     private Size idSize;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pattern")
     private PatternType idPattern;
 
@@ -73,7 +74,7 @@ public class ProductDetail {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
+    @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL) // Define the relationship with Images
     @JsonIgnore
     private List<Images> imageProducts;
 
