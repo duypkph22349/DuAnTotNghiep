@@ -36,20 +36,6 @@ import datn.goodboy.service.serviceinterface.PanigationWithSearch;
 public class ProductDetailService implements PanigationInterface<ProductDetail>,
     IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
 
-  // @Autowired
-  // private BrandService brandService;
-
-  // @Autowired
-  // private ColorService colorService;
-
-  // @Autowired
-  // private MaterialService materialService;
-
-  // @Autowired
-  // private OriginService originService;
-
-  // @Autowired
-  // private StylesService stylesService;
   @Autowired
   private PatternTypeService patternTypeService;
 
@@ -152,7 +138,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetailRequest.setPrice(productDetail.getPrice());
     productDetailRequest.setStatus(productDetail.getQuantity());
     productDetailRequest.setName(productDetail.getName());
-    productDetailRequest.setImage(productDetail.getImageProducts());
+    // productDetailRequest.setImage(productDetail.getImageProducts());
   }
 
   public void mapRequestToEntity(ProductDetailRequest request, ProductDetail entity) {
@@ -190,11 +176,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     color1.setDescription(color.getDescription());
     color1.setIdProduct(color.getIdProduct());
     color1.setIdPattern(color.getIdPattern());
-    // color1.setIdColor(color.getIdColor());
-    // color1.setIdOrigin(color.getIdOrigin());
-    // color1.setIdBrand(color.getIdBrand());
-    // color1.setIdMaterial(color.getIdMaterial());
-    // color1.setIdStyles(color.getIdStyles());
     color1.setIdSize(color.getIdSize());
     color1.setStatus(color.getStatus());
     color1.setUpdatedAt(color.getUpdatedAt());
