@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +24,10 @@ import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class ManagerProductService implements PanigationInterface<Product> {
   @Autowired
   private ProductRepository productRepository;
@@ -164,19 +168,21 @@ public class ManagerProductService implements PanigationInterface<Product> {
     product.setStatus(1);
     product.setDeleted(false);
     Product productsave = productRepository.save(product);
+    System.out.println(productsave);
     for (ProductDetailAdd productDetailAdd : request.getProductDetails()) {
-      ProductDetail productDetail = new ProductDetail();
+      ProductDetail productDetail = productDetailRepository.save(new ProductDetail());
       PatternType pattern = patternService.getById(productDetailAdd.getIdPattern());
       Size size = sizeService.getById(productDetailAdd.getIdSize());
-      productDetail.setId(0);
       productDetail.setIdProduct(productsave);
       productDetail.setIdPattern(pattern);
       productDetail.setIdSize(size);
       productDetail.setDescription(productDetailAdd.getDescription());
       productDetail.setPrice(productDetailAdd.getPrice());
       productDetail.setQuantity(productDetailAdd.getQuantity());
+      productDetail.setName(productsave.getName());
       productDetail.setStatus(1);
       productDetail.setDeleted(false);
+      System.out.println(productDetail);
       productDetailRepository.save(productDetail);
     }
     return product;

@@ -88,6 +88,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     ProductDetail productDetail = new ProductDetail();
     mapRequestToEntity(request, productDetail);
     productDetail.setCreatedAt(LocalDateTime.now());
+    productDetail.setId(null);
     ProductDetail savDetail = productDetailRepository.save(productDetail);
     int idProduct = savDetail.getId();
     List<String> listURL = new ArrayList<>();
