@@ -297,11 +297,10 @@
         </nav><!-- End Centered Pagination -->
       </div>
       <form action="#" class="mx-2" th:action="@{/admin/managerproduct/getcountrow}" method="get" id="rowCountForm">
-        Number of rows
         <select name="selectedValue" class="border-0 px-2" onchange="document.getElementById('rowCountForm').submit();">
-          <option value="10" th:selected="${rowcount == 10}">10</option>
-          <option value="20" th:selected="${rowcount == 20}">20</option>
-          <option value="50" th:selected="${rowcount == 50}">50</option>
+          <option value="10" th:selected="${rowcount == 10}">10 / page</option>
+          <option value="20" th:selected="${rowcount == 20}">20 / page</option>
+          <option value="50" th:selected="${rowcount == 50}">50 / page</option>
         </select>
       </form>
     </div>

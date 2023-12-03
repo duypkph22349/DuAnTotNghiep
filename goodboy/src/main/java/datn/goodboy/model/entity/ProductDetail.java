@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import groovy.transform.ToString;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +20,9 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -50,15 +51,15 @@ public class ProductDetail {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_product")
     private Product idProduct;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_size")
     private Size idSize;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_pattern")
     private PatternType idPattern;
 
@@ -74,7 +75,9 @@ public class ProductDetail {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL) // Define the relationship with Images
+    @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL) // Define the relationship
+    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+    @ToString.Exclude // with Images
     @JsonIgnore
     private List<Images> imageProducts;
 

@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -86,10 +87,16 @@ public class Product {
 
     @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with Images
     @JsonIgnore
+    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+    @ToString.Exclude
     private List<ImageProduct> imageProducts;
     @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with ProductDetail
     @JsonIgnore
+    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+    @ToString.Exclude
     private List<ProductDetail> productDetails;
+
+    @JsonIgnore
 
     public Float getMinPrice() {
         Optional<ProductDetail> minPrice = productDetails.stream()
@@ -98,6 +105,8 @@ public class Product {
                 });
         return minPrice.get().getPrice();
     }
+
+    @JsonIgnore
 
     public Float getMaxPrice() {
         Optional<ProductDetail> maxPrice = productDetails.stream()
