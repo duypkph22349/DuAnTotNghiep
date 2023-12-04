@@ -1187,7 +1187,6 @@ async function thanhtoan(formValuesJSON, idform) {
 async function buildFormData(formId) {
   const formData = {};
   const form = document.getElementById(formId);
-
   // Extract product information
   formData.products = Array.from(
     form.querySelectorAll("#cartTable tbody tr.table-body-row")

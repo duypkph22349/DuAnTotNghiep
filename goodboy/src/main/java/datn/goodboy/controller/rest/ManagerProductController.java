@@ -1,7 +1,9 @@
 package datn.goodboy.controller.rest;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +18,11 @@ import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductAddRequest;
+import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ManagerProductService;
@@ -157,5 +161,10 @@ public class ManagerProductController {
   @GetMapping("category")
   public List<Category> getCategoryList() {
     return categoryService.getCategoryList();
+  }
+
+  @PostMapping("/update/product")
+  public ProductDetail updateProductDetail(@RequestBody UpdateProductDetail request) {
+    return service.updateProductDetails(request);
   }
 }
