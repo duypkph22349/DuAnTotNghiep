@@ -17,6 +17,7 @@ import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.request.ProductAddRequest;
+import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
@@ -185,6 +186,17 @@ public class ManagerProductService implements PanigationInterface<Product> {
     product.setProductDetails(list);
     productRepository.save(product);
     return product;
+  }
+
+  public ProductDetail updateProductDetails(UpdateProductDetail request) {
+    Optional<ProductDetail> productDetail = productDetailRepository.findById(request.getId());
+    if (productDetail.isPresent()) {
+      productDetail.get().setQuantity(request.getQuantity());
+      productDetail.get().setPrice(request.getPrice());
+      productDetail.get().setDescription(request.getDescription());
+      return productDetailRepository.save(productDetail.get());
+    }
+    return null;
   }
 
 }

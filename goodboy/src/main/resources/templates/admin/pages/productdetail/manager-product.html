@@ -44,7 +44,7 @@
             </th>
             <th scope="col" class="text-center">Trạng thái
             </th>
-            <th scope="col">Action</th>
+            <th scope="col">Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -72,7 +72,7 @@
               </button>
               <button type="button" class="btn btn-success" data-bs-toggle="modal"
                 th:attr="data-bs-target='#staticBackdrop'+ ${product.id}">
-                <i class=" far fa-edit"></i>
+                <i class="far fa-edit"></i>
               </button>
               <div class="modal fade" th:id="'staticBackdrop' + ${product.id}" data-bs-backdrop="static"
                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -80,6 +80,8 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="staticBackdropLabel" th:text="${product.name}"></h5>
+                      <a target="_blank" class="btn btn-success mx-3"
+                        th:href="@{'/admin/product/view-update/'+${product.id}}"><i class="far fa-edit"></i></a>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -124,8 +126,10 @@
                                 <div>
                                   <span class="fw-bold" th:text="'Mã: '+${pddt.code}"></span>
                                   <span class="fw-bold" th:text="'- Kích thước: '+ ${pddt.idSize?.name}"></span>
-                                  <form th:action="@{update/product}" method="get">
-                                    <input type="hidden" name="" th:value="${pddt.id}">
+                                  <a target="_blank" class="btn btn-success mx-3"
+                                    th:href="@{'/admin/productdetail/edit/'+${pddt.id}}"><i class="far fa-edit"></i></a>
+                                  <form onsubmit="updateProductDetail(event)" method="get">
+                                    <input type="hidden" name="id" th:value="${pddt.id}">
                                     <div class="row">
                                       <div class="col-4 row mb-3">
                                         <div class="mb-3">
@@ -135,23 +139,25 @@
                                       <div class="col-4 row mb-3">
                                         <label for="inputNumber" class="col-sm-6 col-form-label">Số lượng</label>
                                         <div class="col-sm-6">
-                                          <input type="number" class="form-control" th:value="${pddt.quantity}">
+                                          <input type="number" class="form-control" name="quantity"
+                                            th:value="${pddt.quantity}">
                                         </div>
                                       </div>
                                       <div class="col-4 row mb-3">
                                         <label for="inputNumber" class="col-sm-4 col-form-label">Giá</label>
                                         <div class="col-sm-8">
-                                          <input type="number" class="form-control" th:value="${pddt.price}">
+                                          <input type="number" class="form-control" name="price"
+                                            th:value="${pddt.price}">
                                         </div>
                                       </div>
                                       <div class="form-floating mb-3 col-9">
                                         <textarea class="form-control" placeholder="Leave a comment here"
-                                          id="floatingTextarea" style="height: 18px;"
+                                          id="floatingTextarea" style="height: 18px;" name="discription"
                                           th:text="${pddt.description}"></textarea>
                                         <label for="floatingTextarea">Mô tả</label>
                                       </div>
                                       <div class="col-3">
-                                        <button type="submit" class="btn btn-success">Lưu</button>
+                                        <button type="submit" class="savebtn btn btn-success">Lưu</button>
                                       </div>
                                     </div>
                                   </form>
@@ -305,6 +311,50 @@
       </form>
     </div>
   </section>
+  <script>
+    function updateProductDetail(event) {
+      var errorCount = 0;
+      event.preventDefault();
+      const form = event.target;
+      const id = form.querySelector("input[name='id']");
+      const quantity = form.querySelector("input[name='quantity']");
+      const price = form.querySelector("input[name='price']");
+      const description = form.querySelector("textarea[name='discription']");
+      // const image = form.querySelector("input[name='image']");
+      const buttonsubmit = form.querySelector(".savebtn");
+      resetErrorElement(quantity);
+      if (quantity.value < 0) {
+        setErrorElement(quantity,"Số lượng phải lớn hơn 0")
+        errorCount++;
+      }
+      resetErrorElement(price);
+      if (price.value < 0) {
+        setErrorElement(price,"Giá phải lớn hơn 0")
+        errorCount++;
+      }
+      resetErrorElement(buttonsubmit);
+      if (errorCount > 0) {
+        setErrorElement(buttonsubmit,"Kiểm tra lại đầu vào")
+      } else {
+        const data = {
+          id: id.value,
+          quantity: quantity.value,
+          price: price.value,
+          description: description.value, // Corrected field name
+        };
+        axios
+          .post("/admin/managerproduct/update/product",data)
+          .then(function (response) {
+            console.log(response.data);
+            alert("Cập nhật thành công");
+          })
+          .catch(function (error) {
+            console.error("Error update product:",error);
+            alert("Cập nhật thất bại");
+          });
+      }
+    }
+  </script>
 </body>
 
 </html>

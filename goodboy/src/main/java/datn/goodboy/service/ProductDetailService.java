@@ -134,11 +134,12 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetailRequest.setDeleted(productDetail.isDeleted());
     productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
     productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
+    productDetailRequest.setIdSize(productDetail.getIdSize().getId());
     productDetailRequest.setQuantity(productDetail.getQuantity());
     productDetailRequest.setPrice(productDetail.getPrice());
-    productDetailRequest.setStatus(productDetail.getQuantity());
+    productDetailRequest.setStatus(productDetail.getStatus());
     productDetailRequest.setName(productDetail.getName());
-    // productDetailRequest.setImage(productDetail.getImageProducts());
+    productDetailRequest.setImage(productDetail.getImageProducts());
   }
 
   public void mapRequestToEntity(ProductDetailRequest request, ProductDetail entity) {
@@ -168,18 +169,18 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     return null;
   }
 
-  public ProductDetail update(Integer id, ProductDetail color) {
-    ProductDetail color1 = productDetailRepository.findById(id).get();
-    color1.setName(color.getName());
-    color1.setPrice(color.getPrice());
-    color1.setQuantity(color.getQuantity());
-    color1.setDescription(color.getDescription());
-    color1.setIdProduct(color.getIdProduct());
-    color1.setIdPattern(color.getIdPattern());
-    color1.setIdSize(color.getIdSize());
-    color1.setStatus(color.getStatus());
-    color1.setUpdatedAt(color.getUpdatedAt());
-    return productDetailRepository.save(color1);
+  public ProductDetail update(Integer id, ProductDetail request) {
+    ProductDetail productdetail = productDetailRepository.findById(id).get();
+    productdetail.setName(request.getName());
+    productdetail.setPrice(request.getPrice());
+    productdetail.setQuantity(request.getQuantity());
+    productdetail.setDescription(request.getDescription());
+    productdetail.setIdProduct(request.getIdProduct());
+    productdetail.setIdPattern(request.getIdPattern());
+    productdetail.setIdSize(request.getIdSize());
+    productdetail.setStatus(request.getStatus());
+    productdetail.setUpdatedAt(request.getUpdatedAt());
+    return productDetailRepository.save(productdetail);
   }
 
   // panigation no fillter
