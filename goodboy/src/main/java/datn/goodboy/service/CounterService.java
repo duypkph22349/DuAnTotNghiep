@@ -22,7 +22,7 @@ import datn.goodboy.repository.PayDetailRepository;
 import jakarta.annotation.PostConstruct;
 
 @Service
-public class ConterService {
+public class CounterService {
   @Autowired
   BillRepository billRepository;
   @Autowired

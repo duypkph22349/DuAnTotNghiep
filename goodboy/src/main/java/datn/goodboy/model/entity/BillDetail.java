@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Getter
 @Setter
@@ -24,6 +26,7 @@ public class BillDetail {
 
     @ManyToOne
     @JoinColumn(name = "id_bill")
+    @JsonIgnore
     private Bill idBill;
 
     @Column(name = "total_money")

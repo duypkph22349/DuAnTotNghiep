@@ -106,7 +106,6 @@ public class Bill {
   }
 
   @OneToMany(mappedBy = "idBill")
-  @JsonIgnore
+  // @JsonIgnore
   private List<BillDetail> billDetail;
-
 }

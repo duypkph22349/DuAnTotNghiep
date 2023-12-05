@@ -1224,7 +1224,6 @@ async function handleOrderSubmit(event) {
   const totalAmount = transferAmountvl + surchargeAmountvl;
   formData.cashReturn = Math.max(totalAmount - totalMoney, 0);
   formData.changeAmount = Math.max(totalMoney - totalAmount, 0);
-  console.log(totalMoney);
   formData.voucherid = parseInt(
     form.querySelector("#voucher-choose").value,
     10
@@ -1317,6 +1316,7 @@ async function handleOrderSubmit(event) {
   if (errorCount > 0) {
   } else {
     if (confirm("Xác Nhận Thanh Toán")) {
+      console.log(formData);
       thanhtoan(JSON.stringify(formData), idform);
     }
   }
@@ -1333,17 +1333,62 @@ async function thanhtoan(formValuesJSON, idform) {
       }
     );
     const data = response.data;
+    console.log(data);
     if (data?.status === "BAD_REQUEST") {
       alert(data?.message);
       return;
     } else {
       if (confirm("Bạn có muốn in hoá đơn không?")) {
+        printBill(data.id);
         handleOrderSuccess(idform);
       }
     }
   } catch (error) {
     console.error("Error:", error);
   }
+}
+function printBill(id) {
+  axios
+    .get(`/admin/api/bill/${id}`)
+    .then((response) => {
+      const billData = response.data;
+      $("#bill #customername").text(billData.customer_name);
+      $("#bill #phonenumber").text(billData.phone);
+      $("#bill #fulladdress").text(billData.address);
+      // Update employee information
+      $("#bill #hoadoncode").text(billData.code);
+      $("#bill #employename").text(billData.employee.name);
+      $("#bill #orderstatus").html(getStatusBadge(billData.status)); // Assuming orderstatus is a property in your billData
+      // Assuming ordertype is a property in your billData
+      if (billData.loaiDon === 0) {
+        $("#bill #ordertype").text("tại quầy");
+      } else if (billData.loaiDon === 1) {
+        $("#bill #ordertype").text("Online");
+      }
+      // Update table with product details
+      const productsTable = $("#bill #sanphaminbill");
+      productsTable.empty(); // Clear existing rows
+      billData.billDetail.forEach((product, index) => {
+        const row = `<tr>
+                  <th scope="row">${index + 1}</th>
+                  <td>${product.productDetail.name}</td>
+                  <td>${product.quantity}</td>
+                  <td>${formatToVND(product.productDetail.price)}</td>
+                  <td>${formatToVND(product.totalMoney)}</td>
+                </tr>`;
+        productsTable.append(row);
+      });
+      $("#bill #note").text(billData.note);
+      $("#bill #total-products").text(formatToVND(billData.total_money));
+      $("#bill #discount").text(formatToVND(billData.reduction_amount));
+      $("#bill #shipping-cost").text(formatToVND(billData.money_ship));
+      $("#bill #total-price").text(formatToVND(billData.deposit));
+      $("#billPrint").modal("show");
+    })
+    .catch((error) => {
+      console.error("Error fetching bill data:", error);
+    });
+  // Update customer information
 }
 function handleOrderSuccess(idform) {
   const indexToRemove = listtab.indexOf(idform);
@@ -1447,7 +1492,27 @@ async function checkVoucher(formId, totalMoney) {
     return 0;
   }
 }
-
+function getStatusBadge(status) {
+  if (status == 5) {
+    return '<span class="badge bg-success">Thành Công</span>';
+  }
+  if (status == 1) {
+    return '<span class="badge text-bg-warning">Chờ xác nhận</span>';
+  }
+  if (status == 2) {
+    return '<span class="badge text-bg-secondary">Chờ giao hàng</span>';
+  }
+  if (status == 3) {
+    return '<span class="badge text-bg-info">Đang giao hàng</span>';
+  }
+  if (status == 4) {
+    return '<span class="badge badge text-bg-light">Đã giao hàng</span>';
+  }
+  if (status == -1 || status == -2) {
+    return '<span class="badge text-bg-danger">Đã Hủy</span>';
+  }
+  return '<span class="badge text-bg-dark">Không xác định</span>';
+}
 //updade new thanh toan
 
 async function getProductDetails(id) {
@@ -1682,7 +1747,9 @@ window.addEventListener("beforeunload", function (event) {
   // checkExitDataOnForm();
   return confirmationMessage;
 });
-
+function showModalHoaDon() {
+  $("#billPrint").modal("show");
+}
 //   const options = data.data;
 //   for (let i = 0; i < options.length; i++) {
 //     const option = document.createElement("option");
