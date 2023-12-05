@@ -189,7 +189,8 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-box-fill"></i><span>Sản Phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-box-fill"></i><span>Quản lý thuộc tính</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
@@ -205,11 +206,6 @@
                     <li>
                         <a th:href="@{/admin/pattern/dsPattern}">
                             <i class="bi bi-circle"></i><span>Kiểu Hoa Văn</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{/admin/color/dsColor}">
-                            <i class="bi bi-circle"></i><span>Màu Sắc</span>
                         </a>
                     </li>
                     <li>
@@ -262,7 +258,12 @@
     <script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
     <script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
     <script th:src="@{/assets/js/main.js}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.min.js"
+        integrity="sha512-d5Jr3NflEZmFDdFHZtxeJtBzk0eB+kkRXWFQqEc1EKmolXjHm2IKCA7kTvXBNjIYzjXfD5XzIjaaErpkZHCkBg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.js"
+        integrity="sha512-Fd3EQng6gZYBGzHbKd52pV76dXZZravPY7lxfg01nPx5mdekqS8kX4o1NfTtWiHqQyKhEGaReSf4BrtfKc+D5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

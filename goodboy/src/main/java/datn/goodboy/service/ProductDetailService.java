@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,11 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import datn.goodboy.exeption.rest.ErrorCreateBill;
-// import datn.goodboy.model.entity.Brand;
-// import datn.goodboy.model.entity.Color;
-// import datn.goodboy.model.entity.Material;
-// import datn.goodboy.model.entity.Origin;
-// import datn.goodboy.model.entity.Styles;
+
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
@@ -77,14 +74,19 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetail.setId(null);
     ProductDetail savDetail = productDetailRepository.save(productDetail);
     int idProduct = savDetail.getId();
-    List<String> listURL = new ArrayList<>();
-    if (!listImage.isEmpty()) {
-      for (MultipartFile multipartFile : listImage) {
-        String url = cloudService.saveImage(multipartFile);
-        listURL.add(url);
+    CompletableFuture.runAsync(() -> {
+      List<String> listURL = new ArrayList<>();
+      if (!listImage.isEmpty()) {
+        for (MultipartFile multipartFile : listImage) {
+          try {
+            listURL.add(cloudService.saveImage(multipartFile));
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        imageService.saveImageForNewProductDetail(listURL, idProduct);
       }
-      imageService.saveImageForNewProductDetail(listURL, idProduct);
-    }
+    });
     return savDetail;
   }
 
@@ -97,19 +99,19 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       exitproductDetail.setUpdatedAt(LocalDateTime.now());
       ProductDetail savDetail = productDetailRepository.save(exitproductDetail);
       int idProduct = savDetail.getId();
-      List<String> listURL = new ArrayList<>();
-      if (listImage.isEmpty() | listImage == null) {
-      } else {
-        for (MultipartFile multipartFile : listImage) {
-          if (!multipartFile.isEmpty()) {
-            String url = cloudService.saveImage(multipartFile);
-            listURL.add(url);
-          } else {
-            // thows exeption
+      CompletableFuture.runAsync(() -> {
+        List<String> listURL = new ArrayList<>();
+        if (!listImage.isEmpty()) {
+          for (MultipartFile multipartFile : listImage) {
+            try {
+              listURL.add(cloudService.saveImage(multipartFile));
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
+          imageService.saveImageForNewProductDetail(listURL, idProduct);
         }
-        imageService.saveImageForNewProductDetail(listURL, idProduct);
-      }
+      });
       return savDetail;
     } else {
       // throws exeption
