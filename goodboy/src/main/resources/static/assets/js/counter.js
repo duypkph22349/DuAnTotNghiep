@@ -270,23 +270,21 @@ function formInOrder(id) {
                                           <label class="form-label">Thành
                                               Phố</label>
                                           <select class="form-select" id="city" onchange="getAllDistrict(${id})">
-                                              <option selected="">Chọn Thành Phố
-                                              </option>
                                           </select>
                                       </div>
                                       <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Huyện</label>
                                           <select class="form-select" id="district" onchange="getFullWardCode(${id})">
-                                              <option selected="">Chọn Huyện</option>
+                                              <option value="-1" disabled selected>Chọn Huyện</option>
                                           </select>
                                       </div>
                                       <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Xã</label>
                                           <select class="form-select" id="ward" onchange="getFullAddress(${id})">
-                                              <option selected="">Chọn Xã</option>
+                                              <option value="-1" disabled selected>Chọn Xã</option>
                                           </select>
                                       </div>
-                                      <input type="hidden" name="" id="FullAddress">
+
                                       <div class="col-6 online-option  d-none">
                                           <label class="form-label">Địa
                                               Chỉ Cụ Thể</label>
@@ -297,6 +295,9 @@ function formInOrder(id) {
                                           <label class="form-label"> Phương thức vận chuyển</label>
                                               <select class="form-select"  id="shipService" onchange="updateTongTien(${id})">
                                               </select>
+                                      </div>
+                                      <div>
+                                      <input type="hidden" name="" id="FullAddress">
                                       </div>
                                   </div>
                               </div>
@@ -352,9 +353,6 @@ function formInOrder(id) {
                           </style>
                           <div class="line"></div>
                           <div class="box-payment" id="box-payment-info">
-                          <div class ="container incount-option">
-                                <img src="https://api.vietqr.io/image/970407-19038515617017-PbS5ZV1.jpg?accountName=VU%20VAN%20THAT" class="rounded float-start img-fluid img-thumbnail"/>
-                              </div>
                               <div class="row g-3">
                                   <div class="col-12 d-none">
                                       <div class="input-wrapper">
@@ -722,7 +720,7 @@ function updateshipService(orderId) {
         shipServiceSelect.removeChild(shipServiceSelect.firstChild);
       }
       const defaultOption = document.createElement("option");
-      defaultOption.value = ""; // Set the value as needed
+      defaultOption.value = "-1"; // Set the value as needed
       defaultOption.textContent = "Chọn Hình thức vận chuyển"; // Set the text content
       // Set the 'disabled' and 'selected' attributes to make it the default option
       defaultOption.disabled = true;
@@ -757,7 +755,7 @@ function getAllprovide(orderId) {
     .then((res) => res.json())
     .then((data) => {
       const defaultOption = document.createElement("option");
-      defaultOption.value = ""; // Set the value as needed
+      defaultOption.value = -1; // Set the value as needed
       defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
       // Set the 'disabled' and 'selected' attributes to make it the default option
       defaultOption.disabled = true;
@@ -851,7 +849,7 @@ function resetDistrict(orderId) {
     selectProvide.removeChild(selectProvide.firstChild);
   }
   const defaultOption = document.createElement("option");
-  defaultOption.value = ""; // Set the value as needed
+  defaultOption.value = -1; // Set the value as needed
   defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
   defaultOption.disabled = true;
   defaultOption.selected = true;
@@ -865,7 +863,7 @@ function resetWard(orderId) {
     wardSelect.removeChild(wardSelect.firstChild);
   }
   const defaultOption = document.createElement("option");
-  defaultOption.value = ""; // Set the value as needed
+  defaultOption.value = -1; // Set the value as needed
   defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
   defaultOption.disabled = true;
   defaultOption.selected = true;
@@ -881,7 +879,7 @@ function resetServiceShip(orderId) {
 function fillAllEmployee(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var select = thisOrder.querySelector('select[name="employee"]');
-  fetch("/rest/data/counter/customers", {
+  fetch("/admin/counter/customers", {
     method: "GET",
   })
     .then((res) => res.json())
@@ -898,7 +896,7 @@ function getFirstProductPage(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var tbody = thisOrder.querySelector("#cartTableProduct tbody");
 
-  fetch("/rest/data/counter/productDetails", {
+  fetch("/admin/counter/productDetails", {
     method: "GET",
   })
     .then((res) => res.json())
@@ -1133,80 +1131,23 @@ function descreaseProductQuantity(productExists, product) {
     console.error("Product element not found.");
   }
 }
+//updade new thanh toan
+const phoneNumberRegex = /^(09|\d{2}[2-9])\d{7}$/;
+
 async function handleOrderSubmit(event) {
   event.preventDefault();
+  let totalMoney = 0;
   const formId = event.currentTarget.id;
   const idform = event.currentTarget.getAttribute("idofform");
-  const formValuesJSON = await buildFormData(formId);
-  let errors = await getErrorMessage(formValuesJSON);
-  if (errors.trim() != "") {
-    alert(errors);
-  } else {
-    if (confirm("Xác Nhận Thanh Toán")) {
-      thanhtoan(JSON.stringify(formValuesJSON), idform);
-    }
-  }
-}
-async function thanhtoan(formValuesJSON, idform) {
-  await fetch("/rest/data/counter/checkout", {
-    method: "POST",
-    body: formValuesJSON,
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data?.status === "BAD_REQUEST") {
-        alert(data?.message);
-        return;
-      } else {
-        confirm("Bạn có muốn in hoa đơn không?");
-        let indexToRemove = listtab.indexOf(idform);
-        if (indexToRemove !== -1) {
-          listtab.splice(indexToRemove, 1);
-        }
-        const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
-        const orderToRemove = document.getElementById(`hoaDon${idform}`);
-        if (orderToRemove) {
-          orderToRemove.remove();
-        } else {
-          console.log(`Order with ID ${idform} not found.`);
-        }
-        if (orderbtnrmRemove) {
-          orderbtnrmRemove.remove();
-        } else {
-          console.log(`Order with ID ${idform} not found.`);
-        }
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-async function buildFormData(formId) {
+  var errorCount = 0;
   const formData = {};
   const form = document.getElementById(formId);
-  // Extract product information
-  formData.products = Array.from(
-    form.querySelectorAll("#cartTable tbody tr.table-body-row")
-  ).map((row) => {
-    const productId = row.getAttribute("idproduct");
-    const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10);
-    return {
-      id: parseInt(productId, 10),
-      quantity: productQuantity,
-    };
-  });
-
-  // Extract customer information
-  formData.customerName = form.querySelector("#tenKhachHang").value;
   formData.employeeID = form.querySelector("select[name='employee']").value;
   formData.orderTypes = parseInt(
     form.querySelector("input[name='options-outlined']:checked").value,
     10
   );
+  formData.customerName = form.querySelector("#tenKhachHang").value;
   formData.phoneNumber = form.querySelector("#soDienThoai").value;
   formData.city = form.querySelector("#city").value;
   formData.district = form.querySelector("#district").value;
@@ -1214,29 +1155,59 @@ async function buildFormData(formId) {
   formData.fullAddress = form.querySelector("#FullAddress").value;
   formData.specificAddress = form.querySelector("input#address").value;
   formData.note = form.querySelector("textarea#note").value;
-  formData.voucherid = parseInt(
-    form.querySelector("#voucher-choose").value,
-    10
-  );
-  let totalMoney = 0;
-  for (const row of form.querySelectorAll(
-    `#cartTable tbody tr.table-body-row`
-  )) {
-    const productId = row.getAttribute("idproduct");
-    const quantityElement = row.querySelector(`input[name="quantity"]`);
-    const productQuantity = parseInt(quantityElement.value, 10);
-    if (productQuantity <= 0 || isNaN(productQuantity)) {
-      alert("Số lượng sản phẩm không đúng");
-      return 0;
-    }
-    try {
-      const product = await getProductDetails(productId);
-      if (product) {
-        totalMoney += product.price * productQuantity;
+
+  resetErrorElement(form.querySelector("#tenKhachHang"));
+  resetErrorElement(form.querySelector("#soDienThoai"));
+  resetErrorElement(form.querySelector("#city"));
+  resetErrorElement(form.querySelector("#district"));
+  resetErrorElement(form.querySelector("#ward"));
+  resetErrorElement(form.querySelector("#FullAddress"));
+  resetErrorElement(form.querySelector("input#address"));
+  resetErrorElement(form.querySelector("select[name='employee']"));
+  resetErrorElement(form.querySelector("#changeAmount"));
+  resetErrorElement(form.querySelector(`#shipService`));
+  if (formData.employeeID == "null") {
+    errorCount++;
+    setErrorElement(
+      form.querySelector("select[name='employee']"),
+      "Employee cần được chọn!!!"
+    );
+  }
+  formData.products = await Promise.all(
+    Array.from(form.querySelectorAll("#cartTable tbody tr.table-body-row")).map(
+      async (row) => {
+        const productId = row.getAttribute("idproduct");
+        const quantityElement = row.querySelector(`input[name="quantity"]`);
+        const productQuantity = parseInt(quantityElement.value, 10);
+        resetErrorElement(row);
+        if (productQuantity < 0 || isNaN(productQuantity)) {
+          errorCount++;
+          setErrorElement(row, "Số lượng sản phẩm không đúng");
+          return null; // Return null for invalid entries
+        }
+        const product = await getProductDetails(productId);
+        if (product) {
+          totalMoney += product.price * productQuantity;
+        } else {
+          errorCount++;
+          setErrorElement(row, "Sản phẩm có vấn đề!!!");
+          return null; // Return null for invalid entries
+        }
+        return {
+          id: parseInt(productId, 10),
+          quantity: productQuantity,
+        };
       }
-    } catch (error) {
-      console.error("Error fetching or calculating total money:", error);
-    }
+    )
+  );
+  formData.products = formData.products.filter((product) => product !== null);
+  resetErrorElement(form.querySelector("#cartTable tbody"));
+  if (formData.products.length <= 0) {
+    errorCount++;
+    setErrorElement(
+      form.querySelector("#cartTable tbody"),
+      "Chưa có sản phẩm nào!!!"
+    );
   }
   const transferAmount = form.querySelector(`#transfer-amount`);
   const surchargeAmount = form.querySelector(`#surcharge-amount`);
@@ -1250,27 +1221,238 @@ async function buildFormData(formId) {
   }
   formData.transferMoney = transferAmountvl;
   formData.cashMoney = surchargeAmountvl;
-
-  // Calculate and assign cashReturn and changeAmount
   const totalAmount = transferAmountvl + surchargeAmountvl;
   formData.cashReturn = Math.max(totalAmount - totalMoney, 0);
   formData.changeAmount = Math.max(totalMoney - totalAmount, 0);
-
-  // Other properties
-  if (formData.orderTypes) {
-    formData.totalShip = form.querySelector(`#total-ship`).value;
-  } else {
-    formData.totalShip = 0;
-  }
+  console.log(totalMoney);
+  formData.voucherid = parseInt(
+    form.querySelector("#voucher-choose").value,
+    10
+  );
   const discountValue = await checkVoucher(formId, totalMoney);
+  if (isNaN(formData.voucherid) || discountValue <= 0) {
+    formData.voucherid = 0;
+  }
   formData.totalMoney = totalMoney - discountValue;
   formData.reductionAmount = 0;
-  return formData;
+  if (formData.orderTypes === 0) {
+    formData.totalShip = 0;
+
+    const allmoney = formData.cashMoney + formData.transferMoney;
+    if (allmoney < formData.totalMoney) {
+      errorCount++;
+      // ("Tiền chưa đủ !!! \n");
+      setErrorElement(form.querySelector("#changeAmount"), "Chưa đủ tiền !!!");
+    }
+  } else if (formData.orderTypes === 1) {
+    formData.totalShip = form.querySelector(`#total-ship`).value;
+    if (formData.totalShip < 0) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector(`#shipService`),
+        "Chọn lại phương thức vận chuyển !!!\n"
+      );
+    }
+    if (formData.customerName.trim().length === 0) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("#tenKhachHang"),
+        "Tên khách hàng không được để trống !!!"
+      );
+    }
+    if (formData.phoneNumber.trim().length === 0) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("#soDienThoai"),
+        "Số điện thoại không được để trống !!!"
+      );
+    } else if (!phoneNumberRegex.test(formData.phoneNumber.trim())) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("#soDienThoai"),
+        "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại đúng định dạng."
+      );
+    }
+    if (formData.city == -1) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("#city"),
+        "Thành Phố không được thiếu !!!"
+      );
+    }
+    if (formData.district == -1) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("#district"),
+        "Quận/huyện không được thiếu !!!"
+      );
+    }
+    if (formData.ward == -1) {
+      errorCount++;
+      setErrorElement(form.querySelector("#ward"), "Xã không được thiếu !!!");
+    }
+    if (formData.fullAddress.trim() === "") {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("#FullAddress"),
+        "Kiểm tra lại địa chỉ !!!"
+      );
+    }
+    if (formData.specificAddress.trim() === "") {
+      errorCount++;
+      setErrorElement(
+        form.querySelector("input#address"),
+        "Address không được thiếu !!!\n"
+      );
+    }
+    const shipSelect = parseInt(form.querySelector(`#shipService`).value, 10);
+    if (shipSelect == -1 || isNaN(shipSelect)) {
+      errorCount++;
+      setErrorElement(
+        form.querySelector(`#shipService`),
+        "Xem lại hình thức vận chuyển !!!\n"
+      );
+    }
+  }
+  if (errorCount > 0) {
+  } else {
+    if (confirm("Xác Nhận Thanh Toán")) {
+      thanhtoan(JSON.stringify(formData), idform);
+    }
+  }
 }
+async function thanhtoan(formValuesJSON, idform) {
+  try {
+    const response = await axios.post(
+      "/admin/counter/checkout",
+      formValuesJSON,
+      {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+    const data = response.data;
+    if (data?.status === "BAD_REQUEST") {
+      alert(data?.message);
+      return;
+    } else {
+      if (confirm("Bạn có muốn in hoá đơn không?")) {
+        handleOrderSuccess(idform);
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+function handleOrderSuccess(idform) {
+  const indexToRemove = listtab.indexOf(idform);
+  if (indexToRemove !== -1) {
+    listtab.splice(indexToRemove, 1);
+  }
+
+  const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
+  const orderToRemove = document.getElementById(`hoaDon${idform}`);
+
+  if (orderToRemove) {
+    orderToRemove.remove();
+  } else {
+    console.log(`Order with ID ${idform} not found.`);
+  }
+
+  if (orderbtnrmRemove) {
+    orderbtnrmRemove.remove();
+  } else {
+    console.log(`Order with ID ${idform} not found.`);
+  }
+}
+
+async function checkVoucher(formId, totalMoney) {
+  const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
+  const voucCherId = parseInt(voucherSelect.value);
+  const discountAmount = document.querySelector(`#${formId} #discount-amount`);
+  resetErrorElement(voucherSelect);
+  resetErrorElement(discountAmount);
+  var currentTime = new Date().getTime();
+  if (voucCherId != -1) {
+    try {
+      const response = await fetch(`/admin/counter/voucher/${voucCherId}`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.code == 400) {
+        setErrorElement(voucherSelect, data.message);
+        discountAmount.innerHTML = formatToVND(0);
+        getVoucherAble(formId);
+      } else {
+        if (data.min_order > totalMoney) {
+          setErrorElement(
+            voucherSelect,
+            "Không đủ điều kiện để áp dụng voucher này"
+          );
+          discountAmount.innerHTML = formatToVND(0);
+          // getVoucherAble(formId);
+          return 0;
+        } else if (data.quantily <= 0) {
+          setErrorElement(voucherSelect, "Voucher đã hết hết số lượng");
+          discountAmount.innerHTML = formatToVND(0);
+          // getVoucherAble(formId);
+          return 0;
+        } else if (data.end_time <= currentTime) {
+          setErrorElement(voucherSelect, "Voucher đã hết hạn sử dụng");
+          discountAmount.innerHTML = formatToVND(0);
+          // getVoucherAble(formId);
+          return 0;
+        } else if (data.status != 1) {
+          setErrorElement(voucherSelect, "Voucher không còn");
+          // getVoucherAble(formId);
+          discountAmount.innerHTML = formatToVND(0);
+          return 0;
+        }
+        if (data.types == true) {
+          // giam theo %
+          const discountValue = (totalMoney / 100) * data.discount;
+          if (discountValue < data.max_discount) {
+            discountAmount.innerHTML = "-" + formatToVND(discountValue);
+            return discountValue;
+          } else {
+            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+            return data.max_discount;
+          }
+        } else {
+          const discountValue = data.discount;
+          if (discountValue < data.max_discount) {
+            discountAmount.innerHTML = "-" + formatToVND(discountValue);
+            return discountValue;
+          } else {
+            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+            return data.max_discount;
+          }
+        }
+      }
+    } catch (error) {
+      setErrorElement(
+        voucherSelect,
+        "Voucher đã không hoạt động chọn voucher khác"
+      );
+      getVoucherAble(formId);
+      discountAmount.innerHTML = formatToVND(0);
+      console.error("Error fetching data:", error);
+    }
+  } else {
+    discountAmount.innerHTML = formatToVND(0);
+    return 0;
+  }
+}
+
+//updade new thanh toan
 
 async function getProductDetails(id) {
   try {
-    const response = await fetch(`/rest/data/counter/productDetails/${id}`);
+    const response = await fetch(`/admin/counter/productDetails/${id}`);
     const data = response.json();
     return data;
   } catch (error) {
@@ -1465,120 +1647,7 @@ function formatToVND(amount) {
   });
   return formatter.format(amount);
 }
-async function getErrorMessage(formData) {
-  let errorMessage = "";
-  if (!formData.products || formData.products.length === 0) {
-    errorMessage += "Chưa có sản phẩm nào \n";
-  } else {
-    if (formData.employeeID == "null") {
-      errorMessage += "Employee cần được chọn !!! \n";
-    }
-    const cashMoney = parseInt(formData.cashMoney, 10);
-    const transferMoney = parseInt(formData.transferMoney, 10);
-    const totalMoney = parseInt(formData.totalMoney, 10);
-    if (formData.orderTypes === 0) {
-      if (!isNaN(cashMoney) && !isNaN(transferMoney) && !isNaN(totalMoney)) {
-        const allmoney = cashMoney + transferMoney;
-        if (allmoney < totalMoney) {
-          errorMessage += "Tiền chưa đủ !!! \n";
-        }
-      }
-    }
-    if (formData.orderTypes === 1) {
-      if (formData.phoneNumber.trim() === "") {
-        errorMessage += "Số điện thoại không được thiếu !!!\n";
-      }
-      if (formData.customerName.trim() === "") {
-        errorMessage += "Tên khách hàng không được thiếu !!!\n";
-      }
-      if (formData.district.trim() === "") {
-        errorMessage += "Thành Phố không được thiếu !!!\n";
-      }
-      if (formData.ward.trim() === "") {
-        errorMessage += "Xã không được thiếu !!!\n";
-      }
-      if (formData.fullAddress.trim() === "") {
-        errorMessage += "Kiểm tra lại địa chỉ !!!\n";
-      }
-      if (formData.specificAddress.trim() === "") {
-        errorMessage += "Address không được thiếu !!!\n";
-      }
-      if (formData.totalShip < 0) {
-        errorMessage += "Xem lại hình thức vận chuyển !!!\n";
-      }
-    }
-  }
 
-  return errorMessage;
-}
-
-async function checkVoucher(formId, totalMoney) {
-  const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
-  const voucCherId = parseInt(voucherSelect.value);
-  const discountAmount = document.querySelector(`#${formId} #discount-amount`);
-  discountAmount.innerHTML = formatToVND(0);
-  if (voucCherId != -1) {
-    try {
-      const response = await fetch(`/rest/data/counter/voucher/${voucCherId}`, {
-        method: "GET",
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      if (data.code == 400) {
-        discountAmount.innerHTML = formatToVND(0);
-        getVoucherAble(formId);
-      } else {
-        if (data.min_order > totalMoney) {
-          alert("Không đủ điều kiện để áp dụng voucher này");
-          getVoucherAble(formId);
-          return 0;
-        }
-        if (data.quantily <= 0) {
-          alert("Voucher đã hết hạn sử dụng");
-          getVoucherAble(formId);
-          return 0;
-        }
-        var currentTime = new Date().getTime();
-        if (data.end_time <= currentTime) {
-          alert("Voucher đã hết hạn sử dụng");
-          getVoucherAble(formId);
-          return 0;
-        }
-        if (data.status != 1) {
-          alert("Voucher đã bị xóa");
-          getVoucherAble(formId);
-          return 0;
-        }
-        if (data.types == true) {
-          // giam theo %
-          const discountValue = (totalMoney / 100) * data.discount;
-          if (discountValue < data.max_discount) {
-            discountAmount.innerHTML = "-" + formatToVND(discountValue);
-            return discountValue;
-          } else {
-            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
-            return data.max_discount;
-          }
-        } else {
-          const discountValue = data.discount;
-          if (discountValue < data.max_discount) {
-            discountAmount.innerHTML = "-" + formatToVND(discountValue);
-            return discountValue;
-          } else {
-            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
-            return data.max_discount;
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  } else {
-    return 0;
-  }
-}
 async function getVoucherAble(formId) {
   const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   voucherSelect.innerHTML = "";
@@ -1589,7 +1658,7 @@ async function getVoucherAble(formId) {
   option.value = -1;
   voucherSelect.appendChild(option);
   try {
-    const response = await fetch("/rest/data/counter/voucherAble", {
+    const response = await fetch("/admin/counter/voucherAble", {
       method: "GET",
     });
     if (!response.ok) {

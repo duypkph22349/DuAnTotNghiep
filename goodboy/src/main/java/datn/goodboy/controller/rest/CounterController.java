@@ -1,4 +1,4 @@
-package datn.goodboy.controller;
+package datn.goodboy.controller.rest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +23,9 @@ import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.VoucherService;
 
-@RestController("countercartresttest")
-@RequestMapping("rest/data/counter")
-public class RestCounterController {
+@RestController("counterController")
+@RequestMapping("/admin/counter")
+public class CounterController {
 
   @Autowired
   private EmployeeService employeeService;

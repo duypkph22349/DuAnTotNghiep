@@ -1,4 +1,4 @@
-package datn.goodboy.controller.testcontroller;
+package datn.goodboy.controller.rest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +14,7 @@ import datn.goodboy.model.response.TopProductSales;
 import datn.goodboy.service.ThongKeService;
 
 @RestController
-@RequestMapping("/api/thongke")
+@RequestMapping("/admin/api/thongke")
 public class ThongkeController {
 
   @Autowired
