@@ -350,8 +350,10 @@ function setErrorElement(element, message) {
 }
 function resetErrorElement(element) {
   const parentnote = element.parentNode;
-  const errormessage = parentnote.querySelector(".error");
-  if (errormessage) {
-    errormessage.remove();
+  if (element && element.parentNode) {
+    const errormessage = parentnote.querySelector(".error");
+    if (errormessage) {
+      errormessage.remove();
+    }
   }
 }
