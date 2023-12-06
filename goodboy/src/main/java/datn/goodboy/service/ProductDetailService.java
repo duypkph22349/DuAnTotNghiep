@@ -155,6 +155,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     entity.setName(request.getName());
     entity.setPrice(request.getPrice());
     entity.setStatus(request.getStatus());
+    entity.setDescription(request.getDescription());
     entity.setId(request.getId());
     System.out.println(request);
   }
