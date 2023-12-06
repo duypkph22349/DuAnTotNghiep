@@ -60,7 +60,7 @@ public class CounterService {
     bill.setLoaiDon(request.getOrderTypes());
     bill.setDeleted(false);
     bill.setReduction_amount(0d);
-    bill.setDeposit(0);
+    bill.setDeposit(0d);
     bill.setCustomer(cusService.getCounterCustomer());
     Optional<Employee> emp = empRepository.findById(request.getEmployeeID());
     if (emp.isPresent()) {
@@ -128,6 +128,7 @@ public class CounterService {
       bill.setStatus(2);
       bill.setPay(payService.getTransferMethod());
     }
+    bill.setDeposit(bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
     bill.setNote(request.getNote());
     return billRepository.save(bill);
   }

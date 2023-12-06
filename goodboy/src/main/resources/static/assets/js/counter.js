@@ -1352,6 +1352,7 @@ function printBill(id) {
     .get(`/admin/api/bill/${id}`)
     .then((response) => {
       const billData = response.data;
+      $("#bill #billcode").text(billData.code);
       $("#bill #customername").text(billData.customer_name);
       $("#bill #phonenumber").text(billData.phone);
       $("#bill #fulladdress").text(billData.address);
