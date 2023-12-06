@@ -71,7 +71,7 @@ public class Bill {
   Double reduction_amount;
 
   @Column(name = "deposit")
-  float deposit;
+  Double deposit;
 
   @Column(name = "note")
   String note;
