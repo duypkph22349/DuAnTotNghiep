@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
@@ -33,14 +34,24 @@ public class AdminBill {
     BillService billService;
 
     @GetMapping("all-bill")
-    public Page<Bill> getAllBill(@RequestParam(name = "pageNumber",defaultValue = "0") int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber, 5);
+    public Page<Bill> getAllBill(Model model,@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 8);
+        Page<Bill> bill = billService.getPage(pageable);
+        model.addAttribute("totalPage", bill.getTotalPages());
+        model.addAttribute("billPage", bill.getContent());
         return billService.getPage(pageable);
     }
 
+    @GetMapping("bill-filter/{status}")
+    public Page<Bill> getBillStatus(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+            @PathVariable int status) {
+        Pageable pageable = PageRequest.of(pageNumber, 2);
+        return billService.getPageStatus(pageable, status);
+    }
+
     @PostMapping("create-bill")
-    public ResponseEntity<?> createBill(@RequestBody BillRequest billRequest){
-        try{
+    public ResponseEntity<?> createBill(@RequestBody BillRequest billRequest) {
+        try {
             billService.createBill(billRequest);
             return ResponseEntity.ok("succ");
         } catch (NotFoundException e) {
@@ -49,35 +60,45 @@ public class AdminBill {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateBill(@RequestBody BillRequest billRequest){
-        try{
+    public ResponseEntity<?> updateBill(@RequestBody BillRequest billRequest) {
+        try {
             System.out.println(billRequest.getPhone());
             billService.updateBill(billRequest);
             return ResponseEntity.ok("succ");
-        }catch(Exception e) {
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.toString());
+        }
+    }
+
+    @PostMapping("/setStatus")
+    public ResponseEntity<?> setStatusBill() {
+        try {
+            List<Bill> listBill = billService.findBillByStatus1();
+            for (Bill bill : listBill) {
+                billService.setStatus2(bill.getId());
+            }
+            return ResponseEntity.ok("succ");
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.toString());
         }
     }
 
     @GetMapping("/search-by-code")
-    public ResponseEntity<?> search(@RequestParam(name="code",defaultValue = "null") String code,
-                                    @RequestParam(name="pageNumber",defaultValue = "0") Integer pageNumber
-    ){
-        try{
-            return ResponseEntity.ok(billService.searchBillByCode(pageNumber,code));
-        }catch (Exception e){
+    public ResponseEntity<?> search(@RequestParam(name = "code", defaultValue = "null") String code,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
+        try {
+            return ResponseEntity.ok(billService.searchBillByCode(pageNumber, code));
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.toString());
         }
     }
+
     @GetMapping("/filter-by-month")
-    public ResponseEntity<?> filterByMonth( @RequestParam(name="month",defaultValue = "1")
-                                            Integer month,
-                                            @RequestParam(name="pageNumber",defaultValue = "0")
-                                            Integer pageNumber)
-    {
-        try{
-            return ResponseEntity.ok(billService.filerByMonth(month,pageNumber));
-        }catch (Exception e){
+    public ResponseEntity<?> filterByMonth(@RequestParam(name = "month", defaultValue = "1") Integer month,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
+        try {
+            return ResponseEntity.ok(billService.filerByMonth(month, pageNumber));
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.toString());
         }
     }
@@ -88,9 +109,12 @@ public class AdminBill {
             List<Bill> billList = billService.getAllBill();
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Thông tin billl");
-            String[] headersSheet = {"Mã hóa đơn", "Khách hàng", "Nhân viên", "Phương thức thanh toán", "Ngày hoàn thành",
-                    "Tên khách hàng", "Số điện thoại", "Địa chỉ", "Phí vận chuyển", "Tổng tiền"," Trạng thái thanh toán",
-                    "Số tiền giảm giá", "Tiền đặt cọc","Loại đơn hàng", "Ghi chú", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
+            String[] headersSheet = { "Mã hóa đơn", "Khách hàng", "Nhân viên", "Phương thức thanh toán",
+                    "Ngày hoàn thành",
+                    "Tên khách hàng", "Số điện thoại", "Địa chỉ", "Phí vận chuyển", "Tổng tiền",
+                    " Trạng thái thanh toán",
+                    "Số tiền giảm giá", "Tiền đặt cọc", "Loại đơn hàng", "Ghi chú", "Trạng thái", "Ngày tạo",
+                    "Ngày cập nhật" };
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < headersSheet.length; i++) {
                 Cell cell = headerRow.createCell(i);
@@ -135,9 +159,10 @@ public class AdminBill {
             // Trả về phản hồi HTTP với file Excel
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                     .body(resource);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.toString());
         }
     }

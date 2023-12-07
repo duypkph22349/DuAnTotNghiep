@@ -209,21 +209,22 @@
             Tải File Excel
         </a>
         <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 14px">Làm mới</button>
+        <button class="btn btn-primary me-2" id="setStatus" style="font-size: 14px">Xác nhận</button>
         <select id="statusSelect" class="form-select" style="  width: 120px; height: 38px; font-size: 11px;"
                 onchange="selectFilterAction(this.value)">
-            <option value="">Chọn trạng thái</option>
-            <option value="Chờ xác nhận">Chờ xác nhận</option>
-            <option value="Chờ giao hàng">Chờ giao hàng</option>
-            <option value="Đang giao hàng">Đang giao hàng</option>
-            <option value="Đã giao hàng">Đã giao hàng</option>
-            <option value="Thành công">Thành công</option>
+            <option value="0">Chọn trạng thái</option>
+            <option value="1">Chờ xác nhận</option>
+            <option value="2">Chờ giao hàng</option>
+            <option value="3">Đang giao hàng</option>
+            <option value="4">Đã giao hàng</option>
+            <option value="5">Thành công</option>
         </select>
     </div>
 
     <!-- Table -->
     <div style="height: 500px; overflow: auto; ">
 
-        <table class="table table-hover" id="myTable" style="font-size: 15px" >
+        <table class="table table-hover" id="myTable" style="font-size: 13px" >
             <thead class="position-sticky top-0">
 
             <tr class="ex">
@@ -243,7 +244,7 @@
                             <p class="p-0 m-0 fw-bold" style="font-size: 14px" >Ngày tạo</p>
                         </button>
                         <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split"
-                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">
+                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" style="font-size: 14px">
@@ -427,7 +428,6 @@
                 let currentPage = response.number;
                 let size = response.size;
                 let numberI = size * currentPage;
-                console.log(size, numberI, currentPage)
                 tableInfoBill.innerHTML = "";
 
                 // Sắp xếp mảng theo ngày giảm dần
@@ -479,14 +479,14 @@
                             <th>
                                <a href="/admin/bill/bill-detail?id=${item.id}">
                                      <button
-                                        type="button" class="btn btn-primary" style="font-size: 14px"
+                                        type="button" class="btn btn-primary"  style="font-size: 14px""
                                      >
                                         Chi tiết
                                     </button>
                                </a>
 
                                      <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                        type="button" class="btn btn-success" style="font-size: 14px"
+                                        type="button" class="btn btn-success"  style="font-size: 14px""
                                      >
                                         Thanh toán
                                     </button>
@@ -497,27 +497,64 @@
                     tableInfoBill.innerHTML += html;
                 })
                 paginationWrapper.innerHTML = "";
-                for (let i = 0; i < totalPages; i++) {
-                    let active = "";
-                    if (i === currentPage) active = "active";
-                    else {
-                        active = "";
-                    }
-                    let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage(this)">${i + 1}</a></li>`
+
+                const visiblePages = 2; // Số lượng trang hiển thị
+                const startPage = Math.max(1, currentPage - visiblePages);
+                const endPage = Math.min(totalPages, currentPage + visiblePages);
+
+                // Hiển thị trang đầu
+                let firstPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage(1)">Đầu trang</a></li>`;
+                paginationWrapper.innerHTML += firstPageHtml;
+
+                // Hiển thị trang trước dấu ...
+                if (startPage > 1) {
+                    let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                    paginationWrapper.innerHTML += ellipsisHtml;
+                }
+
+                // Hiển thị các trang trong khoảng startPage và endPage
+                for (let i = startPage; i <= endPage; i++) {
+                    let active = (i === currentPage + 1) ? "active" : "";
+                    let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage(${i})">${i}</a></li>`;
                     paginationWrapper.innerHTML += html;
                 }
+
+                // Hiển thị trang sau dấu ...
+                if (endPage < totalPages - 1) {
+                    let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                    paginationWrapper.innerHTML += ellipsisHtml;
+                }
+
+                // Hiển thị trang cuối
+                let lastPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage(${totalPages})">Cuối trang</a></li>`;
+                paginationWrapper.innerHTML += lastPageHtml;
+
             })
+
         }
 
 
         var currentNumber;
-        function getPage(element) {
-            let number = Number(element.innerText) - 1;
+        function getPage(number) {
+            let numberPage = number - 1;            
+            var status = document.getElementById('statusSelect').value;
+            let urlStatus;
+            if(status == 0){
+                urlStatus = "/admin/bill/all-bill" + `?pageNumber=${numberPage}`;
+            }else{
+                urlStatus = "/admin/bill/bill-filter/" + status + `?pageNumber=${numberPage}`;
+            }
+            
+            fillTable(urlStatus);
+            
+        }
+        function getPageFirstOrLast(number) {
+            let numberPage = number - 1;
             let url;
             if (isStus) {
-                url = currentUrl + `?pageNumber=${number}`
+                url = currentUrl + `?pageNumber=${numberPage}`
             } else {
-                url = currentUrl + `&pageNumber=${number}`
+                url = currentUrl + `&pageNumber=${numberPage}`
             }
             fillTable(url);
         }
@@ -540,28 +577,39 @@
                 location.reload();
             });
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lắng nghe sự kiện click trên nút refresh
+            document.getElementById('setStatus').addEventListener('click', function () {
+                // Set trạng thái 
+                if (confirm("Bạn có chắc chắn muốn xác nhận tất cả trạng thái thành chờ giao hàng không?")) {
+                    $.ajax({
+                            url: "/admin/bill/setStatus",
+                            method: "POST",
+                            contentType: "application/json",
+                            success: function (response) {
+                                alert("Xác nhận thành công!");
+                                location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(error);
+                                alert("Cập nhật thất bại!");
+                            }
+                    });
+                }
+            });
+        });
         //lọc
         function selectFilterAction(selectedStatus) {
-            // Thực hiện bộ lọc dựa trên giá trị được chọn từ select
-            filterAcction(selectedStatus);
-        }
-        function filterAcction(status) {
-            var table = document.getElementById("myTable");
-            var rows = table.getElementsByTagName("tr");
-
-            for (var i = 1; i < rows.length; i++) {
-                var cells = rows[i].getElementsByTagName("td");
-                var statusCell = cells[8];
-
-
-                if (status === '' || statusCell.textContent.trim() === status) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
+            let urlStatus;
+            if(selectedStatus == 0){
+                urlStatus = "/admin/bill/all-bill";
+            }else{
+                urlStatus = "/admin/bill/bill-filter/" + selectedStatus;
             }
-
+            
+            fillTable(urlStatus);
         }
+        
         function payment_VNPay(amount, id) {
             var numericValue = parseInt(amount);
             console.log(numericValue)
@@ -592,7 +640,7 @@
         //     // Cập nhật nội dung của ô
         //     createdAtCell.innerText = formattedDateString;
         // });
-
+            
 
     </script>
 

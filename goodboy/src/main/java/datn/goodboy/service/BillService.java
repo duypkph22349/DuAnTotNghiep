@@ -35,7 +35,21 @@ public class BillService {
     }
 
     public Page<Bill> getPage(Pageable pageable) {
-        return billRepository.findByDeletedFalse(pageable);
+        return billRepository.findByDeletedFalseOrderByCreateDateDesc(pageable);
+    }
+
+    public Page<Bill> getPageStatus(Pageable pageable, int status) {
+        return billRepository.findByDeletedFalseOrderByStatus(pageable, status);
+    }
+
+    public List<Bill> findBillByStatus1() {
+        return billRepository.findBillByStatus1();
+    }
+
+    public void setStatus2(int id) {
+        Bill bill = billRepository.findStatusById(id);
+        bill.setStatus(2);
+        billRepository.save(bill);
     }
 
     public List<Bill> getAllBill() {
@@ -58,7 +72,6 @@ public class BillService {
     }
 
     public Optional<Bill> findByIdBill(int id) {
-
         return billRepository.findById(id);
     }
 
