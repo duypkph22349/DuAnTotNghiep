@@ -331,7 +331,6 @@ async function getThisYearTotalProductSale() {
     totalSalesProduct.innerText = 0;
   }
 }
-
 async function getResentBill() {
   try {
     const response = await fetch("/admin/api/thongke/recentbills");
@@ -373,7 +372,6 @@ async function getResentBill() {
     console.error("Error fetching today's top product sales:", error);
   }
 }
-
 function getStatusBadge(status) {
   if (status == 5) {
     const badge = document.createElement("span");
@@ -417,7 +415,116 @@ function getStatusBadge(status) {
   badge.textContent = "Không xác định";
   return badge;
 }
+function createChart() {
+  const ctx = document.getElementById("myChart");
+
+  const chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "Doanh thu",
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: calculateTopMargin(40, [12, 19, 3, 5, 2, 3]), // Set max value with top margin
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Thống kê doanh thu",
+        },
+        background: {
+          color: "rgba(0, 0, 0, 0.1)",
+        },
+      },
+    },
+  });
+  return chart;
+}
+function calculateTopMargin(percentage, data) {
+  const maxValue = Math.max(...data);
+  const roundedValue = Math.ceil(maxValue / 1000000) * 1000000; // Round up to the nearest million
+  return roundedValue + (roundedValue * percentage) / 100;
+}
+const myChart = createChart();
+
+async function getThisWeekIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/lastweek");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+async function getThisMouthIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/thismouth");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+async function getThisYearIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/thisyear");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+async function getFiveYearLastIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/nam");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
 // call first
+getThisWeekIncomeChart();
 getToDayTotalProductSale();
 getToDayToTalIncome();
 getToDayTotalBill();

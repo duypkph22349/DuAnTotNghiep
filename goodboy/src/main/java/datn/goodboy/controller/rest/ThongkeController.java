@@ -1,12 +1,15 @@
 package datn.goodboy.controller.rest;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import datn.goodboy.model.entity.Bill;
@@ -89,5 +92,30 @@ public class ThongkeController {
   @GetMapping("/recentbills")
   public ResponseEntity<List<Bill>> getRecentBills() {
     return ResponseEntity.ok(thongKeService.getRecentBill(0, 10));
+  }
+
+  @GetMapping("income/thang")
+  public Map<String, BigDecimal> getDoanhThuThang(@RequestParam int year) {
+    return thongKeService.getDoanhThuThang(year);
+  }
+
+  @GetMapping("income/thisyear")
+  public Map<String, BigDecimal> getIncomethisYear() {
+    return thongKeService.getDoanhThuThang(LocalDate.now().getYear());
+  }
+
+  @GetMapping("income/nam")
+  public Map<String, BigDecimal> getDoanhThuNam() {
+    return thongKeService.getDoanhThuNam();
+  }
+
+  @GetMapping("income/thismouth")
+  public Map<String, BigDecimal> getDoanhThangNay() {
+    return thongKeService.getDoanhThuThangNay();
+  }
+
+  @GetMapping("income/lastweek")
+  public Map<String, BigDecimal> getDoanhThuLastWeek() {
+    return thongKeService.getDoanhThuLastWeek();
   }
 }

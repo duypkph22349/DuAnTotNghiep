@@ -1,10 +1,15 @@
 package datn.goodboy.service;
 
 import java.math.BigDecimal;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -130,5 +135,82 @@ public class ThongKeService {
   public List<TopProductSales> getThisYearTopProductSales() {
     return this.getTopProductSales(LocalDate.now().withMonth(1).withDayOfMonth(1).atStartOfDay(),
         LocalDate.now().atTime(23, 59, 59));
+  }
+
+  public Map<String, BigDecimal> getDoanhThuThang(int year) {
+    Map<String, BigDecimal> monthData = new LinkedHashMap<>();
+    LocalDate now = LocalDate.now();
+    if (now.getYear() != year) {
+      for (int month = 1; month <= 12; month++) {
+        String label = "Tháng " + month;
+        LocalDateTime dateStart = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime dateEnd = dateStart.plusMonths(1).minusDays(1);
+        BigDecimal value = getToTalDoanhThu(dateStart, dateEnd);
+        monthData.put(label, value);
+      }
+    } else {
+      for (int month = 1; month <= now.getMonthValue(); month++) {
+        String label = "Tháng " + month;
+        LocalDateTime dateStart = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime dateEnd = dateStart.plusMonths(1).minusDays(1);
+        BigDecimal value = getToTalDoanhThu(dateStart, dateEnd);
+        monthData.put(label, value);
+      }
+    }
+    return monthData;
+  }
+
+  public Map<String, BigDecimal> getDoanhThuNam() {
+    Map<String, BigDecimal> yearData = new LinkedHashMap<>();
+    LocalDateTime now = LocalDateTime.now();
+    for (int i = 4; i >= 0; i--) {
+      int year = now.getYear() - i;
+      LocalDateTime yearStart = LocalDateTime.of(year, 1, 1, 0, 0);
+      LocalDateTime yearEnd = yearStart.plusYears(1).minusDays(1);
+      BigDecimal value = getToTalDoanhThu(yearStart, yearEnd);
+      yearData.put("Năm " + year, value);
+    }
+    return yearData;
+  }
+
+  public Map<String, BigDecimal> getDoanhThuLastWeek() {
+    Map<String, BigDecimal> weekData = new LinkedHashMap<>();
+
+    for (int day = 6; day >= 0; day--) {
+      LocalDateTime dayStart = LocalDateTime.now().toLocalDate().minusDays(day).atStartOfDay();
+      LocalDateTime dayEnd = dayStart.plusDays(1).minusSeconds(1);
+
+      BigDecimal value = getToTalDoanhThu(dayStart, dayEnd);
+
+      // Format the date as "T [DayOfWeekAbbreviation]"
+      String formattedDate = getDayOfWeekAbbreviation(dayStart) + " - " + dayStart.getDayOfMonth() + "/"
+          + dayStart.getMonthValue();
+      weekData.put(formattedDate, value);
+    }
+    return weekData;
+  }
+
+  public Map<String, BigDecimal> getDoanhThuThangNay() {
+    Map<String, BigDecimal> dailyData = new LinkedHashMap<>();
+    LocalDate now = LocalDate.now();
+    int year = now.getYear();
+    int month = now.getMonthValue();
+
+    LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
+    LocalDateTime nowDateTime = LocalDateTime.now();
+
+    for (LocalDateTime date = startOfMonth; date.isBefore(nowDateTime.plusDays(1)); date = date.plusDays(1)) {
+      String label = getDayOfWeekAbbreviation(date) + " - " + date.getDayOfMonth() +"/"+ date.getMonthValue();
+      BigDecimal value = getToTalDoanhThu(date, date.plusDays(1).minusSeconds(1));
+      dailyData.put(label, value);
+    }
+    return dailyData;
+  }
+
+  private String getDayOfWeekAbbreviation(LocalDateTime date) {
+    int dayOfWeek = date.getDayOfWeek().getValue();
+    DateFormatSymbols symbols = new DateFormatSymbols(Locale.forLanguageTag("vi-VN"));
+    String[] dayNames = symbols.getShortWeekdays();
+    return dayNames[dayOfWeek];
   }
 }
