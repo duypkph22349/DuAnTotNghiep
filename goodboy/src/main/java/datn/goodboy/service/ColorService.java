@@ -4,6 +4,7 @@ import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.repository.ColorRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +18,10 @@ import org.springframework.stereotype.Service;
 public class ColorService {
     @Autowired
     private ColorRepository colorRepository;
+
+    public ArrayList<Color> getAllColor() {
+        return (ArrayList<Color>) colorRepository.findAll();
+    }
 
     public Page<Color> findAllColor(Pageable pageable) {
         return colorRepository.findAllByOrderByCreatedAtDesc(pageable);

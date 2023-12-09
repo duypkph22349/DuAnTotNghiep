@@ -3,6 +3,7 @@ package datn.goodboy.repository;
 import java.util.List;
 import java.util.Map;
 
+import datn.goodboy.model.entity.Brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,4 +27,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> getProductSales(Pageable pageable);
 
     Page<Product> findAll(Pageable pageable);
+
+    @Query("SELECT p FROM Product p " +
+            "WHERE (:selectedBrands IS NULL OR p.idBrand.id IN :selectedBrands) " +
+            "AND (:selectedScarfTypes IS NULL OR p.idStyles.id IN :selectedScarfTypes) " +
+            "AND (:selectedColors IS NULL OR p.idColor.id IN :selectedColors)")
+    List<Product> findByFilters(@Param("selectedBrands") List<Long> selectedBrands,
+                                @Param("selectedScarfTypes") List<Long> selectedScarfTypes,
+                                @Param("selectedColors") List<Long> selectedColors);
+
 }

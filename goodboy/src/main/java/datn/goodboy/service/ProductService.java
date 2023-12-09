@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,10 @@ public class ProductService implements PanigationInterface<Product> {
         return productRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
+    public ArrayList<Product> getAll() {
+        return (ArrayList<Product>) productRepository.findAll();
+    }
+
     public Product add(Product origin) {
         return productRepository.save(origin);
     }
@@ -36,6 +42,7 @@ public class ProductService implements PanigationInterface<Product> {
         color1.setStatus(color.getStatus());
         return productRepository.save(color1);
     }
+
 
     public Product getById(Integer id) {
         return productRepository.findById(id).get();
@@ -125,6 +132,13 @@ public class ProductService implements PanigationInterface<Product> {
             }
             return rs;
         }
+    }
+
+    public List<Product> filterProducts(List<Long> selectedBrands, List<Long> selectedScarfTypes, List<Long> selectedColors) {
+
+        List<Product> filteredProducts = productRepository.findByFilters(selectedBrands, selectedScarfTypes, selectedColors);
+
+        return filteredProducts;
     }
 
 }

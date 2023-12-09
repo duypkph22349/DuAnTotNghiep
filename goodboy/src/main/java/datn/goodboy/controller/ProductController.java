@@ -2,7 +2,10 @@ package datn.goodboy.controller;
 
 import java.util.List;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +30,8 @@ import jakarta.validation.Valid;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private BrandService  brandService;
     @Autowired
     TrangThaiConvert convert;
 
@@ -97,4 +102,9 @@ public class ProductController {
         productService.deleteProduct(id);
         return "redirect:/admin/product/dsProduct";
     }
+
+
+
+
+
 }

@@ -55,6 +55,10 @@ public class Product {
     @JoinColumn(name = "id_style")
     private Styles idStyles;
 
+    @ManyToOne
+    @JoinColumn(name = "id_color")
+    private Styles idColor;
+
     @NotNull
     @NotBlank
     @Column(name = "name")
