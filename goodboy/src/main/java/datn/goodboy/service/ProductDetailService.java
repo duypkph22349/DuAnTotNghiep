@@ -224,7 +224,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
       ProductDetailFilter filter) {
-    // TODO Auto-generated method stub
     if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
       return null;
     }
@@ -237,7 +236,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       sort = Sort.by(sortBy).descending();
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-    // findAll method and pass pageable instance
     Page<ProductDetail> page = productDetailRepository.filter(filter, pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;

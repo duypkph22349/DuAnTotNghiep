@@ -24,7 +24,6 @@
         </div>
       </div>
     </div>
-
     <div style="overflow: auto" class="mt-4">
       <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
         <thead class="position-sticky top-0">
@@ -56,7 +55,6 @@
             <td th:text="${product.idMaterial?.name}"></td>
             <td th:text="${product.idStyles?.name}"></td>
             <td th:text="${product.idCategory?.name}"></td>
-
             <td th:unless="${product.deleted}" th:utext="${convert.convertTrangThai(product.status)}">>
             </td>
             <td th:if="${product.deleted}" class="text-decoration-line-through"
@@ -133,17 +131,31 @@
                                     <div class="row">
                                       <div class="col-4 row mb-3">
                                         <div class="mb-3">
-                                          <input class="form-control" type="file" id="formFile">
+                                          <input class="form-control" type="file" multiple id="formFile"
+                                            name="imageproduct">
                                         </div>
                                       </div>
-                                      <div class="col-4 row mb-3">
+                                      <div class="col-8 mb-3 image-div" th:if="${pddt.imageProducts.size() == 0}">
+                                        <span>Không có ảnh nào</span>
+                                      </div>
+                                      <div class="col-8 mb-3 image-div d-flex d-flex justify-content-around"
+                                        th:unless="${pddt.imageProducts.size() == 0}">
+                                        <div th:each="image : ${pddt.imageProducts}">
+                                          <a th:href="${image.img}" target="_blank"
+                                            class="border border-2 p-2 d-inline-block">
+                                            <img th:src="${image.img}" alt="Ảnh sản phẩm" class="img-fluid"
+                                              style="height: 30px;">
+                                          </a>
+                                        </div>
+                                      </div>
+                                      <div class="col-6 row mb-3">
                                         <label for="inputNumber" class="col-sm-6 col-form-label">Số lượng</label>
                                         <div class="col-sm-6">
                                           <input type="number" class="form-control" name="quantity"
                                             th:value="${pddt.quantity}">
                                         </div>
                                       </div>
-                                      <div class="col-4 row mb-3">
+                                      <div class="col-6 row mb-3">
                                         <label for="inputNumber" class="col-sm-4 col-form-label">Giá</label>
                                         <div class="col-sm-8">
                                           <input type="number" class="form-control" name="price"
@@ -266,11 +278,10 @@
                   </div>
                 </div>
               </div>
-    </div>
-    </td>
-    </tr>
-    </tbody>
-    </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="table-footer d-flex justify-content-between mt-3">
       <div class="text-start">This page is <span th:text="${crpage}"></span> of <span th:text="${totalpage}"></span>
@@ -353,6 +364,67 @@
             alert("Cập nhật thất bại");
           });
       }
+      const imageInput = form.querySelector("input[name='imageproduct']");
+      const divimage = form.querySelector("div.image-div");
+      var imagecount = divimage.querySelectorAll("img");
+      const imageFiles = Array.from(imageInput.files);
+      const updateImage = (imageFile) => {
+        const formData = new FormData();
+        formData.append('image',imageFile);
+
+        return axios.post(`/admin/managerproduct/update/product/${id.value}/saveimage`,formData,{
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      };
+
+      if (imagecount.length > 0) {
+        // Update each image using Axios and display the returned image URL
+        imageFiles.forEach((imageFile) => {
+          updateImage(imageFile)
+            .then(response => {
+              console.log('Image updated successfully:',response.data);
+              updateDivImage(response.data);
+            })
+            .catch(error => {
+              console.error('Error updating image:',error);
+            });
+        });
+      } else {
+        divimage.innerHTML = ""; // Clear existing images
+        imageFiles.forEach((imageFile) => {
+          updateImage(imageFile)
+            .then(response => {
+              console.log('Image updated successfully:',response.data);
+              updateDivImage(response.data);
+            })
+            .catch(error => {
+              // Handle error, if needed
+              console.error('Error updating image:',error);
+            });
+        });
+      }
+      const updateDivImage = (imageUrl) => {
+        // Create a new <a> element
+        const newAnchor = document.createElement("a");
+        newAnchor.href = imageUrl;  // Set the href attribute to the image URL
+        newAnchor.target = "_blank";  // Open the link in a new tab/window
+        newAnchor.classList.add("border","border-2","p-2","d-inline-block");
+
+        // Create a new <img> element
+        const newImage = document.createElement("img");
+        newImage.src = imageUrl;
+        newImage.alt = "Ảnh sản phẩm";
+        newImage.classList.add("img-fluid");
+        newImage.style.height = "30px";
+
+        // Append the <img> element as a child to the <a> element
+        newAnchor.appendChild(newImage);
+
+        // Append the <a> element as a child to the divimage element
+        divimage.appendChild(newAnchor);
+      };
     }
   </script>
 </body>
