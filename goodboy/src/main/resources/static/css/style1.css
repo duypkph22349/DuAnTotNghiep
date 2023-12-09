@@ -78,7 +78,7 @@ p {
 }
 
 img {
-    max-width: 80%;
+    max-width: 100%;
 }
 
 input:focus, select:focus, button:focus, textarea:focus {
@@ -1482,7 +1482,7 @@ ul, ol {
   Footer
 -----------------------*/
 .footer-section {
-    background: #191919;
+    background: #a84949;
     padding-top: 75px;
 }
 

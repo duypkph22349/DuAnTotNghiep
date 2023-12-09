@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,6 +60,10 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
 
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
+
+    public ArrayList<Product> getAll() {
+        return (ArrayList<Product>) productRepository.findAll();
     }
 
     public Product add(Product origin) {
@@ -271,6 +277,14 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         Page<Product> page = productRepository.filter(filter, pageable); // findAll()
         int totalPage = page.getTotalPages();
         return Panigation(pageno, totalPage);
+
+    public List<Product> filterProducts(List<Long> selectedBrands, List<Long> selectedScarfTypes,
+            List<Long> selectedColors) {
+
+        List<Product> filteredProducts = productRepository.findByFilters(selectedBrands, selectedScarfTypes,
+                selectedColors);
+
+        return filteredProducts;
     }
 
 }
