@@ -183,7 +183,7 @@
         <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
             <div class="top d-flex justify-content-between">
                 <h2>THÔNG TIN ĐƠN HÀNG</h2>
-                <button onclick="update()" class="btn btn-primary" style="font-size: 16px">Update</button>
+                <button onclick="update()" class="btn btn-primary" th:if="${bill.status != 5}" style="font-size: 16px">Update</button>
 
             </div>
             <hr>

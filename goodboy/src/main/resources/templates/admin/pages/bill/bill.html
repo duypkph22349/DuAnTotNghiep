@@ -172,9 +172,7 @@
             <li>
                 <a data-value="1" style="cursor: pointer" class="dropdown-item">Tất cả</a>
             </li>
-            <li>
-                <a data-value="2" style="cursor: pointer" class="dropdown-item">Trong bảng</a>
-            </li>
+
         </ul>
         <script>
             let cbbSelect = document.querySelector(".cbbSelect");
@@ -205,25 +203,42 @@
     <Br>
 
     <div class="d-flex">
-        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">
-            Tải File Excel
-        </a>
+        <!--        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">-->
+        <!--            Tải File Excel-->
+        <!--        </a>-->
         <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 14px">Làm mới</button>
-        <select id="statusSelect" class="form-select" style="  width: 120px; height: 38px; font-size: 11px;"
+        <select id="statusSelect" class="form-select me-2" style="  width: 120px; height: 38px; font-size: 11px;"
                 onchange="selectFilterAction(this.value)">
-            <option value="">Chọn trạng thái</option>
-            <option value="Chờ xác nhận">Chờ xác nhận</option>
-            <option value="Chờ giao hàng">Chờ giao hàng</option>
-            <option value="Đang giao hàng">Đang giao hàng</option>
-            <option value="Đã giao hàng">Đã giao hàng</option>
-            <option value="Thành công">Thành công</option>
+            <option value="0">Chọn trạng thái</option>
+            <option value="1">Chờ xác nhận</option>
+            <option value="2">Chờ giao hàng</option>
+            <option value="3">Đang giao hàng</option>
+            <option value="4">Đã giao hàng</option>
+            <option value="5">Thành công</option>
+            <option value="6">Chưa thanh toán</option>
+            <option value="7">Đã thanh toán</option>
         </select>
+        <select id="orderTypeSelect" class="form-select" style="  width: 130px; height: 38px; font-size: 11px;"
+                onchange="selectFilterOrderType(this.value)">
+            <option value="">Chọn loại hóa đơn</option>
+            <option value="0">Tại quầy</option>
+            <option value="1">Online</option>
+        </select>
+        <div class="col-2 d-flex">
+            <label>Từ ngày</label>
+            <input type="date" class="form-control" id="startDate">
+        </div>
+        <div class="col-2 d-flex">
+            <label>Đến ngày</label>
+            <input type="date" class="form-control" id="endDate">
+        </div>
+        <button class="btn btn-primary" style="font-size: 14px" onclick="filterDate()">Lọc</button>
     </div>
 
     <!-- Table -->
     <div style="height: 500px; overflow: auto; ">
 
-        <table class="table table-hover" id="myTable" style="font-size: 15px" >
+        <table class="table table-hover" id="myTable" style="font-size: 13px" >
             <thead class="position-sticky top-0">
 
             <tr class="ex">
@@ -243,7 +258,7 @@
                             <p class="p-0 m-0 fw-bold" style="font-size: 14px" >Ngày tạo</p>
                         </button>
                         <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split"
-                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">
+                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" style="font-size: 14px">
@@ -427,7 +442,6 @@
                 let currentPage = response.number;
                 let size = response.size;
                 let numberI = size * currentPage;
-                console.log(size, numberI, currentPage)
                 tableInfoBill.innerHTML = "";
 
                 // Sắp xếp mảng theo ngày giảm dần
@@ -468,7 +482,7 @@
                             <td>${item.status_pay  === 0 ? 'Chưa thanh toán' : 1 ? 'Đã thanh toán' : '' }</td>
                             <td >${pay.payment_method}</td>
                             <td>${item.phone}</td>
-                            <td>${item.loaiDon === 0 ? 'Taị quầy' : 1 ? 'online' : ''}</td>
+                            <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
                             <td >${formattedTotalMoney} VNĐ</td>
                             <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
                             <td>${item.note}</td>
@@ -479,47 +493,99 @@
                             <th>
                                <a href="/admin/bill/bill-detail?id=${item.id}">
                                      <button
-                                        type="button" class="btn btn-primary" style="font-size: 14px"
+                                        type="button" class="btn btn-primary"  style="font-size: 14px""
                                      >
                                         Chi tiết
                                     </button>
                                </a>
 
                                      <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                        type="button" class="btn btn-success" style="font-size: 14px"
+                                        type="button" class="btn btn-success"  style="font-size: 14px""
                                      >
                                         Thanh toán
                                     </button>
-
+                                    ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 14px">Xác nhận</button>' : ''}
                              </th>
                          </tr>
                     `
                     tableInfoBill.innerHTML += html;
                 })
                 paginationWrapper.innerHTML = "";
-                for (let i = 0; i < totalPages; i++) {
-                    let active = "";
-                    if (i === currentPage) active = "active";
-                    else {
-                        active = "";
-                    }
-                    let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage(this)">${i + 1}</a></li>`
+
+                const visiblePages = 2; // Số lượng trang hiển thị
+                const startPage = Math.max(1, currentPage - visiblePages);
+                const endPage = Math.min(totalPages, currentPage + visiblePages);
+
+                // Hiển thị trang đầu
+                let firstPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage(1)">Đầu trang</a></li>`;
+                paginationWrapper.innerHTML += firstPageHtml;
+
+                // Hiển thị trang trước dấu ...
+                if (startPage > 1) {
+                    let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                    paginationWrapper.innerHTML += ellipsisHtml;
+                }
+
+                // Hiển thị các trang trong khoảng startPage và endPage
+                for (let i = startPage; i <= endPage; i++) {
+                    let active = (i === currentPage + 1) ? "active" : "";
+                    let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage(${i})">${i}</a></li>`;
                     paginationWrapper.innerHTML += html;
                 }
+
+                // Hiển thị trang sau dấu ...
+                if (endPage < totalPages - 1) {
+                    let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                    paginationWrapper.innerHTML += ellipsisHtml;
+                }
+
+                // Hiển thị trang cuối
+                let lastPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage(${totalPages})">Cuối trang</a></li>`;
+                paginationWrapper.innerHTML += lastPageHtml;
+
             })
+
         }
 
 
         var currentNumber;
-        function getPage(element) {
-            let number = Number(element.innerText) - 1;
-            let url;
-            if (isStus) {
-                url = currentUrl + `?pageNumber=${number}`
-            } else {
-                url = currentUrl + `&pageNumber=${number}`
+        function getPage(number) {
+            let numberPage = number - 1;
+            var status = document.getElementById('statusSelect').value;
+            var orderType = document.getElementById('orderTypeSelect').value;
+            let urlStatus;
+            if(status == 0){
+                urlStatus = "/admin/bill/all-bill" + `?pageNumber=${numberPage}`;
+            }else if(status > 5){
+                if(status == 6){
+                    urlStatus = "/admin/bill/statusPay/" + 0 + `?pageNumber=${numberPage}`;
+                    fillTable(urlStatus);
+                    return;
+                }else if(status == 7){
+                    urlStatus = "/admin/bill/statusPay/" + 1 + `?pageNumber=${numberPage}`;
+                    fillTable(urlStatus);
+                    return;
+                }
+            }else{
+                urlStatus = "/admin/bill/bill-filter/" + status + `?pageNumber=${numberPage}`;
             }
-            fillTable(url);
+
+            fillTable(urlStatus);
+
+        }
+
+        function getPage2(number) {
+            let numberPage = number - 1;
+            var orderType = document.getElementById('orderTypeSelect').value;
+            let urlStatus;
+            if(orderType == ''){
+                urlStatus = "/admin/bill/all-bill" + `?pageNumber=${numberPage}`;
+            }else{
+                urlStatus = "/admin/bill/orderType/" + orderType + `?pageNumber=${numberPage}`;
+            }
+
+            fillTableOrderType(urlStatus);
+
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -540,28 +606,167 @@
                 location.reload();
             });
         });
+        function confirmStatus(id){
+            if (confirm("Bạn có chắc chắn muốn xác nhận tất cả trạng thái thành chờ giao hàng không?")) {
+                $.ajax({
+                    url: "/admin/bill/setStatus/" + id,
+                    method: "POST",
+                    contentType: "application/json",
+                    success: function (response) {
+                        alert("Xác nhận thành công!");
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                        alert("Cập nhật thất bại!");
+                    }
+                });
+            }
+        }
         //lọc
         function selectFilterAction(selectedStatus) {
-            // Thực hiện bộ lọc dựa trên giá trị được chọn từ select
-            filterAcction(selectedStatus);
-        }
-        function filterAcction(status) {
-            var table = document.getElementById("myTable");
-            var rows = table.getElementsByTagName("tr");
-
-            for (var i = 1; i < rows.length; i++) {
-                var cells = rows[i].getElementsByTagName("td");
-                var statusCell = cells[8];
-
-
-                if (status === '' || statusCell.textContent.trim() === status) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
+            let urlStatus;
+            if(selectedStatus == 0){
+                urlStatus = "/admin/bill/all-bill";
+            }else if(selectedStatus > 5){
+                if(selectedStatus == 6){
+                    urlStatus = "/admin/bill/statusPay/" + 0;
+                    fillTable(urlStatus);
+                    return;
+                }else if(selectedStatus == 7){
+                    urlStatus = "/admin/bill/statusPay/" + 1;
+                    fillTable(urlStatus);
+                    return;
                 }
+            }else{
+                urlStatus = "/admin/bill/bill-filter/" + selectedStatus;
             }
 
+            fillTable(urlStatus);
         }
+
+        function selectFilterOrderType(selected){
+            let urlStatus;
+            if(selected == ''){
+                urlStatus = "/admin/bill/all-bill";
+            }else{
+                urlStatus = "/admin/bill/orderType/" + selected;
+            }
+            fillTableOrderType(urlStatus);
+        }
+
+        function fillTableOrderType(url) {
+            $.getJSON(url, function (response) {
+                let data = response.content;
+                let totalPages = response.totalPages;
+                let currentPage = response.number;
+                let size = response.size;
+                let numberI = size * currentPage;
+                tableInfoBill.innerHTML = "";
+
+                // Sắp xếp mảng theo ngày giảm dần
+                data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                data.forEach((item, index) => {
+                    let customer = item.customer;
+                    let employee = item.employee;
+                    let pay = item.pay;
+
+                    // Định dạng ngày giờ
+                    let formatterTime = new Intl.DateTimeFormat('vi-VN', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    });
+                    let formattedDate = formatterTime.format(new Date(item.createdAt));
+
+                    // Định dạng số tiền
+                    let formatterMoney = new Intl.NumberFormat('vi-VN', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0, // Số chữ số thập phân tối thiểu
+                        maximumFractionDigits: 0, // Số chữ số thập phân tối đa
+                    });
+
+                    let formattedTotalMoney = formatterMoney.format(item.total_money);
+
+
+                    let html =
+                        `
+                        <tr th id="myTable" class="trTb${index + 1}" >
+
+                            <td>${index + 1 + numberI}</td>
+                            <td >${item.code}</td>
+                            <td>${customer.name}</td>
+                            <td>${item.status_pay  === 0 ? 'Chưa thanh toán' : 1 ? 'Đã thanh toán' : '' }</td>
+                            <td >${pay.payment_method}</td>
+                            <td>${item.phone}</td>
+                            <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
+                            <td >${formattedTotalMoney} VNĐ</td>
+                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
+                            <td>${item.note}</td>
+                            <td  >${formattedDate}</td>
+
+
+
+                            <th>
+                               <a href="/admin/bill/bill-detail?id=${item.id}">
+                                     <button
+                                        type="button" class="btn btn-primary"  style="font-size: 14px""
+                                     >
+                                        Chi tiết
+                                    </button>
+                               </a>
+
+                                     <button onclick="payment_VNPay(${item.total_money},${item.id})"
+                                        type="button" class="btn btn-success"  style="font-size: 14px""
+                                     >
+                                        Thanh toán
+                                    </button>
+                                    ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 14px">Xác nhận</button>' : ''}
+                             </th>
+                         </tr>
+                    `
+                    tableInfoBill.innerHTML += html;
+                })
+                paginationWrapper.innerHTML = "";
+
+                const visiblePages = 2; // Số lượng trang hiển thị
+                const startPage = Math.max(1, currentPage - visiblePages);
+                const endPage = Math.min(totalPages, currentPage + visiblePages);
+
+                // Hiển thị trang đầu
+                let firstPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage2(1)">Đầu trang</a></li>`;
+                paginationWrapper.innerHTML += firstPageHtml;
+
+                // Hiển thị trang trước dấu ...
+                if (startPage > 1) {
+                    let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                    paginationWrapper.innerHTML += ellipsisHtml;
+                }
+
+                // Hiển thị các trang trong khoảng startPage và endPage
+                for (let i = startPage; i <= endPage; i++) {
+                    let active = (i === currentPage + 1) ? "active" : "";
+                    let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage2(${i})">${i}</a></li>`;
+                    paginationWrapper.innerHTML += html;
+                }
+
+                // Hiển thị trang sau dấu ...
+                if (endPage < totalPages - 1) {
+                    let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                    paginationWrapper.innerHTML += ellipsisHtml;
+                }
+
+                // Hiển thị trang cuối
+                let lastPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage2(${totalPages})">Cuối trang</a></li>`;
+                paginationWrapper.innerHTML += lastPageHtml;
+
+            })
+
+        }
+
         function payment_VNPay(amount, id) {
             var numericValue = parseInt(amount);
             console.log(numericValue)
@@ -572,28 +777,152 @@
             });
         }
 
-        //
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     var createdAtCell = document.getElementById('createdAtCell');
-        //     var originalDate = createdAtCell.innerText; // Assume item.createdAt is in ISO 8601 format
-        //
-        //     // Chuyển đổi ngày và giờ
-        //     var formattedDate = new Date(originalDate);
-        //     var options = {  year: 'numeric',
-        //         month: 'numeric',
-        //         day: 'numeric',
-        //         hour: 'numeric',
-        //         minute: 'numeric',
-        //         second: 'numeric',
-        //         hour12: false, // 24-hour format
-        //        };
-        //     var formattedDateString = formattedDate.toLocaleDateString('en-US', options);
-        //
-        //     // Cập nhật nội dung của ô
-        //     createdAtCell.innerText = formattedDateString;
-        // });
+
+        function filterDate(){
+            var startDate = document.getElementById('startDate').value;
+            var endDate = document.getElementById('endDate').value;
+            if(startDate == '' || endDate == ''){
+                alert("Chọn khoảng ngày để lọc");
+            }else{
+                var url = "/admin/bill/filterDate";
+                fillTableDate(url);
+            }
+        }
+
+        function fillTableDate(url){
+            var startDate = document.getElementById('startDate').value;
+            var endDate = document.getElementById('endDate').value;
+            var startDateFormat = new Date(startDate);
+            var endDateFormat = new Date(endDate);
+            var formData = new FormData();
+            formData.append('startDate', startDateFormat);
+            formData.append('endDate', endDateFormat);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,  // Important: prevent jQuery from processing the data
+                contentType: false,  // Important: prevent jQuery from setting contentType
+                success: function (response) {
+                    // Xử lý phản hồi từ controller nếu cần
+                    let data = response.content;
+                    let totalPages = response.totalPages;
+                    let currentPage = response.number;
+                    let size = response.size;
+                    let numberI = size * currentPage;
+                    tableInfoBill.innerHTML = "";
+
+                    // Sắp xếp mảng theo ngày giảm dần
+                    data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                    data.forEach((item, index) => {
+                        let customer = item.customer;
+                        let employee = item.employee;
+                        let pay = item.pay;
+
+                        // Định dạng ngày giờ
+                        let formatterTime = new Intl.DateTimeFormat('vi-VN', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        });
+                        let formattedDate = formatterTime.format(new Date(item.createdAt));
+
+                        // Định dạng số tiền
+                        let formatterMoney = new Intl.NumberFormat('vi-VN', {
+                            style: 'decimal',
+                            minimumFractionDigits: 0, // Số chữ số thập phân tối thiểu
+                            maximumFractionDigits: 0, // Số chữ số thập phân tối đa
+                        });
+
+                        let formattedTotalMoney = formatterMoney.format(item.total_money);
 
 
+                        let html =
+                            `
+                                <tr th id="myTable" class="trTb${index + 1}" >
+
+                                    <td>${index + 1 + numberI}</td>
+                                    <td >${item.code}</td>
+                                    <td>${customer.name}</td>
+                                    <td>${item.status_pay  === 0 ? 'Chưa thanh toán' : 1 ? 'Đã thanh toán' : '' }</td>
+                                    <td >${pay.payment_method}</td>
+                                    <td>${item.phone}</td>
+                                    <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
+                                    <td >${formattedTotalMoney} VNĐ</td>
+                                    <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
+                                    <td>${item.note}</td>
+                                    <td  >${formattedDate}</td>
+
+
+
+                                    <th>
+                                    <a href="/admin/bill/bill-detail?id=${item.id}">
+                                            <button
+                                                type="button" class="btn btn-primary"  style="font-size: 14px""
+                                            >
+                                                Chi tiết
+                                            </button>
+                                    </a>
+
+                                            <button onclick="payment_VNPay(${item.total_money},${item.id})"
+                                                type="button" class="btn btn-success"  style="font-size: 14px""
+                                            >
+                                                Thanh toán
+                                            </button>
+                                            ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 14px">Xác nhận</button>' : ''}
+                                    </th>
+                                </tr>
+                            `
+                        tableInfoBill.innerHTML += html;
+                    })
+                    paginationWrapper.innerHTML = "";
+
+                    const visiblePages = 2; // Số lượng trang hiển thị
+                    const startPage = Math.max(1, currentPage - visiblePages);
+                    const endPage = Math.min(totalPages, currentPage + visiblePages);
+
+                    // Hiển thị trang đầu
+                    let firstPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage3(1)">Đầu trang</a></li>`;
+                    paginationWrapper.innerHTML += firstPageHtml;
+
+                    // Hiển thị trang trước dấu ...
+                    if (startPage > 1) {
+                        let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                        paginationWrapper.innerHTML += ellipsisHtml;
+                    }
+
+                    // Hiển thị các trang trong khoảng startPage và endPage
+                    for (let i = startPage; i <= endPage; i++) {
+                        let active = (i === currentPage + 1) ? "active" : "";
+                        let html = `<li class="page-item ${active}"><a class="page-link" onclick="getPage3(${i})">${i}</a></li>`;
+                        paginationWrapper.innerHTML += html;
+                    }
+
+                    // Hiển thị trang sau dấu ...
+                    if (endPage < totalPages - 1) {
+                        let ellipsisHtml = '<li class="page-item"><a class="page-link">...</a></li>';
+                        paginationWrapper.innerHTML += ellipsisHtml;
+                    }
+
+                    // Hiển thị trang cuối
+                    let lastPageHtml = `<li class="page-item"><a class="page-link" onclick="getPage3(${totalPages})">Cuối trang</a></li>`;
+                    paginationWrapper.innerHTML += lastPageHtml;
+
+                },
+                error: function (error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+        }
+
+        function getPage3(number) {
+            let numberPage = number - 1;
+            var url = "/admin/bill/filterDate" + `?pageNumber=${numberPage}`;
+            fillTableDate(url)
+        }
     </script>
 
 </section>
