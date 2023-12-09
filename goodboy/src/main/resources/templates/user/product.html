@@ -115,164 +115,6 @@
             align-self: stretch;
         }
     </style>
-
-    <!--    Đăng nhập -->
-    <div class="modal fade login" id="getMember" data-bs-toggle="modal" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered container">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="jquery-modal blocker current">
-                        <div class="login-form">
-                            <div class="login-bg">
-                                <img src="https://web.nvnstatic.net/tp/T0415/img/login-bg.png?v=3">
-                            </div>
-                            <div class="form">
-                                <h1>Đăng nhập</h1>
-                                <div class="external">
-                                    <form>
-                                        <button class="btn-extlogin btn-facebook" title="Đăng nhập qua Facebook"
-                                                type="submit" id="Facebook" name="provider" value="Facebook">
-                                            <a href="/user/fbsignin?redirect=/">
-                                                <i class="fab fa-facebook-square"></i>
-                                                Tiếp tục với Facebook
-                                            </a>
-                                        </button>
-                                        <button class="btn-extlogin btn-google" type="submit"
-                                                title="Đăng nhập qua Google+"
-                                                id="Google" name="provider" value="Google">
-                                            <a href="/user/ggsignin">
-                                                <i class="fab fa-google-plus-square"></i>
-                                                Đăng nhập với Google
-                                            </a>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="split">
-                                    <p>Hoặc</p>
-                                </div>
-                                <div class="internal">
-                                    <form action="/signin" method="post" id="loginForm">
-                                        <div class="row">
-                                            <div class="label">Tài khoản</div>
-                                            <div class="input">
-                                                <input type="text" name="username" placeholder="Hãy nhập tên tài khoản">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="label">Mật khẩu</div>
-                                            <div class="input">
-                                                <input type="password" name="password" id="passwordModal">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="button-group">
-                                                <button class="btn btn-submit" id="btnsignin" type="submit">ĐĂNG NHẬP
-                                                </button>
-                                                <a class="btn btn-link ajax-content" data-bs-dismiss="modal"
-                                                   aria-label="Close" href="javascript:void(0)" data-bs-toggle="modal"
-                                                   data-bs-target="#signup">ĐĂNG KÝ</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <p class="forgotpass"><a class="ajax-content" href="/user/getpassword">Quên
-                                                mật
-                                                khẩu?</a></p>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="javascript:void(0)" class="close-modal icon-minutes close" data-bs-dismiss="modal"
-                       aria-label="Close"><i class="fas fa-minus-circle"></i> </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--    Đăng ký-->
-    <div class="modal fade login signup-content" id="signup" data-bs-toggle="modal" data-bs-keyboard="false"
-         tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered container">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="jquery-modal blocker current">
-                        <div class="login-form">
-                            <div class="login-bg">
-                                <img src="https://web.nvnstatic.net/tp/T0415/img/login-bg.png?v=3">
-                            </div>
-                            <div class="form">
-                                <div class="center" style="text-align:center;">
-                                    <h2>Đăng ký tài khoản</h2>
-                                    <p>Chú ý các nội dung có dấu * bạn cần phải nhập</p>
-
-                                </div>
-                                <div class="hh-form">
-                                    <form id="formSignUp">
-                                        <div class="form-controls">
-                                            <label>Họ tên:</label>
-                                            <div class="controls">
-                                                <input type="text" name="fullName" id="fullName" placeholder="Họ tên *">
-                                            </div>
-                                        </div>
-                                        <div class="form-controls">
-                                            <label>Mật khẩu:</label>
-                                            <div class="controls">
-                                                <input type="password" name="password" id="password"
-                                                       placeholder="Mật khẩu *">
-                                            </div>
-                                        </div>
-                                        <div class="form-controls">
-                                            <label>Nhập lại mật khẩu:</label>
-                                            <div class="controls">
-                                                <input type="password" name="repassword" id="repassword"
-                                                       placeholder="Nhập lại mật khẩu *">
-                                            </div>
-                                        </div>
-                                        <div class="form-controls">
-                                            <label>Email:</label>
-                                            <div class="controls">
-                                                <input type="text" name="email" id="email" placeholder="Email *">
-                                            </div>
-                                        </div>
-                                        <div class="form-controls">
-                                            <label>Điện thoại:</label>
-                                            <div class="controls">
-                                                <input type="tel" name="mobile" id="mobile" placeholder="Điện thoại *"
-                                                       data-required="1">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-controls">
-                                            <label>Địa chỉ:</label>
-                                            <div class="controls">
-                                                <input type="text" name="address" id="address" placeholder="Địa chỉ *"
-                                                       data-required="1">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-controls">
-                                            <div class="controls submit-controls">
-                                                <button type="submit" id="btnSignup">ĐĂNG KÝ TÀI KHOẢN</button>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="javascript:void(0)" class="close-modal icon-minutes close" data-bs-dismiss="modal"
-                       aria-label="Close"><i class="fas fa-minus-circle"></i> </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!--    Logo-->
     <section class="top-category-ads">
         <div class="container">
@@ -298,6 +140,7 @@
 
     <!--    Filter-->
     <section class="filter-section">
+        <form action="/index" method="GET">
         <div class="container">
             <div class="product-filters2">
                 <div class="left">
@@ -312,14 +155,14 @@
                             <div class="sub">
                                 <ul>
                                     <li><a rel="nofollow" onclick="filterByPrice('0-100000')">Dưới 100k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('100000-200000')">100k đến 200k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('200000-300000')">200k đến 300k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('300000-400000')">300k đến 400k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('400000-500000')">400k đến 500k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('500000-600000')">500k đến 600k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('600000-700000')">600k đến 700k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('700000-800000')">700k đến 800k VNĐ</a></li>
-                                    <li><a rel="nofollow" onclick="filterByPrice('800000-900000')">800k đến 900k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('100000-200000')">100k --> 200k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('200000-300000')">200k --> 300k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('300000-400000')">300k --> 400k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('400000-500000')">400k --> 500k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('500000-600000')">500k --> 600k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('600000-700000')">600k --> 700k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('700000-800000')">700k --> 800k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('800000-900000')">800k --> 900k VNĐ</a></li>
                                     <li><a rel="nofollow" onclick="filterByPrice('1000000-')">Trên 1 triệu</a></li>
                                 </ul>
                             </div>
@@ -334,13 +177,12 @@
                             </label>
                             <div class="sub">
                                 <ul>
-                                    <li><a href="">Hoa <i class="total"></i></a></li>
-                                    <li><a href="">Trắng <i class="total"></i></a></li>
-                                    <li><a href="">Trắng Đỏ <i class="total"></i></a></li>
-                                    <li><a href="">Xanh Hồng <i class="total"></i></a></li>
-                                    <li><a href="">Đen<i class="total"></i></a></li>
+                                    <li><a  href="">Đen <i class="total"></i></a></li>
+                                    <li><a href="">Đỏ <i class="total"></i></a></li>
+                                    <li><a href="">Hồng <i class="total"></i></a></li>
+                                    <li><a href="">Xám <i class="total"></i></a></li>
+                                    <li><a href="">Xanh<i class="total"></i></a></li>
                                     <li><a href="">Be<i class="total"></i></a></li>
-                                    <li><a href="">Hồng Sơn Nhũ<i class="total"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -354,9 +196,10 @@
                             </label>
                             <div class="sub">
                                 <ul>
-                                    <li><a>Woodphoria Boy Smells <i class="total"></i></a></li>
-
-                                    <li><a>Nest Golden Nectar <i class="total"></i></a></li>
+                                    <li><a>Khăn Dài<i class="total"></i></a></li>
+                                    <li><a>Khăn Đeo Cổ <i class="total"></i></a></li>
+                                    <li><a>Khăn Ngắn <i class="total"></i></a></li>
+                                    <li><a>Khăn Trùm Đầu <i class="total"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -371,26 +214,30 @@
                             <div class="sub">
                                 <ul>
                                     <li><a>Việt Nam <i class="total"></i></a></li>
+                                    <li><a>Trung Quốc <i class="total"></i></a></li>
                                     <li><a>Hàn Quốc<i class="total"></i></a></li>
-                                    <li><a>Mỹ<i class="total"></i></a></li>
+                                    <li><a>Anh Quốc<i class="total"></i></a></li>
+                                    <li><a>Ấn Độ<i class="total"></i></a></li>
+                                    <li><a>Pháp<i class="total"></i></a></li>
                                     <li><a>Canada<i class="total"></i></a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="facet all-attribute">
-                        <h2 class="cate-filter-name">Kích thước</h2>
+                        <h2 class="cate-filter-name">Chất Liệu</h2>
                         <div class="cate-filter-content">
                             <label>
-                                <a>Kích thước<i class="fal fa-angle-down"></i></a>
+                                <a>Chất Liệu<i class="fal fa-angle-down"></i></a>
                                 <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
                             </label>
                             <div class="sub">
                                 <ul>
-                                    <li><a>113 <i class="total"></i></a></li>
-                                    <li><a>114 <i class="total"></i></a></li>
-                                    <li><a>115 <i class="total"></i></a></li>
-                                    <li><a>116 <i class="total"></i></a></li>
+                                    <li><a>Thổ Cẩm <i class="total"></i></a></li>
+                                    <li><a>Lụa <i class="total"></i></a></li>
+                                    <li><a>Nhung <i class="total"></i></a></li>
+                                    <li><a>Lông Cừu <i class="total"></i></a></li>
+                                    <li><a>Cotton <i class="total"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -407,8 +254,8 @@
                             <div class="sub">
                                 <ul>
                                     <li><a th:href="@{/shop/product/index}">Mặc định</a></li>
-                                    <li><a th:href="@{}">Giá thấp đến cao</a></li>
-                                    <li><a th:href="@{}">Giá cao đến thấp</a></li>
+                                    <li><a >Giá thấp đến cao</a></li>
+                                    <li><a >Giá cao đến thấp</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -416,10 +263,11 @@
                 </div>
             </div>
         </div>
+        </form>
     </section>
 
     <!--    Sản phẩm-->
-    <section class="product-cate-block">
+    <section class="product-cate-block" >
         <div class="container">
             <div class="row" id="searchResult">
                 <div class="row row-cols-1 row-cols-md-5 g-3">
