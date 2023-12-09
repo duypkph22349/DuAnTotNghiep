@@ -135,7 +135,10 @@ public class ProductDetailControllerUser {
     }
 
     @GetMapping({ "index", "" })
-    public String getIndexpage(Model model) {
+    public String getIndexpage(Model model,
+                               @RequestParam(value = "selectedBrands", required = false) List<Long> selectedBrands,
+                               @RequestParam(value = "selectedScarfTypes", required = false) List<Long> selectedScarfTypes,
+                               @RequestParam(value = "selectedColors", required = false) List<Long> selectedColors) {
         this.pageno = 1;
         this.rowcount = 10;
         this.sortBy = "createdAt";
@@ -152,9 +155,18 @@ public class ProductDetailControllerUser {
         model.addAttribute("brands", brandService.getAllBrands());
         model.addAttribute("styles", stylesService.getAllStyles());
         model.addAttribute("colors", colorService.getAllColor());
-
         return "user/product.html";
     }
+
+//    @GetMapping("/filter")
+//    public String filterProducts(@RequestParam(value = "selectedBrands", required = false) List<Long> selectedBrands,
+//                                 @RequestParam(value = "selectedScarfTypes", required = false) List<Long> selectedScarfTypes,
+//                                 @RequestParam(value = "selectedColors", required = false) List<Long> selectedColors,
+//                                 Model model) {
+//        List<Product> list = productService.filterProducts(selectedBrands, selectedScarfTypes, selectedColors);
+//        model.addAttribute("products", list);
+//        return "user/product";
+//    }
 
     // panigation and sort
     @GetMapping("getcountrow")
