@@ -278,7 +278,7 @@
                         <th>Kiểu mẫu</th>
                         <th>Tổng tiền</th>
                         <th>Số lượng</th>
-                        <th>Trạng thái</th>
+
                     </tr>
                     </thead>
 
@@ -300,10 +300,7 @@
                         <td th:text="${billDetail.productDetail.idPattern.name}"></td>
                         <td th:text="${billDetail.totalMoney}"></td>
                         <td th:text="${billDetail.quantity}"></td>
-                        <td>
-                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>
-                            <span th:if="${billDetail.status == 1}">Xác nhận</span>
-                        </td>
+
                     </tr >
                     </tbody>
 
