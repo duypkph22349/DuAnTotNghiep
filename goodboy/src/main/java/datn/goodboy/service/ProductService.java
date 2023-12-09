@@ -1,8 +1,11 @@
 package datn.goodboy.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,10 +13,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Category;
+import datn.goodboy.model.entity.Material;
+import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductFilter;
+import datn.goodboy.model.request.ProductRequest;
+import datn.goodboy.repository.BrandRepository;
+import datn.goodboy.repository.CategoryRepository;
+import datn.goodboy.repository.MaterialRepository;
+import datn.goodboy.repository.OriginRepository;
 import datn.goodboy.repository.ProductRepository;
+import datn.goodboy.repository.StylesRepository;
+import datn.goodboy.service.cloud.CloudinaryImageService;
 import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 
@@ -21,6 +37,24 @@ import datn.goodboy.service.serviceinterface.PanigationInterface;
 public class ProductService implements PanigationInterface<Product>, IPanigationWithFIllter<Product, ProductFilter> {
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
+    private OriginRepository originRepository;
+
+    @Autowired
+    private StylesRepository stylesRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+
+    private MaterialRepository metarialRepository;
+    @Autowired
+    CloudinaryImageService cloudService;
+    @Autowired
+    ImageProductService imageService;
 
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -36,6 +70,61 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         color1.setUpdatedAt(color.getUpdatedAt());
         color1.setStatus(color.getStatus());
         return productRepository.save(color1);
+    }
+
+    public void requestToEntity(ProductRequest request, Product entity) {
+        Optional<Brand> braOptional = brandRepository.findById(request.getIdBrand());
+        Optional<Origin> orgOptional = originRepository.findById(request.getIdOrigin());
+        Optional<Styles> stysOptional = stylesRepository.findById(request.getIdStyles());
+        Optional<Category> cateOptional = categoryRepository.findById(request.getIdCategory());
+        Optional<Material> meOptional = metarialRepository.findById(request.getIdMaterial());
+        entity.setIdBrand(braOptional.get());
+        entity.setIdOrigin(orgOptional.get());
+        entity.setIdMaterial(meOptional.get());
+        entity.setIdCategory(cateOptional.get());
+        entity.setIdStyles(stysOptional.get());
+        entity.setStatus(entity.getStatus());
+        entity.setName(entity.getName());
+        request.setId(entity.getId());
+    }
+
+    public void entityToRequest(Product entity, ProductRequest request) {
+        request.setImages(entity.getImageProducts());
+        request.setIdBrand(entity.getIdBrand() != null ? entity.getIdBrand().getId() : null);
+        request.setIdOrigin(entity.getIdOrigin() != null ? entity.getIdOrigin().getId() : null);
+        request.setIdMaterial(entity.getIdBrand() != null ? entity.getIdBrand().getId() : null);
+        request.setIdCategory(entity.getIdCategory() != null ? entity.getIdCategory().getId() : null);
+        request.setIdStyles(entity.getIdStyles() != null ? entity.getIdStyles().getId() : null);
+        request.setStatus(entity.getStatus());
+        request.setName(entity.getName());
+        request.setId(entity.getId());
+
+    }
+
+    public ProductRequest getRequest(int id) {
+        ProductRequest request = new ProductRequest();
+        Product productExits = this.getById(id);
+        entityToRequest(productExits, request);
+        return request;
+    }
+
+    public Product updateProduct(ProductRequest request, List<MultipartFile> listimage) {
+        Product productExits = this.getById(request.getId());
+        requestToEntity(request, productExits);
+        CompletableFuture.runAsync(() -> {
+            List<String> listURL = new ArrayList<>();
+            if (!listimage.isEmpty()) {
+                for (MultipartFile multipartFile : listimage) {
+                    try {
+                        listURL.add(cloudService.saveImage(multipartFile));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                imageService.saveImageForNewProductDetail(listURL, request.getId());
+            }
+        });
+        return productRepository.save(productExits);
     }
 
     public Product getById(Integer id) {

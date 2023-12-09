@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.ImageProduct;
+import datn.goodboy.model.entity.Images;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.repository.ImageProductRepository;
 import datn.goodboy.repository.ProductRepository;
@@ -20,7 +21,7 @@ public class ImageProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<ImageProduct> getAll(){
+    public List<ImageProduct> getAll() {
         return repository.findAll();
     }
 
@@ -48,5 +49,14 @@ public class ImageProductService {
             }
         }
         return repository.saveAll(listImage);
+    }
+
+    public void deleted(Integer id) {
+        ImageProduct exitsImage = this.getOne(id);
+        if (exitsImage != null) {
+            exitsImage.setUpdatedAt(LocalDateTime.now());
+            exitsImage.setDeleted(true);
+            repository.save(exitsImage);
+        }
     }
 }

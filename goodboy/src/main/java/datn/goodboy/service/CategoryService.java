@@ -1,6 +1,7 @@
 package datn.goodboy.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,5 +35,9 @@ public class CategoryService {
 
     public Category getById(int idCategory) {
         return categoryRepository.findById(idCategory).get();
+    }
+
+    public List<Map<Integer, String>> getCombobox() {
+        return categoryRepository.getComboBoxMap();
     }
 }

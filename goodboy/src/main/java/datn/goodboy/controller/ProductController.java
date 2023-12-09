@@ -1,6 +1,7 @@
 package datn.goodboy.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.request.ProductRequest;
+import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CategoryService;
+import datn.goodboy.service.ImageProductService;
+import datn.goodboy.service.MaterialService;
+import datn.goodboy.service.OriginService;
+import datn.goodboy.service.PatternTypeService;
 import datn.goodboy.service.ProductService;
+import datn.goodboy.service.SizeService;
+import datn.goodboy.service.StylesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
 
@@ -34,6 +44,49 @@ public class ProductController {
     @ModelAttribute("convert")
     public TrangThaiConvert convert() {
         return convert;
+    }
+
+    @Autowired
+    private BrandService brandService;
+
+    @Autowired
+    private MaterialService materialService;
+
+    @Autowired
+    private OriginService originService;
+
+    @Autowired
+    private StylesService stylesService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private ImageProductService imageService;
+
+    @ModelAttribute("brandCbb")
+    public List<Map<Integer, String>> getComboboxBrand() {
+        return brandService.getCombobox();
+    }
+
+    @ModelAttribute("materialCbb")
+    public List<Map<Integer, String>> getComboboxMaterial() {
+        return materialService.getCombobox();
+    }
+
+    @ModelAttribute("categoryCbb")
+    public List<Map<Integer, String>> getComboboxCategory() {
+        return categoryService.getCombobox();
+    }
+
+    @ModelAttribute("originCbb")
+    public List<Map<Integer, String>> getComboboxOrigin() {
+        return originService.getCombobox();
+    }
+
+    @ModelAttribute("stylesCbb")
+    public List<Map<Integer, String>> getComboboxStyles() {
+        return stylesService.getCombobox();
     }
 
     @GetMapping({ "/dsProduct", "" })
@@ -74,15 +127,30 @@ public class ProductController {
 
     @GetMapping("/view-update/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("brand", productService.getById(id));
+        model.addAttribute("entity", productService.getRequest(id));
         return "admin/pages/product/update-product";
     }
 
-    @PostMapping("/update/{id}")
-    public String update(Model model, @Valid Product b, @PathVariable Integer id,
-            @RequestParam("listimage") List<MultipartFile> listimage) {
-        productService.update(id, b);
-        return "redirect:/admin/product/dsProduct";
+    @PostMapping("/update")
+    public String update(Model model, @Valid @ModelAttribute("entity") ProductRequest request,
+            @RequestParam("listimage") List<MultipartFile> listimage, BindingResult theBindingResult) {
+        if (theBindingResult.hasErrors()) {
+            return "/admin/pages/product/update-product";
+        } else {
+            // if (productDetailRequest.validateHasError()) {
+            // model.addAttribute("validateerrors", productDetailRequest.ValidateError());
+            // return "/admin/pages/productdetail/form-voucher.html";
+            // }
+            productService.updateProduct(request, listimage);
+            return "redirect:/admin/product/dsProduct";
+        }
+    }
+
+    @GetMapping("remove/{idproduct}/image/{idiamge}")
+    public String removeImage(@PathVariable("idproduct") Integer idproduct,
+            @PathVariable("idiamge") Integer idiamge) {
+        imageService.deleted(idiamge);
+        return "redirect:/admin/product/view-update/" + idproduct;
     }
 
     @PostMapping("/add")
