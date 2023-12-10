@@ -49,6 +49,7 @@ function formInOrder(id) {
   form.setAttribute("endtime", newTime);
   form.setAttribute("timecreate", new Date());
   form.classList.add("taborder");
+  form.classList.add("position-relative");
   form.setAttribute("idofform", id);
   form.setAttribute("onsubmit", `handleOrderSubmit(event)`);
   form.innerHTML = `<div class="form-container">
@@ -579,7 +580,6 @@ function formInOrder(id) {
                                     </span>
                             </div>
                     </div>
-
                       </section>
                   </div>
               </div>
@@ -588,7 +588,14 @@ function formInOrder(id) {
 
   </div>
 </div>
-
+<div id="overlay">
+      <button type="button" class="btn btn-primary mx-3" onclick="showHoaDonChoSave('hoaDon${id}')">
+        Lưu hóa đơn chờ
+      </button>
+      <button type="button" class="btn btn-danger px-5" onclick="removeOrderPage(${id})">
+        Xóa (F5)
+      </button>
+</div>
 `;
   return form;
 }
@@ -639,6 +646,11 @@ function countdown(id) {
 
     if (remainingTimeSeconds <= 0) {
       countdownElement.innerHTML = "Hết giờ!";
+      const buttonsubmit = document.querySelector(
+        `#hoaDon${id} button[type="submit"]`
+      );
+      buttonsubmit.disabled = true;
+      on(id);
     } else {
       countdownElement.innerHTML = formatTime(remainingTimeSeconds);
       timeouts[id] = setTimeout(() => countdown(id), 1000);
@@ -647,7 +659,13 @@ function countdown(id) {
     console.error(`Countdown element not found for form with id ${id}.`);
   }
 }
+function on(formid) {
+  document.querySelector(`#hoaDon${formid} #overlay`).style.display = "flex";
+}
 
+function off(formid) {
+  document.querySelector(`#hoaDon${formid} #overlay`).style.display = "none";
+}
 function stopCountdown(id) {
   clearTimeout(timeouts[id]);
 }
@@ -1200,6 +1218,12 @@ async function handleOrderSubmit(event) {
   var errorCount = 0;
   const formData = {};
   const form = document.getElementById(formId);
+  const endTimeAttribute = form.getAttribute("endtime");
+  const endTime = new Date(endTimeAttribute);
+  const currentTime = new Date();
+  if (endTime > currentTime) {
+    return;
+  }
   formData.employeeID = form.querySelector("select[name='employee']").value;
   formData.orderTypes = parseInt(
     form.querySelector("input[name='options-outlined']:checked").value,
@@ -1470,7 +1494,6 @@ function handleOrderSuccess(idform) {
     console.log(`Order with ID ${idform} not found.`);
   }
 }
-
 async function checkVoucher(formId, totalMoney) {
   const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   const voucCherId = parseInt(voucherSelect.value);
@@ -1573,7 +1596,6 @@ function getStatusBadge(status) {
   return '<span class="badge text-bg-dark">Không xác định</span>';
 }
 //updade new thanh toan
-
 async function getProductDetails(id) {
   try {
     const response = await fetch(`/admin/counter/productDetails/${id}`);
@@ -1771,7 +1793,6 @@ function formatToVND(amount) {
   });
   return formatter.format(amount);
 }
-
 async function getVoucherAble(formId) {
   const voucherSelect = document.querySelector(`#${formId} #voucher-choose`);
   voucherSelect.innerHTML = "";
@@ -1811,7 +1832,6 @@ window.addEventListener("beforeunload", function (event) {
 function showModalHoaDon() {
   $("#billPrint").modal("show");
 }
-
 async function showHoaDonChoSave(hoadonid) {
   $("#hoadoncho").modal("show");
   const data = await buildFormData(hoadonid);
