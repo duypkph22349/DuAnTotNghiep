@@ -165,15 +165,9 @@
 
     <Br>
     <div class="input-group mb-3">
-        <button data-value="0" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">Chọn loại tìm kiếm
+        <button data-value="1" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">Tìm kiếm
         </button>
-        <ul class="dropdown-menu">
-            <li>
-                <a data-value="1" style="cursor: pointer" class="dropdown-item">Tất cả</a>
-            </li>
-
-        </ul>
         <script>
             let cbbSelect = document.querySelector(".cbbSelect");
             let dropdownMenu = document.querySelector(".dropdown-menu");
@@ -203,9 +197,9 @@
     <Br>
 
     <div class="d-flex">
-        <!--        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">-->
-        <!--            Tải File Excel-->
-        <!--        </a>-->
+<!--        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">-->
+<!--            Tải File Excel-->
+<!--        </a>-->
         <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 14px">Làm mới</button>
         <select id="statusSelect" class="form-select me-2" style="  width: 120px; height: 38px; font-size: 11px;"
                 onchange="selectFilterAction(this.value)">
@@ -276,19 +270,11 @@
             <tbody class="info_bill">
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul id="pagination_wrapper" class="pagination justify-content-center">
-            </ul>
-        </nav>
-        <div id="pageNavPosition" class="text-right"></div>
-        <script type="text/javascript">
-            var pager = new Pager('myTable', 7);
-            pager.init();
-            pager.showPageNav('pager', 'pageNavPosition');
-            pager.showPage(1);
-        </script>
     </div>
-
+    <nav aria-label="Page navigation example">
+        <ul id="pagination_wrapper" class="pagination justify-content-center">
+        </ul>
+    </nav>
     <script type="text/javascript">
         // Tìm kiếm
 
@@ -504,7 +490,7 @@
                                      >
                                         Thanh toán
                                     </button>
-                                    ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 14px">Xác nhận</button>' : ''}
+
                              </th>
                          </tr>
                     `
@@ -724,7 +710,7 @@
                                      >
                                         Thanh toán
                                     </button>
-                                    ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 14px">Xác nhận</button>' : ''}
+
                              </th>
                          </tr>
                     `

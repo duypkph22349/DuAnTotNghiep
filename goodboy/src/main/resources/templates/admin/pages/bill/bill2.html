@@ -227,14 +227,14 @@
                         </div>
                         <div class="item phone">
                             <label>Số Điện Thoại</label>
-                            <input id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
+                            <input th:disabled="${bill.status == 5}" id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
 
                             <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
                         </div>
 
                         <div class="item address">
                             <label>Địa Chỉ</label>
-                            <input id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
+                            <input th:disabled="${bill.status == 5}" id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
 
                         </div>
 
@@ -278,7 +278,7 @@
                         <th>Kiểu mẫu</th>
                         <th>Tổng tiền</th>
                         <th>Số lượng</th>
-
+<!--                        <th>Trạng thái</th>-->
                     </tr>
                     </thead>
 
@@ -300,7 +300,10 @@
                         <td th:text="${billDetail.productDetail.idPattern.name}"></td>
                         <td th:text="${billDetail.totalMoney}"></td>
                         <td th:text="${billDetail.quantity}"></td>
-
+<!--                        <td>-->
+<!--                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>-->
+<!--                            <span th:if="${billDetail.status == 1}">Xác nhận</span>-->
+<!--                        </td>-->
                     </tr >
                     </tbody>
 
@@ -335,6 +338,19 @@
                 }
                 let id = document.getElementById("id").getAttribute("data-value");
                 location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
+                var message = '';
+                if(status == 1){
+                    message = 'Chờ xác nhận';
+                }else if(status == 2){
+                    message = 'Chờ giao hàng';
+                }else if(status == 3){
+                    message = 'Đang giao hàng';
+                }else if(status == 4){
+                    message = 'Đã giao hàng';
+                }else if(status == 5){
+                    message = 'Thành công';
+                }
+                alert("Đã chuyển trạng thái thành " + message)
             };
         });
 

@@ -39,21 +39,21 @@ public class AdminBill {
 
     @GetMapping("all-bill")
     public Page<Bill> getAllBill(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 8);
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         return billService.getPage(pageable);
     }
 
     @GetMapping("statusPay/{status}")
     public Page<Bill> getBillStatusPay(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                        @PathVariable int status) {
-        Pageable pageable = PageRequest.of(pageNumber, 8);
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         return billService.findByStatusPay(pageable, status);
     }
 
     @GetMapping("orderType/{id}")
     public Page<Bill> getBillOrderType(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                        @PathVariable int id) {
-        Pageable pageable = PageRequest.of(pageNumber, 8);
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         return billService.findByOrderType(pageable, id);
     }
 
@@ -66,14 +66,14 @@ public class AdminBill {
         LocalDateTime localDateTimeStart = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime localDateTimeEnd = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        Pageable pageable = PageRequest.of(pageNumber, 8);
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         return billService.filterDate(pageable, localDateTimeStart, localDateTimeEnd);
     }
 
     @GetMapping("bill-filter/{status}")
     public Page<Bill> getBillStatus(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                     @PathVariable int status) {
-        Pageable pageable = PageRequest.of(pageNumber, 8);
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         return billService.getPageStatus(pageable, status);
     }
 
