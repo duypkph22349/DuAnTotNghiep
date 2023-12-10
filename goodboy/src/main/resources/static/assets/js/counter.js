@@ -7,7 +7,7 @@ const shop_id = 4676018;
 const districtform = 3440; // quận nam từ liêm
 const districtto = 3308; // huyện trực ninh
 const WardCodeninhcuong = "800083";
-const listtab = [0];
+const listtab = [];
 const viewOrderTab = document.getElementById("taborders");
 const formOrder = document.getElementById("formorders");
 const OrderDetailJson = [];
@@ -43,6 +43,11 @@ function formInOrder(id) {
   viewOrderTab.appendChild(buttonOrderTab(id));
   const form = document.createElement("form");
   form.id = `hoaDon${id}`;
+  const currentTime = new Date();
+  form.setAttribute("timecreate", currentTime);
+  const newTime = new Date(currentTime.getTime() + 30 * 60000); // 30 minutes in milliseconds
+  form.setAttribute("endtime", newTime);
+  form.setAttribute("timecreate", new Date());
   form.classList.add("taborder");
   form.setAttribute("idofform", id);
   form.setAttribute("onsubmit", `handleOrderSubmit(event)`);
@@ -524,6 +529,18 @@ function formInOrder(id) {
                           </style>
                           <div class="box-order-status">
                             <div style="display: flex;">
+                                  <span class="order-action-button" style="margin-right: 8px;">
+                                            <button type="button" class="ant-btn ant-btn-primary" onclick="showHoaDonChoSave('hoaDon${id}')"
+                                                    style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
+                                                                    role="img" aria-label="printer" class="anticon anticon-printer"><svg
+                                                                            viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                                            width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                                            <path
+                                                                                    d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                                            </path>
+                                                                    </svg></span> Lưu hóa đơn chờ</span>
+                                            </button>
+                                    </span>
                                     <span class="order-action-button" style="margin-right: 8px;">
                                             <button type="button" class="ant-btn ant-btn-primary"
                                                     style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
@@ -557,7 +574,7 @@ function formInOrder(id) {
                                                                             <path
                                                                                     d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2zM384 184h256v104H384V184zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136V840zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144-64.5-144-144-144zm0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80 80 35.8 80 80-35.8 80-80 80z">
                                                                             </path>
-                                                                    </svg></span> Thanh Toán</span>
+                                                                    </svg></span> Thanh Toán</span><span id="countdown" class="badge text-bg-secondary">12:22</span>
                                             </button>
                                     </span>
                             </div>
@@ -578,7 +595,12 @@ function formInOrder(id) {
 // ui processtion
 function addnewOrderPage() {
   if (listtab.length <= 5) {
-    const id = Math.max(...listtab) + 1;
+    var id = 0;
+    if (listtab.length == 0) {
+      id = 1;
+    } else {
+      id = Math.max(...listtab) + 1;
+    }
     listtab.push(id);
     renderOrderPage(id);
     getAllprovide(id);
@@ -597,11 +619,46 @@ function addnewOrderPage() {
     document.getElementById(`hoaDon${id}`).style.display = "block";
     const exitButton = document.getElementById(`vieworder${id}`);
     exitButton.className += " active";
+    countdown(id);
   } else {
     alert("Tối đa 5 hóa đơn");
   }
 }
+let timeouts = {}; // Create an object to store timeouts
 
+function countdown(id) {
+  const countdownElement = document.querySelector(`#hoaDon${id} #countdown`);
+
+  if (countdownElement) {
+    const endTime = new Date(
+      document.getElementById(`hoaDon${id}`).getAttribute("endtime")
+    );
+    const currentTime = new Date();
+    const remainingTimeMilliseconds = endTime - currentTime;
+    const remainingTimeSeconds = Math.floor(remainingTimeMilliseconds / 1000);
+
+    if (remainingTimeSeconds <= 0) {
+      countdownElement.innerHTML = "Hết giờ!";
+    } else {
+      countdownElement.innerHTML = formatTime(remainingTimeSeconds);
+      timeouts[id] = setTimeout(() => countdown(id), 1000);
+    }
+  } else {
+    console.error(`Countdown element not found for form with id ${id}.`);
+  }
+}
+
+function stopCountdown(id) {
+  clearTimeout(timeouts[id]);
+}
+function formatTime(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var remainingSeconds = seconds % 60;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  remainingSeconds =
+    remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+  return minutes + ":" + remainingSeconds;
+}
 //Tìm kiếm sản phẩm
 function filterTable(orderId) {
   var input, filter, table, tbody, tr, td, i, j, txtValue;
@@ -652,6 +709,7 @@ function removeOrderPage(orderId) {
     if (indexToRemove !== -1) {
       listtab.splice(indexToRemove, 1);
     }
+    stopCountdown(orderId);
     const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
     const orderToRemove = document.getElementById(`hoaDon${orderId}`);
     if (orderToRemove) {
@@ -1743,20 +1801,75 @@ async function getVoucherAble(formId) {
 }
 async function getQrThanhToan(orderId) {}
 window.addEventListener("beforeunload", function (event) {
-  const confirmationMessage = "Are you sure you want to leave?";
-  event.returnValue = confirmationMessage;
-  // checkExitDataOnForm();
-  return confirmationMessage;
+  if (listtab.length > 0) {
+    const confirmationMessage = "Are you sure you want to leave?";
+    event.returnValue = confirmationMessage;
+    // checkExitDataOnForm();
+    return confirmationMessage;
+  }
 });
 function showModalHoaDon() {
   $("#billPrint").modal("show");
 }
-//   const options = data.data;
-//   for (let i = 0; i < options.length; i++) {
-//     const option = document.createElement("option");
-//     // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
-//     option.text = options[i].ProvinceName; // Set the text of the option
-//     option.setAttribute("providecode", options[i].ProvinceID);
-//     selectCity.appendChild(option); // Add the option to the select element
-//   }
-// })
+
+async function showHoaDonChoSave(hoadonid) {
+  $("#hoadoncho").modal("show");
+  const data = await buildFormData(hoadonid);
+  console.log(data);
+}
+function saveHoaDonCho() {}
+async function buildFormData(formId) {
+  const formData = {};
+  const form = document.getElementById(formId);
+  formData.idform = formId;
+  const getInputValue = (selector) => form.querySelector(selector).value;
+
+  formData.customerName = getInputValue("#tenKhachHang");
+  formData.employeeID = getInputValue("select[name='employee']");
+  formData.orderTypes = parseInt(
+    form.querySelector("input[name='options-outlined']:checked").value,
+    10
+  );
+  formData.phoneNumber = getInputValue("#soDienThoai");
+  formData.city = getInputValue("#city");
+  formData.district = getInputValue("#district");
+  formData.ward = getInputValue("#ward");
+  formData.fullAddress = getInputValue("#FullAddress");
+  formData.specificAddress = getInputValue("input#address");
+  formData.note = getInputValue("textarea#note");
+  formData.products = [];
+  formData.productViews = [];
+  let totalMoney = 0;
+  for (const row of form.querySelectorAll(
+    "#cartTable tbody tr.table-body-row"
+  )) {
+    const productId = row.getAttribute("idproduct");
+    const quantityElement = row.querySelector(`input[name="quantity"]`);
+    const productQuantity = parseInt(quantityElement.value, 10);
+    if (productQuantity <= 0 || isNaN(productQuantity)) {
+      alert("Số lượng sản phẩm không đúng");
+      return null; // Return null to indicate an error
+    }
+    try {
+      const product = await getProductDetails(productId);
+      if (product) {
+        totalMoney += product.price * productQuantity;
+        formData.products.push({
+          id: parseInt(productId, 10),
+          quantity: productQuantity,
+        });
+        formData.productViews.push({
+          name: product.name,
+          price: product.price,
+          totalprice: product.price * productQuantity,
+          quantity: productQuantity,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching or calculating total money:", error);
+      return null; // Return null to indicate an error
+    }
+  }
+  formData.totalMoney = totalMoney;
+  return formData;
+}
