@@ -165,7 +165,7 @@
 
     <Br>
     <div class="input-group mb-3">
-        <button data-value="1" class="cbbSelect btn btn-outline-secondary dropdown-toggle" type="button"
+        <button data-value="1" class="cbbSelect btn btn-outline-secondary " type="button"
                 data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">Tìm kiếm
         </button>
         <script>
@@ -190,8 +190,10 @@
                 }
             }
         </script>
-        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" style="font-size: 14px" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
+
+        <input type="text" class="form-control col-6 d-flex" aria-label="Text input with segmented dropdown button"
+               id="searchInput" onkeyup="myFunction()" style="font-size: 14px;" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
+
     </div>
 
     <Br>
@@ -205,12 +207,13 @@
                 onchange="selectFilterAction(this.value)">
             <option value="0">Chọn trạng thái</option>
             <option value="1">Chờ xác nhận</option>
-            <option value="2">Chờ giao hàng</option>
-            <option value="3">Đang giao hàng</option>
-            <option value="4">Đã giao hàng</option>
-            <option value="5">Thành công</option>
-            <option value="6">Chưa thanh toán</option>
-            <option value="7">Đã thanh toán</option>
+            <option value="2">Chờ lấy hàng</option>
+            <option value="3">Chờ giao hàng</option>
+            <option value="4">Đang giao hàng</option>
+            <option value="5">Đã giao hàng</option>
+            <option value="6">Thành công</option>
+            <option value="7">Chưa thanh toán</option>
+            <option value="8">Đã thanh toán</option>
         </select>
         <select id="orderTypeSelect" class="form-select" style="  width: 130px; height: 38px; font-size: 11px;"
                 onchange="selectFilterOrderType(this.value)">
@@ -470,7 +473,7 @@
                             <td>${item.phone}</td>
                             <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
                             <td >${formattedTotalMoney} VNĐ</td>
-                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
+                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ lấy hàng' : item.status === 3 ? 'Chờ giao hàng' : item.status === 4 ? 'Đang giao hàng' : item.status === 5 ? 'Đã giao hàng' : item.status === 6 ? 'Thành công' : ''}</td>
                             <td>${item.note}</td>
                             <td  >${formattedDate}</td>
 
@@ -614,12 +617,12 @@
             let urlStatus;
             if(selectedStatus == 0){
                 urlStatus = "/admin/bill/all-bill";
-            }else if(selectedStatus > 5){
-                if(selectedStatus == 6){
+            }else if(selectedStatus > 6){
+                if(selectedStatus == 7){
                     urlStatus = "/admin/bill/statusPay/" + 0;
                     fillTable(urlStatus);
                     return;
-                }else if(selectedStatus == 7){
+                }else if(selectedStatus == 8){
                     urlStatus = "/admin/bill/statusPay/" + 1;
                     fillTable(urlStatus);
                     return;
@@ -690,7 +693,7 @@
                             <td>${item.phone}</td>
                             <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
                             <td >${formattedTotalMoney} VNĐ</td>
-                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
+                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ lấy hàng' : item.status === 3 ? 'Chờ giao hàng' : item.status === 4 ? 'Đang giao hàng' : item.status === 5 ? 'Đã giao hàng' : item.status === 6 ? 'Thành công' : ''}</td>
                             <td>${item.note}</td>
                             <td  >${formattedDate}</td>
 

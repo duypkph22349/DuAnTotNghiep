@@ -134,19 +134,24 @@
                         <i class="tab-item bi bi-cart"></i>
                         Chờ xác nhận
                     </div>
+
                     <div data-value="2" id="tab_2" class="tab-item">
+                        <i class="tab-item bi bi-cart"></i>
+                        Chờ lấy hàng
+                    </div>
+                    <div data-value="3" id="tab_3" class="tab-item">
                         <i class="tab-icon bi bi-cart-check"></i>
                         Chờ giao hàng
                     </div>
-                    <div data-value="3" id="tab_3" class="tab-item">
+                    <div data-value="4" id="tab_4" class="tab-item">
                         <i class="tab-icon bi bi-car-front-fill"></i>
                         Đang giao hàng
                     </div>
-                    <div data-value="4" id="tab_4" class="tab-item">
+                    <div data-value="5" id="tab_5" class="tab-item">
                         <i class="tab-icon bi bi-box-seam"></i>
                         Đã giao hàng
                     </div>
-                    <div data-value="5" id="tab_5" class="tab-item">
+                    <div data-value="6" id="tab_6" class="tab-item">
                         <i class="tab-icon bi bi-check-lg"></i>
                         Thành công
                     </div>
@@ -158,6 +163,9 @@
                 <div class="lf">
                     <a href="">
                         <button class="btn btn-primary">Chờ xác nhận</button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-primary">Chờ lấy hàng</button>
                     </a>
                     <a href="">
                         <button class="btn btn-primary">Chờ giao hàng</button>
@@ -183,7 +191,7 @@
         <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
             <div class="top d-flex justify-content-between">
                 <h2>THÔNG TIN ĐƠN HÀNG</h2>
-                <button onclick="update()" class="btn btn-primary" th:if="${bill.status != 5}" style="font-size: 16px">Update</button>
+                <button onclick="update()" class="btn btn-primary" th:if="${bill.status != 4 and bill.status != 5 and bill.status != 6}"  style="font-size: 16px">Update</button>
 
             </div>
             <hr>
@@ -201,10 +209,11 @@
                         <div class="item status">
                             <label>Trạng Thái</label>
                             <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
-                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ lấy hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 3}">Chờ giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 5}">Đã giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 6}">Thành công</span>
                         </div>
                         <div class="item dateOrder">
                             <label>Ngày Đặt Hàng</label>
@@ -227,14 +236,14 @@
                         </div>
                         <div class="item phone">
                             <label>Số Điện Thoại</label>
-                            <input th:disabled="${bill.status == 5}" id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
+                            <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }" id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
 
                             <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
                         </div>
 
                         <div class="item address">
                             <label>Địa Chỉ</label>
-                            <input th:disabled="${bill.status == 5}" id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
+                            <input th:disabled="${bill.status == 4 or bill.status == 5 or bill.status == 6}" id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
 
                         </div>
 
@@ -342,12 +351,14 @@
                 if(status == 1){
                     message = 'Chờ xác nhận';
                 }else if(status == 2){
-                    message = 'Chờ giao hàng';
+                    message = 'Chờ lấy hàng';
                 }else if(status == 3){
-                    message = 'Đang giao hàng';
+                    message = 'Chờ giao hàng';
                 }else if(status == 4){
-                    message = 'Đã giao hàng';
+                    message = 'Đang giao hàng';
                 }else if(status == 5){
+                    message = 'Đã giao hàng';
+                }else if(status == 6){
                     message = 'Thành công';
                 }
                 alert("Đã chuyển trạng thái thành " + message)
