@@ -33,8 +33,10 @@
     <!-- Shopping Cart Section Begin -->
     <section class="checkout-section spad pt-4">
         <div class="container">
-            <form th:action="@{/checkout}" th:object="${bill}" method="post" id="checkout" class="checkout-form"
+            <form th:action="@{/checkout}" th:object="${bills}" method="post" id="checkout" class="checkout-form"
                   onsubmit="return checkout()">
+                <input type="hidden" th:each="cartDetail, loop : ${cartDetails}" th:name="cartDetails"
+                       th:value="${cartDetail.id}">
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
@@ -131,8 +133,8 @@
                                             id="voucher">Số tiền giảm</span></li>
                                     <li style="color: red" name="money_ship">Tiền ship <span id="giaship"
                                                                                              data-amount="SHIP_AMOUNT">Tiền ship</span>
-                                        <input type="hidden" id="money_ship" name="money_ship"></li>
-                                    <li style="color: #e7ab3c;">Số tiền cần thanh toán <span id="totalAmount" >Tổng tiền</span></li>
+                                    <li style="color: #e7ab3c;">Số tiền cần thanh toán <span
+                                            id="totalAmount">Tổng tiền</span></li>
                                     <input type="hidden" id="soTienCanThanhToan" name="soTienCanThanhToan">
 
                                 </ul>
@@ -162,6 +164,7 @@
         const wardSelect = document.getElementById("Wards");
         const shipServiceSelect = document.getElementById("shipService");
         const giaship = document.getElementById("giaship");
+        const diaChiCuThe = document.getElementById("address");
 
         function getProvinces() {
             fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
@@ -270,6 +273,17 @@
         }
 
         function getServiceShip() {
+            const proselect = provinceSelect.options[provinceSelect.selectedIndex];
+            const proname = proselect.text;
+            const districselect = districtSelect.options[districtSelect.selectedIndex];
+            const distname = districselect.text;
+            const wardName = wardSelect.options[wardSelect.selectedIndex];
+            const wardname = wardName.text;
+            const diaChiCuThes = diaChiCuThe.value;
+
+            const fullAdress =diaChiCuThes + ","+ wardname + ", " + distname + " ," + proname;
+            document.getElementById("FullAddress").value = String(fullAdress);
+            console.log(fullAdress)
             const districtto = parseInt(districtSelect.value);
             fetch(
                 "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
@@ -414,14 +428,16 @@
             var totalToPay = totalAmount - voucherAmount + shippingCost;
 
             // Update the UI
-            document.getElementById("voucher").innerText =  voucherAmount + " VNĐ";
-            document.getElementById("giaship").innerText =  shippingCost + " VNĐ";
+            document.getElementById("voucher").innerText = voucherAmount + " VNĐ";
+            document.getElementById("giaship").innerText = shippingCost + " VNĐ";
             document.getElementById("money_ship").value = shippingCost; // Set the shipping cost in a hidden input for form submission
-            document.getElementById("totalAmount").innerText =  totalToPay + " VNĐ";
+            document.getElementById("totalAmount").innerText = totalToPay + " VNĐ";
 
             // Save the total amount to a hidden input for form submission (if needed)
             document.getElementById("soTienCanThanhToan").value = totalToPay;
         }
+
+
     </script>
 
 

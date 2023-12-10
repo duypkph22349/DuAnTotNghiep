@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import datn.goodboy.model.entity.BillDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -370,6 +371,24 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
         exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
         productDetailRepository.save(exitProductDetail);
       }
+    }
+  }
+  public void updateProductQuantities(List<BillDetail> billDetails) {
+    for (BillDetail billDetail : billDetails) {
+      ProductDetail productDetail = billDetail.getProductDetail();
+      int quantitySold = billDetail.getQuantity();
+
+      // Truy xuất số lượng hiện tại của sản phẩm
+      int currentQuantity = productDetail.getQuantity();
+
+      // Giảm đi số lượng đã bán
+      int updatedQuantity = currentQuantity - quantitySold;
+
+      // Cập nhật số lượng sản phẩm
+      productDetail.setQuantity(updatedQuantity);
+
+      // Lưu thông tin sản phẩm đã cập nhật vào cơ sở dữ liệu
+      productDetailRepository.save(productDetail);
     }
   }
 }

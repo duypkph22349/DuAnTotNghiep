@@ -51,8 +51,20 @@ public class Cart {
         return cartItems;
     }
 
-    @OneToMany(mappedBy = "cart")
-    public static List<CartDetail> cartDetails = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+    @ToString.Include
+    public List<CartDetail> cartDetails;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.status = 1;
+        this.deleted = false;
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
