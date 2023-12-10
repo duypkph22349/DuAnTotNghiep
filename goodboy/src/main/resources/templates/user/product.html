@@ -114,6 +114,34 @@
         .row-cols-1 .col {
             align-self: stretch;
         }
+
+        .row.row-cols-1.row-cols-md-5.g-3 {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 .col {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 .col:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 10px red;
+        }
+        .row.row-cols-1.row-cols-md-5.g-3 {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -5px;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 .col {
+            flex: 0 0 20%;
+            max-width: 20%;
+            padding: 5px;
+
+            width: 1300px;
+        }
     </style>
     <!--    Logo-->
     <section class="top-category-ads">
@@ -269,25 +297,16 @@
     <!--    Sản phẩm-->
     <section class="product-cate-block" >
         <div class="container">
-            <div class="row" id="searchResult">
                 <div class="row row-cols-1 row-cols-md-5 g-3">
                     <div th:each="product : ${list}" class="col">
                         <div class="card shadow-sm">
                             <div class="pi-pic">
                                 <div th:if="${product.imageProducts !=null && product.imageProducts.size() > 0}">
-                                    <img th:src="${product.imageProducts[0].img}" alt="Ảnh sản phẩm"
-                                         class="product-image"/>
-                                </div>
-                                <br>
-                                <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square"
-                                       th:onclick="'addToCart(\'' + ${product.id} + '\')'"><i
-                                            class="fa fa-shopping-cart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square"
-                                       th:href="@{/shop/product/detail/{productId}(productId=${product.id})}"><i
-                                            class="fa fa-solid fa-eye"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i
-                                            class="fa fa-search"></i></a>
+                                    <a th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">
+                                        <img th:src="${product.imageProducts[0].img}" alt="Ảnh sản phẩm"
+                                             class="product-image"/>
+                                    </a>
+
                                 </div>
                             </div>
                             <div class="card-body">
@@ -301,7 +320,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
             <div class="row">
                 <div class="col col-sm-4 col-lg-6 mb-9">
@@ -341,6 +359,19 @@
         var chatbox = document.getElementById('fb-customer-chat');
         chatbox.setAttribute("page_id", "103005398881881");
         chatbox.setAttribute("attribution", "biz_inbox");
+    </script>
+
+    <script>
+        // Sử dụng JavaScript để thêm lớp "hover" khi di chuột vào dòng
+        const rows = document.querySelectorAll('.row.row-cols-1.row-cols-md-5.g-3 .col');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.classList.add('hover');
+            });
+            row.addEventListener('mouseleave', () => {
+                row.classList.remove('hover');
+            });
+        });
     </script>
 
     <script>
