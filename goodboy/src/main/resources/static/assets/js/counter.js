@@ -543,19 +543,7 @@ function formInOrder(id) {
                                             </button>
                                     </span>
                                     <span class="order-action-button" style="margin-right: 8px;">
-                                            <button type="button" class="ant-btn ant-btn-primary"
-                                                    style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
-                                                                    role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                                                            viewBox="64 64 896 896" focusable="false" data-icon="printer"
-                                                                            width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                                            <path
-                                                                                    d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                                                            </path>
-                                                                    </svg></span> In (F4)</span>
-                                            </button>
-                                    </span>
-                                    <span class="order-action-button" style="margin-right: 8px;">
-                                            <button type="button" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
+                                            <button type="button" id="removebill" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
                                                     style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
                                                                     role="img" aria-label="printer" class="anticon anticon-printer"><svg
                                                                             viewBox="64 64 896 896" focusable="false" data-icon="printer"
@@ -563,7 +551,7 @@ function formInOrder(id) {
                                                                             <path
                                                                                     d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
                                                                             </path>
-                                                                    </svg></span> Xóa (F5)</span>
+                                                                    </svg></span> Xóa (F10)</span>
                                             </button>
                                     </span>
                                     <span class="order-action-button" style="margin-right: 8px;">
@@ -632,7 +620,6 @@ function addnewOrderPage() {
   }
 }
 let timeouts = {}; // Create an object to store timeouts
-
 function countdown(id) {
   const countdownElement = document.querySelector(`#hoaDon${id} #countdown`);
 
@@ -662,7 +649,6 @@ function countdown(id) {
 function on(formid) {
   document.querySelector(`#hoaDon${formid} #overlay`).style.display = "flex";
 }
-
 function off(formid) {
   document.querySelector(`#hoaDon${formid} #overlay`).style.display = "none";
 }
@@ -677,7 +663,6 @@ function formatTime(seconds) {
     remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
   return minutes + ":" + remainingSeconds;
 }
-//Tìm kiếm sản phẩm
 function filterTable(orderId) {
   var input, filter, table, tbody, tr, td, i, j, txtValue;
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -721,7 +706,24 @@ function selectOrder(evt, id) {
   document.getElementById(`hoaDon${id}`).style.display = "block";
   evt.currentTarget.className += " active";
 }
-function removeOrderPage(orderId) {
+async function removeOrderPage(orderId) {
+  const data = await buildFormData(`hoaDon${orderId}`);
+  if (data.productViews.length == 0) {
+    let indexToRemove = listtab.indexOf(orderId);
+    if (indexToRemove !== -1) {
+      listtab.splice(indexToRemove, 1);
+    }
+    stopCountdown(orderId);
+    const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
+    const orderToRemove = document.getElementById(`hoaDon${orderId}`);
+    if (orderToRemove) {
+      orderToRemove.remove();
+    }
+    if (orderbtnrmRemove) {
+      orderbtnrmRemove.remove();
+    }
+    return;
+  }
   if (confirm("Bạn Muốn xóa sáo")) {
     let indexToRemove = listtab.indexOf(orderId);
     if (indexToRemove !== -1) {
@@ -732,17 +734,12 @@ function removeOrderPage(orderId) {
     const orderToRemove = document.getElementById(`hoaDon${orderId}`);
     if (orderToRemove) {
       orderToRemove.remove();
-    } else {
-      console.log(`Order with ID ${orderId} not found.`);
     }
     if (orderbtnrmRemove) {
       orderbtnrmRemove.remove();
-    } else {
-      console.log(`Order with ID ${orderId} not found.`);
     }
   }
 }
-//calldata
 function selectOrderType(event, id) {
   orderType = event.target.value;
   const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
@@ -766,7 +763,6 @@ function selectOrderType(event, id) {
   }
   updateTongTien(id);
 }
-// address, shipcode
 function updateshipService(orderId) {
   const districtSelect = document.querySelector(`#hoaDon${orderId} #district`);
   const selectedOption = districtSelect.options[districtSelect.selectedIndex];
@@ -812,7 +808,6 @@ function updateshipService(orderId) {
     })
     .catch((error) => console.error("Error:", error));
 }
-
 function resetTotalShip(orderId) {
   document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
   document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML =
@@ -1152,7 +1147,6 @@ async function findInExitOrder(idorderdetail, productId) {
   }
   return null;
 }
-
 function increaseProductQuantity(productExists, product) {
   if (productExists instanceof Element) {
     const inputNumber = productExists.querySelector("td:nth-child(3) input");
@@ -1207,9 +1201,7 @@ function descreaseProductQuantity(productExists, product) {
     console.error("Product element not found.");
   }
 }
-//updade new thanh toan
 const phoneNumberRegex = /^(09|\d{2}[2-9])\d{7}$/;
-
 async function handleOrderSubmit(event) {
   event.preventDefault();
   let totalMoney = 0;
@@ -1222,8 +1214,15 @@ async function handleOrderSubmit(event) {
   const endTime = new Date(endTimeAttribute);
   const currentTime = new Date();
   if (endTime > currentTime) {
+    console.log("End time is after current time.");
+  } else if (endTime < currentTime) {
+    console.log("End time is before current time.");
+    alert("Hóa đơn chờ quá lâu");
     return;
+  } else {
+    console.log("End time is equal to current time.");
   }
+  console.log(formData);
   formData.employeeID = form.querySelector("select[name='employee']").value;
   formData.orderTypes = parseInt(
     form.querySelector("input[name='options-outlined']:checked").value,
@@ -1324,6 +1323,24 @@ async function handleOrderSubmit(event) {
       errorCount++;
       // ("Tiền chưa đủ !!! \n");
       setErrorElement(form.querySelector("#changeAmount"), "Chưa đủ tiền !!!");
+      new Notify({
+        status: "warning",
+        title: "Tiền thanh toán chưa đủ !!!",
+        text: "Kiểm tra lại số tiền",
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     }
   } else if (formData.orderTypes === 1) {
     formData.totalShip = form.querySelector(`#total-ship`).value;
@@ -1395,7 +1412,28 @@ async function handleOrderSubmit(event) {
       );
     }
   }
+  console.log(formData);
+  console.log(errorCount);
   if (errorCount > 0) {
+    new Notify({
+      status: "error",
+      title: "Vui lòng kiểm tra lại thông tin",
+      text: "Kiểm tra lại thông tin đầu vào",
+      effect: "fade",
+      speed: 300,
+      customClass: "",
+      customIcon: "",
+      showIcon: true,
+      showCloseButton: true,
+      autoclose: true,
+      autotimeout: 3000,
+      gap: 20,
+      distance: 20,
+      type: 1,
+      position: "right top",
+      customWrapper: "",
+    });
+    return;
   } else {
     if (confirm("Xác Nhận Thanh Toán")) {
       console.log(formData);
@@ -1516,6 +1554,24 @@ async function checkVoucher(formId, totalMoney) {
         getVoucherAble(formId);
       } else {
         if (data.min_order > totalMoney) {
+          new Notify({
+            status: "warning",
+            title: "Voucher lỗi !!!",
+            text: "Chọn hoặc kiểm tra lại",
+            effect: "fade",
+            speed: 300,
+            customClass: "",
+            customIcon: "",
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right top",
+            customWrapper: "",
+          });
           setErrorElement(
             voucherSelect,
             "Không đủ điều kiện để áp dụng voucher này"
@@ -1524,16 +1580,70 @@ async function checkVoucher(formId, totalMoney) {
           // getVoucherAble(formId);
           return 0;
         } else if (data.quantily <= 0) {
+          new Notify({
+            status: "warning",
+            title: "Voucher lỗi !!!",
+            text: "Chọn hoặc kiểm tra lại",
+            effect: "fade",
+            speed: 300,
+            customClass: "",
+            customIcon: "",
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right top",
+            customWrapper: "",
+          });
           setErrorElement(voucherSelect, "Voucher đã hết hết số lượng");
           discountAmount.innerHTML = formatToVND(0);
           // getVoucherAble(formId);
           return 0;
         } else if (data.end_time <= currentTime) {
+          new Notify({
+            status: "warning",
+            title: "Voucher lỗi !!!",
+            text: "Chọn hoặc kiểm tra lại",
+            effect: "fade",
+            speed: 300,
+            customClass: "",
+            customIcon: "",
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right top",
+            customWrapper: "",
+          });
           setErrorElement(voucherSelect, "Voucher đã hết hạn sử dụng");
           discountAmount.innerHTML = formatToVND(0);
           // getVoucherAble(formId);
           return 0;
         } else if (data.status != 1) {
+          new Notify({
+            status: "warning",
+            title: "Voucher lỗi !!!",
+            text: "Chọn hoặc kiểm tra lại",
+            effect: "fade",
+            speed: 300,
+            customClass: "",
+            customIcon: "",
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right top",
+            customWrapper: "",
+          });
           setErrorElement(voucherSelect, "Voucher không còn");
           // getVoucherAble(formId);
           discountAmount.innerHTML = formatToVND(0);
@@ -1561,6 +1671,24 @@ async function checkVoucher(formId, totalMoney) {
         }
       }
     } catch (error) {
+      new Notify({
+        status: "warning",
+        title: "Voucher lỗi !!!",
+        text: "Chọn hoặc kiểm tra lại",
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
       setErrorElement(
         voucherSelect,
         "Voucher đã không hoạt động chọn voucher khác"
@@ -1595,7 +1723,6 @@ function getStatusBadge(status) {
   }
   return '<span class="badge text-bg-dark">Không xác định</span>';
 }
-//updade new thanh toan
 async function getProductDetails(id) {
   try {
     const response = await fetch(`/admin/counter/productDetails/${id}`);
@@ -1833,9 +1960,57 @@ function showModalHoaDon() {
   $("#billPrint").modal("show");
 }
 async function showHoaDonChoSave(hoadonid) {
-  $("#hoadoncho").modal("show");
   const data = await buildFormData(hoadonid);
+  if (data.productViews.length == 0) {
+    new Notify({
+      status: "warning",
+      title: "Chưa có sản phẩm nào ",
+      text: "Vui lòng chọn sản phẩm để tiếp tục",
+      effect: "fade",
+      speed: 300,
+      customClass: "",
+      customIcon: "",
+      showIcon: true,
+      showCloseButton: true,
+      autoclose: true,
+      autotimeout: 3000,
+      gap: 20,
+      distance: 20,
+      type: 1,
+      position: "right top",
+      customWrapper: "",
+    });
+    return;
+  }
+  genhoadoncho(data);
   console.log(data);
+  $("#hoadoncho").modal("show");
+}
+function genhoadoncho(data) {
+  const modalhoadoncho = document.getElementById("hoadoncho");
+  const formhoadoncho = modalhoadoncho.querySelector("#billwait");
+  formhoadoncho.querySelector("#employename").textContent =
+    data.employeeID === "null" ? "Not assigned" : data.employeeID;
+  formhoadoncho.querySelector("#orderstatus").textContent = "Pending"; //
+  const productTableBody = formhoadoncho.querySelector("#sanphaminbill");
+  productTableBody.innerHTML = ""; // Clear previous entries
+  data.productViews.forEach((product, index) => {
+    const row = productTableBody.insertRow();
+    const cellIndex = row.insertCell(0);
+    const cellName = row.insertCell(1);
+    const cellQuantity = row.insertCell(2);
+    const cellPrice = row.insertCell(3);
+    const cellTotalPrice = row.insertCell(4);
+
+    cellIndex.textContent = index + 1;
+    cellName.textContent = product.name;
+    cellQuantity.textContent = product.quantity;
+    cellPrice.textContent = product.price;
+    cellTotalPrice.textContent = product.totalprice;
+  });
+  formhoadoncho.querySelector("#note").textContent =
+    data.note || "No additional notes.";
+  formhoadoncho.querySelector("#total-products").textContent = data.totalMoney;
 }
 function saveHoaDonCho() {}
 async function buildFormData(formId) {
@@ -1893,3 +2068,39 @@ async function buildFormData(formId) {
   formData.totalMoney = totalMoney;
   return formData;
 }
+document.addEventListener("keydown", function (event) {
+  if (event.key === "F3") {
+    event.preventDefault();
+    var form = document.querySelector('.taborder[style="display: block;"]');
+    if (form) {
+      var searchInput = form.querySelector("#searchInput");
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }
+  }
+  if (event.key === "F9") {
+    event.preventDefault();
+    var form = document.querySelector('.taborder[style="display: block;"]');
+    if (form) {
+      var submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.click();
+      }
+    }
+  }
+  if (event.key === "F10") {
+    event.preventDefault();
+    var form = document.querySelector('.taborder[style="display: block;"]');
+    if (form) {
+      var removebill = form.querySelector("#removebill");
+      if (removebill) {
+        removebill.click();
+      }
+    }
+  }
+  if (event.key === "F1") {
+    event.preventDefault();
+    addnewOrderPage();
+  }
+});
