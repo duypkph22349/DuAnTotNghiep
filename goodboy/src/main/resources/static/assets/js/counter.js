@@ -126,12 +126,12 @@ function formInOrder(id) {
                                               <thead>
                                                   <tr>
                                                       <th>#</th>
+                                                      <th></th>
                                                       <th>Tên sản phẩm</th>
                                                       <th>Giá</th>
                                                       <th>Số lượng</th>
                                                       <th>Hoa văn</th>
                                                       <th>Kích thước</th>
-                                                      <th>Action</th>
                                                   </tr>
                                               </thead>
                                               <tbody></tbody>
@@ -978,11 +978,6 @@ function getFirstProductPage(orderId) {
           `<img src="${
             product.imageUrl || defaultImage
           }" class="image-fluid" style="height: 60px;">`,
-          product.name,
-          product.price,
-          product.quantity,
-          product.idPattern.name,
-          product.idSize.name,
           `
           <div class="d-flex">
           <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop${
@@ -1053,6 +1048,11 @@ function getFirstProductPage(orderId) {
             product.id
           })"><i class="far fa-plus"></i></button>
           </div>`,
+          product.name,
+          formatToVND(product.price),
+          product.quantity,
+          product.idPattern.name,
+          product.idSize.name,
         ];
         cells.forEach(function (cellContent) {
           var cell = document.createElement("td");
@@ -1098,7 +1098,7 @@ function createProductRow(product, idorderdetail) {
         <td><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
     product.idPattern?.name ?? ""
   } </td>
-        <td>${product.price}</td>
+        <td>${formatToVND(product.price)}</td>
         <td>
         <div class="d-flex w-100">
           <a class="btn btn-link px-2"
@@ -1495,7 +1495,7 @@ function printBill(id) {
                   <td>${product.productDetail.name}</td>
                   <td>${product.quantity}</td>
                   <td>${formatToVND(product.productDetail.price)}</td>
-                  <td>${formatToVND(product.totalMoney)}</td>
+                  <td>${formatToVND(product.quantity * product.productDetail.price)}</td>
                 </tr>`;
         productsTable.append(row);
       });
@@ -1513,19 +1513,17 @@ function printBill(id) {
 }
 function handleOrderSuccess(idform) {
   const indexToRemove = listtab.indexOf(idform);
+  stopCountdown(idform);
   if (indexToRemove !== -1) {
     listtab.splice(indexToRemove, 1);
   }
-
   const orderbtnrmRemove = document.getElementById(`vieworder${idform}`);
   const orderToRemove = document.getElementById(`hoaDon${idform}`);
-
   if (orderToRemove) {
     orderToRemove.remove();
   } else {
     console.log(`Order with ID ${idform} not found.`);
   }
-
   if (orderbtnrmRemove) {
     orderbtnrmRemove.remove();
   } else {

@@ -132,7 +132,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success" onclick="$('#bill').printThis();">In</button>
+                        <button class="btn btn-success" onclick="$('#bill').printThis();">Print</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -147,20 +148,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="w-100" id="billwait" style="
-                        font-size: 10px;
-                        ">
-                        <div class="row">
-                            <div class="col-6 col-md-6">
-                                <h3 style="color: #007bff;">Trạng thái hóa đơn</h3>
-                                <div class="row">
-                                    <div class="col-md-4 col-3 fw-bold">Nhân viên:</div>
-                                    <div class="col-9 col-md-8" id="employename"></div>
-                                    <div class="col-md-4 col-3 fw-bold">Trạng thái hóa đơn:</div>
-                                    <div class="col-9 col-md-8" id="orderstatus"></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="container-fluid" id="billwait" style="font-size: 10px;">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -171,23 +159,32 @@
                                     <th scope="col">Thanh tiền</th>
                                 </tr>
                             </thead>
-                            <tbody id="sanphaminbill">
-
-                            </tbody>
+                            <tbody id="sanphaminbill"></tbody>
                         </table>
+                        <ul class="list-unstyled">
+                            <li class="text-muted ms-3">
+                                <span class="text-black me-4 mx-3">Tổng tiền sản phẩm:</span>
+                                <span id="total-products"></span>
+                            </li>
+                        </ul>
                         <hr>
                         <div class="row">
-                            <div class="col-8">
-                                <span>Note:</span>
-                                <p class="ms-3" id="note"></p>
+                            <div class="col-md-4 col-12 fw-bold">Trạng thái hóa đơn:</div>
+                            <div class="col-md-8 col-12" id="order-status"></div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="customer-name">Tên khách hàng:</label>
+                                <input type="text" class="form-control" id="customer-name">
                             </div>
-                            <div class="col-4">
-                                <ul class="list-unstyled">
-                                    <li class="text-muted ms-3"><span class="text-black me-4 mx-3">Tổng tiền sản
-                                            phẩm:
-                                        </span><span id="total-products"></span>
-                                    </li>
-                                </ul>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="phone-number">Số điện thoại:</label>
+                                <input type="text" class="form-control" id="phone-number">
+                            </div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="order-note">Note:</label>
+                                <input type="text" class="form-control" id="order-note">
                             </div>
                         </div>
                     </div>
