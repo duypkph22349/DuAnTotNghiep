@@ -1,20 +1,17 @@
 package datn.goodboy.controller.usercontroller;
 
-import datn.goodboy.model.entity.Cart;
-import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.service.CartDetailService;
-import datn.goodboy.service.CartService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-
+import datn.goodboy.model.entity.Cart;
+import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.service.CartDetailService;
+import datn.goodboy.service.CartService;
 
 @Controller
 @RequestMapping("/shop/product/")
@@ -25,6 +22,7 @@ public class userUIController {
 
     @Autowired
     private CartService cartService;
+
     @GetMapping("/cart/totalQuantity")
     public String getTotalQuantity(Model model) {
         Cart cart = cartService.getCart();
@@ -35,7 +33,7 @@ public class userUIController {
     }
 
     @GetMapping("/don_hang")
-    public String view(Model model){
+    public String view(Model model) {
         return "/user/order_status.html";
     }
 
