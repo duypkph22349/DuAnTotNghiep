@@ -23,5 +23,10 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Integer>
 
     @Query("SELECT SUM(cd.quantity) FROM CartDetail cd WHERE cd.cart.id IN :cartIds")
     Integer getQuantity(@Param("cartIds") List<Integer> cartIds);
+
+    @Query("SELECT COUNT(cd.id) FROM CartDetail cd WHERE cd.cart.id IN :cartIds")
+    Integer getQuantity2(@Param("cartIds") List<Integer> cartIds);
+
+
     List<CartDetail> findAllByCartId(int cartId);
 }
