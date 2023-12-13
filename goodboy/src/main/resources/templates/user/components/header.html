@@ -1,5 +1,5 @@
 
-<header>
+<header >
     <div class="top-navigation" style="background-color: #b97155">
         <div class="container">
             <ul>
@@ -9,8 +9,39 @@
                 <li><a href="">Nền Tảng Bán Hàng</a></li>
                 <li><a href="">Tuyển dụng</a></li>
                 <li><a href="/order/search">Tra cứu đơn hàng</a></li>
-<!--                <li><a id="login-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#getMember">Đăng nhập</a></li>-->
-                <li><a href="/login" >Đăng nhập</a></li>
+                <li>
+                    <a href="/login">
+                        <div class="ht-right">
+                            <div th:if="${session.authenuser == null}">
+                                <a class="login-panel px-3" href="register_modal.html">
+                                    <i class="fa fa-user"></i>Đăng ký
+                                </a>
+                                <a class="login-panel px-3" data-toggle="modal" data-target="#loginModal" type="button">
+                                    <i class="fa fa-user"></i>Đăng nhập
+                                </a>
+                            </div>
+                            <div th:if="${session.authenuser}">
+                                <span class="login-panel p-0 dropdown">
+                                    <button type="button" style=".custom-button {font-size: 14px;}"
+                                            class="btn bg-transparent px-3 py-1 w-100 dropdown-toggle text-right"
+                                            data-toggle="dropdown" aria-expanded="false">
+                                        <span class="mr-3"
+                                              th:text="${session.authenuser.getCustomer().name}">Chào, </span>
+                                        <img th:src="${session.authenuser.getImage()}" alt="Profile"
+                                             class="rounded-circle">
+                                    </button>
+                                    <div class="dropdown-menu" style="left: auto; right: 0;">
+                                        <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
+                                        <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
+                                        <a class="dropdown-item" th:href="@{/shop/order_status}">Đơn hàng</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" th:href="@{/signOut}">Đăng xuất</a>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -51,13 +82,15 @@
                 <div class="item cart cart-desktop">
                     <a href="/cart">
                         <i class="icon-cart"></i>
-                        <label><i class="icon-left"></i><span class="cartCount" >0</span></label>
+                        <label><i class="icon-left"></i><span class="cartCount"
+                                                              th:text="${quantity}"></span></label>
                     </a>
                 </div>
             </div>
         </div>
     </div>
     <!--  Mobile version  -->
+
     <div class="sidebar mb-version-menu">
         <nav class="global">
             <div class="user-info">
@@ -80,6 +113,8 @@
             </a>
         </div>
     </div>
+
+
     <!--    Đăng nhập -->
     <div class="modal fade login" id="getMember" data-bs-toggle="modal" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
