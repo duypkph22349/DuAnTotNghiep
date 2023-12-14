@@ -40,68 +40,73 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div type="flex" class="ant-row ant-row-space-between box-row"
-                                 style="margin-top: 12px;">
+                            <div >
                                 <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="tenKhachHang" class="form-label"><b>Tên
-                                            Khách Hàng</b></label>
-                                        <input type="text" class="form-control" placeholder="Tên khách hàng"
-                                               th:value="${session.authenuser.customer.name}" name="customer_name"
-                                               id="tenKhachHang">
-                                        <input type="hidden" name="customer"
-                                               th:value="${session.authenuser.customer.id}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="soDienThoai" class="form-label"><b>Số
-                                            Điện Thoại</b></label>
-                                        <input type="text" class="form-control" placeholder="Số điện thoại"
-                                               th:value="${session.authenuser.customer.phone}" name="phone"
-                                               id="soDienThoai">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="email" class="form-label"><b>Email</b></label>
-                                        <input type="text" class="form-control" placeholder="Email"
-                                               name="email" th:value="${session.authenuser.email}" id="email">
-                                    </div>
-                                    <!-- Địa chỉ -->
-                                    <div class="col-md-6">
-                                        <div class="row align-items-start">
-                                            <div class="col">
-                                                <label class="form-label"><b>Thành phố</b></label>
-                                                <select class="form-control" id="Provinces" onchange="getDistricts()">
-                                                    <option selected="">Chọn Thành Phố
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <label class="form-label"><b>Huyện</b></label>
-                                                <select class="form-control" id="Districts" th:name="city"
-                                                        onchange="getWards()">
-                                                    <option selected="">Chọn Huyện</option>
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <label class="form-label"><b>Xã</b></label>
-                                                <select class="form-control" th:name="country"
-                                                        onchange="getServiceShip()" id="Wards">
-                                                    <option selected="">Chọn Xã</option>
-                                                </select>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label for="tenKhachHang" class="form-label font-weight-bold"><b>Tên
+                                                Khách Hàng</b></label>
+                                            <input type="text" class="form-control" placeholder="Tên khách hàng"
+                                                   th:value="${session.authenuser.customer.name}" name="customer_name"
+                                                   id="tenKhachHang">
+                                            <input type="hidden" name="customer"
+                                                   th:value="${session.authenuser.customer.id}">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label for="soDienThoai" class="form-label font-weight-bold"><b>Số
+                                                Điện Thoại</b></label>
+                                            <input type="text" class="form-control" placeholder="Số điện thoại"
+                                                   th:value="${session.authenuser.customer.phone}" name="phone"
+                                                   id="soDienThoai">
                                         </div>
                                     </div>
-                                    <input type="hidden" id="FullAddress" name="address">
-                                    <div class="col">
-                                        <label class="form-label"><b>Địa
-                                            Chỉ Cụ Thể</b></label>
-                                        <input type="text" class="form-control" id="address"
-                                               placeholder="Địa chỉ cụ thể">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label for="email" class="form-label font-weight-bold"><b>Email</b></label>
+                                            <input type="text" class="form-control" placeholder="Email"
+                                                   name="email" th:value="${session.authenuser.email}" id="email">
+                                        </div>
+                                        <!-- Địa chỉ -->
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <div class="row align-items-start">
+                                                <div class="col">
+                                                    <label class="form-label font-weight-bold"><b>Thành phố</b></label>
+                                                    <select class="form-control" id="Provinces" onchange="getDistricts()">
+                                                        <option selected="">Chọn Thành Phố
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    <label class="form-label font-weight-bold"><b>Huyện</b></label>
+                                                    <select class="form-control" id="Districts" th:name="city"
+                                                            onchange="getWards()">
+                                                        <option selected="">Chọn Huyện</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    <label class="form-label font-weight-bold"><b>Xã</b></label>
+                                                    <select class="form-control" th:name="country"
+                                                            onchange="getServiceShip()" id="Wards">
+                                                        <option selected="">Chọn Xã</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="FullAddress" name="address">
                                     </div>
-                                    <div class="col">
-                                        <label class="form-label"> <b>Phương thức vận chuyển</b></label>
-                                        <select class="form-control" id="shipService" onchange="updateShippingCost()">
-                                            <option selected="">Chọn phương thức vận chuyển</option>
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label class="form-label font-weight-bold"><b>Địa
+                                                Chỉ Cụ Thể</b></label>
+                                            <input type="text" class="form-control" id="address"
+                                                   placeholder="Địa chỉ cụ thể">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label class="form-label font-weight-bold"> <b>Phương thức vận chuyển</b></label>
+                                            <select class="form-control" id="shipService" onchange="updateShippingCost()">
+                                                <option selected="">Chọn phương thức vận chuyển</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -130,15 +135,23 @@
                                         </li>
                                     </div>
                                     <li style="color: red">Voucher <span
-                                            id="voucher">Số tiền giảm</span></li>
-                                    <li style="color: red" name="money_ship">Tiền ship <span id="giaship"
-                                                                                             data-amount="SHIP_AMOUNT">Tiền ship</span>
+                                            id="voucher">0 VNĐ</span></li>
+                                    <li style="color: red">Tiền ship <span id="giaship"
+                                                                                             data-amount="SHIP_AMOUNT">0 VNĐ</span>
+                                        <input type="hidden" id="money_ship" name="money_ship" />
                                     <li style="color: #e7ab3c;">Số tiền cần thanh toán <span
-                                            id="totalAmount">Tổng tiền</span></li>
-                                    <input type="hidden" id="soTienCanThanhToan" name="soTienCanThanhToan">
+                                            id="totalAmount" >0 VNĐ</span></li>
+                                    <input type="hidden" id="soTienCanThanhToan"  th:name="soTienCanThanhToan">
 
                                 </ul>
                                 <div class="order-btn">
+
+                                    <label for="vnpay">Thanh toán VNPAY</label>
+                                    <input type="radio" id="vnpay" name="paymentOption" th:value="0">
+
+                                    <label for="cod">Thanh toán COD</label>
+                                    <input type="radio" id="cod" name="paymentOption" th:value="1">
+                                    <input type="hidden" name="" th:field="${bills.billDetail}">
                                     <button type="submit" class="site-btn place-btn">Thanh toán</button>
                                 </div>
                             </div>
@@ -370,7 +383,33 @@
             const lengths = 15;
             const weights = 1000;
             const widths = 11;
+            var selectedShipCost = parseFloat(document.getElementById("shipService").value);
 
+            // Get the total amount of products
+            var totalAmount = 0;
+            var productElements = document.querySelectorAll('#tongTien span');
+            productElements.forEach(function (element) {
+                totalAmount += parseFloat(element.innerText.replace(' VNĐ', '').replace(',', ''));
+            });
+
+            // Get the voucher amount if applicable
+            var voucherAmount = 0; // You need to implement voucher logic here
+
+            // Get the shipping cost
+            var shippingCost = selectedShipCost;
+
+            // Calculate the total amount to pay
+            var totalToPay = totalAmount - voucherAmount + shippingCost;
+
+            // Update the UI
+            document.getElementById("voucher").innerText = voucherAmount + " VNĐ";
+            document.getElementById("giaship").innerText = shippingCost + " VNĐ";
+            document.getElementById("money_ship").value = shippingCost; // Set the shipping cost in a hidden input for form submission
+            document.getElementById("totalAmount").innerText = totalToPay + " VNĐ";
+
+            // Save the total amount to a hidden input for form submission (if needed)
+            document.getElementById("soTienCanThanhToan").innerText = totalToPay;
+            console.log(totalToPay)
             fetch(
                 "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
                 {
@@ -399,6 +438,31 @@
                     document.getElementById("giaship").innerText = data.data.total;
                     const moneyShipInput = document.getElementById("money_ship");
                     moneyShipInput.value = data.data.total;
+
+                    // Update the UI with the new shipping cost
+                    var shippingCost = parseFloat(data.data.total);
+                    document.getElementById("giaship").innerText = shippingCost + " VNĐ";
+                    document.getElementById("money_ship").value = shippingCost;
+
+                    // Get the total amount of products (you might want to move this outside the fetch)
+                    var totalAmount = 0;
+                    var productElements = document.querySelectorAll('#tongTien span');
+                    productElements.forEach(function (element) {
+                        totalAmount += parseFloat(element.innerText.replace(' VNĐ', '').replace(',', ''));
+                    });
+
+                    // Get the voucher amount if applicable (you need to implement voucher logic here)
+                    var voucherAmount = 0;
+
+                    // Calculate the total amount to pay using the updated shipping cost
+                    var totalToPay = totalAmount - voucherAmount + shippingCost;
+
+                    // Update the UI with the new total amount
+                    document.getElementById("voucher").innerText = voucherAmount + " VNĐ";
+                    document.getElementById("totalAmount").innerText = totalToPay + " VNĐ";
+
+                    // Update the hidden input for form submission
+                    document.getElementById("soTienCanThanhToan").value = totalToPay;
                 })
                 .catch((error) => console.error("Error:", error));
         }
@@ -436,7 +500,6 @@
             // Save the total amount to a hidden input for form submission (if needed)
             document.getElementById("soTienCanThanhToan").value = totalToPay;
         }
-
 
     </script>
 

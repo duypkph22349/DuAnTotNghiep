@@ -60,7 +60,7 @@ public class BillService {
 
         return billRepository.save(bill);
     }
-    public void saveBillAndDetails(Bill bill,List<Integer> cartDetailsToDelete) {
+    public void saveBillAndDetails(Bill bill) {
         // Lưu Bill và lấy ra ID sau khi lưu
         Bill savedBill = billRepository.save(bill);
 
@@ -70,7 +70,6 @@ public class BillService {
             for (BillDetail detail : billDetails) {
                 detail.setIdBill(savedBill);
             }
-
             // Lưu danh sách BillDetail
             billDetailRepository.saveAll(billDetails);
 
