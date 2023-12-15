@@ -42,8 +42,12 @@ public class CartControllerUser {
 
         Integer quantity = cartDetailService.getQuantity(cartDetails);
         model.addAttribute("quantity", quantity);
+
+        Integer quantity2 = cartDetailService.getQuantity2(cartDetails);
+        model.addAttribute("quantity2", quantity2);
         return "user/cart";
     }
+
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model) {

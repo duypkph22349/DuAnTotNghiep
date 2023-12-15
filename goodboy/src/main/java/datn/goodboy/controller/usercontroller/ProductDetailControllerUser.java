@@ -146,6 +146,7 @@ public class ProductDetailControllerUser {
         model.addAttribute("brands", brandService.getAllBrands());
         model.addAttribute("styles", stylesService.getAllStyles());
         model.addAttribute("colors", colorService.getAllColor());
+
         return "user/product.html";
     }
 
@@ -270,7 +271,6 @@ public class ProductDetailControllerUser {
             cartDetail.setQuantity(quantity);
             cartDetailService.saveCart(cartDetail);
         }
-        System.out.println(productDetail);
         return "user/cart";
     }
 
