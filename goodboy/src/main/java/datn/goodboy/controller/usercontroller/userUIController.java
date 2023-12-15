@@ -22,7 +22,6 @@ public class userUIController {
 
     @Autowired
     private CartService cartService;
-
     @GetMapping("/cart/totalQuantity")
     public String getTotalQuantity(Model model) {
         Cart cart = cartService.getCart();

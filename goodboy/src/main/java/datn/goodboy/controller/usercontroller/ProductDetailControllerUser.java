@@ -152,6 +152,7 @@ public class ProductDetailControllerUser {
         model.addAttribute("brands", brandService.getAllBrands());
         model.addAttribute("styles", stylesService.getAllStyles());
         model.addAttribute("colors", colorService.getAllColor());
+
         return "user/product.html";
     }
 
