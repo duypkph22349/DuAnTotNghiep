@@ -36,6 +36,16 @@ html, body {
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
 }
+.dropdown-menu {
+    display: none; /* Ẩn menu dropdown ban đầu */
+    position: absolute;
+    /* Các thuộc tính vị trí của dropdown menu */
+}
+
+a.dropdown-toggle:hover + #profile-menu,
+#profile-menu:hover {
+    display: block; /* Hiển thị menu dropdown khi di chuột vào hình ảnh hoặc menu */
+}
 
 h1, h2, h3, h4, h5, h6 {
     margin: 0;

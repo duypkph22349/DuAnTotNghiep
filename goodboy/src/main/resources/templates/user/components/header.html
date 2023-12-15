@@ -1,8 +1,9 @@
 
-<header >
-    <div class="top-navigation" style="background-color: #b97155">
+
+<header>
+    <div class="top-navigation" style="background-color: #b97155" >
         <div class="container">
-            <ul>
+            <ul style="font-size: 14px">
                 <li><a href="">Giới Thiệu</a></li>
                 <li><a href="">Sản Phẩm Khuyến Mại</a></li>
                 <li><a href="">Chính Sách Bảo Hành</a></li>
@@ -10,34 +11,30 @@
                 <li><a href="">Tuyển dụng</a></li>
                 <li><a href="/order/search">Tra cứu đơn hàng</a></li>
                 <li>
-                    <a href="/login">
+                    <a>
                         <div class="ht-right">
                             <div th:if="${session.authenuser == null}">
+                                <a class="login-panel px-3" data-toggle="modal" href="/login" data-target="#loginModal" type="button">
+                                    <i class="fa fa-user"></i>Đăng nhập
+                                </a>
                                 <a class="login-panel px-3" href="register_modal.html">
                                     <i class="fa fa-user"></i>Đăng ký
                                 </a>
-                                <a class="login-panel px-3" data-toggle="modal" data-target="#loginModal" type="button">
-                                    <i class="fa fa-user"></i>Đăng nhập
-                                </a>
                             </div>
                             <div th:if="${session.authenuser}">
-                                <span class="login-panel p-0 dropdown">
-                                    <button type="button" style=".custom-button {font-size: 14px;}"
-                                            class="btn bg-transparent px-3 py-1 w-100 dropdown-toggle text-right"
-                                            data-toggle="dropdown" aria-expanded="false">
-                                        <span class="mr-3"
-                                              th:text="${session.authenuser.getCustomer().name}">Chào, </span>
-                                        <img th:src="${session.authenuser.getImage()}" alt="Profile"
-                                             class="rounded-circle">
-                                    </button>
-                                    <div class="dropdown-menu" style="left: auto; right: 0;">
-                                        <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
-                                        <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
-                                        <a class="dropdown-item" th:href="@{/shop/order_status}">Đơn hàng</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" th:href="@{/signOut}">Đăng xuất</a>
-                                    </div>
-                                </span>
+                                <span style="color: white">Họ tên: </span>
+                                    <a class="mr-3" style="color: white"
+                                          th:text="${session.authenuser.getCustomer().name}"></a>
+                                <a class="dropdown-toggle" href="#">
+                                    <img class="profile-image" th:src="${session.authenuser.getImage()}" style="color: white" alt="Profile">
+                                </a>
+                                <div class="dropdown-menu" id="profile-menu" style="background-color: #7a6e25">
+                                    <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
+                                    <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
+                                    <a class="dropdown-item" th:href="@{/shop/order_status}">Đơn hàng</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" th:href="@{/signOut}">Đăng xuất</a>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -74,7 +71,7 @@
 
             <div class="order-tools">
                 <div class="item check-order">
-                    <a id="btnCheckOrder" href="/order/search">
+                    <a id="btnCheckOrder" href="/shop/product/don_hang">
                         <span class="icon"><i class="icon-truck"></i></span>
                         <span class="text">Kiểm tra đơn hàng</span>
                     </a>
@@ -82,8 +79,7 @@
                 <div class="item cart cart-desktop">
                     <a href="/cart">
                         <i class="icon-cart"></i>
-                        <label><i class="icon-left"></i><span class="cartCount"
-                                                              th:text="${quantity}"></span></label>
+                        <label><i class="icon-left"></i><span class="cartCount" th:text="${quantity2 != null ? quantity2 : '0'}"></span></label>
                     </a>
                 </div>
             </div>
@@ -269,4 +265,12 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('mouseleave', function(event) {
+            var profileMenu = document.querySelector('#profile-menu');
+            if (event.target !== profileMenu && event.target.parentNode !== profileMenu) {
+                profileMenu.style.display = 'none';
+            }
+        });
+    </script>
 </header>

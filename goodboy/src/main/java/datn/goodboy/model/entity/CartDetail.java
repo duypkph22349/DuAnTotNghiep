@@ -44,5 +44,4 @@ public class CartDetail {
     @Column(name="deleted")
     private boolean deleted;
 
-
 }

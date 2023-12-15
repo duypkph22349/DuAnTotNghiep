@@ -34,7 +34,6 @@ public class CartControllerUser {
     @GetMapping("/cart")
     public String viewCart( Model model){
         Cart cart = cartService.getCart();
-        System.out.println(cart.getId());
         List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
         model.addAttribute("cartDetails", cartDetails);
         BigDecimal tongTien = cartDetailService.getTotal(cartDetails);
@@ -42,8 +41,12 @@ public class CartControllerUser {
 
         Integer quantity = cartDetailService.getQuantity(cartDetails);
         model.addAttribute("quantity", quantity);
+
+        Integer quantity2 = cartDetailService.getQuantity2(cartDetails);
+        model.addAttribute("quantity2", quantity2);
         return "user/cart";
     }
+
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model) {
