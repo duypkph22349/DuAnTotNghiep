@@ -48,6 +48,9 @@ function formInOrder(id) {
   const newTime = new Date(currentTime.getTime() + 30 * 60000); // 30 minutes in milliseconds
   form.setAttribute("endtime", newTime);
   form.setAttribute("timecreate", new Date());
+  form.onchange = (e) => {
+    updateHoaDon(id);
+  };
   form.classList.add("taborder");
   form.classList.add("position-relative");
   form.setAttribute("idofform", id);
@@ -531,7 +534,7 @@ function formInOrder(id) {
                           <div class="box-order-status">
                             <div style="display: flex;">
                                   <span class="order-action-button" style="margin-right: 8px;">
-                                            <button type="button" class="ant-btn ant-btn-primary" onclick="showHoaDonChoSave('hoaDon${id}')"
+                                            <button type="button" class="ant-btn ant-btn-primary" onclick="showHoaDonChoSave('${id}')"
                                                     style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
                                                                     role="img" aria-label="printer" class="anticon anticon-printer"><svg
                                                                             viewBox="64 64 896 896" focusable="false" data-icon="printer"
@@ -577,7 +580,7 @@ function formInOrder(id) {
   </div>
 </div>
 <div id="overlay">
-      <button type="button" class="btn btn-primary mx-3" onclick="showHoaDonChoSave('hoaDon${id}')">
+      <button type="button" class="btn btn-primary mx-3" onclick="showHoaDonChoSave('${id}')">
         Lưu hóa đơn chờ
       </button>
       <button type="button" class="btn btn-danger px-5" onclick="removeOrderPage(${id})">
@@ -707,7 +710,7 @@ function selectOrder(evt, id) {
   evt.currentTarget.className += " active";
 }
 async function removeOrderPage(orderId) {
-  const data = await buildFormData(`hoaDon${orderId}`);
+  const data = await buildFormData(orderId);
   if (data.productViews.length == 0) {
     let indexToRemove = listtab.indexOf(orderId);
     if (indexToRemove !== -1) {
@@ -722,9 +725,10 @@ async function removeOrderPage(orderId) {
     if (orderbtnrmRemove) {
       orderbtnrmRemove.remove();
     }
+    selectLastHoaDon();
     return;
   }
-  if (confirm("Bạn Muốn xóa sáo")) {
+  if (confirm("Bạn muốn xóa sao")) {
     let indexToRemove = listtab.indexOf(orderId);
     if (indexToRemove !== -1) {
       listtab.splice(indexToRemove, 1);
@@ -738,6 +742,21 @@ async function removeOrderPage(orderId) {
     if (orderbtnrmRemove) {
       orderbtnrmRemove.remove();
     }
+    selectLastHoaDon();
+  }
+}
+function selectLastHoaDon() {
+  try {
+    var maxNumber = Math.max.apply(null, listtab);
+    var idbtn = "vieworder" + maxNumber;
+    const lastBtnHoaDon = document.getElementById(idbtn);
+    if (lastBtnHoaDon) {
+      lastBtnHoaDon.click();
+    } else {
+      console.error("Button not found:", idbtn);
+    }
+  } catch (error) {
+    console.error("Error selecting or clicking the last button:", error);
   }
 }
 function selectOrderType(event, id) {
@@ -763,6 +782,8 @@ function selectOrderType(event, id) {
   }
   updateTongTien(id);
 }
+// ui processtion end
+// GHN API Service
 function updateshipService(orderId) {
   const districtSelect = document.querySelector(`#hoaDon${orderId} #district`);
   const selectedOption = districtSelect.options[districtSelect.selectedIndex];
@@ -947,6 +968,9 @@ function resetServiceShip(orderId) {
   }
   resetTotalShip(orderId);
 }
+// GHN API Service
+
+//load data
 function fillAllEmployee(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var select = thisOrder.querySelector('select[name="employee"]');
@@ -1064,6 +1088,8 @@ function getFirstProductPage(orderId) {
       });
     });
 }
+//load data end
+// add san pham in to order
 async function addProductIntoOrder(idorderdetail, id) {
   const form = document.getElementById(`hoaDon${idorderdetail}`);
   try {
@@ -1201,6 +1227,7 @@ function descreaseProductQuantity(productExists, product) {
     console.error("Product element not found.");
   }
 }
+// add san pham in to order
 const phoneNumberRegex = /^(09|\d{2}[2-9])\d{7}$/;
 async function handleOrderSubmit(event) {
   event.preventDefault();
@@ -1495,7 +1522,9 @@ function printBill(id) {
                   <td>${product.productDetail.name}</td>
                   <td>${product.quantity}</td>
                   <td>${formatToVND(product.productDetail.price)}</td>
-                  <td>${formatToVND(product.quantity * product.productDetail.price)}</td>
+                  <td>${formatToVND(
+                    product.quantity * product.productDetail.price
+                  )}</td>
                 </tr>`;
         productsTable.append(row);
       });
@@ -1957,6 +1986,7 @@ window.addEventListener("beforeunload", function (event) {
 function showModalHoaDon() {
   $("#billPrint").modal("show");
 }
+
 async function showHoaDonChoSave(hoadonid) {
   const data = await buildFormData(hoadonid);
   if (data.productViews.length == 0) {
@@ -2013,8 +2043,8 @@ function genhoadoncho(data) {
 function saveHoaDonCho() {}
 async function buildFormData(formId) {
   const formData = {};
-  const form = document.getElementById(formId);
-  formData.idform = formId;
+  const form = document.getElementById(`hoaDon${formId}`);
+  formData.id = formId;
   const getInputValue = (selector) => form.querySelector(selector).value;
 
   formData.customerName = getInputValue("#tenKhachHang");
@@ -2029,6 +2059,8 @@ async function buildFormData(formId) {
   formData.ward = getInputValue("#ward");
   formData.fullAddress = getInputValue("#FullAddress");
   formData.specificAddress = getInputValue("input#address");
+  formData.transferAmount = getInputValue("input#transfer-amount");
+  formData.surchargeAmount = getInputValue("input#surcharge-amount");
   formData.note = getInputValue("textarea#note");
   formData.products = [];
   formData.productViews = [];
@@ -2052,6 +2084,7 @@ async function buildFormData(formId) {
           quantity: productQuantity,
         });
         formData.productViews.push({
+          id: product.id,
           name: product.name,
           price: product.price,
           totalprice: product.price * productQuantity,

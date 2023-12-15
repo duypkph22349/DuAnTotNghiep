@@ -120,7 +120,7 @@ public class CounterService {
     } else if (request.getOrderTypes() == 1) {
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setAddress(request.getSpecificAddress() + ", " + request.getFullAddress());
-      bill.setMoney_ship(request.getTotalShip());
+      bill.setMoney_ship((double) request.getTotalShip());
       bill.setStatus(2);
       bill.setPay(payService.getTransferMethod());
     }
