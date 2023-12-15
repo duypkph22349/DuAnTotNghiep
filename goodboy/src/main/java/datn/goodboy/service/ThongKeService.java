@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -200,11 +199,48 @@ public class ThongKeService {
     LocalDateTime nowDateTime = LocalDateTime.now();
 
     for (LocalDateTime date = startOfMonth; date.isBefore(nowDateTime.plusDays(1)); date = date.plusDays(1)) {
-      String label = getDayOfWeekAbbreviation(date) + " - " + date.getDayOfMonth() +"/"+ date.getMonthValue();
+      String label = getDayOfWeekAbbreviation(date) + " - " + date.getDayOfMonth() + "/" + date.getMonthValue();
       BigDecimal value = getToTalDoanhThu(date, date.plusDays(1).minusSeconds(1));
       dailyData.put(label, value);
     }
     return dailyData;
+  }
+
+  public Map<String, BigDecimal> getDoanhNgayHomNay() {
+    Map<String, BigDecimal> hourlyData = new LinkedHashMap<>();
+    LocalDateTime nowDateTime = LocalDateTime.now();
+    try {
+      for (int hour = 0; hour < 24; hour++) {
+        LocalDateTime startHour = LocalDateTime.of(nowDateTime.getYear(), nowDateTime.getMonthValue(),
+            nowDateTime.getDayOfMonth(), hour, 0);
+        LocalDateTime endHour = startHour.plusHours(1);
+        String label = startHour.getHour() + ":00";
+        BigDecimal value = getToTalDoanhThu(startHour, endHour);
+        hourlyData.put(label, value);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return hourlyData;
+  }
+
+  public Map<String, BigDecimal> getDoanhNgayHomQua() {
+    Map<String, BigDecimal> hourlyData = new LinkedHashMap<>();
+    LocalDateTime nowDateTime = LocalDateTime.now();
+    LocalDateTime beforDate = nowDateTime.minusDays(1);
+    try {
+      for (int hour = 0; hour < 24; hour++) {
+        LocalDateTime startHour = LocalDateTime.of(beforDate.getYear(), beforDate.getMonthValue(),
+            beforDate.getDayOfMonth(), hour, 0);
+        LocalDateTime endHour = startHour.plusHours(1);
+        String label = startHour.getHour() + ":00 - " + endHour.getHour() + ":00";
+        BigDecimal value = getToTalDoanhThu(startHour, endHour);
+        hourlyData.put(label, value);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return hourlyData;
   }
 
   private String getDayOfWeekAbbreviation(LocalDateTime date) {

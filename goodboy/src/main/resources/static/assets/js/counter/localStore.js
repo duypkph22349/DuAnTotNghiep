@@ -46,6 +46,7 @@ async function updateHoaDon(id) {
 
 function removeOrder(idhoadon) {
   // Assuming you have a function to remove an order by its ID
+  console.log(idhoadon);
   deleteOrder(idhoadon);
   console.log("removeOrder successfully");
 }
@@ -84,6 +85,7 @@ function restoreOrderPage() {
   selectLastHoaDon();
 }
 function deleteOrder(orderId) {
+  orderId = parseInt(orderId, 10);
   orders = orders.filter((order) => order.id !== orderId);
   saveOrdersToLocalStorage();
 }

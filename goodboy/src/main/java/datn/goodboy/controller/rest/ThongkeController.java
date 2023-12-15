@@ -40,6 +40,16 @@ public class ThongkeController {
     return ResponseEntity.ok(thongKeService.getTodayToProducSales());
   }
 
+  @GetMapping("/incometoday")
+  public Map<String, BigDecimal> getDoanhNgayHomNay() {
+    return thongKeService.getDoanhNgayHomNay();
+  }
+
+  @GetMapping("/incomebeforetoday")
+  public Map<String, BigDecimal> getDoanhNgayHomQua() {
+    return thongKeService.getDoanhNgayHomNay();
+  }
+
   @GetMapping("/todaytopproductsales")
   public ResponseEntity<List<TopProductSales>> getToDayTopProductSales() {
     return ResponseEntity.ok(thongKeService.getToDayTopProductSales());

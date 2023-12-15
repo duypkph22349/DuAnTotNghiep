@@ -736,6 +736,7 @@ async function removeOrderPage(orderId) {
     stopCountdown(orderId);
     const orderbtnrmRemove = document.getElementById(`vieworder${orderId}`);
     const orderToRemove = document.getElementById(`hoaDon${orderId}`);
+    removeOrder(orderId);
     if (orderToRemove) {
       orderToRemove.remove();
     }
@@ -1543,6 +1544,7 @@ function printBill(id) {
 function handleOrderSuccess(idform) {
   const indexToRemove = listtab.indexOf(idform);
   stopCountdown(idform);
+  removeOrder(idform);
   if (indexToRemove !== -1) {
     listtab.splice(indexToRemove, 1);
   }
