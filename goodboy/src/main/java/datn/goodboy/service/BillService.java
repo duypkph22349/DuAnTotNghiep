@@ -2,7 +2,12 @@ package datn.goodboy.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import datn.goodboy.model.entity.BillDetail;
+import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.repository.BillDetailRepository;
+import datn.goodboy.repository.CartDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +34,10 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
+    @Autowired
+    private BillDetailRepository billDetailRepository;
+    @Autowired
+    private CartDetailRepository cartDetailRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -51,7 +60,22 @@ public class BillService {
 
         return billRepository.save(bill);
     }
+    public void saveBillAndDetails(Bill bill) {
+        // Lưu Bill và lấy ra ID sau khi lưu
+        Bill savedBill = billRepository.save(bill);
 
+        // Gán Bill cho mỗi BillDetail và lưu danh sách BillDetail
+        List<BillDetail> billDetails = bill.getBillDetail();
+        if (billDetails != null && !billDetails.isEmpty()) {
+            for (BillDetail detail : billDetails) {
+                detail.setIdBill(savedBill);
+            }
+            // Lưu danh sách BillDetail
+            billDetailRepository.saveAll(billDetails);
+
+        }
+
+    }
     public void deleteBill(int id) {
 
         billRepository.deleteById(id);

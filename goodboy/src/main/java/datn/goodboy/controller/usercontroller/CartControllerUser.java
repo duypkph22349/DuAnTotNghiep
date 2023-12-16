@@ -34,7 +34,7 @@ public class CartControllerUser {
     @GetMapping("/cart")
     public String viewCart( Model model){
         Cart cart = cartService.getCart();
-        System.out.println(cart.getId());
+        System.out.println("ID cart ="+cart.getId());
         List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
         model.addAttribute("cartDetails", cartDetails);
         BigDecimal tongTien = cartDetailService.getTotal(cartDetails);
@@ -60,7 +60,7 @@ public class CartControllerUser {
 
     ){
 
-        CartDetail  cartDetail = cartDetailService.findByIdCart(id);
+        CartDetail cartDetail = cartDetailService.findByIdCart(id);
 
         if (cartDetail != null) {
             if ("tang".equals(actions)) {
