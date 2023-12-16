@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"><head>
+
+<body style="" class="">
+<section layout:fragment="content">
+
+<input type="hidden" value="119888" id="storeId">
+<!--<div class="modal fade login" id="getMember" data-bs-toggle="modal" data-bs-keyboard="false" tabindex="-1"-->
+<!--     aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--  <div class="modal-dialog modal-dialog-centered container">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-body">-->
+<!--        <div class="jquery-modal blocker current">-->
+<!--          <div class="login-form">-->
+<!--            <div class="login-bg">-->
+<!--              <img src="https://web.nvnstatic.net/tp/T0415/img/login-bg.png?v=3">-->
+<!--            </div>-->
+<!--            <div class="form">-->
+<!--              <h1>Đăng nhập</h1>-->
+<!--              <div class="external">-->
+<!--                <form>-->
+<!--                  <button class="btn-extlogin btn-facebook" title="Đăng nhập qua Facebook"-->
+<!--                          type="submit" id="Facebook" name="provider" value="Facebook">-->
+<!--                    <a href="/user/fbsignin?redirect=/">-->
+<!--                      <i class="fab fa-facebook-square"></i>-->
+<!--                      Tiếp tục với Facebook-->
+<!--                    </a>-->
+<!--                  </button>-->
+<!--                  <button class="btn-extlogin btn-google" type="submit" title="Đăng nhập qua Google+"-->
+<!--                          id="Google" name="provider" value="Google">-->
+<!--                    <a href="/user/ggsignin">-->
+<!--                      <i class="fab fa-google-plus-square"></i>-->
+<!--                      Đăng nhập với Google-->
+<!--                    </a>-->
+<!--                  </button>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--              <div class="split">-->
+<!--                <p>Hoặc</p>-->
+<!--              </div>-->
+<!--              <div class="internal">-->
+<!--                <form  id="formAcount" method="post">-->
+<!--                  <div class="row">-->
+<!--                    <div class="label">Tài khoản</div>-->
+<!--                    <div class="input">-->
+<!--                      <input type="text" name="email" id="emailModal">-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div class="row">-->
+<!--                    <div class="label">Mật khẩu</div>-->
+<!--                    <div class="input">-->
+<!--                      <input type="password" name="password" id="passwordModal">-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div class="row">-->
+<!--                    <div class="button-group">-->
+<!--                      <button class="btn btn-submit" id="btnsignin" type="submit">ĐĂNG NHẬP-->
+<!--                      </button>-->
+<!--                      <a class="btn btn-link ajax-content" data-bs-dismiss="modal"-->
+<!--                         aria-label="Close" href="javascript:void(0)" data-bs-toggle="modal"-->
+<!--                         data-bs-target="#signup">ĐĂNG KÝ</a>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div class="row">-->
+<!--                    <p class="forgotpass"><a class="ajax-content" href="/user/getpassword">Quên mật-->
+<!--                      khẩu?</a></p>-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <a href="javascript:void(0)" class="close-modal icon-minutes close" data-bs-dismiss="modal"-->
+<!--           aria-label="Close"><i class="fas fa-minus-circle"></i> </a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="modal fade login signup-content" id="signup" data-bs-toggle="modal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered container">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="jquery-modal blocker current">
+          <div class="login-form">
+            <div class="login-bg">
+              <img src="https://web.nvnstatic.net/tp/T0415/img/login-bg.png?v=3">
+            </div>
+            <div class="form">
+              <div class="center" style="text-align:center;">
+                <h2>Đăng ký tài khoản</h2>
+                <p>Chú ý các nội dung có dấu * bạn cần phải nhập</p>
+
+              </div>
+              <div class="hh-form">
+                <form id="formSignUp">
+                  <div class="form-controls">
+                    <label>Họ tên:</label>
+                    <div class="controls">
+                      <input type="text" name="fullName" id="fullName" placeholder="Họ tên *">
+                    </div>
+                  </div>
+                  <div class="form-controls">
+                    <label>Mật khẩu:</label>
+                    <div class="controls">
+                      <input type="password" name="password" id="password"
+                             placeholder="Mật khẩu *">
+                    </div>
+                  </div>
+                  <div class="form-controls">
+                    <label>Nhập lại mật khẩu:</label>
+                    <div class="controls">
+                      <input type="password" name="repassword" id="repassword"
+                             placeholder="Nhập lại mật khẩu *">
+                    </div>
+                  </div>
+                  <div class="form-controls">
+                    <label>Email:</label>
+                    <div class="controls">
+                      <input type="text" name="email" id="email" placeholder="Email *">
+                    </div>
+                  </div>
+                  <div class="form-controls">
+                    <label>Điện thoại:</label>
+                    <div class="controls">
+                      <input type="tel" name="mobile" id="mobile" placeholder="Điện thoại *"
+                             data-required="1">
+                    </div>
+                  </div>
+
+                  <div class="form-controls">
+                    <label>Địa chỉ:</label>
+                    <div class="controls">
+                      <input type="text" name="address" id="address" placeholder="Địa chỉ *"
+                             data-required="1">
+                    </div>
+                  </div>
+
+                  <div class="form-controls">
+                    <div class="controls submit-controls">
+                      <button type="submit" id="btnSignup">ĐĂNG KÝ TÀI KHOẢN</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="javascript:void(0)" class="close-modal icon-minutes close" data-bs-dismiss="modal"
+           aria-label="Close"><i class="fas fa-minus-circle"></i> </a>
+      </div>
+    </div>
+  </div>
+</div>
+<script defer="" type="text/javascript" src="https://web.nvnstatic.net/tp/T0415/js/category.js?v=2"></script>
+<section class="top-category-ads">
+  <div class="container">
+    <div class="ads-container">
+      <div class="full item">
+        <a href="" target="_top">
+          <img src="/img/patter.jpg" alt=""
+               class="img-responsive img-border-radius">
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="breadcrumb-section">
+  <div class="container">
+    <ul class="breadcrumb">
+      <li><a href="/">Trang chủ<i class="fal fa-home-alt"></i></a></li>
+      <li><a href="/tai-nghe-pc587304.html">TAI NGHE</a></li>
+    </ul>
+  </div>
+</section>
+<section class="filter-section">
+  <div class="container">
+    <div class="product-filters2">
+      <div class="left">
+        <strong class="label">Lọc danh sách:</strong>
+        <div class="facet">
+          <h2 class="cate-filter-name">Giá</h2>
+          <div class="cate-filter-content">
+            <label>
+              <a href="javascript:;">Giá <i class="fal fa-angle-down"></i></a>
+              <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+            </label>
+            <div class="sub">
+              <ul>
+                <li><a rel="nofollow" >Dưới 1 triệu</a>
+                </li>
+                <li><a rel="nofollow" > 1 đến 2
+                  triệu </a></li>
+                <li><a rel="nofollow" > 2 đến 3
+                  triệu</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="facet all-attribute">
+          <h2 class="cate-filter-name">Màu sắc</h2>
+          <div class="cate-filter-content">
+            <label>
+              <a href="javascript:;">Màu sắc<i class="fal fa-angle-down"></i></a>
+              <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+            </label>
+            <div class="sub">
+              <ul>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i1=2004482"
+                       title="' . $value->getName() . '">Hoa <i class="total"></i></a></li>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i1=2004439"
+                       title="' . $value->getName() . '">Trắng Đỏ <i class="total"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="facet all-attribute">
+          <h2 class="cate-filter-name">Phân loại</h2>
+          <div class="cate-filter-content">
+            <label>
+              <a href="javascript:;">Phân loại<i class="fal fa-angle-down"></i></a>
+              <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+            </label>
+            <div class="sub">
+              <ul>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i4=2004480"
+                       title="' . $value->getName() . '">Woodphoria Boy Smells <i class="total"></i></a>
+                </li>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i4=2004479"
+                       title="' . $value->getName() . '">Nest Golden Nectar <i class="total"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="facet all-attribute">
+          <h2 class="cate-filter-name">Đầu sạc</h2>
+          <div class="cate-filter-content">
+            <label>
+              <a href="javascript:;">Đầu sạc<i class="fal fa-angle-down"></i></a>
+              <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+            </label>
+            <div class="sub">
+              <ul>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i3=2004416"
+                       title="' . $value->getName() . '">Chân cố định <i class="total"></i></a></li>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i3=1994649"
+                       title="' . $value->getName() . '">C - L <i class="total"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="facet all-attribute">
+          <h2 class="cate-filter-name">Kích thước</h2>
+          <div class="cate-filter-content">
+            <label>
+              <a href="javascript:;">Kích thước<i class="fal fa-angle-down"></i></a>
+              <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+            </label>
+            <div class="sub">
+              <ul>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i2=2004415"
+                       title="' . $value->getName() . '">87012 <i class="total"></i></a></li>
+                <li><a href="" data-link="/tai-nghe-pc587304.html?i2=2004414"
+                       title="' . $value->getName() . '">0093 <i class="total"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="facet">
+          <h2 class="cate-filter-name">Sắp xếp</h2>
+          <div class="cate-filter-content">
+            <label>
+              <span class="arrage-filter" href="">Sắp xếp <i class="fal fa-angle-down"></i></span>
+              <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+            </label>
+            <div class="sub">
+              <ul>
+                <li><a href="/tai-nghe-pc587304.html?"> Mặc định</a></li>
+                <li><a href="/tai-nghe-pc587304.html?show=priceAsc"> Giá thấp đến
+                  cao</a></li>
+                <li><a href="/tai-nghe-pc587304.html?show=priceDesc"> Giá cao đến
+                  thấp</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="product-cate-block">
+  <div class="container">
+    <div class="list-product">
+      <h1>TAI NGHE</h1>
+      <input type="hidden" class="auto-paginator">
+      <div class="section-product col-content lts-product">
+        <div class="item 40772633" data-id="40772633">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-day-jbl-c100si-p40772633.html" title="Tai dây JBL C100SI">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20231121_NJvM1hoRJH.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20231121_NJvM1hoRJH.png"
+                   alt="Tai dây JBL C100SI">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-day-jbl-c100si-p40772633.html" class="title" title="Tai dây JBL C100SI">Tai dây
+              JBL C100SI</a>
+            <span class="price">
+                                                                                    <strong>99,000 ₫</strong>
+                                                                                    </span>
+          </div>
+        </div>
+        <div class="item 40772620" data-id="40772620">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-ugreen-hitune-t2-ws105-p40772620.html"
+               title="Tai nghe bluetooth Ugreen Hitune T2 WS105">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.com/5f3840-119888/ps/20231129_gPj8zr9gjd.png"
+                   src="https://pos.nvncdn.com/5f3840-119888/ps/20231129_gPj8zr9gjd.png"
+                   alt="Tai nghe bluetooth Ugreen Hitune T2 WS105">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-ugreen-hitune-t2-ws105-p40772620.html" class="title"
+               title="Tai nghe bluetooth Ugreen Hitune T2 WS105">Tai nghe bluetooth Ugreen Hitune T2
+              WS105</a>
+            <span class="price">
+                                                                                    <strong>250,000 ₫</strong>
+                                                                                                <strike>359,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40772487" data-id="40772487">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-songx-line-p40772487.html" title="Tai nghe bluetooth SongX LINE">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.com/5f3840-119888/ps/20231123_JWfWccACOK.png"
+                   src="https://pos.nvncdn.com/5f3840-119888/ps/20231123_JWfWccACOK.png"
+                   alt="Tai nghe bluetooth SongX LINE">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-songx-line-p40772487.html" class="title"
+               title="Tai nghe bluetooth SongX LINE">Tai nghe bluetooth SongX LINE</a>
+            <span class="price">
+                                                                                    <strong>399,000 ₫</strong>
+                                                                                                <strike>550,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40772481" data-id="40772481">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-songx-air-p40772481.html" title="Tai nghe bluetooth SONGX AIR">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.com/5f3840-119888/ps/20231123_1OrKUBbneK.jpeg"
+                   src="https://pos.nvncdn.com/5f3840-119888/ps/20231123_1OrKUBbneK.jpeg"
+                   alt="Tai nghe bluetooth SONGX AIR">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-songx-air-p40772481.html" class="title"
+               title="Tai nghe bluetooth SONGX AIR">Tai nghe bluetooth SONGX AIR</a>
+            <span class="price">
+                                                                                    <strong>399,000 ₫</strong>
+                                                                                                <strike>550,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40772478" data-id="40772478">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-omthing-airfree-2-p40772478.html"
+               title="Tai nghe bluetooth Omthing Airfree 2">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.com/5f3840-119888/ps/20231124_YfjZEUXiNo.jpeg"
+                   src="https://pos.nvncdn.com/5f3840-119888/ps/20231124_YfjZEUXiNo.jpeg"
+                   alt="Tai nghe bluetooth Omthing Airfree 2">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-omthing-airfree-2-p40772478.html" class="title"
+               title="Tai nghe bluetooth Omthing Airfree 2">Tai nghe bluetooth Omthing Airfree 2</a>
+            <span class="price">
+                                                                                    <strong>399,000 ₫</strong>
+                                                                                                <strike>589,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40772443" data-id="40772443">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-sudio-a1-p40772443.html" title="Tai nghe Bluetooth Sudio A1">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20231120_3mugP4i4iV.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20231120_3mugP4i4iV.png"
+                   alt="Tai nghe Bluetooth Sudio A1">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-sudio-a1-p40772443.html" class="title"
+               title="Tai nghe Bluetooth Sudio A1">Tai nghe Bluetooth Sudio A1</a>
+            <span class="price">
+                                                                                    <strong>650,000 ₫</strong>
+                                                                                                <strike>750,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40772426" data-id="40772426">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-day-jbl-tune-110-p40772426.html" title="Tai nghe dây JBL TUNE 110">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20231121_LDJRRzZgR8.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20231121_LDJRRzZgR8.png"
+                   alt="Tai nghe dây JBL TUNE 110">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-day-jbl-tune-110-p40772426.html" class="title"
+               title="Tai nghe dây JBL TUNE 110">Tai nghe dây JBL TUNE 110</a>
+            <span class="price">
+                                                                                    <strong>99,000 ₫</strong>
+                                                                                                <strike>350,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771949" data-id="40771949">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-alpha-l2001-p40771949.html" title="Tai nghe bluetooth Alpha L2001">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230919_ywjUd0ZJbs.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230919_ywjUd0ZJbs.png"
+                   alt="Tai nghe bluetooth Alpha L2001">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-alpha-l2001-p40771949.html" class="title"
+               title="Tai nghe bluetooth Alpha L2001">Tai nghe bluetooth Alpha L2001</a>
+            <span class="price">
+                                                                                    <strong>150,000 ₫</strong>
+                                                                                                <strike>290,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771920" data-id="40771920">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-khong-day-g65-p40771920.html"
+               title="Tai nghe Bluetooth không dây G65">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230909_ZcHauE2O2s.jpeg"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230909_ZcHauE2O2s.jpeg"
+                   alt="Tai nghe Bluetooth không dây G65">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-khong-day-g65-p40771920.html" class="title"
+               title="Tai nghe Bluetooth không dây G65">Tai nghe Bluetooth không dây G65</a>
+            <span class="price">
+                                                                                    <strong>239,000 ₫</strong>
+                                                                                                <strike>529,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771905" data-id="40771905">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-sudio-t2-p40771905.html"
+               title="Tai Nghe TWS Sudio T2 Bluetooth 5.2, Chống Ồn Chủ Động, Micrô tích hợp, Sạc nhanh, Chống Nước, Âm Trầm Mạnh Mẽ">
+              <img class=" ls-is-cached lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230909_H7vXg2WhVn.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230909_H7vXg2WhVn.png"
+                   alt="Tai Nghe TWS Sudio T2 Bluetooth 5.2, Chống Ồn Chủ Động, Micrô tích hợp, Sạc nhanh, Chống Nước, Âm Trầm Mạnh Mẽ">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-sudio-t2-p40771905.html" class="title"
+               title="Tai Nghe TWS Sudio T2 Bluetooth 5.2, Chống Ồn Chủ Động, Micrô tích hợp, Sạc nhanh, Chống Nước, Âm Trầm Mạnh Mẽ">Tai
+              Nghe TWS Sudio T2 Bluetooth 5.2, Chống Ồn Chủ Động, Micrô tích hợp, Sạc nhanh, Chống Nước,
+              Âm Trầm Mạnh Mẽ</a>
+            <span class="price">
+                                                                                    <strong>699,000 ₫</strong>
+                                                                                                <strike>1,590,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771889" data-id="40771889">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-urban1-p40771889.html" title="Tai nghe bluetooth Urban1">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230911_hZPFULG8Fx.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230911_hZPFULG8Fx.png"
+                   alt="Tai nghe bluetooth Urban1">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-urban1-p40771889.html" class="title"
+               title="Tai nghe bluetooth Urban1">Tai nghe bluetooth Urban1</a>
+            <span class="price">
+                                                                                    <strong>219,000 ₫</strong>
+                                                                                                <strike>359,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771796" data-id="40771796">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-anker-soundcore-liberty-air-95-p40771796.html"
+               title="Tai nghe bluetooth Anker Soundcore Liberty Air 95%">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.com/5f3840-119888/ps/20231130_0f0oOl48YT.png"
+                   src="https://pos.nvncdn.com/5f3840-119888/ps/20231130_0f0oOl48YT.png"
+                   alt="Tai nghe bluetooth Anker Soundcore Liberty Air 95%">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-anker-soundcore-liberty-air-95-p40771796.html" class="title"
+               title="Tai nghe bluetooth Anker Soundcore Liberty Air 95%">Tai nghe bluetooth Anker Soundcore
+              Liberty Air 95%</a>
+            <span class="price">
+                                                                                    <strong>498,000 ₫</strong>
+                                                                                                <strike>1,290,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771752" data-id="40771752">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-ap-pro-2-1562ae-p40771752.html"
+               title="Tai nghe bluetooth Ap Pro 2 1562AE">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230823_YzaLDF6SWC.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230823_YzaLDF6SWC.png"
+                   alt="Tai nghe bluetooth Ap Pro 2 1562AE">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-ap-pro-2-1562ae-p40771752.html" class="title"
+               title="Tai nghe bluetooth Ap Pro 2 1562AE">Tai nghe bluetooth Ap Pro 2 1562AE</a>
+            <span class="price">
+                                                                                    <strong>1,050,000 ₫</strong>
+                                                                                                <strike>1,790,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771517" data-id="40771517">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-song-x-the-wondering-earth-p40771517.html"
+               title="SONGX Wandering Earth Tai Nghe Bluetooth 5.3 Tai Nghe Không Dây Giảm Tiếng Ồn Chất Lượng Cao Cấp Cho Android &amp; iOS">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230803_ogUrr2pho4.jpeg"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230803_ogUrr2pho4.jpeg"
+                   alt="SONGX Wandering Earth Tai Nghe Bluetooth 5.3 Tai Nghe Không Dây Giảm Tiếng Ồn Chất Lượng Cao Cấp Cho Android &amp; iOS">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-song-x-the-wondering-earth-p40771517.html" class="title"
+               title="SONGX Wandering Earth Tai Nghe Bluetooth 5.3 Tai Nghe Không Dây Giảm Tiếng Ồn Chất Lượng Cao Cấp Cho Android &amp; iOS">SONGX
+              Wandering Earth Tai Nghe Bluetooth 5.3 Tai Nghe Không Dây Giảm Tiếng Ồn Chất Lượng Cao Cấp
+              Cho Android &amp; iOS</a>
+            <span class="price">
+                                                                                    <strong>1,090,000 ₫</strong>
+                                                                                                <strike>1,790,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771515" data-id="40771515">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-eono-tt2110-chong-on-anc-p40771515.html"
+               title="Tai nghe bluetooth in-ear Eono Tai nghe Bluetooth 5.0, Hộp sạc Type-C 380mAh, Điều khiển cảm ứng, Tai nghe không dây ANC 2 Mic tích hợp">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230802_k9rg6wYkK0.jpeg"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230802_k9rg6wYkK0.jpeg"
+                   alt="Tai nghe bluetooth in-ear Eono Tai nghe Bluetooth 5.0, Hộp sạc Type-C 380mAh, Điều khiển cảm ứng, Tai nghe không dây ANC 2 Mic tích hợp">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-eono-tt2110-chong-on-anc-p40771515.html" class="title"
+               title="Tai nghe bluetooth in-ear Eono Tai nghe Bluetooth 5.0, Hộp sạc Type-C 380mAh, Điều khiển cảm ứng, Tai nghe không dây ANC 2 Mic tích hợp">Tai
+              nghe bluetooth in-ear Eono Tai nghe Bluetooth 5.0, Hộp sạc Type-C 380mAh, Điều khiển cảm
+              ứng, Tai nghe không dây ANC 2 Mic tích hợp</a>
+            <span class="price">
+                                                                                    <strong>329,000 ₫</strong>
+                                                                                                <strike>539,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40771195" data-id="40771195">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-khong-day-1more-omthing-eo005-airfree-pods-p40771195.html"
+               title="Tai nghe không dây 1More Omthing EO005 AirFree Pods">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230620_Ce3lSB8mcr.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230620_Ce3lSB8mcr.png"
+                   alt="Tai nghe không dây 1More Omthing EO005 AirFree Pods">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-khong-day-1more-omthing-eo005-airfree-pods-p40771195.html" class="title"
+               title="Tai nghe không dây 1More Omthing EO005 AirFree Pods">Tai nghe không dây 1More Omthing
+              EO005 AirFree Pods</a>
+            <span class="price">
+                                                                                    <strong>339,000 ₫</strong>
+                                                                                                <strike>590,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40770967" data-id="40770967">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-boat-p40770967.html" title="Tai nghe bluetooth Boat">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20231102_lgWHVpavKK.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20231102_lgWHVpavKK.png"
+                   alt="Tai nghe bluetooth Boat">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-boat-p40770967.html" class="title" title="Tai nghe bluetooth Boat">Tai
+              nghe bluetooth Boat</a>
+            <span class="price">
+                                                                                    <strong>239,000 ₫</strong>
+                                                                                                <strike>379,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40770871" data-id="40770871">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-lenovo-thinkplus-gm2-p40770871.html"
+               title="Tai nghe bluetooth Lenovo Thinkplus GM2">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230526_qT7MbTUFin.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230526_qT7MbTUFin.png"
+                   alt="Tai nghe bluetooth Lenovo Thinkplus GM2">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-lenovo-thinkplus-gm2-p40770871.html" class="title"
+               title="Tai nghe bluetooth Lenovo Thinkplus GM2">Tai nghe bluetooth Lenovo Thinkplus GM2</a>
+            <span class="price">
+                                                                                    <strong>279,000 ₫</strong>
+                                                                                                <strike>569,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40770870" data-id="40770870">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-qcy-t4s-p40770870.html" title="Tai nghe bluetooth QCY T4S">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230524_qJiyrUA0kk.png"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230524_qJiyrUA0kk.png"
+                   alt="Tai nghe bluetooth QCY T4S">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-qcy-t4s-p40770870.html" class="title"
+               title="Tai nghe bluetooth QCY T4S">Tai nghe bluetooth QCY T4S</a>
+            <span class="price">
+                                                                                    <strong>239,000 ₫</strong>
+                                                                                                <strike>429,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40681119" data-id="40681119">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-soundliberty-bh053-p40681119.html"
+               title="Tai nghe bluetooth Soundliberty BH-053">
+              <img class=" lazyloaded"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230412_4ARvUZEpPX.jpeg"
+                   src="https://pos.nvncdn.net/5f3840-119888/ps/20230412_4ARvUZEpPX.jpeg"
+                   alt="Tai nghe bluetooth Soundliberty BH-053">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-soundliberty-bh053-p40681119.html" class="title"
+               title="Tai nghe bluetooth Soundliberty BH-053">Tai nghe bluetooth Soundliberty BH-053</a>
+            <span class="price">
+                                                                                    <strong>299,000 ₫</strong>
+                                                                                                <strike>590,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40662230" data-id="40662230">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-avengers-marvel-hail-hydra-d02-p40662230.html"
+               title="Tai nghe bluetooth Avengers Marvel Hail HYDRA D02">
+              <img class="lazyload"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230406_r2dtliFiZF.jpeg"
+                   src="https://web.nvnstatic.net/img/lazyLoading.gif?v=2"
+                   alt="Tai nghe bluetooth Avengers Marvel Hail HYDRA D02">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-avengers-marvel-hail-hydra-d02-p40662230.html" class="title"
+               title="Tai nghe bluetooth Avengers Marvel Hail HYDRA D02">Tai nghe bluetooth Avengers Marvel
+              Hail HYDRA D02</a>
+            <span class="price">
+                                                                                    <strong>499,000 ₫</strong>
+                                                                                                <strike>950,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40623027" data-id="40623027">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-dyplay-anc-pods-p40623027.html"
+               title="Tai nghe bluetooth Dyplay ANC Pods">
+              <img class="lazyload"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230403_8RWzyf0cn6.png"
+                   src="https://web.nvnstatic.net/img/lazyLoading.gif?v=2"
+                   alt="Tai nghe bluetooth Dyplay ANC Pods">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-dyplay-anc-pods-p40623027.html" class="title"
+               title="Tai nghe bluetooth Dyplay ANC Pods">Tai nghe bluetooth Dyplay ANC Pods</a>
+            <span class="price">
+                                                                                    <strong>239,000 ₫</strong>
+                                                                                                <strike>399,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40511549" data-id="40511549">
+          <div class="checkInv"><span>Hết hàng</span></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-marshall-minor-3-p40511549.html"
+               title="Tai nghe Bluetooth Marshall Minor 3 Rep 1:1 Chất Âm Sáng, Hoàn Thiện Chi Tiết">
+              <img class="lazyload"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230311_onHakapedo.png"
+                   src="https://web.nvnstatic.net/img/lazyLoading.gif?v=2"
+                   alt="Tai nghe Bluetooth Marshall Minor 3 Rep 1:1 Chất Âm Sáng, Hoàn Thiện Chi Tiết">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-marshall-minor-3-p40511549.html" class="title"
+               title="Tai nghe Bluetooth Marshall Minor 3 Rep 1:1 Chất Âm Sáng, Hoàn Thiện Chi Tiết">Tai
+              nghe Bluetooth Marshall Minor 3 Rep 1:1 Chất Âm Sáng, Hoàn Thiện Chi Tiết</a>
+            <span class="price">
+                                                                                    <strong>299,000 ₫</strong>
+                                                                                                <strike>599,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+        <div class="item 40473779" data-id="40473779">
+          <div class="checkInv" style="display: none;"></div>
+          <div class="img">
+            <div class="insurance">
+
+            </div>
+            <a href="/tai-nghe-bluetooth-infinix-xe20-p40473779.html"
+               title="Tai nghe Bluetooth Infinix XE20">
+              <img class="lazyload"
+                   data-src="https://pos.nvncdn.net/5f3840-119888/ps/20230306_8xUm9AtMRFMG7sYx.png"
+                   src="https://web.nvnstatic.net/img/lazyLoading.gif?v=2"
+                   alt="Tai nghe Bluetooth Infinix XE20">
+            </a>
+          </div>
+          <div class="info">
+            <a href="/tai-nghe-bluetooth-infinix-xe20-p40473779.html" class="title"
+               title="Tai nghe Bluetooth Infinix XE20">Tai nghe Bluetooth Infinix XE20</a>
+            <span class="price">
+                                                                                    <strong>229,000 ₫</strong>
+                                                                                                <strike>499,000 ₫</strike>
+                                                                                </span>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" class="data-page-next" value="2"><input type="hidden" class="data-page-last" value="3">
+      <div class="loadMoreProduct more-product loading viewmore">
+        <button>Xem thêm</button>
+      </div>
+    </div>
+  </div>
+</section>
+<input type="hidden" class="checkCookies" value="">
+<footer>
+  <div class="container">
+    <div class="bg">
+      <div class="col-content">
+        <div class="link-content col-md-2">
+          <h4><a><p>VỀ CHÚNG TÔI</p></a></h4>
+          <p><span style="font-size:14px;"><a href="https://www.facebook.com/nguoibanlo">FANPAGE</a><br>
+<a href="https://www.facebook.com/groups/651525088359345">CỘNG ĐỒNG KHÁCH HÀNG</a><br>
+<a href="https://shope.ee/7zc7yW7KRW">SHOPEE</a><br>
+<a href="https://www.tiktok.com/@vuabanlo" style="font-size:15px;text-indent:10px;">TIKTOK</a><br>
+<a href="https://www.youtube.com/channel/UCYvKHkoXCGq1XA2nWFo-NDw">YOUTUBE</a></span><br>
+            &nbsp;</p></div>
+        <div class="link-content col-md-2">
+          <h4><a>HỖ TRỢ</a></h4>
+          <p><a href="/chinh-sach-chung-n119544.html">CHÍNH SÁCH CHUNG</a></p>
+          <p><a href="/chinh-sach-bao-hanh-n110655.html">BẢO HÀNH</a></p>
+          <p><a href="/giao-hang-doi-tra-n110656.html">GIAO HÀNG&nbsp;</a></p>
+          <p><a href="/chinh-sach-doi-tra-hoan-tien-n110658.html">TRẢ HÀNG HOÀN TIỀN</a></p>
+          <p><a href="/phuong-thuc-thanh-toan-n110657.html">THANH TOÁN</a></p>
+          <p><a href="/chinh-sach-bao-mat-thong-tin-n110659.html">BẢO MẬT THÔNG TIN</a></p>
+          <p><a href="/dieu-khoan-su-dung-website-n110660.html">ĐIỀU KHOẢN SỬ DỤNG</a></p>
+          <p><br><br>&nbsp;</p></div>
+        <div class="link-content col-md-2">
+          <h4><a href="">LIÊN HỆ</a></h4>
+          <p>HOTLINE:&nbsp;<br>1900.4351</p></div>
+        <div class="col-md-2">
+          <h4>HOTLINE</h4>
+          <a class="hotline" href="tel:1900.4351">1900.4351</a>
+        </div>
+        <div class="col-md-2">
+          <h4>Thanh toán miễn phí</h4>
+          <div class="list-logo">
+            <img src="https://web.nvnstatic.net/tp/T0415/img/payment/logo-visa.png?v=3">
+            <img src="https://web.nvnstatic.net/tp/T0415/img/payment/logo-master.png?v=3">
+            <img src="https://web.nvnstatic.net/tp/T0415/img/payment/logo-jcb.png?v=3">
+            <img src="https://web.nvnstatic.net/tp/T0415/img/payment/logo-samsungpay.png?v=3">
+            <img src="https://web.nvnstatic.net/tp/T0415/img/payment/logo-atm.png?v=3">
+            <img src="https://web.nvnstatic.net/tp/T0415/img/payment/logo-vnpay.png?v=3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</footer>
+
+<!-- Your Plugin chat code -->
+
+<script>
+  var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "103005398881881");
+  chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+
+<!-- Your SDK code -->
+<script>
+  window.fbAsyncInit = function () {
+    FB.init({
+      xfbml: true,
+      version: 'v15.0'
+    });
+  };
+
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<input type="hidden" id="bussinessId" value="119888"><input type="hidden"
+                                                            value="ZdC56JSZlSaf8C9X8pR3mBLnXYAWlJvYNqnGKPD2OfzAg9MgHuGiUWUzo0zT1ofvtcF18fPjCzoP4sUOQjWova2zSqfP3Lcr3Ix3srUqXvoJSO9QcNCbnOqeHFygbRrI7CvPQ94jnndlrndI6CK6jemb7nn6yHLAqUwiCrKWUiU1RtBh9hqWn14xp8seZTctCxdcHGSl6qW8Eoyn0VHIRpJbke16CR5FS"
+                                                            id="uctk" name="uctk"><input type="hidden" id="clienIp"
+                                                                                         value="58.186.179.175"><input
+        type="hidden" value="" id="hasIdentity">
+
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0"
+    style="display: none;"></ul>
+</section>
+</body>
+<div style="position: absolute; top: 0px; z-index: 2147483647; display: block !important;"></div>
+</html>

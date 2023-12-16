@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
@@ -15,15 +14,15 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
+<!-- Page Preloder -->
 
 
-    <!-- Header Section Begin -->
-	<!-- <%@include file="./components/header.jsp" %> -->
-    <!-- Header End -->
+<!-- Header Section Begin -->
+<!-- <%@include file="./components/header.jsp" %> -->
+<!-- Header End -->
 
-    <!-- Breadcrumb Section Begin -->
-    <section layout:fragment="content">
+<!-- Breadcrumb Section Begin -->
+<section layout:fragment="content">
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
@@ -48,35 +47,41 @@
                     <div class="cart-table">
                         <table>
                             <thead>
-                                <tr>
-                                    <th style="width: 10%">#</th>
-                                    <th style="width: 10%">Hình ảnh</th>
-                                    <th style="width: 25%" class="p-name">Tên sản phẩm</th>
-                                    <th style="width: 20%">Giá</th>
-                                    <th style="width: 20%">Số lượng</th>
-                                    <th style="width: 20%">Tổng giá</th>
+                            <tr>
+                                <th style="width: 10%">#</th>
+                                <th style="width: 10%">Hình ảnh</th>
+                                <th style="width: 25%" class="p-name">Tên sản phẩm</th>
+                                <th style="width: 20%">Giá</th>
+                                <th style="width: 20%">Số lượng</th>
+                                <th style="width: 20%">Tổng giá</th>
 
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody>
                             <tr th:each="cartDetail, loop : ${cartDetails}">
-                                <td th:text="${loop.index+1}"></td>
-                                <td><img th:src="@{cartDetail}" alt="Ảnh sản phẩm" ></td>
+                                <td><input type="checkbox" name="selectedItems"
+                                           th:value="${cartDetail.id}"/>
+                                    <span th:text="${loop.index+1}"></span></td>
+                                <td><img th:src="@{cartDetail}" alt="Ảnh sản phẩm"></td>
                                 <td th:text="${cartDetail.productDetail.name}"></td>
                                 <td th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></td>
                                 <td>
-                                    <form style="top: 40px; margin-top: 20px; margin-left: 70px" th:action="@{/updateSoLuong/{id}(id=${cartDetail.id})}" method="post">
+                                    <form style="top: 40px; margin-top: 20px; margin-left: 70px"
+                                          th:action="@{/updateSoLuong/{id}(id=${cartDetail.id})}" method="post">
                                         <button type="submit" name="actions" th:value="giam">-</button>
-                                        <input aria-label="quantity" class="input-qty" th:max="${cartDetail.productDetail.quantity}" th:min="0" type="number"
-                                               name="quantity" th:value="${cartDetail.quantity}"  >
+                                        <input aria-label="quantity" class="input-qty"
+                                               th:max="${cartDetail.productDetail.quantity}" th:min="0" type="number"
+                                               name="quantity" th:value="${cartDetail.quantity}">
                                         <button type="submit" name="actions" th:value="tang">+</button>
                                     </form>
                                 </td>
                                 <td th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price * cartDetail.quantity, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
                                 ></td>
                                 <td class="close-td first-row">
-                                    <a th:href="@{'/delete/' + ${cartDetail.id}}" class="btn btn-outline-danger"   onclick="if (!confirm('Bạn chắc chắn có muốn xóa không ?')){return false;}else{return true}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    <a th:href="@{'/delete/' + ${cartDetail.id}}" class="btn btn-outline-danger"
+                                       onclick="if (!confirm('Bạn chắc chắn có muốn xóa không ?')){return false;}else{return true}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
                                              class="bi bi-trash" viewBox="0 0 16 16">
                                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
                                             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
@@ -90,35 +95,13 @@
                 </div>
 
                 <div class="col-lg-12">
-                    <div class="">
-                        <h3 class="fw-bold">Hóa đơn</h3>
-                        <hr class="my-4">
-                        <div th:each="cartDetail, loop : ${cartDetails}" class="d-flex justify-content-between mb-4 row_summary">
-                            <h5 class="h6 qty_summary"  th:text="${cartDetail.quantity + 'x ' + cartDetail.productDetail.name}"></h5>
-                            <h5 class="h6 price_summary"
-                                th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price * cartDetail.quantity, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"> </h5>
-                        </div>
-                        <hr class="my-4 ">
-                    </div>
 
-
-                    <div class="">
-                        <div class="discount-coupon">
-                            <h6>Mã giảm giá</h6>
-                            <form action="#" class="coupon-form">
-                                <input type="text" placeholder="Hãy nhập mã giảm giá">
-                                <button type="submit" class="site-btn coupon-btn">Áp dụng</button>
-                            </form>
-                        </div>
-                    </div>
                     <div class="">
                         <div class="proceed-checkout">
                             <ul>
-                                <li class="subTotal">Tổng giá <span
-                                                                    th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
-                                ></span></li>
                                 <hr>
-                                <li class="cart-total">Tổng tiền <span th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                <li class="cart-total">Tổng tiền <span
+                                        th:text="${#strings.replace(#numbers.formatDecimal(tongTien, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
 
                                 ></span></li>
                             </ul>
@@ -129,60 +112,24 @@
             </div>
         </div>
     </section>
-    </section>
-    <!-- Shopping Cart Section End -->
-    <script type="text/javascript">
-        function updateCart(index,productId) {
-            var quantity = $('.qty_product').eq(index).val();
-            if(quantity == 0){
-                removeProduct(index,productId);
-            }else{
-                var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=' + quantity + '&isReplace=true';
-                $.ajax({
-                    url: apiUrl,
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function(data){
-                        console.log(data.listDetail[index]);
-                        $('.price_total').eq(index).html(data.listDetail[productId].price.toLocaleString('en-US') + ' VND');
-                        $('.price_summary').eq(index).html(data.listDetail[productId].price.toLocaleString('en-US') + ' VND');
-                        $('.qty_summary').eq(index).html(data.listDetail[productId].quantity + 'x ' + data.listDetail[productId].name);
-
-                        $('#subQuantity').html(data.totalQuantity);
-                        $('#subTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-                        $('#cartTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-
-                        $('#totalQuantity').html(data.totalQuantity);
-                        $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-                        $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
-                        $.ajax({
-                            url: '/cart',
-                            type: 'GET',
-                            success: function(data){
-                                $('#cartShow').html($(data).find('#cartShow').children());
-                            },
-                            error: function(error){
-                                alert('Error: ' + error);
-                            }
-                        })
-                    },
-                    error: function(error){
-                        alert('Add product to cart fail. Error: ' + error);
-                    }
-
-                });
-            }
-        }
-
-        function removeProduct(index,productId) {
-            $('.row_cart').eq(index).remove();
-            $('.row_summary').eq(index).remove();
-            var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=0&isReplace=true';
+</section>
+<!-- Shopping Cart Section End -->
+<script type="text/javascript">
+    function updateCart(index, productId) {
+        var quantity = $('.qty_product').eq(index).val();
+        if (quantity == 0) {
+            removeProduct(index, productId);
+        } else {
+            var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=' + quantity + '&isReplace=true';
             $.ajax({
                 url: apiUrl,
                 type: 'POST',
                 dataType: 'json',
-                success: function(data){
+                success: function (data) {
+                    console.log(data.listDetail[index]);
+                    $('.price_total').eq(index).html(data.listDetail[productId].price.toLocaleString('en-US') + ' VND');
+                    $('.price_summary').eq(index).html(data.listDetail[productId].price.toLocaleString('en-US') + ' VND');
+                    $('.qty_summary').eq(index).html(data.listDetail[productId].quantity + 'x ' + data.listDetail[productId].name);
 
                     $('#subQuantity').html(data.totalQuantity);
                     $('#subTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
@@ -194,31 +141,66 @@
                     $.ajax({
                         url: '/cart',
                         type: 'GET',
-                        success: function(data){
+                        success: function (data) {
                             $('#cartShow').html($(data).find('#cartShow').children());
                         },
-                        error: function(error){
+                        error: function (error) {
                             alert('Error: ' + error);
                         }
                     })
                 },
-                error: function(error){
+                error: function (error) {
                     alert('Add product to cart fail. Error: ' + error);
                 }
 
             });
         }
+    }
+
+    function removeProduct(index, productId) {
+        $('.row_cart').eq(index).remove();
+        $('.row_summary').eq(index).remove();
+        var apiUrl = '/api/cart/update?productId=' + productId + '&quantity=0&isReplace=true';
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+                $('#subQuantity').html(data.totalQuantity);
+                $('#subTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                $('#cartTotal').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+
+                $('#totalQuantity').html(data.totalQuantity);
+                $('#totalPrice1').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                $('#totalPrice2').html(data.totalPrice.toLocaleString('en-US') + ' VND');
+                $.ajax({
+                    url: '/cart',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#cartShow').html($(data).find('#cartShow').children());
+                    },
+                    error: function (error) {
+                        alert('Error: ' + error);
+                    }
+                })
+            },
+            error: function (error) {
+                alert('Add product to cart fail. Error: ' + error);
+            }
+
+        });
+    }
 
 
-
-        function qty(index,productId, check) {
-            var value = $('.qty_product').eq(index).val();
-            if(check == 1){
-                $('.qty_product').eq(index).val(parseInt(value)+1);
-            }else $('.qty_product').eq(index).val(parseInt(value)-1);
-            updateCart(index,productId);
-        }
-    </script>
+    function qty(index, productId, check) {
+        var value = $('.qty_product').eq(index).val();
+        if (check == 1) {
+            $('.qty_product').eq(index).val(parseInt(value) + 1);
+        } else $('.qty_product').eq(index).val(parseInt(value) - 1);
+        updateCart(index, productId);
+    }
+</script>
 </body>
 
 </html>
