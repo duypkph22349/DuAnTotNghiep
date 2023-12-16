@@ -161,8 +161,8 @@ public class CartService {
             bill.setBillDetail(billDetails);
             double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
             bill.setTotal_money(totalMoney);
-            bill.setDeposit(0);
-            bill.setMoney_ship(0);
+            bill.setDeposit(0d);
+            bill.setMoney_ship(0d);
             return bill;
         }
         return null;
