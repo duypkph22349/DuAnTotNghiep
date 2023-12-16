@@ -1,9 +1,11 @@
 package datn.goodboy.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import datn.goodboy.model.entity.Images;
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
@@ -19,8 +23,10 @@ import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.request.ProductAddRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
+import datn.goodboy.repository.ImageRepository;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
+import datn.goodboy.service.cloud.CloudinaryImageService;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 import jakarta.transaction.Transactional;
 
@@ -51,6 +57,11 @@ public class ManagerProductService implements PanigationInterface<Product> {
 
   @Autowired
   private CategoryService categoryService;
+
+  @Autowired
+  CloudinaryImageService cloudService;
+  @Autowired
+  ImageRepository imagesRepository;
 
   public Page<Product> findAll(Pageable pageable) {
     return productRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -195,6 +206,23 @@ public class ManagerProductService implements PanigationInterface<Product> {
       productDetail.get().setPrice(request.getPrice());
       productDetail.get().setDescription(request.getDescription());
       return productDetailRepository.save(productDetail.get());
+    }
+    return null;
+  }
+
+  public String saveImage(int id, MultipartFile image) {
+    Optional<ProductDetail> productDetail = productDetailRepository.findById(id);
+    if (productDetail.isPresent()) {
+      try {
+        String url = cloudService.saveImage(image);
+        Images images = new Images();
+        images.setImg(url);
+        images.setIdProductDetail(productDetail.get());
+        imagesRepository.save(images);
+        return url;
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return null;
   }

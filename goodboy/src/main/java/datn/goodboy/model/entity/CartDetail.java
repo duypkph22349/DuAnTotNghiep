@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+import org.apache.commons.lang3.builder.ToStringExclude;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Getter
@@ -12,6 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,27 +28,57 @@ public class CartDetail {
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "id_cart" )
+    @ToString.Exclude
+    @JsonIgnore
+    @JoinColumn(name = "id_cart")
     private Cart cart;
 
     @Column(name = "price")
     private Float price;
 
     @ManyToOne
-    @JoinColumn(name = "id_product_detail" )
+    @JoinColumn(name = "id_product_detail")
     private ProductDetail productDetail;
 
     @Column(name = "status")
     private int status;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.status = 1;
+        this.deleted = false;
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        CartDetail that = (CartDetail) o;
+        return Objects.equals(productDetail.getId(), that.productDetail.getId()) &&
+                Objects.equals(cart.getId(), that.cart.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productDetail.getId(), cart.getId());
+    }
 }
