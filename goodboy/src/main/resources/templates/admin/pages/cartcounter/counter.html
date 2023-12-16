@@ -16,6 +16,8 @@
 </head>
 
 <body layout:fragment="content">
+    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/selectdropdown.css}">
     <div class="pagetitle">
         <h1>Dashboard</h1>
         <nav>
@@ -25,7 +27,6 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
     <div>
         <section class="section dashboard">
             <section class="content-wrapper">
@@ -196,6 +197,8 @@
     </div>
     <script th:src="@{/assets/js/counter/counter.js}"></script>
     <script th:src="@{/assets/js/counter/localStore.js}"></script>
+    <script th:src="@{/assets/js/counter/dropdownselect.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 </body>
+
 </html>

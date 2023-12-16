@@ -1112,6 +1112,7 @@ async function addProductIntoOrder(idorderdetail, id) {
         productsOnOrder.appendChild(newProductRow);
       }
     }
+    updateHoaDon(idorderdetail);
     updateTongTien(idorderdetail);
   } catch (error) {
     console.error(error);
@@ -1158,6 +1159,7 @@ function removeProduct(orderId, idproduct) {
       productsOnOrder.removeChild(row);
     }
   }
+  updateHoaDon(orderId);
   updateTongTien(orderId);
 }
 async function findInExitOrder(idorderdetail, productId) {
@@ -1200,6 +1202,7 @@ async function giamProductIntoOrder(idorderdetail, id) {
     if (productExists !== null) {
       descreaseProductQuantity(productExists, product);
     }
+    updateHoaDon(orderId);
     updateTongTien(idorderdetail);
   } catch (error) {
     console.error(error);

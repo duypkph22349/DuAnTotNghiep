@@ -1,7 +1,7 @@
 // sys data on local storage;
 // Assume there is a global variable to store orders
 function loadOrdersFromLocalStorage() {
-  const storedOrders = localStorage.getItem("orders");
+  const storedOrders = sessionStorage.getItem("orders");
   return storedOrders ? JSON.parse(storedOrders) : null;
 }
 let orders = loadOrdersFromLocalStorage() || [];
@@ -18,7 +18,7 @@ function updateOrder(newData) {
     orders.push(newData);
     console.log("New order added:", orders[orders.length - 1]);
   }
-  // Save updated orders to localStorage
+  // Save updated orders to sessionStorage
   saveOrdersToLocalStorage();
 }
 async function updateHoaDon(id) {
@@ -705,7 +705,7 @@ function resetOrderPage(element) {
   return form;
 }
 function saveOrdersToLocalStorage() {
-  localStorage.setItem("orders", JSON.stringify(orders));
+  sessionStorage.setItem("orders", JSON.stringify(orders));
 }
 function restoreProductOrder(idorderdetail, product) {
   const newProductRow = document.createElement("tr");

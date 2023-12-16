@@ -442,10 +442,6 @@ function createChart() {
           display: true,
           position: "top",
         },
-        title: {
-          display: true,
-          text: "Thống kê doanh thu",
-        },
         background: {
           color: "rgba(0, 0, 0, 0.1)",
         },

@@ -30,6 +30,11 @@ public class ThongkeController {
     return ResponseEntity.ok(totalDoanhThu);
   }
 
+  @GetMapping("/getgrowthanyesterday")
+  public float getGrowthanYesterday() {
+    return thongKeService.getGrowthThanToday();
+  }
+
   @GetMapping("/todaytotalbill")
   public ResponseEntity<Integer> getToDayTotalBill() {
     return ResponseEntity.ok(thongKeService.getTodayTotalBill());
@@ -48,6 +53,21 @@ public class ThongkeController {
   @GetMapping("/incomebeforetoday")
   public Map<String, BigDecimal> getDoanhNgayHomQua() {
     return thongKeService.getDoanhNgayHomNay();
+  }
+
+  @GetMapping("/incomperhousthisweek")
+  public Map<String, BigDecimal> incomperhousthisweek() {
+    return thongKeService.getInComePerHoursThisWeek();
+  }
+
+  @GetMapping("/incomperhousthisyear")
+  public Map<String, BigDecimal> incomperhousthisyear() {
+    return thongKeService.getIncomePerHoursThisYear();
+  }
+
+  @GetMapping("/incomperhousthismounth")
+  public Map<String, BigDecimal> incomperhousthismounth() {
+    return thongKeService.getInComePerHoursThisMonth();
   }
 
   @GetMapping("/todaytopproductsales")
