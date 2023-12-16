@@ -43,15 +43,8 @@ public class ProductDetailRequest {
   @Min(value = 0, message = "Vui lòng chọn")
   int idPattern;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idOrigin;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idBrand;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idMaterial;
-  @Min(value = 0, message = "Vui lòng chọn")
   int idSize;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idStyles;
+
   String description;
   @NotNull(message = "Trường này không thể bỏ qua")
   boolean deleted;
@@ -73,11 +66,7 @@ public class ProductDetailRequest {
     }
     this.idProduct = -1;
     this.idPattern = -1;
-    this.idOrigin = -1;
-    this.idBrand = -1;
-    this.idMaterial = -1;
     this.idSize = -1;
-    this.idStyles = -1;
     this.quantity = 0;
     this.price = 0f;
     this.name = "";

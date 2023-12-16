@@ -1,9 +1,5 @@
 package datn.goodboy.repository;
 
-import datn.goodboy.model.entity.Brand;
-import datn.goodboy.model.entity.Color;
-import datn.goodboy.model.entity.Material;
-
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import datn.goodboy.model.entity.Material;
+
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
     @Query("SELECT b FROM Material b WHERE b.code LIKE %:keyword% OR b.name LIKE %:keyword%")
@@ -23,4 +21,7 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
     @Query("SELECT new map(e.id as key, e.name as value) FROM Material e")
     List<Map<Integer, String>> getComboBoxMap();
+
+    @Query("SELECT b FROM Material b WHERE b.status = 1 AND b.deleted = false")
+    List<Material> getMaterialList();
 }

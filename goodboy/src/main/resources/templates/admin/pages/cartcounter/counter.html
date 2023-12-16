@@ -16,6 +16,8 @@
 </head>
 
 <body layout:fragment="content">
+    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/selectdropdown.css}">
     <div class="pagetitle">
         <h1>Dashboard</h1>
         <nav>
@@ -25,16 +27,14 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
     <div>
         <section class="section dashboard">
             <section class="content-wrapper">
                 <div class="list-counter-cart">
                     <div class="item-counter-cart">
-
                         <div id="taborders" class="tab">
                             <button onclick="addnewOrderPage()">
-                                Thêm Hóa Đơn
+                                Thêm Hóa Đơn (F1)
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-plus-circle" viewBox="0 0 16 16" onclick="addInvoices()">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z">
@@ -52,8 +52,152 @@
             </section>
         </section>
     </div>
-    <script th:src="@{/assets/js/counter.js}"></script>
-    <script th:src="@{/assets/js/pdfbill.js}"></script>
+    <div class="modal fade" id="billPrint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hóa Đơn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="w-100" id="bill" style="
+                        font-size: 10px;
+                        ">
+                        <p style="color: #7e8d9f; font-size: 20px;">Hóa Đơn&gt;&gt; <strong id="billcode"></strong>
+                        </p>
+                        <div class="row">
+                            <div class="col-6 col-md-6">
+                                <h3 style="color: #007bff;">Thông tin khách hàng</h3>
+                                <div class="row">
+                                    <div class="col-md-4 col-3 fw-bold">Tên:</div>
+                                    <div class="col-md-8 col-9" id="customername"></div>
+                                    <div class="col-3 col-md-4 fw-bold">Số điện thoại:</div>
+                                    <div class="col-9 col-md-8" id="phonenumber"></div>
+                                    <div class="col-3 col-md-4 fw-bold">Địa chỉ:</div>
+                                    <div class="col-9 col-md-8" id="fulladdress"></div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <h3 style="color: #007bff;">Trạng thái hóa đơn</h3>
+                                <div class="row">
+                                    <div class="col-md-4 col-3 fw-bold">Mã hóa đơn:</div>
+                                    <div class="col-9 col-md-8" id="hoadoncode"></div>
+                                    <div class="col-md-4 col-3 fw-bold">Nhân viên:</div>
+                                    <div class="col-9 col-md-8" id="employename"></div>
+                                    <div class="col-md-4 col-3 fw-bold">Trạng thái hóa đơn:</div>
+                                    <div class="col-9 col-md-8" id="orderstatus"></div>
+                                    <div class="col-md-4 col-3 fw-bold">Loại hóa đơn:</div>
+                                    <div class="col-9 col-md-8" id="ordertype"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Thanh tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sanphaminbill">
+
+                            </tbody>
+                        </table>
+                        <hr>
+                        <div class="row">
+                            <div class="col-8">
+                                <span>Note:</span>
+                                <p class="ms-3" id="note">Add additional notes and payment information</p>
+                            </div>
+                            <div class="col-4">
+                                <ul class="list-unstyled">
+                                    <li class="text-muted ms-3"><span class="text-black me-4 mx-3">Tổng tiền sản
+                                            phẩm:
+                                        </span><span id="total-products"></span>
+                                    </li>
+                                    <li class="text-muted ms-3 mt-2"><span
+                                            class="text-black me-4 mx-3">Giảm:</span><span id="discount"></span>
+                                    </li>
+                                    <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Tiền
+                                            ship:</span><span id="shipping-cost"></span>
+                                    </li>
+                                </ul>
+                                <p class="text-black float-start"><span class="text-black me-3 mx-3"> Tổng
+                                        giá</span><span style="font-size: 14px;"><span id="total-price"></span></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" onclick="$('#bill').printThis();">Print</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="hoadoncho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hóa Đơn Chờ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="billwait" style="font-size: 10px;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Thanh tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sanphaminbill"></tbody>
+                        </table>
+                        <ul class="list-unstyled">
+                            <li class="text-muted ms-3">
+                                <span class="text-black me-4 mx-3">Tổng tiền sản phẩm:</span>
+                                <span id="total-products"></span>
+                            </li>
+                        </ul>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 col-12 fw-bold">Trạng thái hóa đơn:</div>
+                            <div class="col-md-8 col-12" id="order-status"></div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="customer-name">Tên khách hàng:</label>
+                                <input type="text" class="form-control" id="customer-name">
+                            </div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="phone-number">Số điện thoại:</label>
+                                <input type="text" class="form-control" id="phone-number">
+                            </div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="order-note">Note:</label>
+                                <input type="text" class="form-control" id="order-note">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/js/counter/counter.js}"></script>
+    <script th:src="@{/assets/js/counter/localStore.js}"></script>
+    <script th:src="@{/assets/js/counter/dropdownselect.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 </body>
 

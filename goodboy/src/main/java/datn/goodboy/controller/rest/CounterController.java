@@ -1,4 +1,4 @@
-package datn.goodboy.controller;
+package datn.goodboy.controller.rest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,14 +18,14 @@ import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.OrderCounterRequest;
-import datn.goodboy.service.ConterService;
+import datn.goodboy.service.CounterService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.VoucherService;
 
-@RestController("countercartresttest")
-@RequestMapping("rest/data/counter")
-public class RestCounterController {
+@RestController("counterController")
+@RequestMapping("/admin/counter")
+public class CounterController {
 
   @Autowired
   private EmployeeService employeeService;
@@ -36,7 +36,7 @@ public class RestCounterController {
   @Autowired
   private VoucherService voucherService;
   @Autowired
-  private ConterService countService;
+  private CounterService countService;
 
   @GetMapping("voucherAble")
   public ResponseEntity<List<Voucher>> getAbleVoucher() {
@@ -79,10 +79,10 @@ public class RestCounterController {
   }
 
   @PostMapping("checkout")
-  public ResponseEntity<OrderCounterRequest> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+  public ResponseEntity<Bill> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
     if (!orderCounterRequest.hasValidationError()) {
       Bill bill = countService.saveBill(orderCounterRequest);
-      return ResponseEntity.ok().body(orderCounterRequest);
+      return ResponseEntity.ok().body(bill);
     }
     return null;
   }

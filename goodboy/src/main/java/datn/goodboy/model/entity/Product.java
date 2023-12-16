@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -52,6 +54,10 @@ public class Product {
     private Material idMaterial;
 
     @ManyToOne
+    @JoinColumn(name = "id_category")
+    private Category idCategory;
+
+    @ManyToOne
     @JoinColumn(name = "id_style")
     private Styles idStyles;
 
@@ -79,12 +85,18 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "idProduct") // Define the relationship with Images
+    @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with Images
     @JsonIgnore
+    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+    @ToString.Exclude
     private List<ImageProduct> imageProducts;
-    @OneToMany(mappedBy = "idProduct") // Define the relationship with ProductDetail
+    @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with ProductDetail
     @JsonIgnore
+    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+    @ToString.Exclude
     private List<ProductDetail> productDetails;
+
+    @JsonIgnore
 
     public Float getMinPrice() {
         Optional<ProductDetail> minPrice = productDetails.stream()
@@ -93,6 +105,8 @@ public class Product {
                 });
         return minPrice.get().getPrice();
     }
+
+    @JsonIgnore
 
     public Float getMaxPrice() {
         Optional<ProductDetail> maxPrice = productDetails.stream()

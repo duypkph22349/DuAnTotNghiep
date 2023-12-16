@@ -1,6 +1,5 @@
 package datn.goodboy.model.entity;
 
-
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
@@ -34,7 +33,7 @@ public class Customer {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   UUID id;
-  @Column(name = "code" , insertable = false, updatable = false)
+  @Column(name = "code", insertable = false, updatable = false)
   String code;
   @Column(name = "name")
   String name;
@@ -55,16 +54,17 @@ public class Customer {
   @Column(name = "status")
   int status;
 
-  @Column(name="created_at")
+  @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  @Column(name="update_at")
+  @Column(name = "update_at")
   private LocalDateTime updatedAt;
 
-  @Column(name="deleted")
+  @Column(name = "deleted")
   private boolean deleted;
 
   @OneToOne(mappedBy = "customer")
+  @ToString.Exclude
   private Cart cart;
 
 }

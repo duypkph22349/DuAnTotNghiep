@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import groovy.transform.ToString;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,14 +19,17 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Table(name = "product_detail")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "product_detail")
 @ToString
 public class ProductDetail {
     @Id
@@ -73,7 +76,8 @@ public class ProductDetail {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
+    @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL)
+    @ToString.Exclude
     @JsonIgnore
     private List<Images> imageProducts;
 

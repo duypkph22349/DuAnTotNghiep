@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.request.ProductFilter;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
@@ -25,5 +26,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND  p.deleted = false")
     Page<Product> getProductSales(Pageable pageable);
 
-    Page<Product> findAll(Pageable pageable);
+    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND  p.deleted = false")
+    Page<Product> filter(ProductFilter filter, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND  p.deleted = false")
+
+    Page<Product> getProductSalesByPriceAsc(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND  p.deleted = false")
+
+    Page<Product> getProductSalesByPriceDesc(Pageable pageable);
 }

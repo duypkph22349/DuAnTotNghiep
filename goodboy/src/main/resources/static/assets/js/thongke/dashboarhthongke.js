@@ -23,7 +23,7 @@ const filtertopProductSales = document.getElementById("filterTopProductSales");
 // Today
 async function getToDayTotalProductSale() {
   try {
-    const response = await fetch("/api/thongke/todaytotalproductsale");
+    const response = await fetch("/admin/api/thongke/todaytotalproductsale");
     const data = await response.json();
     totalSalesProduct.innerText = data.toString();
     filtertotalSalesProduct.innerText = ` | Hôm nay`;
@@ -34,7 +34,7 @@ async function getToDayTotalProductSale() {
 }
 async function getToDayToTalIncome() {
   try {
-    const response = await fetch("/api/thongke/todaydoanhthu");
+    const response = await fetch("/admin/api/thongke/todaydoanhthu");
     const data = await response.json();
     totalSalesIncome.innerText = formatAsVND(data.toString());
     filtertotalSalesIncome.innerText = ` | Hôm nay`;
@@ -45,7 +45,7 @@ async function getToDayToTalIncome() {
 }
 async function getToDayTotalBill() {
   try {
-    const response = await fetch("/api/thongke/todaytotalbill");
+    const response = await fetch("/admin/api/thongke/todaytotalbill");
     const data = await response.json();
     totalSalesBill.innerText = data.toString();
     filtertotalSalesBill.innerText = ` | Hôm nay`;
@@ -55,7 +55,7 @@ async function getToDayTotalBill() {
 }
 async function getToDayTopProductSale() {
   try {
-    const response = await fetch("/api/thongke/todaytopproductsales");
+    const response = await fetch("/admin/api/thongke/todaytopproductsales");
     const data = await response.json();
 
     const tbody = document.getElementById("topProductSales");
@@ -86,14 +86,14 @@ async function getToDayTopProductSale() {
       const nameSpan = document.createElement("span");
       nameSpan.textContent = product.name;
 
-      const colorSpan = document.createElement("span");
-      colorSpan.textContent = " - " + product.productDetail?.idColor?.name;
+      const patternSpan = document.createElement("span");
+      patternSpan.textContent = " - " + product.productDetail?.idPattern?.name;
 
       const sizeSpan = document.createElement("span");
       sizeSpan.textContent = " - " + product.productDetail?.idSize?.name;
 
       nameCell.appendChild(nameSpan);
-      nameCell.appendChild(colorSpan);
+      nameCell.appendChild(patternSpan);
       nameCell.appendChild(sizeSpan);
 
       row.appendChild(nameCell);
@@ -126,7 +126,9 @@ async function getToDayTopProductSale() {
 // mouth
 async function getThisMouthTotalProductSale() {
   try {
-    const response = await fetch("/api/thongke/thismouthtotalproductsale");
+    const response = await fetch(
+      "/admin/api/thongke/thismouthtotalproductsale"
+    );
     const data = await response.json();
     totalSalesProduct.innerText = data.toString();
     filtertotalSalesProduct.innerText = ` | Tháng này`;
@@ -137,7 +139,7 @@ async function getThisMouthTotalProductSale() {
 }
 async function getThisMouthToTalIncome() {
   try {
-    const response = await fetch("/api/thongke/thismouthdoanhthu");
+    const response = await fetch("/admin/api/thongke/thismouthdoanhthu");
     const data = await response.json();
     totalSalesIncome.innerText = formatAsVND(data.toString());
     filtertotalSalesIncome.innerText = ` | Tháng này`;
@@ -147,7 +149,7 @@ async function getThisMouthToTalIncome() {
 }
 async function getThisMouthTotalBill() {
   try {
-    const response = await fetch("/api/thongke/thismouthtotalbill");
+    const response = await fetch("/admin/api/thongke/thismouthtotalbill");
     const data = await response.json();
     totalSalesBill.innerText = data.toString();
     filtertotalSalesBill.innerText = ` | Tháng này`;
@@ -157,7 +159,7 @@ async function getThisMouthTotalBill() {
 }
 async function getThisMouthTopProductSale() {
   try {
-    const response = await fetch("/api/thongke/thismouthtopproductsales");
+    const response = await fetch("/admin/api/thongke/thismouthtopproductsales");
     const data = await response.json();
 
     const tbody = document.getElementById("topProductSales"); // Assuming you have a tbody with id="topProductSales" in your HTML
@@ -189,14 +191,14 @@ async function getThisMouthTopProductSale() {
       const nameSpan = document.createElement("span");
       nameSpan.textContent = product.name;
 
-      const colorSpan = document.createElement("span");
-      colorSpan.textContent = " - " + product.productDetail?.idColor?.name;
+      const patternSpan = document.createElement("span");
+      patternSpan.textContent = " - " + product.productDetail?.idPattern?.name;
 
       const sizeSpan = document.createElement("span");
       sizeSpan.textContent = " - " + product.productDetail?.idSize?.name;
 
       nameCell.appendChild(nameSpan);
-      nameCell.appendChild(colorSpan);
+      nameCell.appendChild(patternSpan);
       nameCell.appendChild(sizeSpan);
 
       row.appendChild(nameCell);
@@ -229,7 +231,7 @@ async function getThisMouthTopProductSale() {
 // This Year
 async function getThisYearToTalIncome() {
   try {
-    const response = await fetch("/api/thongke/thisyeardoanhthu");
+    const response = await fetch("/admin/api/thongke/thisyeardoanhthu");
     const data = await response.json();
     totalSalesIncome.innerText = formatAsVND(data.toString());
     filtertotalSalesIncome.innerText = ` | Năm nay`;
@@ -239,7 +241,7 @@ async function getThisYearToTalIncome() {
 }
 async function getThisYearTotalBill() {
   try {
-    const response = await fetch("/api/thongke/thisyeartotalbill");
+    const response = await fetch("/admin/api/thongke/thisyeartotalbill");
     const data = await response.json();
     totalSalesBill.innerText = data.toString();
     filtertotalSalesBill.innerText = ` | Năm nay`;
@@ -249,7 +251,7 @@ async function getThisYearTotalBill() {
 }
 async function getThisYearTopProductSale() {
   try {
-    const response = await fetch("/api/thongke/thisyeartopproductsales");
+    const response = await fetch("/admin/api/thongke/thisyeartopproductsales");
     const data = await response.json();
 
     const tbody = document.getElementById("topProductSales");
@@ -281,14 +283,14 @@ async function getThisYearTopProductSale() {
       const nameSpan = document.createElement("span");
       nameSpan.textContent = product.name;
 
-      const colorSpan = document.createElement("span");
-      colorSpan.textContent = " - " + product.productDetail?.idColor?.name;
+      const patternSpan = document.createElement("span");
+      patternSpan.textContent = " - " + product.productDetail?.idPattern?.name;
 
       const sizeSpan = document.createElement("span");
       sizeSpan.textContent = " - " + product.productDetail?.idSize?.name;
 
       nameCell.appendChild(nameSpan);
-      nameCell.appendChild(colorSpan);
+      nameCell.appendChild(patternSpan);
       nameCell.appendChild(sizeSpan);
 
       row.appendChild(nameCell);
@@ -320,7 +322,7 @@ async function getThisYearTopProductSale() {
 }
 async function getThisYearTotalProductSale() {
   try {
-    const response = await fetch("/api/thongke/thisyeartotalproductsale");
+    const response = await fetch("/admin/api/thongke/thisyeartotalproductsale");
     const data = await response.json();
     totalSalesProduct.innerText = data.toString();
     filtertotalSalesProduct.innerText = ` | Năm nay`;
@@ -329,10 +331,9 @@ async function getThisYearTotalProductSale() {
     totalSalesProduct.innerText = 0;
   }
 }
-
 async function getResentBill() {
   try {
-    const response = await fetch("/api/thongke/recentbills");
+    const response = await fetch("/admin/api/thongke/recentbills");
     const data = await response.json();
 
     const tbody = document.getElementById("resentBillTable");
@@ -371,7 +372,6 @@ async function getResentBill() {
     console.error("Error fetching today's top product sales:", error);
   }
 }
-
 function getStatusBadge(status) {
   if (status == 5) {
     const badge = document.createElement("span");
@@ -415,7 +415,112 @@ function getStatusBadge(status) {
   badge.textContent = "Không xác định";
   return badge;
 }
+function createChart() {
+  const ctx = document.getElementById("myChart");
+
+  const chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "Doanh thu",
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: calculateTopMargin(40, [12, 19, 3, 5, 2, 3]), // Set max value with top margin
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+        },
+        background: {
+          color: "rgba(0, 0, 0, 0.1)",
+        },
+      },
+    },
+  });
+  return chart;
+}
+function calculateTopMargin(percentage, data) {
+  const maxValue = Math.max(...data);
+  const roundedValue = Math.ceil(maxValue / 1000000) * 1000000; // Round up to the nearest million
+  return roundedValue + (roundedValue * percentage) / 100;
+}
+const myChart = createChart();
+
+async function getThisWeekIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/lastweek");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+async function getThisMouthIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/thismouth");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+async function getThisYearIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/thisyear");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+async function getFiveYearLastIncomeChart() {
+  try {
+    const response = await axios.get("/admin/api/thongke/income/nam");
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
 // call first
+getThisWeekIncomeChart();
 getToDayTotalProductSale();
 getToDayToTalIncome();
 getToDayTotalBill();

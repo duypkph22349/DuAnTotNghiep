@@ -1,6 +1,7 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,7 +63,7 @@ public class Bill {
   String address;
 
   @Column(name = "money_ship")
-  float money_ship;
+  Double money_ship;
 
   @Column(name = "total_money")
   Double total_money;
@@ -71,7 +72,7 @@ public class Bill {
   Double reduction_amount;
 
   @Column(name = "deposit")
-  float deposit;
+  Double deposit;
 
   @Column(name = "note")
   String note;
@@ -96,17 +97,41 @@ public class Bill {
 
   @PrePersist
   protected void onCreate() {
+
+    if (this.money_ship == null) {
+      this.money_ship = 0d;
+    }
+    if (this.total_money == null) {
+      this.total_money = 0d;
+    }
+    if (this.reduction_amount == null) {
+      reduction_amount = 0d;
+    }
+    this.deposit = this.total_money + this.money_ship - this.reduction_amount;
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
+    if (this.money_ship == null) {
+      this.money_ship = 0d;
+    }
+    if (this.total_money == null) {
+      this.total_money = 0d;
+    }
+    if (this.reduction_amount == null) {
+      reduction_amount = 0d;
+    }
+    this.deposit = this.total_money + this.money_ship - this.reduction_amount;
     this.updatedAt = LocalDateTime.now();
   }
 
-  @OneToMany(mappedBy = "idBill")
-  @JsonIgnore
-  private List<BillDetail> billDetail;
+  @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  // @JsonIgnore
+  private List<BillDetail> billDetail = new ArrayList<BillDetail>();
 
+  @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  @JsonIgnore
+  private VoucherDetail voucherDetail;
 }

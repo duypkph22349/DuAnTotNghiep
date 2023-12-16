@@ -22,7 +22,6 @@ import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.ColorService;
-import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.ImageService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
@@ -129,8 +128,6 @@ public class ProductDetailController {
     return convert;
   }
 
-  @Autowired
-  private CustomerService customerService;
   @Autowired
   @Qualifier("newrequest")
   private ProductDetailRequest productDetailRequest;
@@ -341,6 +338,7 @@ public class ProductDetailController {
       @Valid @ModelAttribute("productDetailRequest") ProductDetailRequest productDetailRequest,
       BindingResult theBindingResult) throws IOException {
     if (theBindingResult.hasErrors()) {
+      System.out.println(theBindingResult.getAllErrors());
       return "/admin/pages/productdetail/form-productdetail.html";
     } else {
 

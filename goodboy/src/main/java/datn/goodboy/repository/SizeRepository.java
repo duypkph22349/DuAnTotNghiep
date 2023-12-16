@@ -1,6 +1,5 @@
 package datn.goodboy.repository;
 
-import datn.goodboy.model.entity.Color;
 import datn.goodboy.model.entity.Size;
 
 import java.util.List;
@@ -22,4 +21,7 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 
     @Query("SELECT new map(e.id as key, e.name as value) FROM Size e")
     List<Map<Integer, String>> getComboBoxMap();
+
+    @Query("SELECT b FROM Size b WHERE b.status =1 AND b.deleted = false")
+    List<Size> getSizeList();
 }

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Thêm Sản phẩm mới</title>
+</head>
+
+<body layout:fragment="content">
+  <section>
+    <div class="pagetitle">
+      <h1>Bảng điều khiển</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Thêm sản phảm mới</li>
+        </ol>
+      </nav>
+    </div>
+    <form onsubmit="submitForm(event)" id="formaddproudct">
+      <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên sản phẩm mới</label>
+        <div class="col-sm-16">
+          <input type="text" class="form-control" id="productname">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 row mb-3">
+          <label for="inputPassword3" class="col-sm-3 col-form-label">Loại sản phẩm</label>
+          <div class="col-sm-6">
+            <select class="form-select" aria-label="Default select example" id="loaisanphamInput">
+              <option value="-1" selected="selected" disabled> Chọn Loại sản phẩm </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+              data-bs-target="#modelAddLoaiSanPham">
+              Thêm</button>
+          </div>
+        </div>
+        <div class="col-6 row mb-3">
+          <label for="inputEmail3" class="col-sm-3 col-form-label">Nguồn gốc</label>
+          <div class="col-sm-6">
+            <select class="form-select" aria-label="Default select example" id="nguongocInput">
+              <option value="-1" selected="selected" disabled> Chọn nguồn gốc </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddNguonGoc">
+              Thêm</button>
+          </div>
+        </div>
+        <div class="col-6 row mb-3">
+          <label for="inputPassword3" class="col-sm-3 col-form-label">Thương hiệu</label>
+          <div class="col-sm-6">
+            <select class="form-select" aria-label="Default select example" id="thuonghieuInput">
+              <option value="-1" selected="selected" disabled> Chọn Thương hiệu </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddThonghieu">
+              Thêm</button>
+          </div>
+        </div>
+        <div class="col-6 row mb-3">
+          <label for="inputPassword3" class="col-sm-3 col-form-label">Chất liệu</label>
+          <div class="col-sm-6">
+            <select class="form-select" aria-label="Default select example" id="chatlieuInput">
+              <option value="-1" selected="selected" disabled> Chọn chất liệu </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddChatLieu">
+              Thêm</button>
+          </div>
+        </div>
+        <div class="col-6 row mb-3">
+          <label for="inputPassword3" class="col-sm-3 col-form-label">Kiểu dáng</label>
+          <div class="col-sm-6">
+            <select class="form-select" aria-label="Default select example" id="kieudangInput">
+              <option value="-1" selected="selected" disabled> Chọn Kiểu dáng </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddKieuDang">
+              Thêm</button>
+
+          </div>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" href="#hoavanadd">Thêm hoa văn</button>
+      </div>
+      <!-- hoavan div -->
+      <div id="productdetailAdd">
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Lưu</button>
+      </div>
+    </form>
+
+    <!-- modal add nguon goc -->
+    <div class="modal fade" id="modelAddNguonGoc" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal- modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm nguồn gốc</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddNguonGoc(event)" id="addNguonGoc">
+              <div class="row mb-3">
+                <label for="inputNguonGoc" class="col-sm-4 col-form-label">Tên nguồn gốc</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputNguonGoc">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add thuonghieu -->
+    <div class="modal fade" id="modelAddThonghieu" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm Thương hiệu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddThuongHieu(event)" id="addThonghieu">
+              <div class="row mb-3">
+                <label for="inputThonghieu" class="col-sm-4 col-form-label">Tên Thương hiệu</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputThonghieu">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add hoavan -->
+    <div class="modal fade" id="hoavanadd" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel">Chọn hoa văn mới</h5>
+            <button type="button" class="btn btn-secondary mx-2" data-bs-target="#formAddHoaVan" data-bs-toggle="modal"
+              data-bs-dismiss="modal">
+              Thêm</button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="row mb-3" id="hoavanmuladd">
+            </div>
+            <div class="">
+              <button type="button" class="btn btn-success" onclick="getAllHoaVanChoose()">
+                Thêm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add chat lieu -->
+    <div class="modal fade" id="modelAddChatLieu" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm chất liệu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddChatLieu(event)" id="addChatLieu">
+              <div class="row mb-3">
+                <label for="inputChatLieu" class="col-sm-4 col-form-label">Tên chất liệu</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputChatLieu">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add kieu dang -->
+    <div class="modal fade" id="modelAddKieuDang" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm kiểu dáng</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddKieuDang(event)" id="addkieudang">
+              <div class="row mb-3">
+                <label for="inputkieudang3" class="col-sm-4 col-form-label">Tên kiểu dáng</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputText">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add hoa van -->
+    <div class="modal fade" id="formAddHoaVan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel2">Thêm hoa văn mới</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddHoaVan(event)" id="addHoaVan">
+              <div class="row mb-3">
+                <label for="inputChatLieu" class="col-sm-4 col-form-label">Tên hoa văn mới</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputChatLieu">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success" data-bs-target="#hoavanadd" data-bs-toggle="modal"
+              data-bs-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add loai san phẩm -->
+    <div class="modal fade" id="modelAddLoaiSanPham" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm loại Sản phẩm</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddLoaiSanPham(event)" id="addLoaiSanPham">
+              <div class="row mb-3">
+                <label for="inputLoaiSanPham" class="col-sm-4 col-form-label">Tên loại Sản phẩm</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputLoaiSanPham">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal add Kich thuoc -->
+    <div class="modal fade" id="modelAddKichThuoc" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm kích thước</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="AddKichThuoc(event)" id="addKichThuoc">
+              <div class="row mb-3">
+                <label for="inputKichThuoc" class="col-sm-4 col-form-label">Tên kiểu dáng</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" id="inputKichThuoc">
+                </div>
+                <button type="submit" class="col-sm-2 btn btn-success">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modelThemProductThanhCong" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm sản phẩm thành công</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p> Thêm sản phẩm thành công !!! </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modalThemThatBai" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm sản phẩm thất bại</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p> Thêm sản phẩm Thất bại xem lại lỗi !!! </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script th:src="@{/assets/js/product/productadd.js}"></script>
+</body>
+
+</html>
