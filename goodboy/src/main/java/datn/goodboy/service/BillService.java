@@ -1,16 +1,9 @@
 package datn.goodboy.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import datn.goodboy.model.entity.BillDetail;
-import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.repository.BillDetailRepository;
-import datn.goodboy.repository.CartDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.request.BillRequest;
+import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
@@ -39,8 +34,6 @@ public class BillService {
     private PayRepository payRepository;
     @Autowired
     private BillDetailRepository billDetailRepository;
-    @Autowired
-    private CartDetailRepository cartDetailRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -89,6 +82,7 @@ public class BillService {
 
         return billRepository.save(bill);
     }
+
     public void saveBillAndDetails(Bill bill) {
         // Lưu Bill và lấy ra ID sau khi lưu
         Bill savedBill = billRepository.save(bill);
@@ -105,6 +99,7 @@ public class BillService {
         }
 
     }
+
     public void deleteBill(int id) {
 
         billRepository.deleteById(id);

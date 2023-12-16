@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.ColorService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
@@ -116,6 +119,9 @@ public class ProductDetailControllerUser {
         return convert;
     }
 
+    @Autowired
+    private CartDetailService cartDetailService;
+
     public int rowcount = 10;
     public int[] pagenumbers;
     public String sortBy = "createdAt";
@@ -149,7 +155,6 @@ public class ProductDetailControllerUser {
 
         return "user/product.html";
     }
-
 
     // panigation and sort
     @GetMapping("getcountrow")
@@ -273,7 +278,5 @@ public class ProductDetailControllerUser {
         }
         return "user/cart";
     }
-
-
 
 }
