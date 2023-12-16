@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -134,19 +134,24 @@
                         <i class="tab-item bi bi-cart"></i>
                         Chờ xác nhận
                     </div>
+
                     <div data-value="2" id="tab_2" class="tab-item">
+                        <i class="tab-item bi bi-cart"></i>
+                        Chờ lấy hàng
+                    </div>
+                    <div data-value="3" id="tab_3" class="tab-item">
                         <i class="tab-icon bi bi-cart-check"></i>
                         Chờ giao hàng
                     </div>
-                    <div data-value="3" id="tab_3" class="tab-item">
+                    <div data-value="4" id="tab_4" class="tab-item">
                         <i class="tab-icon bi bi-car-front-fill"></i>
                         Đang giao hàng
                     </div>
-                    <div data-value="4" id="tab_4" class="tab-item">
+                    <div data-value="5" id="tab_5" class="tab-item">
                         <i class="tab-icon bi bi-box-seam"></i>
                         Đã giao hàng
                     </div>
-                    <div data-value="5" id="tab_5" class="tab-item">
+                    <div data-value="6" id="tab_6" class="tab-item">
                         <i class="tab-icon bi bi-check-lg"></i>
                         Thành công
                     </div>
@@ -158,6 +163,9 @@
                 <div class="lf">
                     <a href="">
                         <button class="btn btn-primary">Chờ xác nhận</button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-primary">Chờ lấy hàng</button>
                     </a>
                     <a href="">
                         <button class="btn btn-primary">Chờ giao hàng</button>
@@ -183,7 +191,7 @@
         <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
             <div class="top d-flex justify-content-between">
                 <h2>THÔNG TIN ĐƠN HÀNG</h2>
-                <button onclick="update()" class="btn btn-primary" style="font-size: 16px">Update</button>
+                <button onclick="update()" class="btn btn-primary" th:if="${bill.status != 4 and bill.status != 5 and bill.status != 6}"  style="font-size: 16px">Update</button>
 
             </div>
             <hr>
@@ -201,10 +209,11 @@
                         <div class="item status">
                             <label>Trạng Thái</label>
                             <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
-                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ lấy hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 3}">Chờ giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 5}">Đã giao hàng</span>
+                            <span style="background-color:gold" th:if="${bill.status == 6}">Thành công</span>
                         </div>
                         <div class="item dateOrder">
                             <label>Ngày Đặt Hàng</label>
@@ -227,14 +236,14 @@
                         </div>
                         <div class="item phone">
                             <label>Số Điện Thoại</label>
-                            <input id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
+                            <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }" id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
 
                             <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
                         </div>
 
                         <div class="item address">
                             <label>Địa Chỉ</label>
-                            <input id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
+                            <input th:disabled="${bill.status == 4 or bill.status == 5 or bill.status == 6}" id="address" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
 
                         </div>
 
@@ -267,19 +276,21 @@
             </div>
             <hr>
             <div class="info-order">
-                <table class="table table-hover" id="myTable" style="font-size: 13px">
+                <table class="table table-hover" id="myTable" style="font-size: 14px">
                     <thead class="position-sticky top-0">
 
                     <tr class="ex">
                         <!--                            <th>#</th>-->
                         <th>Image</th>
                         <th>Tên sản phẩm</th>
-                        <th>Thương hiệu</th>
-                        <th>Màu sắc</th>
-                        <th>Tổng tiền</th>
+                        <th>Kích cỡ</th>
+                        <th>Kiểu mẫu</th>
                         <th>Số lượng</th>
-                        <th>Trạng thái</th>
+                        <th>Tổng giá tiền</th>
+<!--                        <th>Trạng thái</th>-->
+
                     </tr>
+
                     </thead>
 
 
@@ -296,19 +307,97 @@
                         </td>
 
                         <td th:text="${billDetail.productDetail.name}"></td>
-                        <td th:text="${billDetail.productDetail.idBrand.name}"></td>
-                        <td th:text="${billDetail.productDetail.idColor.name}"></td>
-                        <td th:text="${billDetail.totalMoney}"></td>
+                        <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                        <td th:text="${billDetail.productDetail.idPattern.name}"></td>
                         <td th:text="${billDetail.quantity}"></td>
-                        <td>
-                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>
-                            <span th:if="${billDetail.status == 1}">Xác nhận</span>
-                        </td>
-                    </tr >
+                        <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"}></td>
+<!--                        <td>-->
+<!--                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>-->
+<!--                            <span th:if="${billDetail.status == 1}">Xác nhận</span>-->
+
+                    </tr>
+
                     </tbody>
 
                 </table>
-            </div>
+
+                <table>
+                    <tr>
+                        <td style="width: 1020px; text-align: right; font-size: 14px;">
+                            <label>
+                                Tổng tiền:
+                            </label>
+                        </td>
+                        <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                            <span style="font-weight: bold;" th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                        </td>
+                    </tr>
+                </table>
+
+                <table>
+                    <tr>
+                        <td style="width: 1020px; text-align: right; font-size: 14px;">
+                            <label>
+                                Phí ship:
+                            </label>
+                        </td>
+                        <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                            <span style="font-weight: bold;" th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                  th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            <span style="font-weight: bold;" th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+    <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+</span>
+                        </td>
+                    </tr>
+                </table>
+<!--                <br>-->
+<!--                <br>-->
+                <table>
+                    <tr>
+                <td style="width: 1020px; text-align: right; font-size: 14px;">
+                        <label>
+                            Giảm giá:
+                        </label>
+                </td>
+                <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                        <span style="font-weight: bold;" th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                              th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                        <span style="font-weight: bold;" th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+    <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+</span>
+                </td>
+                    </tr>
+
+                </table>
+
+<!--                <br>-->
+<!--                <br>-->
+                <table>
+
+                    <tr>
+                        <td  style="width: 1020px; text-align: right; font-size: 14px;">
+                        <label>
+                            Thanh toán:
+                        </label>
+                    </td>
+                        <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                        <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                              th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                        <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+    <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+</span>
+                        </td>
+
+
+            </tr>
+            </table>
+
+
+        </div>
+
+
+            <hr>
+
 
 
 
@@ -338,6 +427,21 @@
                 }
                 let id = document.getElementById("id").getAttribute("data-value");
                 location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
+                var message = '';
+                if(status == 1){
+                    message = 'Chờ xác nhận';
+                }else if(status == 2){
+                    message = 'Chờ lấy hàng';
+                }else if(status == 3){
+                    message = 'Chờ giao hàng';
+                }else if(status == 4){
+                    message = 'Đang giao hàng';
+                }else if(status == 5){
+                    message = 'Đã giao hàng';
+                }else if(status == 6){
+                    message = 'Thành công';
+                }
+                alert("Đã chuyển trạng thái thành " + message)
             };
         });
 

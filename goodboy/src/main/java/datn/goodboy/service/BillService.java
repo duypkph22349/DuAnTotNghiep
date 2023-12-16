@@ -1,5 +1,8 @@
 package datn.goodboy.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,7 +47,33 @@ public class BillService {
     }
 
     public Page<Bill> getPage(Pageable pageable) {
-        return billRepository.findByDeletedFalse(pageable);
+        return billRepository.findByDeletedFalseOrderByCreateDateDesc(pageable);
+    }
+
+    public Page<Bill> getPageStatus(Pageable pageable, int status) {
+        return billRepository.findByDeletedFalseOrderByStatus(pageable, status);
+    }
+
+    public Page<Bill> filterDate(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate) {
+        return billRepository.filterDate(startDate, endDate, pageable);
+    }
+
+    public List<Bill> findBillByStatus1() {
+        return billRepository.findBillByStatus1();
+    }
+
+    public Page<Bill> findByStatusPay(Pageable pageable, int status) {
+        return billRepository.findByStatusPay(pageable, status);
+    }
+
+    public Page<Bill> findByOrderType(Pageable pageable, int id) {
+        return billRepository.findByOrderType(pageable, id);
+    }
+
+    public void setStatus2(int id) {
+        Bill bill = billRepository.findStatusById(id);
+        bill.setStatus(2);
+        billRepository.save(bill);
     }
 
     public List<Bill> getAllBill() {
@@ -82,7 +111,6 @@ public class BillService {
     }
 
     public Optional<Bill> findByIdBill(int id) {
-
         return billRepository.findById(id);
     }
 

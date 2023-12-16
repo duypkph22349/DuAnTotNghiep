@@ -75,12 +75,14 @@
                     <li th:class="${pageNum == 1} ? 'page-item disabled' : 'page-item'">
                         <a class="page-link" th:href="@{/admin/product/dsProduct(pageNum=1)}">Previous</a>
                     </li>
+
                     <li class="page-item" th:each="page,iterStat : ${#numbers.sequence(1, totalPage)}">
                         <a class="page-link"
                             th:class="${pageNum == iterStat.index + 1} ? 'page-link active' : 'page-link'"
                             th:href="@{/admin/product/dsProduct(pageNum=${iterStat.index + 1})}"
                             th:text="${iterStat.index + 1}"></a>
                     </li>
+
                     <li class="page-item" th:class="${pageNum == totalPage} ? 'page-item disabled' : 'page-item'">
                         <a class="page-link" th:href="@{/admin/product/dsProduct(pageNum=${totalPage})}">Next</a>
                     </li>
