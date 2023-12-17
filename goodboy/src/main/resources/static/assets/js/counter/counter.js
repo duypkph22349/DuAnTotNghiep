@@ -1508,8 +1508,8 @@ async function thanhtoan(formValuesJSON, idform) {
     } else {
       if (confirm("Bạn có muốn in hoá đơn không?")) {
         printBill(data.id);
-        handleOrderSuccess(idform);
       }
+      handleOrderSuccess(idform);
     }
   } catch (error) {
     console.error("Error:", error);
@@ -2075,6 +2075,10 @@ async function buildFormData(formId) {
     form.querySelector("input[name='options-outlined']:checked").value,
     10
   );
+  const inputCustomer = form.querySelector("#customerid");
+  if (inputCustomer) {
+    formData.customerID = inputCustomer.value;
+  }
   formData.phoneNumber = getInputValue("#soDienThoai");
   formData.city = getInputValue("#city");
   formData.district = getInputValue("#district");
@@ -2212,6 +2216,22 @@ async function updateName(formid, id) {
     dropselect.append(
       `<button onclick="removeSelection(${formid})"><i class="bi bi-x"></i></i></button>`
     );
+    const updateValue = (selector, value) => {
+      const input = form.find(selector);
+      if (input.length) {
+        input.val(value);
+      }
+    };
+
+    const getInputValue = (selector) => form.find(selector).val();
+
+    if (getInputValue("#tenKhachHang").trim().length == 0) {
+      updateValue("#tenKhachHang", customer.name);
+    }
+    if (getInputValue("#soDienThoai").trim().length == 0) {
+      updateValue("#soDienThoai", customer.phone);
+    }
+    updateHoaDon(formid);
   } catch (error) {
     console.error(error);
   }
@@ -2226,10 +2246,6 @@ function removeSelection(formid) {
   dropselect.append(
     '<button type="button"><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#modelAddKhachHang"></i></button>'
   );
-}
-function setErrorElement(element, message) {
-  // Add your implementation here
-  // For example, you might want to display the error message in a dedicated error element
 }
 
 function addNewKhachHang(event) {
