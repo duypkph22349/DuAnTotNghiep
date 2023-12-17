@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.entity.PayDetail;
@@ -61,7 +62,14 @@ public class CounterService {
     bill.setDeleted(false);
     bill.setReduction_amount(0d);
     bill.setDeposit(0d);
-    bill.setCustomer(cusService.getCounterCustomer());
+    if (request.getCustomerID() == null) {
+      bill.setCustomer(cusService.getCounterCustomer());
+    } else {
+      Optional<Customer> customer = cusService.getCustomerById(request.getCustomerID());
+      if (customer.isPresent()) {
+        bill.setCustomer(customer.get());
+      }
+    }
     Optional<Employee> emp = empRepository.findById(request.getEmployeeID());
     if (emp.isPresent()) {
       bill.setEmployee(emp.get());

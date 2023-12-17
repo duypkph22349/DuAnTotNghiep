@@ -151,8 +151,6 @@
                 <div class="modal-body">
                     <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post"
                           class="row g-3">
-
-
                         <div>
                             <label><b>Name:</b></label>
                             <input type="text" th:name="name" class="form-control">
@@ -170,7 +168,6 @@
                             <label><b>Phone:</b></label>
                             <input type="text" th:name="phone" class="form-control">
                         </div>
-
                         <div class="container">
                             <div class="row align-items-start">
                                 <div class="col">
@@ -180,7 +177,6 @@
                                 <div class="col">
                                     <label><b>Huyện</b></label>
                                     <select class="form-select" id="Districts" th:name="city" onchange="getWards()">
-
                                     </select>
                                 </div>
                                 <div class="col">
