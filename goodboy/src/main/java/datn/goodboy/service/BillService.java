@@ -1,5 +1,6 @@
 package datn.goodboy.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,10 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.request.BillRequest;
+import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
@@ -29,13 +32,41 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
     public BillService() {
         this.billRepository = billRepository;
     }
 
     public Page<Bill> getPage(Pageable pageable) {
-        return billRepository.findByDeletedFalse(pageable);
+        return billRepository.findByDeletedFalseOrderByCreateDateDesc(pageable);
+    }
+
+    public Page<Bill> getPageStatus(Pageable pageable, int status) {
+        return billRepository.findByDeletedFalseOrderByStatus(pageable, status);
+    }
+
+    public Page<Bill> filterDate(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate) {
+        return billRepository.filterDate(startDate, endDate, pageable);
+    }
+
+    public List<Bill> findBillByStatus1() {
+        return billRepository.findBillByStatus1();
+    }
+
+    public Page<Bill> findByStatusPay(Pageable pageable, int status) {
+        return billRepository.findByStatusPay(pageable, status);
+    }
+
+    public Page<Bill> findByOrderType(Pageable pageable, int id) {
+        return billRepository.findByOrderType(pageable, id);
+    }
+
+    public void setStatus2(int id) {
+        Bill bill = billRepository.findStatusById(id);
+        bill.setStatus(2);
+        billRepository.save(bill);
     }
 
     public List<Bill> getAllBill() {
@@ -52,13 +83,29 @@ public class BillService {
         return billRepository.save(bill);
     }
 
+    public void saveBillAndDetails(Bill bill) {
+        // Lưu Bill và lấy ra ID sau khi lưu
+        Bill savedBill = billRepository.save(bill);
+
+        // Gán Bill cho mỗi BillDetail và lưu danh sách BillDetail
+        List<BillDetail> billDetails = bill.getBillDetail();
+        if (billDetails != null && !billDetails.isEmpty()) {
+            for (BillDetail detail : billDetails) {
+                detail.setIdBill(savedBill);
+            }
+            // Lưu danh sách BillDetail
+            billDetailRepository.saveAll(billDetails);
+
+        }
+
+    }
+
     public void deleteBill(int id) {
 
         billRepository.deleteById(id);
     }
 
     public Optional<Bill> findByIdBill(int id) {
-
         return billRepository.findById(id);
     }
 

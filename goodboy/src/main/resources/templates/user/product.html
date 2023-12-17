@@ -1,123 +1,441 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user}"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Fashi Template">
-    <meta name="keywords" content="Fashi, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Khăn choàng</title>
-</head>
+<body style="" class="">
+<section layout:fragment="content">
+    <style>
+        .row {
+            margin: -1px;
+        }
 
-<body layout:fragment="content">
-    <section>
-        <div class="breacrumb-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-text">
-                            <a th:href="@{/home}"><i class="fa fa-home"></i> Trang chủ</a>
-                            <span>Sản phẩm</span>
+        .form-container label {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-container input[type="checkbox"] {
+            margin-left: 30px;
+        }
+
+        .col {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .pi-pic {
+            position: relative;
+            text-align: center;
+        }
+
+        .pi-pic img {
+            width: 98%;
+            height: 270px;
+            object-fit: cover;
+        }
+
+        .pi-pic ul {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .pi-pic ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+
+        .row-cols-md-3 .col {
+            flex: 0 0 33.33%;
+            max-width: 33.33%;
+        }
+
+        .product-image {
+            height: 165px;
+            width: 270px;
+            object-fit: cover;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            width: 100%;
+            height: 150px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .row-cols-md-3 .col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card {
+            flex: 1;
+        }
+
+        .btn {
+            border-radius: 0 5px 5px 0;
+        }
+
+        .card-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .card-text {
+            color: red;
+        }
+
+        .row-cols-1 .col {
+            align-self: stretch;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 .col {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 .col:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 10px red;
+        }
+        .row.row-cols-1.row-cols-md-5.g-3 {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -5px;
+        }
+
+        .row.row-cols-1.row-cols-md-5.g-3 .col {
+            flex: 0 0 20%;
+            max-width: 20%;
+            padding: 5px;
+
+            width: 1300px;
+        }
+    </style>
+    <!--    Logo-->
+    <section class="top-category-ads">
+        <div class="container">
+            <div class="ads-container">
+                <div class="full item">
+                    <a href="" target="_top">
+                        <img src="/img/Wamercy.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--    Trang Chủ-->
+    <section class="breadcrumb-section">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/shop/product/index">Trang chủ<i class="fal fa-home-alt"></i></a></li>
+                <li><a>Sản phẩm</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!--    Filter-->
+    <section class="filter-section">
+        <form action="/index" method="GET">
+        <div class="container">
+            <div class="product-filters2">
+                <div class="left">
+                    <strong class="label">Lọc danh sách:</strong>
+                    <div class="facet">
+                        <h2 class="cate-filter-name">Giá</h2>
+                        <div class="cate-filter-content">
+                            <label>
+                                <a>Giá <i class="fal fa-angle-down"></i></a>
+                                <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+                            </label>
+                            <div class="sub">
+                                <ul>
+                                    <li><a rel="nofollow" onclick="filterByPrice('0-100000')">Dưới 100k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('100000-200000')">100k --> 200k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('200000-300000')">200k --> 300k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('300000-400000')">300k --> 400k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('400000-500000')">400k --> 500k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('500000-600000')">500k --> 600k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('600000-700000')">600k --> 700k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('700000-800000')">700k --> 800k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('800000-900000')">800k --> 900k VNĐ</a></li>
+                                    <li><a rel="nofollow" onclick="filterByPrice('1000000-')">Trên 1 triệu</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facet all-attribute">
+                        <h2 class="cate-filter-name">Màu sắc</h2>
+                        <div class="cate-filter-content">
+                            <label>
+                                <a>Màu sắc<i class="fal fa-angle-down"></i></a>
+                                <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+                            </label>
+                            <div class="sub">
+                                <ul>
+                                    <li><a  href="">Đen <i class="total"></i></a></li>
+                                    <li><a href="">Đỏ <i class="total"></i></a></li>
+                                    <li><a href="">Hồng <i class="total"></i></a></li>
+                                    <li><a href="">Xám <i class="total"></i></a></li>
+                                    <li><a href="">Xanh<i class="total"></i></a></li>
+                                    <li><a href="">Be<i class="total"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facet all-attribute">
+                        <h2 class="cate-filter-name">Phân loại</h2>
+                        <div class="cate-filter-content">
+                            <label>
+                                <a>Phân loại<i class="fal fa-angle-down"></i></a>
+                                <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+                            </label>
+                            <div class="sub">
+                                <ul>
+                                    <li><a>Khăn Dài<i class="total"></i></a></li>
+                                    <li><a>Khăn Đeo Cổ <i class="total"></i></a></li>
+                                    <li><a>Khăn Ngắn <i class="total"></i></a></li>
+                                    <li><a>Khăn Trùm Đầu <i class="total"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facet all-attribute">
+                        <h2 class="cate-filter-name"></h2>
+                        <div class="cate-filter-content">
+                            <label>
+                                <a>Xuất Sứ<i class="fal fa-angle-down"></i></a>
+                                <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+                            </label>
+                            <div class="sub">
+                                <ul>
+                                    <li><a>Việt Nam <i class="total"></i></a></li>
+                                    <li><a>Trung Quốc <i class="total"></i></a></li>
+                                    <li><a>Hàn Quốc<i class="total"></i></a></li>
+                                    <li><a>Anh Quốc<i class="total"></i></a></li>
+                                    <li><a>Ấn Độ<i class="total"></i></a></li>
+                                    <li><a>Pháp<i class="total"></i></a></li>
+                                    <li><a>Canada<i class="total"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facet all-attribute">
+                        <h2 class="cate-filter-name">Chất Liệu</h2>
+                        <div class="cate-filter-content">
+                            <label>
+                                <a>Chất Liệu<i class="fal fa-angle-down"></i></a>
+                                <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+                            </label>
+                            <div class="sub">
+                                <ul>
+                                    <li><a>Thổ Cẩm <i class="total"></i></a></li>
+                                    <li><a>Lụa <i class="total"></i></a></li>
+                                    <li><a>Nhung <i class="total"></i></a></li>
+                                    <li><a>Lông Cừu <i class="total"></i></a></li>
+                                    <li><a>Cotton <i class="total"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="facet">
+                        <h2 class="cate-filter-name">Sắp xếp</h2>
+                        <div class="cate-filter-content">
+                            <label>
+                                <span class="arrage-filter" href="">Sắp xếp <i class="fal fa-angle-down"></i></span>
+                                <span class="mobile-down"><i class="fal fa-angle-down"></i></span>
+                            </label>
+                            <div class="sub">
+                                <ul>
+                                    <li><a th:href="@{/shop/product/index}">Mặc định</a></li>
+                                    <li><a >Giá thấp đến cao</a></li>
+                                    <li><a >Giá cao đến thấp</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Breadcrumb Section Begin -->
-        <!-- Product Shop Section Begin -->
-        <section class="product-shop spad">
-            <div class="container">
-                <div class="order-1 order-lg-2">
-                    <div class="product-show-option">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 d-flex align-items-center">
-                                <div class="mx-3 text-dark">
-                                    Giá <a th:href="@{/shop/product/sort(sortBy=price ,sortDir=true)}"><i
-                                            class="fas fa-arrow-up"></i></a>
-                                    <a th:href="@{/shop/product/sort(sortBy=price ,sortDir=false)}"><i
-                                            class="fas fa-arrow-down"></i></a>
-                                </div>
-                                <form action="#" th:action="@{/shop/product/getcountrow}"
-                                    class="d-flex align-items-center  mx-2" method="get" id="rowCountForm">
-                                    <select name="selectedValue" class="border-0" id="rowCount"
-                                        onchange="document.getElementById('rowCountForm').submit();">
-                                        <option value="10" th:selected="${rowcount == 10}">10 Sản phẩm</option>
-                                        <option value="20" th:selected="${rowcount == 20}">20 Sản phẩm</option>
-                                        <option value="50" th:selected="${rowcount == 50}">50 Sản phẩm</option>
-                                    </select>
-                                </form>
-                                <div class="pageno mx-2">
-                                    <span th:text="${crpage}"></span>/<span th:text="${totalpage}"></span>
-                                    Trang
-                                </div>
-                                <div class="panigation d-flex justify-content-center">
-                                    <a th:href="@{/shop/product/page(pageno=${crpage-1})}" th:if="${crpage-1 < 1}"
-                                        class="h-100 mx-2 text-dark pt-1"><i class="fas fa-caret-left fa-lg"></i></a>
-                                    <a th:unless="${crpage-1 < 1}" th:href="@{/shop/product/page(pageno=${1})}"
-                                        class="h-100 mx-2 text-dark pt-1"><i class="fas fa-caret-left fa-lg"></i></a>
-                                    <a th:unless="${crpage == totalpage}"
-                                        th:href="@{/shop/product/page(pageno=${crpage+1})}"
-                                        class="h-100 mx-2 text-dark pt-1"><i class="fas fa-caret-right fa-lg"></i></a>
-                                    <a th:if="${crpage == totalpage}"
-                                        th:href="@{/shop/product/page(pageno=${totalpage})}"
-                                        class="h-100 mx-2 text-dark pt-1"><i class="fas fa-caret-right fa-lg"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-footer d-flex justify-content-between mt-3">
-                    </div>
-                    <!-- Sản phầm -->
-                    <div class="product-list" id="product-content">
-                        <div class="container">
-                            <div class="row">
-                                <div th:each="product : ${list}" class="col-lg-3 col-md-6">
-                                    <div class="product-item">
-                                        <div class="pi-pic">
-                                            <div
-                                                th:if="${product.imageProducts !=null && product.imageProducts.size() > 0}">
-                                                <img th:src="${product.imageProducts[0].img}" alt="Ảnh sản phẩm" />
-                                            </div>
-                                            <ul>
-                                                <li class="w-icon active"><a
-                                                        th:onclick="'addToCart(\'' + ${product.id} + '\')'"><i
-                                                            class="icon_bag_alt"></i></a></li>
-                                                <li class="quick-view"><a
-                                                        th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">Chi
-                                                        tiết sản phẩm</a></li>
-                                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="pi-text">
-                                            <div class="catagory-name" th:if="${product.idCategory}"
-                                                th:text="${product.idCategory.name}"></div>
-                                            <a th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">
-                                                <h5 th:text="${product.name}"></h5>
-                                            </a>
-                                            <div class="product-price"
-                                                th:if="${product.productDetails !=null && product.productDetails.size() > 0}">
-
-                                                <span
-                                                    th:text="${#strings.replace(#numbers.formatDecimal(product.getMinPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
-                                                <span th:if="${product.getMaxPrice() > product.getMinPrice()}"
-                                                    th:text="${' - ' + #strings.replace(#numbers.formatDecimal(product.getMaxPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
-                                            </div>
-                                            <div class="product-price"
-                                                th:unless="${product.productDetails !=null && product.productDetails.size() > 0}">
-                                                <span> Sản phẩm chưa được bán</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </form>
     </section>
-</body>
 
+    <!--    Sản phẩm-->
+    <section class="product-cate-block" >
+        <div class="container">
+                <div class="row row-cols-1 row-cols-md-5 g-3">
+                    <div th:each="product : ${list}" class="col">
+                        <div class="card shadow-sm">
+                            <div class="pi-pic">
+                                <div th:if="${product.imageProducts !=null && product.imageProducts.size() > 0}">
+                                    <a th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">
+                                        <img th:src="${product.imageProducts[0].img}" alt="Ảnh sản phẩm"
+                                             class="product-image"/>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="name-text" th:text="${product.name}"></p>
+                                <div class="card-text"
+                                     th:if="${product.productDetails !=null && product.productDetails.size() > 0}">
+                                    <span th:text="${#strings.replace(#numbers.formatDecimal(product.getMinPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
+                                    <span th:if="${product.getMaxPrice() > product.getMinPrice()}"
+                                          th:text="${' - ' + #strings.replace(#numbers.formatDecimal(product.getMaxPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col col-sm-4 col-lg-6 mb-9">
+                    <span th:text="${crpage}"></span>/<span th:text="${totalpage}"></span>
+                    Trang
+                </div>
+                <div class="col col-sm-4 col-lg-5 mb-9">
+                    <a th:href="@{/shop/product/page(pageno=${crpage-1})}"
+                       th:if="${crpage-1 < 1}"
+                       class="h-100 mx-2 text-dark pt-1"><i class="fas fa-caret-left fa-lg"></i></a>
+                    <a th:unless="${crpage-1 < 1}" th:href="@{/shop/product/page(pageno=${1})}"
+                       class="h-100 mx-2 text-dark pt-1"><i class="fas fa-caret-left fa-lg"></i></a>
+                    <a th:unless="${crpage == totalpage}"
+                       th:href="@{/shop/product/page(pageno=${crpage+1})}"
+                       class="h-100 mx-2 text-dark pt-1"><i
+                            class="fas fa-caret-right fa-lg"></i></a>
+                    <a th:if="${crpage == totalpage}"
+                       th:href="@{/shop/product/page(pageno=${totalpage})}"
+                       class="h-100 mx-2 text-dark pt-1"><i
+                            class="fas fa-caret-right fa-lg"></i></a>
+                </div>
+                <form action="#" th:action="@{/shop/product/getcountrow}"
+                      class="col col-sm-4 col-lg-1 mb-9" method="get" id="rowCountForm">
+                    <select name="selectedValue" class="border-0" id="rowCount"
+                            onchange="document.getElementById('rowCountForm').submit();">
+                        <option value="10" th:selected="${rowcount == 10}">10 Sản phẩm</option>
+                        <option value="20" th:selected="${rowcount == 20}">20 Sản phẩm</option>
+                        <option value="50" th:selected="${rowcount == 50}">50 Sản phẩm</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Your Plugin chat code -->
+
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "103005398881881");
+        chatbox.setAttribute("attribution", "biz_inbox");
+    </script>
+
+    <script>
+        // Sử dụng JavaScript để thêm lớp "hover" khi di chuột vào dòng
+        const rows = document.querySelectorAll('.row.row-cols-1.row-cols-md-5.g-3 .col');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.classList.add('hover');
+            });
+            row.addEventListener('mouseleave', () => {
+                row.classList.remove('hover');
+            });
+        });
+    </script>
+
+    <script>
+        function filterByPrice(priceRange) {
+            // Lấy danh sách tất cả các sản phẩm
+            var products = document.querySelectorAll('.col');
+
+            // Lặp qua từng sản phẩm và kiểm tra giá
+            for (var i = 0; i < products.length; i++) {
+                var product = products[i];
+                var priceText = product.querySelector('.card-text span').innerText;
+                var price = parseInt(priceText.replace(' VNĐ', '').replace(',', '').replace('.', ''));
+
+                // Kiểm tra nếu sản phẩm nằm trong khoảng giá được chọn
+                if (priceRange === '1000000-') {
+                    // Trường hợp "Trên 10 triệu"
+                    if (price < 1000000) {
+                        product.style.display = 'none';
+                    } else {
+                        product.style.display = 'block';
+                    }
+                } else {
+                    // Trường hợp các khoảng giá khác
+                    var range = priceRange.split('-');
+                    var minPrice = parseInt(range[0]);
+                    var maxPrice = parseInt(range[1]);
+
+                    if (price < minPrice || price > maxPrice) {
+                        product.style.display = 'none';
+                    } else {
+                        product.style.display = 'block';
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <!-- Your SDK code -->
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v15.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <input type="hidden" id="bussinessId" value="119888"><input type="hidden"
+                                                                value="ZdC56JSZlSaf8C9X8pR3mBLnXYAWlJvYNqnGKPD2OfzAg9MgHuGiUWUzo0zT1ofvtcF18fPjCzoP4sUOQjWova2zSqfP3Lcr3Ix3srUqXvoJSO9QcNCbnOqeHFygbRrI7CvPQ94jnndlrndI6CK6jemb7nn6yHLAqUwiCrKWUiU1RtBh9hqWn14xp8seZTctCxdcHGSl6qW8Eoyn0VHIRpJbke16CR5FS"
+                                                                id="uctk" name="uctk"><input type="hidden" id="clienIp"
+                                                                                             value="58.186.179.175"><input
+        type="hidden" value="" id="hasIdentity">
+
+    <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0"
+        style="display: none;"></ul>
+</section>
+</body>
+<div style="position: absolute; top: 0px; z-index: 2147483647; display: block !important;"></div>
 </html>

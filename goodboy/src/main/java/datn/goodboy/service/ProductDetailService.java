@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import datn.goodboy.model.entity.BillDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -225,7 +226,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
       ProductDetailFilter filter) {
-    // TODO Auto-generated method stub
     if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
       return null;
     }
@@ -238,7 +238,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       sort = Sort.by(sortBy).descending();
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-    // findAll method and pass pageable instance
     Page<ProductDetail> page = productDetailRepository.filter(filter, pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
@@ -376,4 +375,22 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       }
     }
   }
+//  public void updateProductQuantities(List<BillDetail> billDetails) {
+//    for (BillDetail billDetail : billDetails) {
+//      ProductDetail productDetail = billDetail.getProductDetail();
+//      int quantitySold = billDetail.getQuantity();
+//
+//      // Truy xuất số lượng hiện tại của sản phẩm
+//      int currentQuantity = productDetail.getQuantity();
+//
+//      // Giảm đi số lượng đã bán
+//      int updatedQuantity = currentQuantity - quantitySold;
+//
+//      // Cập nhật số lượng sản phẩm
+//      productDetail.setQuantity(updatedQuantity);
+//
+//      // Lưu thông tin sản phẩm đã cập nhật vào cơ sở dữ liệu
+//      productDetailRepository.save(productDetail);
+//    }
+//  }
 }

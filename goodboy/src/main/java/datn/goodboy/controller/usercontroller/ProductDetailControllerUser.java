@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.ColorService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
@@ -116,6 +119,9 @@ public class ProductDetailControllerUser {
         return convert;
     }
 
+    @Autowired
+    private CartDetailService cartDetailService;
+
     public int rowcount = 10;
     public int[] pagenumbers;
     public String sortBy = "createdAt";
@@ -130,7 +136,6 @@ public class ProductDetailControllerUser {
 
     @GetMapping({ "index", "" })
     public String getIndexpage(Model model) {
-        filter.resetFilter();
         this.pageno = 1;
         this.rowcount = 10;
         this.sortBy = "createdAt";
@@ -140,26 +145,15 @@ public class ProductDetailControllerUser {
         this.totalpage = service.getPageNumber(rowcount);
         model.addAttribute("totalpage", this.totalpage);
         model.addAttribute("list", list);
+
         model.addAttribute("pagenumber", this.pagenumbers);
         model.addAttribute("crpage", this.pageno);
         model.addAttribute("rowcount", this.rowcount);
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("styles", stylesService.getAllStyles());
+        model.addAttribute("colors", colorService.getAllColor());
+
         return "user/product.html";
-    }
-
-    @GetMapping("search")
-    public String getSearch(Model model, @RequestParam("txtSearch") String search) {
-        System.out.println(search);
-        filter.resetFilter();
-        filter.setTxtSearch(search);
-        return getPageNo(model, 1);
-    }
-
-    @GetMapping("category/{idcategory}")
-    public String getSearch(Model model, @PathVariable("idcategory") int idcategory) {
-        System.out.println(idcategory);
-        filter.resetFilter();
-        filter.setIdCategory(idcategory);
-        return getPageNo(model, 1);
     }
 
     // panigation and sort
@@ -275,14 +269,14 @@ public class ProductDetailControllerUser {
 
     @PostMapping("addtocart/{id}")
     public String addtocart(Model model, @PathVariable("id") Integer id, @RequestParam int quantity) {
-        // ProductDetail productDetail = service.getProductDetailById(id).orElse(null);
-        // if (productDetail != null) {
-        // CartDetail cartDetail = new CartDetail();
-        // cartDetail.setProductDetail(productDetail);
-        // cartDetail.setQuantity(quantity);
-        // cartDetailService.saveCart(cartDetail);
-        // }
-        // System.out.println(productDetail);
+        ProductDetail productDetail = productDetailService.getProductDetailById(id).orElse(null);
+        if (productDetail != null) {
+            CartDetail cartDetail = new CartDetail();
+            cartDetail.setProductDetail(productDetail);
+            cartDetail.setQuantity(quantity);
+            cartDetailService.saveCart(cartDetail);
+        }
         return "user/cart";
     }
+
 }
