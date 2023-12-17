@@ -259,6 +259,17 @@ function formInOrder(id) {
                                   </div>
 
                               </div>
+                              <div class="mt-2 drownsearch">
+                              <div class="select-btn search-form d-flex align-items-center" id="selectkhachhang">
+                                <input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" onkeyup="updateSearch(${id})">
+                                <button type="button"><i class="bi bi-plus-lg"></i></button>
+                              </div>
+                              <div class="dropdrownselect-content">
+                                <ul class="options list-group list-group-flush" id="khachhangchoose"  >
+<li class="list-group-item " onclick="updateName(this)">Iceland</li><li class="list-group-item " onclick="updateName(this)">India</li><li class="list-group-item " onclick="updateName(this)">Indonesia</li><li class="list-group-item " onclick="updateName(this)">Iran</li><li class="list-group-item " onclick="updateName(this)">Italy</li>
+                                </ul>
+                              </div>
+                            </div>
                               <div type="flex" class="ant-row ant-row-space-between box-row"
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
@@ -2104,6 +2115,7 @@ async function buildFormData(formId) {
   formData.totalMoney = totalMoney;
   return formData;
 }
+
 document.addEventListener("keydown", function (event) {
   if (event.key === "F3") {
     event.preventDefault();
@@ -2140,3 +2152,65 @@ document.addEventListener("keydown", function (event) {
     addnewOrderPage();
   }
 });
+// search customers
+async function updateSearch(formid) {
+  const form = $(`#hoaDon${formid}`);
+  const drownsearch = form.find(".drownsearch");
+  const dropselect = form.find(`#selectkhachhang`),
+    searchInp = dropselect.find("#searchtext"),
+    options = drownsearch.find("#khachhangchoose");
+  let searchWord = searchInp.val();
+  options.empty();
+  if (searchWord.length > 0) {
+    let url = `/admin/counter/customers/search?searchtext=${searchWord}`;
+    try {
+      const response = await axios.get(url);
+      const data = response.data;
+      data.forEach((customer) => {
+        let li = `<li class="list-group-item" onclick="updateName(${formid},'${customer.id}')">${customer.name} - ${customer.phone}</li>`;
+        options.append(li);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    drownsearch.removeClass("active");
+    drownsearch.toggleClass("active");
+  }
+  if (searchWord.length == 0) {
+    console.log("Please select");
+    drownsearch.removeClass("active");
+  }
+}
+
+async function updateName(formid, id) {
+  const form = $(`#hoaDon${formid}`);
+  const drownsearch = form.find(".drownsearch");
+  const dropselect = form.find(`#selectkhachhang`);
+  let url = `/admin/counter/customers/${id}`;
+  console.log(url);
+  try {
+    const response = await axios.get(url);
+    const customer = response.data;
+    console.log(customer);
+    drownsearch.removeClass("active");
+    dropselect.empty();
+    dropselect.append(`<span>${customer.name} - ${customer.phone}</span>`); // Add the country name
+    dropselect.append(`<input type="hidden" id="customerid" value="${customer.id}">`); // Add the country name
+    dropselect.append(
+      `<button onclick="removeSelection(${formid})"><i class="bi bi-x"></i></i></button>`
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+function removeSelection(formid) {
+  const form = $(`#hoaDon${formid}`);
+  const dropselect = form.find(`#selectkhachhang`);
+  dropselect.empty(); // Clear the current content
+  dropselect.append(
+    `<input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" onkeyup="updateSearch(${formid})">`
+  );
+  dropselect.append(
+    '<button type="button"><i class="bi bi-plus-lg"></i></button>'
+  );
+}
