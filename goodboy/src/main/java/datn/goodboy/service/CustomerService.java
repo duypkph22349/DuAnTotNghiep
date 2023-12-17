@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.response.CustomerResponse;
 import datn.goodboy.repository.CustomerRepository;
 
@@ -77,5 +78,12 @@ public class CustomerService {
             return customerRepository.save(customer);
         }
     }
+
+    // that deptrai viet
+    public List<Customer> searchEmployees(String searchText) {
+        searchText = searchText.trim().toLowerCase();
+        return customerRepository.searchByText(searchText);
+    }
+    // that deptrai viet
 
 }

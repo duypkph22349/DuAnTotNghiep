@@ -87,6 +87,7 @@ public class CartService {
         }
         return null;
     };
+
     public void deleteCartDetails(int idcartdetails) {
         cartRepository.delete(cartRepository.findById(idcartdetails).get());
     }
@@ -154,15 +155,16 @@ public class CartService {
                         billDetail.setProductDetail(cartDetail.getProductDetail());
                         billDetail.setQuantity(cartDetail.getQuantity());
                         billDetail
-                                .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
+                                .setTotalMoney(Double
+                                        .valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
                         return billDetail;
                     })
                     .collect(Collectors.toList());
             bill.setBillDetail(billDetails);
             double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
             bill.setTotal_money(totalMoney);
-            bill.setDeposit(0);
-            bill.setMoney_ship(0);
+            bill.setDeposit(0d);
+            bill.setMoney_ship(0d);
             return bill;
         }
         return null;

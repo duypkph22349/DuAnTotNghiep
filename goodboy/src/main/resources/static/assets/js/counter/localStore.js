@@ -97,18 +97,6 @@ function addProductToOrder(orderId, productId) {
     saveOrdersToLocalStorage();
   }
 }
-
-function removeProductFromOrder(orderId, productId) {
-  const orderIndex = orders.findIndex((order) => order.id === orderId);
-  if (orderIndex !== -1) {
-    // Assuming an order has a property 'products' which is an array
-    orders[orderIndex].products = orders[orderIndex].products.filter(
-      (product) => product !== productId
-    );
-    saveOrdersToLocalStorage();
-  }
-}
-
 function resetOrderPage(element) {
   viewOrderTab.appendChild(buttonOrderTab(element.id));
   const form = document.createElement("form");
@@ -343,6 +331,15 @@ function resetOrderPage(element) {
                                   </div>
 
                               </div>
+                              <div class="mt-2 drownsearch">
+                              <div class="select-btn search-form d-flex align-items-center">
+                                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                                <button><i class="bi bi-plus-lg"></i></button>
+                              </div>
+                              <div class="dropdrownselect-content">
+                                <ul class="options list-group list-group-flush"></ul>
+                              </div>
+                            </div>
                               <div type="flex" class="ant-row ant-row-space-between box-row"
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
