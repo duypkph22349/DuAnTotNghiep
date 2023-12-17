@@ -64,6 +64,12 @@ public class CounterController {
     return ResponseEntity.ok().body(employeeService.getAllEmployee());
   }
 
+  @PostMapping("customer")
+  public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
+    System.out.println(customer);
+    return ResponseEntity.ok().body(customerService.saveCustomer(customer));
+  }
+
   @GetMapping("customers/search")
   public ResponseEntity<List<Customer>> getAllCustomer(@RequestParam("searchtext") String searchtext) {
     return ResponseEntity.ok().body(customerService.searchEmployees(searchtext));

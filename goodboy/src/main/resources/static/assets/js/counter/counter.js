@@ -1,4 +1,4 @@
-// 80 %
+// 90 %
 // globle Variable
 const defaultImage =
   "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
@@ -262,7 +262,7 @@ function formInOrder(id) {
                               <div class="mt-2 drownsearch">
                               <div class="select-btn search-form d-flex align-items-center" id="selectkhachhang">
                                 <input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" onkeyup="updateSearch(${id})">
-                                <button type="button"><i class="bi bi-plus-lg"></i></button>
+                                <button type="button"><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#modelAddKhachHang"></i></button>
                               </div>
                               <div class="dropdrownselect-content">
                                 <ul class="options list-group list-group-flush" id="khachhangchoose"  >
@@ -633,7 +633,8 @@ function addnewOrderPage() {
     alert("Tối đa 5 hóa đơn");
   }
 }
-let timeouts = {}; // Create an object to store timeouts
+let timeouts = {};
+// Create an object to store timeouts
 function countdown(id) {
   const countdownElement = document.querySelector(`#hoaDon${id} #countdown`);
 
@@ -677,6 +678,7 @@ function formatTime(seconds) {
     remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
   return minutes + ":" + remainingSeconds;
 }
+// time out end
 function filterTable(orderId) {
   var input, filter, table, tbody, tr, td, i, j, txtValue;
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -1271,6 +1273,10 @@ async function handleOrderSubmit(event) {
     10
   );
   formData.customerName = form.querySelector("#tenKhachHang").value;
+  const inputCustomer = form.querySelector("#customerid");
+  if (inputCustomer) {
+    formData.customerID = inputCustomer.value;
+  }
   formData.phoneNumber = form.querySelector("#soDienThoai").value;
   formData.city = form.querySelector("#city").value;
   formData.district = form.querySelector("#district").value;
@@ -2166,10 +2172,15 @@ async function updateSearch(formid) {
     try {
       const response = await axios.get(url);
       const data = response.data;
-      data.forEach((customer) => {
-        let li = `<li class="list-group-item" onclick="updateName(${formid},'${customer.id}')">${customer.name} - ${customer.phone}</li>`;
+      if (data.length > 0) {
+        data.forEach((customer) => {
+          let li = `<li class="list-group-item" onclick="updateName(${formid},'${customer.id}')">${customer.name} - ${customer.phone}</li>`;
+          options.append(li);
+        });
+      } else {
+        let li = `<p style="margin-top: 10px;">Oops! Không tìm thấy khách hàng</p>`;
         options.append(li);
-      });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -2195,7 +2206,9 @@ async function updateName(formid, id) {
     drownsearch.removeClass("active");
     dropselect.empty();
     dropselect.append(`<span>${customer.name} - ${customer.phone}</span>`); // Add the country name
-    dropselect.append(`<input type="hidden" id="customerid" value="${customer.id}">`); // Add the country name
+    dropselect.append(
+      `<input type="hidden" id="customerid" value="${customer.id}">`
+    ); // Add the country name
     dropselect.append(
       `<button onclick="removeSelection(${formid})"><i class="bi bi-x"></i></i></button>`
     );
@@ -2211,6 +2224,105 @@ function removeSelection(formid) {
     `<input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" onkeyup="updateSearch(${formid})">`
   );
   dropselect.append(
-    '<button type="button"><i class="bi bi-plus-lg"></i></button>'
+    '<button type="button"><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#modelAddKhachHang"></i></button>'
   );
+}
+function setErrorElement(element, message) {
+  // Add your implementation here
+  // For example, you might want to display the error message in a dedicated error element
+}
+
+function addNewKhachHang(event) {
+  event.preventDefault();
+  var form = event.target;
+  var formData = new FormData(form);
+  // Validation rules
+  var name = formData.get("name");
+  var phone = formData.get("phone");
+  resetErrorElement(form.querySelector("input[name='name']"));
+  resetErrorElement(form.querySelector("input[name='phone']"));
+  resetErrorElement(form.querySelector("input[name='address']"));
+  var errorcount = 0;
+  if (!name || name.trim() === "") {
+    setErrorElement(
+      form.querySelector("input[name='name']"),
+      "Tên không được để trống"
+    );
+    errorcount++;
+  }
+  var phonePattern = /^[0-9]{10}$/; // Adjust this pattern to match your phone number format
+  if (!phone || !phonePattern.test(phone)) {
+    setErrorElement(
+      form.querySelector("input[name='phone']"),
+      "Số điện thoại không hợp lệ"
+    );
+    errorcount++;
+  }
+  if (errorcount > 0) {
+    return false;
+  }
+
+  // Build customer object
+  var customer = {
+    name: formData.get("name"),
+    phone: formData.get("phone"),
+    address: formData.get("address"),
+    gender: formData.get("gender") === "true",
+    birth_date: formData.get("birth_date"),
+    city: formData.get("city"),
+    country: formData.get("country"),
+    fulladdress: formData.get("fulladdress"),
+  };
+  // Convert the customer object to JSON
+  var customerJson = JSON.stringify(customer);
+  axios
+    .post("/admin/counter/customer", customerJson, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+      $("#modelAddKhachHang").modal("hide");
+      new Notify({
+        status: "success",
+        title: "Thành công",
+        text: "Thêm khách hàng mới thành công",
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      new Notify({
+        status: "error",
+        title: "Lỗi",
+        text: "Thêm khách hàng mới không thành công !!",
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
+    });
+  // form.submit();
 }

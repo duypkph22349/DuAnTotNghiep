@@ -332,12 +332,16 @@ function resetOrderPage(element) {
 
                               </div>
                               <div class="mt-2 drownsearch">
-                              <div class="select-btn search-form d-flex align-items-center">
-                                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                                <button><i class="bi bi-plus-lg"></i></button>
+                              <div class="select-btn search-form d-flex align-items-center" id="selectkhachhang">
+                                <input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" onkeyup="updateSearch(${
+                                  element.id
+                                })">
+                                <button type="button"><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#modelAddKhachHang"></i></button>
                               </div>
                               <div class="dropdrownselect-content">
-                                <ul class="options list-group list-group-flush"></ul>
+                                <ul class="options list-group list-group-flush" id="khachhangchoose"  >
+<li class="list-group-item " onclick="updateName(this)">Iceland</li><li class="list-group-item " onclick="updateName(this)">India</li><li class="list-group-item " onclick="updateName(this)">Indonesia</li><li class="list-group-item " onclick="updateName(this)">Iran</li><li class="list-group-item " onclick="updateName(this)">Italy</li>
+                                </ul>
                               </div>
                             </div>
                               <div type="flex" class="ant-row ant-row-space-between box-row"
