@@ -130,7 +130,7 @@
                                         <li class="fw-normal d-flex align-items-center justify-content-between"
                                             id="tongTien">
                                             <div th:text="${cartDetail.quantity + ' x ' + cartDetail.productDetail.name + ' _ ' +cartDetail.getProductDetail().getIdPattern().name}"></div>
-                                            <span th:name="tongTien"
+                                            <span th:name="total_money"
                                                   th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price * cartDetail.quantity, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
                                         </li>
                                     </div>
@@ -151,7 +151,10 @@
 
                                     <label for="cod">Thanh toán COD</label>
                                     <input type="radio" id="cod" name="paymentOption" th:value="1">
-                                    <input type="hidden" name="" th:field="${bills.billDetail}">
+<!--                                    <input type="hidden" name="" th:field="${bills.billDetail}">-->
+                                    <tr th:each="detail, itemStat : ${bills.billDetail}">
+                                        <td><input type="hidden" th:field="*{billDetail[__${itemStat.index}__].productDetail.id}" /></td>
+                                    </tr>
                                     <button type="submit" class="site-btn place-btn">Thanh toán</button>
                                 </div>
                             </div>

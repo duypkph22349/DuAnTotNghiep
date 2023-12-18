@@ -105,8 +105,15 @@ public class Bill {
     this.updatedAt = LocalDateTime.now();
   }
 
-  @OneToMany(mappedBy = "idBill")
+  @OneToMany(mappedBy = "idBill",orphanRemoval = true,cascade = CascadeType.ALL)
   @JsonIgnore
   private List<BillDetail> billDetail;
-
+  public String getbillDetailString() {
+    String result = "BillDetail = [ idproductdetail = {";
+    for (BillDetail billDetail2 : billDetail) {
+      result += billDetail2.getProductDetail().getId() + ", ";
+    }
+    result += "}]";
+    return result;
+  }
 }

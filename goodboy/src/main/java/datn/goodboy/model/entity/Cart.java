@@ -1,5 +1,6 @@
 package datn.goodboy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class Cart {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_customer", referencedColumnName = "id")
+    @JsonIgnore
     private Customer customer;
 
     @Column(name = "status")

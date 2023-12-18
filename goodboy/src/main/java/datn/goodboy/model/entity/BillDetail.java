@@ -1,5 +1,6 @@
 package datn.goodboy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class BillDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

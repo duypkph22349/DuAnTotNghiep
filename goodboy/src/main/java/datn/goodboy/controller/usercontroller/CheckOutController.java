@@ -68,8 +68,18 @@ public class CheckOutController {
 
             return "redirect:" + ConfigPay.vnp_PayUrl;
         } else if ("1".equals(paymentOption)) {
-            billService.saveBillAndDetails(bill);
+            float tienShip = Float.parseFloat(request.getParameter("money_ship"));
+            bill.setMoney_ship(tienShip);
+
 //            productDetailService.updateProductQuantities(bill.getBillDetail());
+
+            Cart cart = cartService.getCart();
+            List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
+            List<Integer> integers = cartDetails.stream() .map(CartDetail::getId)
+                    .collect(Collectors.toList());
+            bill = cartService.getCheckOutPage(integers);
+            billService.saveBillAndDetails(bill);
+//            save bill
         }
         return "redirect:/home";
     }
