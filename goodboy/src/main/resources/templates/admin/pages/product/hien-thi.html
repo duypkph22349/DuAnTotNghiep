@@ -43,7 +43,6 @@
                 <thead class="table-primary text-center m-5">
                     <tr>
                         <th>#</th>
-                        <th>Code</th>
                         <th>Name</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -52,7 +51,6 @@
                 <tbody class="text-center">
                     <tr th:each="b, i : ${brandPage}">
                         <td th:text="${i.index + 1}"></td>
-                        <td th:text="${b.code}"></td>
                         <td th:text="${b.name}"></td>
                         <td th:unless="${b.deleted}" th:text="${convert.convertTrangThai(b.status)}"></td>
                         <td th:if="${b.deleted}" class="text-decoration-line-through"

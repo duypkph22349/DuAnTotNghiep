@@ -2,10 +2,14 @@ package datn.goodboy.repository;
 
 import java.util.List;
 
+import datn.goodboy.model.entity.Color;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import datn.goodboy.model.entity.Category;
+import org.springframework.data.repository.query.Param;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
@@ -14,4 +18,9 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
   @Query("SELECT ca FROM Category ca WHERE ca.status = 1 AND ca.deleted = false")
   List<Category> getCategoryList();
+
+  @Query("SELECT b FROM Category b WHERE b.code LIKE %:keyword% OR b.name LIKE %:keyword%")
+  Page<Category> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+  Page<Category> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

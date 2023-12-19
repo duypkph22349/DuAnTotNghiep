@@ -2,6 +2,8 @@ package datn.goodboy.service;
 
 import java.util.List;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,5 +36,9 @@ public class CategoryService {
 
     public Category getById(int idCategory) {
         return categoryRepository.findById(idCategory).get();
+    }
+
+    public Page<Category> searchColorByKeyword(String keyword, Pageable pageable) {
+        return categoryRepository.searchByKeyword(keyword, pageable);
     }
 }

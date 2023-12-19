@@ -69,7 +69,7 @@ public class StylesController {
     public String update(Model model, @Valid Styles b, @PathVariable Integer id) {
         b.setUpdatedAt(LocalDateTime.now());
         stylesService.update(id, b);
-        return "redirect:/admin/style/dsStype";
+        return "redirect:/admin/style/dsStyle";
     }
 
     @PostMapping("/add")
@@ -80,7 +80,7 @@ public class StylesController {
         b.setStatus(1);
         currentProductCode++;
         stylesService.add(b);
-        return "redirect:/admin/style/dsStype";
+        return "redirect:/admin/style/dsStyle";
     }
 
     @GetMapping("/delete")
