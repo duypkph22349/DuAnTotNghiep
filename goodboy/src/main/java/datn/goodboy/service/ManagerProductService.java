@@ -185,6 +185,7 @@ public class ManagerProductService implements PanigationInterface<Product> {
       Size size = sizeService.getById(productDetailAdd.getIdSize());
       productDetail.setIdPattern(pattern);
       productDetail.setIdSize(size);
+      productDetail.setIdProduct(productsave);
       productDetail.setDescription(productDetailAdd.getDescription());
       productDetail.setPrice(productDetailAdd.getPrice());
       productDetail.setQuantity(productDetailAdd.getQuantity());

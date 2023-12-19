@@ -37,13 +37,13 @@ public class ProductDetailRequest {
   }
 
   List<Images> image = new ArrayList<>();
-  int id;
+  Integer id;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idProduct;
+  Integer idProduct;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idPattern;
+  Integer idPattern;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idSize;
+  Integer idSize;
 
   String description;
   @NotNull(message = "Trường này không thể bỏ qua")
