@@ -3,6 +3,8 @@ package datn.goodboy.service;
 import java.util.List;
 import java.util.Map;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +41,7 @@ public class CategoryService {
 
     public List<Map<Integer, String>> getCombobox() {
         return categoryRepository.getComboBoxMap();
+    public Page<Category> searchColorByKeyword(String keyword, Pageable pageable) {
+        return categoryRepository.searchByKeyword(keyword, pageable);
     }
 }
