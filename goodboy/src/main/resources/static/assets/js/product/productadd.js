@@ -241,7 +241,7 @@ function AddKichThuoc(event) {
   event.preventDefault();
   var formData = new FormData(document.getElementById("addKichThuoc"));
   axios
-    .post("/admin/managerproduct/addpattern", formData)
+    .post("/admin/managerproduct/addsize", formData)
     .then(function (response) {
       $("#modelAddKichThuoc").modal("hide");
       const listKichThuoc = formaddproduct.querySelectorAll(".kichthuocselect");

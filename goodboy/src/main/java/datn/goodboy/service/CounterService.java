@@ -139,4 +139,8 @@ public class CounterService {
     }
     return billRepository.save(bill);
   }
+
+  public Bill saveWaitBill(OrderCounterRequest orderCounterRequest) {
+    return null;
+  }
 }

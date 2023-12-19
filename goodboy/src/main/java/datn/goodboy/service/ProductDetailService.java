@@ -135,9 +135,15 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetailRequest.setId(productDetail.getId());
     productDetailRequest.setDescription(productDetail.getDescription());
     productDetailRequest.setDeleted(productDetail.isDeleted());
-    productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
-    productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
-    productDetailRequest.setIdSize(productDetail.getIdSize().getId());
+    if (productDetail.getIdPattern() != null) {
+      productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
+    }
+    if (productDetail.getIdProduct() != null) {
+      productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
+    }
+    if (productDetail.getIdSize() != null) {
+      productDetailRequest.setIdSize(productDetail.getIdSize().getId());
+    }
     productDetailRequest.setQuantity(productDetail.getQuantity());
     productDetailRequest.setPrice(productDetail.getPrice());
     productDetailRequest.setStatus(productDetail.getStatus());
@@ -152,8 +158,10 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     entity.setIdPattern(pattern);
     entity.setIdProduct(product);
     entity.setIdSize(size);
-    entity.setDeleted(request.isDeleted());
+    // entity.setDeleted(request.isDeleted());
+    entity.setQuantity(request.getQuantity());
     entity.setName(request.getName());
+    entity.setDescription(request.getDescription());
     entity.setPrice(request.getPrice());
     entity.setStatus(request.getStatus());
     entity.setId(request.getId());
@@ -374,22 +382,22 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       }
     }
   }
-//  public void updateProductQuantities(List<BillDetail> billDetails) {
-//    for (BillDetail billDetail : billDetails) {
-//      ProductDetail productDetail = billDetail.getProductDetail();
-//      int quantitySold = billDetail.getQuantity();
-//
-//      // Truy xuất số lượng hiện tại của sản phẩm
-//      int currentQuantity = productDetail.getQuantity();
-//
-//      // Giảm đi số lượng đã bán
-//      int updatedQuantity = currentQuantity - quantitySold;
-//
-//      // Cập nhật số lượng sản phẩm
-//      productDetail.setQuantity(updatedQuantity);
-//
-//      // Lưu thông tin sản phẩm đã cập nhật vào cơ sở dữ liệu
-//      productDetailRepository.save(productDetail);
-//    }
-//  }
+  // public void updateProductQuantities(List<BillDetail> billDetails) {
+  // for (BillDetail billDetail : billDetails) {
+  // ProductDetail productDetail = billDetail.getProductDetail();
+  // int quantitySold = billDetail.getQuantity();
+  //
+  // // Truy xuất số lượng hiện tại của sản phẩm
+  // int currentQuantity = productDetail.getQuantity();
+  //
+  // // Giảm đi số lượng đã bán
+  // int updatedQuantity = currentQuantity - quantitySold;
+  //
+  // // Cập nhật số lượng sản phẩm
+  // productDetail.setQuantity(updatedQuantity);
+  //
+  // // Lưu thông tin sản phẩm đã cập nhật vào cơ sở dữ liệu
+  // productDetailRepository.save(productDetail);
+  // }
+  // }
 }

@@ -3,6 +3,9 @@ const totalSalesIncome = document.getElementById("totalSalesIncome");
 const totalSalesBill = document.getElementById("totalSalesBill");
 const resentBillTable = document.getElementById("resentBillTable");
 const topProductSales = document.getElementById("topProductSales");
+const navtabChar = document.getElementById("navtab-char");
+var chartype = 1;
+var timetype = 1;
 function formatAsVND(amount) {
   const formatter = new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -20,6 +23,8 @@ const filtertotalSalesIncome = document.getElementById(
 const filtertotalSalesBill = document.getElementById("filterTotalSalesBill");
 const filterresentBillTable = document.getElementById("filterResentBillTable");
 const filtertopProductSales = document.getElementById("filterTopProductSales");
+const fillterforchar = document.getElementById("fillterforchar");
+
 // Today
 async function getToDayTotalProductSale() {
   try {
@@ -455,72 +460,200 @@ function calculateTopMargin(percentage, data) {
   const roundedValue = Math.ceil(maxValue / 1000000) * 1000000; // Round up to the nearest million
   return roundedValue + (roundedValue * percentage) / 100;
 }
+//chart
+function selectChar(clickedButton, selectchartype) {
+  chartype = selectchartype;
+  var navItems = navtabChar.getElementsByClassName("char-cate");
+  for (var i = 0; i < navItems.length; i++) {
+    navItems[i].classList.remove("active");
+  }
+  clickedButton.classList.add("active");
+  updateChar();
+}
+async function getcharbyurl(url) {
+  try {
+    const response = await axios.get("/admin/api/thongke/" + url);
+    const newData = response.data;
+    myChart.data.labels = Object.keys(newData);
+    myChart.data.datasets[0].data = Object.values(newData);
+    myChart.options.scales.y.max = calculateTopMargin(
+      40,
+      Object.values(newData)
+    );
+    myChart.update();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
 const myChart = createChart();
 
-async function getThisWeekIncomeChart() {
-  try {
-    const response = await axios.get("/admin/api/thongke/income/lastweek");
-    const newData = response.data;
-    myChart.data.labels = Object.keys(newData);
-    myChart.data.datasets[0].data = Object.values(newData);
-    myChart.options.scales.y.max = calculateTopMargin(
-      40,
-      Object.values(newData)
-    );
-    myChart.update();
-  } catch (error) {
-    console.error("Error fetching data:", error);
+async function updateChar() {
+  console.log("chartype " + chartype);
+  console.log("timetype " + timetype);
+  // chartype = 1 hours
+  if (chartype == 1) {
+    if (timetype == 1) {
+      // Hôm nay
+      getIncomeHourToday();
+      return;
+    }
+    if (timetype == 2) {
+      // Hôm qua
+      getIncomeHourYesterday();
+      return;
+    }
+    if (timetype == 3) {
+      // Tuần này
+      getIncomeHourThisWeek();
+      return;
+    }
+    if (timetype == 4) {
+      //Tuần trước
+      getIncomeHourLastWeek();
+      return;
+    }
+    if (timetype == 5) {
+      // Tháng nay
+      getIncomeHourThisMonth();
+      return;
+    }
+    if (timetype == 6) {
+      // Tháng trước
+      getIncomeHourLastMonth;
+      return;
+    }
+  }
+  // chartype = 2 day of week
+  if (chartype == 2) {
+    if (timetype == 1) {
+      // Hôm nay
+      getIncomeToDay();
+      return;
+    }
+    if (timetype == 2) {
+      // Hôm qua
+      getIncomeYeterday();
+      return;
+    }
+    if (timetype == 3) {
+      // Tuần này
+      getIncomeDayThisWeek();
+      return;
+    }
+    if (timetype == 4) {
+      //Tuần trước
+      getIncomeDayLastWeek();
+      return;
+    }
+    if (timetype == 5) {
+      // Tháng nay
+      getIncomeDayThisMonth();
+      return;
+    }
+    if (timetype == 6) {
+      // Tháng trước
+      getIncomeDayLastMonth();
+      return;
+    }
+  }
+  // chartype = 1 day of month
+  if (chartype == 3) {
+    if (timetype == 1) {
+      // Hôm nay
+      getIncomeToDay();
+      return;
+    }
+    if (timetype == 2) {
+      // Hôm qua
+      getIncomeYeterday();
+      return;
+    }
+    if (timetype == 3) {
+      // Tuần này
+      getIncomeThisweek();
+      return;
+    }
+    if (timetype == 4) {
+      //Tuần trước
+      getIncomeLastWeek();
+      return;
+    }
+    if (timetype == 5) {
+      // Tháng nay
+      getIncomeThisMouth();
+      return;
+    }
+    if (timetype == 6) {
+      // Tháng trước
+      getIncomeLastMonth();
+      return;
+    }
   }
 }
-
-async function getThisMouthIncomeChart() {
-  try {
-    const response = await axios.get("/admin/api/thongke/income/thismouth");
-    const newData = response.data;
-    myChart.data.labels = Object.keys(newData);
-    myChart.data.datasets[0].data = Object.values(newData);
-    myChart.options.scales.y.max = calculateTopMargin(
-      40,
-      Object.values(newData)
-    );
-    myChart.update();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+async function updatetimetype(selectbutton, selecttimetype) {
+  timetype = selecttimetype;
+  fillterforchar.innerText = "| " + selectbutton.textContent;
+  updateChar();
 }
-async function getThisYearIncomeChart() {
-  try {
-    const response = await axios.get("/admin/api/thongke/income/thisyear");
-    const newData = response.data;
-    myChart.data.labels = Object.keys(newData);
-    myChart.data.datasets[0].data = Object.values(newData);
-    myChart.options.scales.y.max = calculateTopMargin(
-      40,
-      Object.values(newData)
-    );
-    myChart.update();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+function getIncomeThisMonth(year) {
+  getcharbyurl(`income/thang?year=${year}`);
 }
-async function getFiveYearLastIncomeChart() {
-  try {
-    const response = await axios.get("/admin/api/thongke/income/nam");
-    const newData = response.data;
-    myChart.data.labels = Object.keys(newData);
-    myChart.data.datasets[0].data = Object.values(newData);
-    myChart.options.scales.y.max = calculateTopMargin(
-      40,
-      Object.values(newData)
-    );
-    myChart.update();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+function getIncomeThisYear() {
+  getcharbyurl("income/thisyear");
 }
-
+function getIncomeNam() {
+  getcharbyurl("income/nam");
+}
+function getIncomeThisweek() {
+  getcharbyurl("income/thisweek");
+}
+function getIncomeToDay() {
+  getcharbyurl("income/today");
+}
+function getIncomeLastMonth() {
+  getcharbyurl("income/lastmounth");
+}
+function getIncomeYeterday() {
+  getcharbyurl("income/yesterday");
+}
+function getIncomeHourToday() {
+  getcharbyurl("income/hour/today");
+}
+function getIncomeHourYesterday() {
+  getcharbyurl("income/hour/yesterday");
+}
+function getIncomeHourThisWeek() {
+  getcharbyurl("income/hour/thisweek");
+}
+function getIncomeHourThisMonth() {
+  getcharbyurl("income/hour/thismounth");
+}
+function getIncomeThisMouth() {
+  getcharbyurl("income/thismouth");
+}
+function getIncomeLastWeek() {
+  getcharbyurl("income/lastweek");
+}
+function getIncomeDayThisWeek() {
+  getcharbyurl("income/day/thisWeek");
+}
+function getIncomeDayLastWeek() {
+  getcharbyurl("income/day/lastWeek");
+}
+function getIncomeDayThisMonth() {
+  getcharbyurl("income/day/thisMonth");
+}
+function getIncomeDayLastMonth() {
+  getcharbyurl("income/day/lastMonth");
+}
+function getIncomeHourLastWeek() {
+  getcharbyurl("income/hour/lastweek");
+}
+function getIncomeHourLastMonth() {
+  getcharbyurl("income/hour/lastmonth");
+}
 // call first
-getThisWeekIncomeChart();
+updateChar();
 getToDayTotalProductSale();
 getToDayToTalIncome();
 getToDayTotalBill();
