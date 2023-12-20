@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.service.BillService;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 
@@ -22,6 +23,10 @@ public class userUIController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private BillService billService;
+
     @GetMapping("/cart/totalQuantity")
     public String getTotalQuantity(Model model) {
         Cart cart = cartService.getCart();

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,4 +49,5 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
   @Query("SELECT b FROM Bill b WHERE b.status = 1")
   List<Bill> findBillByStatus1();
+  List<Bill> findByCustomer_Id(UUID customerId);
 }
