@@ -2,22 +2,20 @@ package datn.goodboy.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import datn.goodboy.model.entity.*;
+import datn.goodboy.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.entity.Customer;
-import datn.goodboy.model.entity.Employee;
-import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.request.BillRequest;
-import datn.goodboy.repository.BillRepository;
-import datn.goodboy.repository.CustomerRepository;
-import datn.goodboy.repository.EmployeeRepository;
-import datn.goodboy.repository.PayRepository;
 import javassist.NotFoundException;
 
 @Service
@@ -29,6 +27,9 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -121,4 +122,21 @@ public class BillService {
         bill.setStatus_pay(status_pay);
         billRepository.save(bill);
     }
+
+    public UUID getCustomerId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+            return account.getCustomer().getId();
+        }
+        return null;
+    }
+
+
+    public List<Bill> findBillsByCustomerId(UUID customerId){
+        return billRepository.findByCustomer_Id(customerId);
+    }
+
+
 }

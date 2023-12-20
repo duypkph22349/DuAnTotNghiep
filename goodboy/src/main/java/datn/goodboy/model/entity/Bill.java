@@ -105,7 +105,7 @@ public class Bill {
     this.updatedAt = LocalDateTime.now();
   }
 
-  @OneToMany(mappedBy = "idBill")
+  @OneToMany(mappedBy = "idBill",orphanRemoval = true,cascade = CascadeType.ALL)
   @JsonIgnore
   private List<BillDetail> billDetail;
 

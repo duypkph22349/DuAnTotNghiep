@@ -25,15 +25,17 @@
                                 <span style="color: white">Họ tên: </span>
                                     <a class="mr-3" style="color: white"
                                           th:text="${session.authenuser.getCustomer().name}"></a>
-                                <a class="dropdown-toggle" href="#">
-                                    <img class="profile-image" th:src="${session.authenuser.getImage()}" style="color: white" alt="Profile">
-                                </a>
-                                <div class="dropdown-menu" id="profile-menu" style="background-color: #7a6e25">
-                                    <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
-                                    <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
-                                    <a class="dropdown-item" th:href="@{/shop/order_status}">Đơn hàng</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" th:href="@{/signOut}">Đăng xuất</a>
+                                <div>
+                                    <a class="dropdown-toggle" href="#">
+                                        <img class="profile-image" th:src="${session.authenuser.getImage()}" style="color: white" alt="Profile">
+                                    </a>
+                                    <div class="dropdown-menu" id="profile-menu" style="background-color: #7a6e25">
+                                        <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
+                                        <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
+                                        <a class="dropdown-item" th:href="@{/shop/product/don_hang}">Đơn hàng</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" th:href="@{/login}">Đăng xuất</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
