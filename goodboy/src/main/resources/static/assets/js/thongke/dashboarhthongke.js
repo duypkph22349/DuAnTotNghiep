@@ -4,6 +4,7 @@ const totalSalesBill = document.getElementById("totalSalesBill");
 const resentBillTable = document.getElementById("resentBillTable");
 const topProductSales = document.getElementById("topProductSales");
 const navtabChar = document.getElementById("navtab-char");
+const incomegrow = document.getElementById("incomegrow");
 var chartype = 1;
 var timetype = 1;
 function formatAsVND(amount) {
@@ -43,10 +44,51 @@ async function getToDayToTalIncome() {
     const data = await response.json();
     totalSalesIncome.innerText = formatAsVND(data.toString());
     filtertotalSalesIncome.innerText = ` | Hôm nay`;
+    getGropThanYesterday();
   } catch (error) {
     console.error("Error fetching today total income:", error);
     totalSalesIncome.innerText = 0;
   }
+}
+async function getGropThanYesterday() {
+  const response = await fetch("/admin/api/thongke/getgrowthanyesterday");
+  const data = await response.json(); // Parse the response body as JSON
+  console.log(data);
+  setIncomeGrow(data, "Hôm qua");
+}
+async function getGropThanLastMouth() {
+  const response = await fetch("/admin/api/thongke/getgrowththanlastmonth");
+  const data = await response.json(); // Parse the response body as JSON
+  console.log(data);
+  setIncomeGrow(data, "Tháng trước");
+}
+
+async function getGropThanLastYear() {
+  const response = await fetch("/admin/api/thongke/getgrowththanlastyear");
+  const data = await response.json(); // Parse the response body as JSON
+  console.log(data);
+  setIncomeGrow(data, "Năm trước");
+}
+function setIncomeGrow(data, text) {
+  if (data == -1000) {
+    incomegrow.classList.remove("text-success");
+    incomegrow.classList.remove("text-danger");
+    incomegrow.classList.add("text-secondary");
+    incomegrow.innerText = `${text} không có doanh thu`;
+    return;
+  }
+  if (data < 0) {
+    incomegrow.classList.remove("text-success");
+    incomegrow.classList.add("text-danger");
+  } else if (data == 0) {
+    incomegrow.classList.remove("text-success");
+    incomegrow.classList.remove("text-danger");
+    incomegrow.classList.add("text-secondary");
+  } else {
+    incomegrow.classList.remove("text-danger");
+    incomegrow.classList.add("text-success");
+  }
+  incomegrow.innerText = `${data} % so với ${text}`;
 }
 async function getToDayTotalBill() {
   try {
@@ -148,6 +190,7 @@ async function getThisMouthToTalIncome() {
     const data = await response.json();
     totalSalesIncome.innerText = formatAsVND(data.toString());
     filtertotalSalesIncome.innerText = ` | Tháng này`;
+    getGropThanLastMouth();
   } catch (error) {
     console.error("Error fetching this month total income:", error);
   }
@@ -240,6 +283,7 @@ async function getThisYearToTalIncome() {
     const data = await response.json();
     totalSalesIncome.innerText = formatAsVND(data.toString());
     filtertotalSalesIncome.innerText = ` | Năm nay`;
+    getGropThanLastYear();
   } catch (error) {
     console.error("Error fetching this year total income:", error);
   }
