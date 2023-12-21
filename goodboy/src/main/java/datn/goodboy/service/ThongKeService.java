@@ -6,7 +6,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -405,17 +404,73 @@ public class ThongKeService {
   }
 
   public float getGrowthThanToday() {
-    LocalDateTime currentDate = LocalDateTime.now();
-    LocalDateTime yesterday = currentDate.minus(1, ChronoUnit.DAYS);
+    try {
 
-    float incomeToday = getToTalDoanhThu(currentDate.toLocalDate().atStartOfDay(), currentDate).floatValue();
-    float incomeYesterday = getToTalDoanhThu(yesterday.toLocalDate().atStartOfDay(), yesterday).floatValue();
+      LocalDateTime currentDate = LocalDateTime.now();
+      LocalDateTime yesterday = currentDate.minus(1, ChronoUnit.DAYS);
 
-    if (incomeYesterday != 0) {
-      float percentGrow = 100 * (incomeToday / incomeYesterday - 1);
-      return percentGrow;
-    } else {
-      return 0;
+      float incomeToday = getToTalDoanhThu(currentDate.toLocalDate().atStartOfDay(), currentDate).floatValue();
+      float incomeYesterday = getToTalDoanhThu(yesterday.toLocalDate().atStartOfDay(), yesterday).floatValue();
+      if (incomeYesterday == 0) {
+        throw new Exception("không có doanh thu");
+      }
+      if (incomeYesterday != 0) {
+        float percentGrow = 100 * (incomeToday / incomeYesterday - 1);
+        return percentGrow;
+      } else {
+        return 0;
+      }
+    } catch (Exception e) {
+      // Handle the exception here
+      e.printStackTrace();
+      return -1000;
+    }
+  }
+
+  public float getGrowthThanLastMonth() {
+    try {
+      LocalDateTime currentDate = LocalDateTime.now();
+      LocalDateTime lastMonth = currentDate.minus(1, ChronoUnit.MONTHS);
+
+      float incomeThisMonth = getToTalDoanhThu(currentDate.toLocalDate().atStartOfDay(), currentDate).floatValue();
+      float incomeLastMonth = getToTalDoanhThu(lastMonth.toLocalDate().atStartOfDay(),
+          lastMonth.withDayOfMonth(lastMonth.toLocalDate().lengthOfMonth()).toLocalDate().atStartOfDay()).floatValue();
+
+      if (incomeLastMonth == 0) {
+        throw new Exception("không có doanh thu");
+      } else {
+        float percentGrow = 100 * (incomeThisMonth / incomeLastMonth - 1);
+        return percentGrow;
+      }
+    } catch (Exception e) {
+      // Handle the exception here
+      e.printStackTrace();
+      return -1000;
+    }
+  }
+
+  public float getGrowthThanLastYear() {
+    try {
+      LocalDateTime currentDate = LocalDateTime.now();
+      LocalDateTime lastYear = currentDate.minus(1, ChronoUnit.YEARS);
+
+      float incomeThisYear = getToTalDoanhThu(currentDate.withDayOfYear(1).toLocalDate().atStartOfDay(), currentDate)
+          .floatValue();
+      float incomeLastYear = getToTalDoanhThu(lastYear.withDayOfYear(1).toLocalDate().atStartOfDay(),
+          lastYear.withDayOfYear(lastYear.toLocalDate().lengthOfYear()).toLocalDate().atStartOfDay()).floatValue();
+      if (incomeLastYear == 0) {
+        throw new Exception("không có doanh thu");
+      }
+      if (incomeLastYear != 0) {
+        float percentGrow = 100 * (incomeThisYear / incomeLastYear - 1);
+        return percentGrow;
+      } else {
+        return 0;
+      }
+    } catch (Exception e) {
+      // Handle the exception here
+      e.printStackTrace();
+      return -1000;
     }
   }
 

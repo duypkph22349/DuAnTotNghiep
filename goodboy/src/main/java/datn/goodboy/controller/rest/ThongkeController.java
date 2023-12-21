@@ -31,8 +31,18 @@ public class ThongkeController {
   }
 
   @GetMapping("/getgrowthanyesterday")
-  public float getGrowthanYesterday() {
-    return thongKeService.getGrowthThanToday();
+  public ResponseEntity<Float> getGrowthanYesterday() {
+    return ResponseEntity.ok(thongKeService.getGrowthThanToday());
+  }
+
+  @GetMapping("/getgrowththanlastmonth")
+  public ResponseEntity<Float> getGrowthThanLastMonth() {
+    return ResponseEntity.ok(thongKeService.getGrowthThanLastMonth());
+  }
+
+  @GetMapping("/getgrowththanlastyear")
+  public ResponseEntity<Float> getGrowthThanLastYear() {
+    return ResponseEntity.ok(thongKeService.getGrowthThanLastYear());
   }
 
   @GetMapping("/todaytotalbill")
