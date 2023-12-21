@@ -76,6 +76,7 @@ public class CartService {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+            System.out.println(account.getCustomer().getId());
             Cart cart = null;
             if (account.getCustomer().getCart() == null) {
                 cart = new Cart();
@@ -145,9 +146,6 @@ public class CartService {
             bill.setStatus(0);
             bill.setLoaiDon(1);
             bill.setStatus_pay(0);
-            System.out.println("Account Name: " + account.getCustomer().getName());
-            System.out.println("Bill Address: " + bill.getAddress());
-            System.out.println("Bill Status: " + bill.getStatus());
             List<BillDetail> billDetails = cartDetails.stream()
                     .map(idcartdetails -> cartRepository.findById(idcartdetails))
                     .filter(Optional::isPresent)
@@ -158,10 +156,6 @@ public class CartService {
                         billDetail.setQuantity(cartDetail.getQuantity());
                         billDetail
                                 .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
-                        System.out.println("BillDetail Product Name: " + cartDetail.getProductDetail().getName());
-                        System.out.println("BillDetail Quantity: " + cartDetail.getQuantity());
-                        System.out.println("BillDetail Total Money: " + billDetail.getTotalMoney());
-
                         return billDetail;
                     })
                     .collect(Collectors.toList());

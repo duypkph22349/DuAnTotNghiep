@@ -12,8 +12,11 @@ import datn.goodboy.model.DTO.PaymentResDTO;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.service.BillService;
 import datn.goodboy.service.ProductDetailService;
+import datn.goodboy.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpSession;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,14 +25,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class CheckOutController {
@@ -43,22 +46,24 @@ public class CheckOutController {
     private BillService billService;
 
     @Autowired
-    private ProductDetailService productDetailService;
+    private HttpSession session;
+    @Autowired
+    private VoucherService voucherService;
 
     @GetMapping("/shop/checkout")
     public String viewCheckout(Model model) {
         Cart cart = cartService.getCart();
         List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
-        List<Integer> integers = cartDetails.stream() .map(CartDetail::getId)
+        List<Integer> integers = cartDetails.stream().map(CartDetail::getId)
                 .collect(Collectors.toList());
         Bill bill = cartService.getCheckOutPage(integers);
-        model.addAttribute("bills",bill);
+        List<Voucher> vouchers = voucherService.getAllVouchers();
+        model.addAttribute("voucher", vouchers);
+        model.addAttribute("bills", bill);
         model.addAttribute("cartDetails", cartDetails);
         System.out.println(bill.getBillDetail().size());
         return "user/checkout";
     }
-
-
 
     @PostMapping("/checkout")
     public String saveCheckOut(@ModelAttribute("bills") Bill bill, HttpServletRequest request) {
@@ -71,15 +76,15 @@ public class CheckOutController {
             float tienShip = Float.parseFloat(request.getParameter("money_ship"));
             bill.setMoney_ship(tienShip);
 
-//            productDetailService.updateProductQuantities(bill.getBillDetail());
+            // productDetailService.updateProductQuantities(bill.getBillDetail());
 
             Cart cart = cartService.getCart();
             List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
-            List<Integer> integers = cartDetails.stream() .map(CartDetail::getId)
+            List<Integer> integers = cartDetails.stream().map(CartDetail::getId)
                     .collect(Collectors.toList());
             bill = cartService.getCheckOutPage(integers);
             billService.saveBillAndDetails(bill);
-//            save bill
+            // save bill
         }
         return "redirect:/home";
     }
@@ -160,4 +165,24 @@ public class CheckOutController {
 
         return ResponseEntity.ok(paymentResDTO);
     }
+
+    @GetMapping("/apply-voucher/{voucherId}")
+    public ResponseEntity<Map<String, Object>> applyVoucher(@PathVariable("voucherId") int voucherId) {
+        Map<String, Object> response = new HashMap<>();
+        Voucher voucher = voucherService.getVoucherByIde(voucherId);
+
+        if (voucher != null) {
+            Double voucherAmount = voucher.getMax_discount();
+            if (voucherAmount != null) {
+                // Lưu giá trị vào session nếu cần
+                // session.setAttribute("voucherAmount", voucherAmount);
+
+                // Cập nhật response với giá trị voucherAmount
+                response.put("voucherAmount", voucherAmount);
+            }
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 }
