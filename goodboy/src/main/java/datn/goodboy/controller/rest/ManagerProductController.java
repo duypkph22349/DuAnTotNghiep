@@ -1,14 +1,19 @@
 package datn.goodboy.controller.rest;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +27,7 @@ import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductAddRequest;
+import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
@@ -29,15 +35,18 @@ import datn.goodboy.service.ManagerProductService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.PatternTypeService;
+import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
+import jakarta.validation.Valid;
 
 @RequestMapping("/admin/managerproduct")
 @RestController("restManagerProductController")
 public class ManagerProductController {
   @Autowired
   private ManagerProductService service;
-
+  @Autowired
+  ProductDetailService service2;
   @Autowired
   private BrandService brandService;
 
@@ -169,8 +178,13 @@ public class ManagerProductController {
   }
 
   @PostMapping("/update/product/{id}/saveimage")
-  public String saveimage(@PathVariable("id") int id, @RequestParam("image") MultipartFile image ) {
-    return service.saveImage(id,image);
+  public String saveimage(@PathVariable("id") int id, @RequestParam("image") MultipartFile image) {
+    return service.saveImage(id, image);
   }
 
+  @PostMapping("/productdetail/save")
+  public ProductDetail createProductDetail(@Valid @RequestBody ProductDetailRequest request) throws IOException {
+    System.out.println(request);
+    return service2.saveProductDetail(request);
+  }
 }

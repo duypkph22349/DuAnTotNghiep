@@ -69,15 +69,15 @@
                 th:attr="data-bs-target='#viewdetail'+ ${product.id}"><i class="fas fa-eye"></i></i>
               </button>
               <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                th:attr="data-bs-target='#staticBackdrop'+ ${product.id}">
+                th:attr="data-bs-target='#modelEditProduct'+ ${product.id}">
                 <i class="far fa-edit"></i>
               </button>
-              <div class="modal fade" th:id="'staticBackdrop' + ${product.id}" data-bs-backdrop="static"
-                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal fade" th:id="'modelEditProduct' + ${product.id}" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="modelEditProductLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel" th:text="${product.name}"></h5>
+                      <h5 class="modal-title" id="modelEditProductLabel" th:text="${product.name}"></h5>
                       <a target="_blank" class="btn btn-success mx-3"
                         th:href="@{'/admin/product/view-update/'+${product.id}}"><i class="far fa-edit"></i></a>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -112,12 +112,14 @@
                           </p>
                         </div>
                         <div class="col-12">
+                          <hr>
+                          <button type="button" th:onclick="'openModalAddProduct(' + ${product.id} + ')'"
+                            class="btn btn-success">Thêm sản phẩm chi tiết</button>
                           <div th:if="${product.productDetails.size() == 0}">
                             Không có chi tiết sản phẩm
                           </div>
                           <div th:unless="${product.productDetails.size() == 0}">
                             <div th:each=" listPettern : ${product.getListOptionProduct}">
-                              <hr>
                               <div class="fw-bolder" th:text="${listPettern.get(0).idPattern.name}">
                               </div>
                               <div th:each="pddt : ${listPettern}">
@@ -322,6 +324,74 @@
       </form>
     </div>
   </section>
+  <div class="modal fade" id="modelAddProductDetail" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm sản phẩm chi tiết</h5>
+          <button type="button" class="btn-close" onclick="closeModalAddProduct()"></button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" onsubmit="addProductDetail(event)" method="get"
+            class="form container-fluid">
+            <div class="row">
+              <div class="text-center col-1 col-md-4 col-sm-12">
+                <img
+                  src="http://res.cloudinary.com/da30qcqmf/image/upload/v1697981307/DUANTOTNGHIEP/d8157802-eeb2-417c-9dfe-9ba64f6bbd44.jpg"
+                  alt="" class="image-fluid mb-3" style="max-width: 400px;">
+                <div class="form-group">
+                  <input class="form-control" type="file" id="formFile" name="listimage" multiple="">
+                </div>
+              </div>
+              <div class="col-11  col-md-8 col-sm-12">
+                <div class="row">
+                  <input type="hidden" id="idProduct" name="idProduct" value="23">
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="idPattern" class="m-auto fw-bold">Hoa Văn:</label>
+                    <select class="form-control   form-group-0 text-center" id="idPattern" name="idPattern">
+                      <option value="-1"> Chọn Hoa Văn </option>
+                      <option th:each="option : ${pattenCbb}" th:value="${option.key}" th:text="${option.value}">
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="" class="m-auto fw-bold">Kích thước</label>
+                    <select class="form-control form-group-0 text-center" id="idSize" name="idSize">
+                      <option value="-1" selected="selected"> Chọn Kích thước </option>
+                      <option th:each="option : ${sizeCbb}" th:value="${option.key}" th:text="${option.value}">
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="" class="m-auto fw-bold">Số lượng</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control " value="0">
+                  </div>
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="" class="m-auto fw-bold">Giá</label>
+                    <input type="number" name="price" id="price" class="form-control " value="0.0">
+                  </div>
+                  <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
+                    <label for="" class="m-auto fw-bold">Trạng thái: </label>
+                    <input type="radio" name="status" id="statusactive" class="" value="0" checked="checked"> <label
+                      for="statusactive">Kích hoạt</label>
+                    <input type="radio" name="status" id="statusdisable" class="" value="1"> <label
+                      for="statusdisable">Không sử dụng</label>
+                  </div>
+                  <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
+                    <label for="description" class="m-auto fw-bold">Mô tả</label>
+                    <textarea class="form-control form-group-0" id="description" name="description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary px-4">Lưu</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     window.onload = function () {
       var inputs = document.getElementsByTagName('input[type="number"]');
@@ -335,6 +405,7 @@
       }
     }
   </script>
+
   <script>
     function updateProductDetail(event) {
       var errorCount = 0;
@@ -370,11 +441,45 @@
           .post("/admin/managerproduct/update/product",data)
           .then(function (response) {
             console.log(response.data);
-            alert("Cập nhật thành công");
+            new Notify({
+              status: 'success',
+              title: 'Thành công',
+              text: 'Cập nhật thành công',
+              effect: 'fade',
+              speed: 300,
+              customClass: '',
+              customIcon: '',
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: 'right top',
+              customWrapper: '',
+            })
           })
           .catch(function (error) {
             console.error("Error update product:",error);
-            alert("Cập nhật thất bại");
+            new Notify({
+              status: 'error',
+              title: 'Thất bại',
+              text: "Cập nhật thất bại",
+              effect: 'fade',
+              speed: 300,
+              customClass: '',
+              customIcon: '',
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: 'right top',
+              customWrapper: '',
+            })
           });
       }
       const imageInput = form.querySelector("input[name='imageproduct']");
@@ -434,10 +539,172 @@
 
         // Append the <img> element as a child to the <a> element
         newAnchor.appendChild(newImage);
-
-        // Append the <a> element as a child to the divimage element
         divimage.appendChild(newAnchor);
       };
+    }
+    function addProductDetail(event) {
+      var errorCount = 0;
+      event.preventDefault();
+      const form = event.target;
+      const idProduct = form.querySelector("input[name='idProduct']");
+      const idSize = form.querySelector("select[name='idSize']");
+      const idPattern = form.querySelector("select[name='idPattern']");
+      const quantity = form.querySelector("input[name='quantity']");
+      const price = form.querySelector("input[name='price']");
+      const description = form.querySelector("textarea[name='description']");
+      const status = form.querySelector("input[name='status']:checked").value; // Get the selected radio button value
+      const buttonsubmit = form.querySelector(".savebtn");
+      const imageInput = form.querySelector("input[name='listimage']");
+
+      const data = {
+        idProduct: idProduct.value,
+        idSize: idSize.value,
+        idPattern: idPattern.value,
+        quantity: quantity.value,
+        price: price.value,
+        description: description.value,
+        status: status,
+      };
+      axios
+        .post("/admin/managerproduct/productdetail/save",data)
+        .then(function (response) {
+          new Notify({
+            status: 'success',
+            title: 'Thành công',
+            text: 'Cập nhật thành công',
+            effect: 'fade',
+            speed: 300,
+            customClass: '',
+            customIcon: '',
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: 'right top',
+            customWrapper: '',
+          })
+          console.log(response);
+          if (response.data.id) {
+            const imageFiles = Array.from(imageInput.files);
+            const updateImage = (imageFile) => {
+              const formData = new FormData();
+              formData.append('image',imageFile);
+              return axios.post(`/admin/managerproduct/update/product/${response.data.id}/saveimage`,formData,{
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
+            };
+            imageFiles.forEach((imageFile) => {
+              updateImage(imageFile)
+                .then(response => {
+                  console.log('Image updated successfully:',response.data);
+                  new Notify({
+                    status: 'success',
+                    title: 'Thành công',
+                    text: 'Thêm ảnh thành công',
+                    effect: 'fade',
+                    speed: 300,
+                    customClass: '',
+                    customIcon: `<img src="${response.data}" alt="Ảnh sản phẩm" class="img-fluid" style="height: 30px;">`,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 20,
+                    distance: 20,
+                    type: 1,
+                    position: 'right top',
+                    customWrapper: '',
+                  })
+                })
+                .catch(error => {
+                  console.error('Error updating image:',error);
+                });
+            });
+            new Notify({
+              status: 'success',
+              title: 'Thành công',
+              text: 'Reload để thấy thay đổi mới nhất',
+              effect: 'fade',
+              speed: 300,
+              customClass: '',
+              customIcon: ``,
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: 'right top',
+              customWrapper: '',
+            })
+          }
+        })
+        .catch(function (error) {
+          console.log("error uploading images:",error);
+          if (error.response.data.errors) {
+            error.response.data.errors.forEach((error) => {
+              new Notify({
+                status: 'error',
+                title: 'Kiểm tra lại đầu vào',
+                text: error,
+                effect: 'fade',
+                speed: 300,
+                customClass: '',
+                customIcon: '',
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 20,
+                distance: 20,
+                type: 1,
+                position: 'right top',
+                customWrapper: '',
+              })
+            })
+          }
+          if (error.response.data.message) {
+            new Notify({
+              status: 'error',
+              title: 'Kiểm tra lại đầu vào',
+              text: error.response.data.message,
+              effect: 'fade',
+              speed: 300,
+              customClass: '',
+              customIcon: '',
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: 'right top',
+              customWrapper: '',
+            })
+          }
+        });
+    }
+
+    function openModalAddProduct(idproduct) {
+      const modalAddProduct = document.getElementById("modelAddProductDetail");
+      const input = modalAddProduct.querySelector("form input[name='idProduct']");
+      input.value = idproduct;
+      $("#modelAddProductDetail").modal("show");
+      $(`#modelEditProduct${idproduct}`).modal("hide");
+    }
+    function closeModalAddProduct() {
+      const modalAddProduct = document.getElementById("modelAddProductDetail");
+      const input = modalAddProduct.querySelector("form input[name='idProduct']");
+      idproduct = input.value;
+      $("#modelAddProductDetail").modal("hide");
+      $(`#modelEditProduct${idproduct}`).modal("show");
     }
   </script>
 </body>

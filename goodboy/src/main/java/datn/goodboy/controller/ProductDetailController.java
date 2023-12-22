@@ -283,6 +283,15 @@ public class ProductDetailController {
     return "/admin/pages/productdetail/form-productdetail.html";
   }
 
+  @GetMapping("/product/{idproductdetail}/create")
+  public String goToCreateHaveProductForm(Model model, @PathVariable("idproductdetail") Integer idproductdetail) {
+    productDetailRequest = new ProductDetailRequest();
+    productDetailRequest.resetRequest();
+    productDetailRequest.setIdProduct(idproductdetail);
+    model.addAttribute("productDetailRequest", productDetailRequest);
+    return "/admin/pages/productdetail/product-productdetailform.html";
+  }
+
   @GetMapping("delete")
   public String deleteProductDetail(Model model, @RequestParam("id") String id) {
     // service.deleteProductDetail(UUID.fromString(id));

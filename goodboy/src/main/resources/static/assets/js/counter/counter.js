@@ -65,21 +65,6 @@ function formInOrder(id) {
                           <div class="col-100">
                               <section>
                                   <div class="box-order-product">
-                                      <div>
-                                          <button class="btn btn-danger" id="showTimeButton">
-                                              <svg class="bi bi-bag-dash" fill="currentColor" height="16"
-                                                  viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-                                                      d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"
-                                                      fill-rule="evenodd"></path>
-                                                  <path
-                                                      d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z">
-                                                  </path>
-                                              </svg>
-                                              Sản phẩm
-                                          </button>
-                                      </div>
-                                      <br>
                                       <div class="product-cart">
                                           <table class="table table-hover" id="cartTable">
                                               <thead>
@@ -603,7 +588,7 @@ function formInOrder(id) {
 }
 // ui processtion
 function addnewOrderPage() {
-  if (listtab.length <= 5) {
+  if (listtab.length < 5) {
     var id = 0;
     if (listtab.length == 0) {
       id = 1;
@@ -1014,8 +999,8 @@ function getFirstProductPage(orderId) {
         var row = document.createElement("tr");
         var cells = [
           `<img src="${
-            product.imageUrl || defaultImage
-          }" class="image-fluid" style="height: 60px;">`,
+            product.firstImage || defaultImage
+          }" class="image-fluid" style="height: 60px; max-width : 60px;">`,
           `
           <div class="d-flex">
           <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop${
@@ -1136,7 +1121,12 @@ function createProductRow(product, idorderdetail) {
   newProductRow.classList.add("table-body-row", "order-product");
   newProductRow.setAttribute("idproduct", product.id);
   newProductRow.innerHTML = `
-        <td><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
+
+        <td>
+        <img src="${
+          product.firstImage || defaultImage
+        }" class="image-fluid" style="height: 60px; max-width : 60px;     float: left;
+        "><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
     product.idPattern?.name ?? ""
   } </td>
         <td>${formatToVND(product.price)}</td>
@@ -2115,6 +2105,7 @@ async function buildFormData(formId) {
           price: product.price,
           totalprice: product.price * productQuantity,
           quantity: productQuantity,
+          firstImage: product.firstImage,
         });
       }
     } catch (error) {
