@@ -3,48 +3,35 @@
   xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Update Product Detail</title>
+  <title>Thêm sản phẩm chi tiết</title>
 </head>
 
 <body layout:fragment="content">
   <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>Bảng điều khiển</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều kiển</a></li>
-        <li class="breadcrumb-item active">Cập nhật sản phẩm chi tiết</li>
+        <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Thêm sản phẩm chi tiết</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
   <div th:if="${validateerrors}" class="alert alert-danger" role="alert" th:text="${validateerrors}">
   </div>
-  <form enctype="multipart/form-data" th:action="@{/admin/productdetail/update}" th:object="${productDetailRequest}"
+  <form enctype="multipart/form-data" th:action="@{/admin/productdetail/store}" th:object="${productDetailRequest}"
     method="post" class="form container-fluid">
     <input type="hidden" name="" th:field="*{id}">
     <div class="row">
       <div class="text-center col-1 col-md-4 col-sm-12">
-        <div th:if="${productDetailRequest?.image.size != 0}">
-          <div class="row">
-            <div class="position-relative col-3" th:each="image : ${productDetailRequest.image}"
-              th:if="${image.deleted == false}">
-              <img class="p-1 image-fluid w-100" th:src="${image?.img}" alt="ảnh sản phẩm">
-              <a th:href="@{'/admin/productdetail/remove/'+ ${productDetailRequest.id} +'/image/'+${image.id}}"
-                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
-                <i class="fas fa-times fa-xs"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div th:unless="${productDetailRequest?.image.size != 0}">
-          <img th:src="${productDetailRequest.noImage}" alt="" class="image-fluid mb-3" style="max-width: 400px;">
-        </div>
+        <img th:src="${productDetailRequest.noImage}" alt="" class="image-fluid mb-3" style="max-width: 400px;">
         <div class="form-group">
           <input class="form-control" type="file" id="formFile" name="listimage" multiple>
         </div>
       </div>
       <div class="col-11  col-md-8 col-sm-12">
         <div class="row">
-          <input type="hidden" th:field="*{idProduct}">
+          <input type="hidden" id="idProduct" th:field="*{idProduct}" name="idProduct">
+          </select>
           <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="idPattern" class="m-auto fw-bold">Hoa Văn:</label>
             <select class="form-control   form-group-0 text-center" id="idPattern" name="idPattern"
@@ -65,42 +52,30 @@
             <div th:if="${#fields.hasErrors('idSize')}" class="text-danger form-text" th:errors="*{idSize}">
             </div>
           </div>
-          <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-3">
-            <label for="" class="m-auto fw-bold">Tên</label>
-            <input type="text" name="" id="" class="form-control " th:field="*{name}">
-            <div th:if="${#fields.hasErrors('name')}" class="text-danger form-text" th:errors="*{name}">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-3">
+          <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="" class="m-auto fw-bold">Số lượng</label>
             <input type="number" name="" id="" class="form-control " th:field="*{quantity}">
             <div th:if="${#fields.hasErrors('quantity')}" class="text-danger form-text" th:errors="*{quantity}">
             </div>
           </div>
-
-          <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-3">
+          <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="" class="m-auto fw-bold">Giá</label>
             <input type="number" name="" id="" class="form-control " th:field="*{price}">
             <div th:if="${#fields.hasErrors('price')}" class="text-danger form-text" th:errors="*{price}">
             </div>
           </div>
-
-          <div class="form-group col-sm-12 col-md- col-lg-6 col-xl-6 mb-3">
+          <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
             <label for="" class="m-auto fw-bold">Trạng thái: </label>
-            <input type="radio" name="" id="statusactive" class="" value="1"
-              th:checked="${productDetailRequest.status == 1}" th:field="*{status}">
-            <label for="statusactive">Kích
-              hoạt</label>
-            <input type="radio" name="" id="statusdisable" class="" th:checked="${productDetailRequest.status != 1}"
-              value="0" th:field="*{status}">
-            <label for="statusdisable">Không sử dụng</label>
+            <input type="radio" name="" id="statusactive" class="" th:value="0" th:field="*{status}"> <label
+              for="statusactive">Kích hoạt</label>
+            <input type="radio" name="" id="statusdisable" class="" th:value="1" th:field="*{status}"> <label
+              for="statusdisable">Không sử dụng</label>
             <div th:if="${#fields.hasErrors('status')}" class="text-danger form-text" th:errors="*{status}">
             </div>
           </div>
           <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
             <label for="description" class="m-auto fw-bold">Mô tả</label>
-            <textarea class="form-control form-group-0" id="description" name="idStyles" th:field="*{description}">
+            <textarea class="form-control form-group-0" id="description" name="description" th:field="*{description}">
             </textarea>
             <div th:if="${#fields.hasErrors('description')}" class="text-danger form-text" th:errors="*{description}">
             </div>
@@ -109,8 +84,7 @@
       </div>
     </div>
     <div class="text-center">
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <button type="reset" class="btn btn-secondary">Reset</button>
+      <button type="submit" class="btn btn-primary px-4">Lưu</button>
     </div>
   </form>
 </body>

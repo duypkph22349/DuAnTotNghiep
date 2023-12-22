@@ -52,9 +52,9 @@ public class ProductDetailRequest {
   int quantity;
   @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
   Float price;
-  @NotNull
-  @NotBlank
-  @Length(min = 5, message = "Tên không thể quá ngắn")
+  // @NotNull
+  // @NotBlank
+  // @Length(min = 5, message = "Tên không thể quá ngắn")
   String name;
   @NotNull
   int status;

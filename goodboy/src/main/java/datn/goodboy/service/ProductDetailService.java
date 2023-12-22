@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import datn.goodboy.model.entity.BillDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -117,6 +116,32 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     } else {
       // throws exeption
       return null;
+    }
+  }
+
+  public ProductDetail saveProductDetail(ProductDetailRequest request) {
+    ProductDetail productDetail = new ProductDetail();
+    mapRequestToEntity(request, productDetail);
+    productDetail.setCreatedAt(LocalDateTime.now());
+    productDetail.setId(null);
+    if (productDetail.getIdProduct().exitSizes(productDetail.getIdSize().getId(),
+        productDetail.getIdPattern().getId())) {
+      throw new RuntimeException("Kích thước này đã tồn tại");
+    }
+    return productDetailRepository.save(productDetail);
+  }
+
+  public void saveImage(int idProduct, List<MultipartFile> listImage) {
+    List<String> listURL = new ArrayList<>();
+    if (!listImage.isEmpty()) {
+      for (MultipartFile multipartFile : listImage) {
+        try {
+          listURL.add(cloudService.saveImage(multipartFile));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      imageService.saveImageForNewProductDetail(listURL, idProduct);
     }
   }
 

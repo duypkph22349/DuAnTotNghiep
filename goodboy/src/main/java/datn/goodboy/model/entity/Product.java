@@ -135,4 +135,9 @@ public class Product {
         return colors;
     }
 
+    @JsonIgnore
+    public boolean exitSizes(int idsize, int idpattern) {
+        return productDetails.stream()
+                .anyMatch(p -> p.getIdSize().getId() == idsize && p.getIdPattern().getId() == idpattern);
+    }
 }

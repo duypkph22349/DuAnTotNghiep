@@ -131,7 +131,10 @@ function restoreProductOrder(idorderdetail, product) {
   newProductRow.classList.add("table-body-row", "order-product");
   newProductRow.setAttribute("idproduct", product.id);
   newProductRow.innerHTML = `
-          <td><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
+          <td> <img src="${
+            product.firstImage || defaultImage
+          }" class="image-fluid" style="height: 60px; max-width : 60px;     float: left;
+          "><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
     product.idPattern?.name ?? ""
   } </td>
           <td>${formatToVND(product.price)}</td>

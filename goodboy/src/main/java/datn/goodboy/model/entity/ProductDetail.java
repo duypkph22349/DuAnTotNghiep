@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -105,6 +106,17 @@ public class ProductDetail {
         return true;
     }
 
+    @JsonProperty("firstImage")
+    public String getFirstImage() {
+        if (!imageProducts.isEmpty()) {
+            return imageProducts.get(0).getImg();
+        }
+        if (!idProduct.getImageProducts().isEmpty()) {
+            return idProduct.getImageProducts().get(0).getImg();
+        }
+        return null;
+    }
+
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -114,4 +126,5 @@ public class ProductDetail {
             return "{}";
         }
     }
+
 }
