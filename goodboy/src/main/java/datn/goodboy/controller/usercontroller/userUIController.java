@@ -1,8 +1,10 @@
 package datn.goodboy.controller.usercontroller;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.service.BillDetailService;
 import datn.goodboy.service.BillService;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
@@ -31,6 +33,9 @@ public class userUIController {
     @Autowired
     private BillService billService;
 
+    @Autowired
+    private BillDetailService billDetailService;
+
     @GetMapping("/cart/totalQuantity")
     public String getTotalQuantity(Model model) {
         Cart cart = cartService.getCart();
@@ -44,11 +49,16 @@ public class userUIController {
     @GetMapping({ "/don_hang", "" })
     public String viewOderStatus(Model model){
         UUID customerId = billService.getCustomerId();
+        int billCount = billService.getBillCountByStatus(3);
         if (customerId != null) {
             List<Bill> bills = billService.findBillsByCustomerId(customerId);
             model.addAttribute("bills", bills);
+            model.addAttribute("billDetail",bills);
+            model.addAttribute("billCount", billCount);
         }
         return "/user/order_status";
     }
+
+
 
 }

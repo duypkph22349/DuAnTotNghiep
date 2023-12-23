@@ -2,14 +2,16 @@
 <html lang="en" layout:decorate="~{user/layout_user}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
 
-
 <body>
 <section layout:fragment="content">
     <style>
-        .disabled-button {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .table_2 .hiXKxx {
+            display: none;
         }
+        ._3F1-5M {
+            font-size: large;
+        }
+
         .table_1 {
             display: flex;
             justify-content: space-between;
@@ -32,10 +34,8 @@
             width: auto;
             min-height: 600px;
             background-color: #f2f2f2;
-            padding: 10px;
             box-sizing: border-box;
         }
-
 
         .FK6kaK {
             box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05);
@@ -238,18 +238,12 @@
 
     <section class="container">
         <div class="table_1">
-            <h2 class="a11y-hidden"></h2>
-            <a  title="Tất cả"  ><span>Tất cả</span></a>
-
-            <a title="Chờ thanh toán">Chờ Xác Nhận</span></a>
-
-            <a title="Vận chuyển" >Vận Chuyển</span></a>
-
-            <a title="Chờ giao hàng" >Đang Giao Hàng</span><span class="fSW3m4">(5)</span></a>
-
-            <a  title="Hoàn thành">Hoàn Thành</span></a>
-
-            <a  title="Đã hủy" >Đã hủy</span></a>
+            <a id="tat-ca" data-status="0" data-name="Tất cả" data-target="#content"><span>Tất cả</span></a>
+            <a id="cho-xac-nhan" data-status="1" data-name="Chờ Xác Nhận" data-target="#content">Chờ Xác Nhận</a>
+            <a id="cho-giao" data-status="2" data-name="Chờ Giao Hàng" data-target="#content">Chờ Giao Hàng</a>
+            <a id="van-chuyen" data-status="3" data-name="Đang Giao Hàng" data-target="#content">Đang Giao Hàng<span class="fSW3m4" th:text="'('+${billCount}+')'"> </span></a>
+            <a id="hoan-thanh" data-status="4" data-name="Hoàn Thành" data-target="#content">Hoàn Thành</a>
+            <a id="da-huy" data-status="5" data-name="Đã Hủy" data-target="#content">Đã Hủy</a>
         </div>
 
         <div class="table_2">
@@ -262,22 +256,23 @@
                             <section>
                                 <h3 class="a11y-hidden"></h3>
                                 <a aria-label="" href="/user/purchase/cancellation/156365552212965">
-                                <div>
-                                    <div class="_0OiaZ-">
-                                        <div class="FbLutl">
-                                            <div>
-                                                <section>
-                                                    <div class="x7nENX">
-                                                        <div class="aybVBK"><img
-                                                                src="https://down-vn.img.susercontent.com/file/vn-11134201-7r98o-lnpzjiksyprh19_tn"
-                                                                class="rGP9Yd" alt="" tabindex="0">
-                                                            <div class="_7uZf6Q">
-                                                                <div>
+                                    <div th:each="billDtail : ${bills.billDetail}">
+                                        <div class="_0OiaZ-">
+                                            <div class="FbLutl">
+                                                <div>
+                                                    <section>
+                                                        <div class="x7nENX">
+                                                            <div class="aybVBK"><img
+                                                                    th:src="${bills.billDetail[0].productDetail.idProduct.imageProducts[0]?.img}"
+                                                                    class="rGP9Yd" alt="" tabindex="0">
+                                                                <div class="_7uZf6Q">
+                                                                    <div>
                                                                     <div class="iJlxsT"><span class="x5GTyN" tabindex="0"  ></span>
                                                                     </div>
                                                                 </div>
                                                                 <div>
                                                                     <div class="_3F1-5M" tabindex="0" th:text="${bills.billDetail[0].productDetail.name}"></div>
+
                                                                     <div class="_3F1-5M" tabindex="0" th:text="'x' +${bills.billDetail[0].quantity}"></div>
                                                                 </div>
                                                             </div>
@@ -315,32 +310,36 @@
                             </div>
                         </div>
                         <div class="AM4Cxf">
-                            <div class="qtUncs"><span aria-label="" tabindex="0">
-                                <div th:switch="${bills.status}">
-                                    <div th:case="1">Chờ Xác Nhận</div>
-                                    <div th:case="2">Chờ lấy Hàng</div>
-                                    <div th:case="3">Chờ Giao Hàng</div>
-                                    <div th:case="4">Đang Giao Hàng</div>
-                                    <div th:case="5">Đã Giao Hàng</div>
-                                    <div th:case="6">Đã Hủy</div>
-                                </div>
-                            </span></div>
+                            <div class="qtUncs" th:data-status="${bills.status}">
+                                <span aria-label="" tabindex="0">
+                                    <div th:switch="${bills.status}">
+                                        <div class="status-1" th:case="1">Chờ xác nhận</div>
+                                        <div class="status-2" th:case="2">Chờ Giao Hàng</div>
+                                        <div class="status-3" th:case="3">Đang Giao Hàng</div>
+                                        <div class="status-4" th:case="4">Hoàn Thành</div>
+                                        <div class="status-5" th:case="5">Đã Hủy</div>
+                                    </div>
+                                </span>
+                            </div>
                             <section class="EOjXew"><h3 class="a11y-hidden"></h3>
                                 <div class="PF0-AU">
                                     <div>
                                         <a th:href="@{/shop/product/index}">
-                                             <button class="stardust-button stardust-button--primary WgYvse" th:href="@{/shop/product/index}">Mua Tiếp</button>
+                                            <button class="stardust-button stardust-button--primary WgYvse"
+                                                    th:href="@{/shop/product/index}">Mua Tiếp
+                                            </button>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="PgtIur"><a href="/user/purchase/cancellation/156365552212965">
-                                    <button class="stardust-button stardust-button--secondary WgYvse Dk3zTF">Xem chi tiết
+                                    <button class="stardust-button stardust-button--secondary WgYvse Dk3zTF">Xem chi
+                                        tiết
                                     </button>
                                 </a></div>
                                 <div class="PgtIur">
                                     <div>
-                                        <button class="stardust-button stardust-button--secondary WgYvse"
-                                                th:if="${bills.status == 1}" >Hủy Đơn Hàng
+                                        <button class="stardust-button stardust-button--secondary WgYvse btn-huy-hd"
+                                                th:if="${bills.status == 1}">Hủy Đơn Hàng
                                         </button>
                                         <a th:href="@{/shop/product/index}">
                                             <button class="stardust-button stardust-button--secondary WgYvse"
@@ -355,7 +354,7 @@
                     </div>
                 </div>
             </div>
-            <!--Table hiển thị-->
+
             <div class="FK6kaK">
                 <div>
                     <div class="bi4dk5"></div>
@@ -363,34 +362,121 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <script>
-        window.addEventListener("DOMContentLoaded", function () {
-            const allLink = document.querySelector(".table_1 a[title='Tất cả']");
-            const tatCaDiv = document.querySelector(".table_2 .tat_ca");
-            const defaultDiv = document.querySelector(".table_2 .FK6kaK");
+        <script>
 
-            tatCaDiv.style.display = "block";
-            defaultDiv.style.display = "none";
+            document.addEventListener('DOMContentLoaded', function() {
+                const table1Links = document.querySelectorAll('.table_1 a');
+                const table2Items = document.querySelectorAll('.table_2 .hiXKxx');
 
-            allLink.addEventListener("click", function (event) {
-                event.preventDefault();
-                tatCaDiv.style.display = "block";
-                defaultDiv.style.display = "none";
+                // Hàm để hiển thị các mục có trạng thái khớp với status hoặc status là 0
+                function displayMatchingItems(status) {
+                    table2Items.forEach(function(item) {
+                        const itemStatus = parseInt(item.querySelector('.qtUncs').getAttribute('data-status'));
+
+                        if (status === itemStatus || status === 0) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Hiển thị các mục có trạng thái khớp với trạng thái ban đầu khi tải trang
+                displayMatchingItems(0);
+
+                table1Links.forEach(function(link) {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const status = parseInt(link.getAttribute('data-status'));
+
+                        // Hiển thị các mục có trạng thái khớp với status khi nhấp vào liên kết
+                        displayMatchingItems(status);
+
+                        const url = link.getAttribute('href');
+                        const target = link.getAttribute('data-target');
+
+                        fetch(url)
+                            .then(response => response.text())
+                            .then(data => {
+                                const element = document.querySelector(target);
+                                element.innerHTML = data;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+                });
             });
 
-            const otherLinks = document.querySelectorAll(".table_1 a:not([title='Tất cả'])");
 
-            otherLinks.forEach(function (link) {
-                link.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    tatCaDiv.style.display = "none";
-                    defaultDiv.style.display = "block";
+            document.addEventListener('DOMContentLoaded', function() {
+                const table1Links = document.querySelectorAll('.table_1 a');
+                const breadcrumbLink = document.querySelector('.breadcrumb li:last-child a');
+
+                table1Links.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        const name = link.getAttribute('data-name');
+
+                        breadcrumbLink.textContent = `Đơn Hàng > ${name}`;
+                    });
+                });
+            });
+        </script>
+
+    </section>
+
+
+    <script>
+        $(document).ready(function () {
+            $(".btn-huy-hd").click(function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Bạn chắc chắn hủy đơn hàng?',
+                    text: "Bạn sẽ không thể khôi phục lại điều này!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Có, tôi chắc chắn!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = $(this).attr('href');
+                        $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function (result) {
+                                if (result) {
+                                    Swal.fire(
+                                        'Đã hủy!',
+                                        'Đơn hàng đã được hủy.',
+                                        'success'
+                                    )
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire(
+                                        'Lỗi!',
+                                        'Hủy thất bại.',
+                                        'warning'
+                                    )
+                                }
+                            },
+                            error: function (error) {
+                                Swal.fire(
+                                    'Lỗi!',
+                                    'Hủy thất bại.',
+                                    'warning'
+                                )
+                                console.log(error);
+                            }
+                        });
+                    }
                 });
             });
         });
     </script>
+
 
 </section>
 </body>

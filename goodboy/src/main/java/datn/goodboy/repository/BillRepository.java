@@ -28,5 +28,7 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
   @Query("SELECT b FROM Bill b WHERE b.status = :status")
   Page<Bill> searchBillByStatus(Pageable pageable, @Param("status") int status);
 
+  int countByStatus(int status);
+
   List<Bill> findByCustomer_Id(UUID customerId);
 }

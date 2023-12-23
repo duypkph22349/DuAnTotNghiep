@@ -138,5 +138,9 @@ public class BillService {
         return billRepository.findByCustomer_Id(customerId);
     }
 
+    public int getBillCountByStatus(int status) {
+        return billRepository.countByStatus(status);
+    }
+
 
 }
