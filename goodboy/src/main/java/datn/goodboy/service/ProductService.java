@@ -273,4 +273,8 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         return Panigation(pageno, totalPage);
     }
 
+    public Product getProduct(int idproduct) {
+        return productRepository.findById(idproduct).get();
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ColorService;
 import datn.goodboy.service.ImageService;
 import datn.goodboy.service.ManagerProductService;
@@ -61,10 +62,18 @@ public class ManagerProductController {
   @Autowired
   private StylesService stylesService;
 
+  @Autowired
+  private CategoryService categoryService;
+
   // @ModelAttribute("brand-combobox")
   // public ProductDetailFilter fillter() {
   // return filter;
   // }
+  @ModelAttribute("categoryCbb")
+  public List<Map<Integer, String>> getComboboxCategory() {
+    return categoryService.getCombobox();
+  }
+
   @Autowired
   private ImageService imageService;
 

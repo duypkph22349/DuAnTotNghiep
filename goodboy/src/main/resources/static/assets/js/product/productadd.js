@@ -7,10 +7,8 @@ const chatlieuInput = formaddproduct.querySelector("#chatlieuInput");
 const kieudangInput = formaddproduct.querySelector("#kieudangInput");
 const productdetailAdd = formaddproduct.querySelector("#productdetailAdd");
 const hoavanmuladd = document.getElementById("hoavanmuladd");
-
 const listhoavan = [];
 // lay data form backend
-
 function getLoaiSanPham() {
   axios
     .get("/admin/managerproduct/category")

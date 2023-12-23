@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -86,18 +87,15 @@ public class Product {
     }
 
     @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with Images
-    @JsonIgnore
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude
     private List<ImageProduct> imageProducts;
     @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with ProductDetail
-    @JsonIgnore
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude
-    private List<ProductDetail> productDetails;
-
     @JsonIgnore
-
+    private List<ProductDetail> productDetails;
+    @JsonIgnore
     public Float getMinPrice() {
         Optional<ProductDetail> minPrice = productDetails.stream()
                 .min((val1, val2) -> {
@@ -107,7 +105,6 @@ public class Product {
     }
 
     @JsonIgnore
-
     public Float getMaxPrice() {
         Optional<ProductDetail> maxPrice = productDetails.stream()
                 .max((val1, val2) -> {
@@ -116,7 +113,8 @@ public class Product {
         return maxPrice.get().getPrice();
     }
 
-    @JsonIgnore
+    // @JsonIgnore
+    @JsonProperty("productdetails")
     public List<List<ProductDetail>> getListOptionProduct() {
         List<List<ProductDetail>> options = patternTypes().stream()
                 .map(color -> productDetails.stream()
@@ -125,7 +123,6 @@ public class Product {
                 .collect(Collectors.toList());
         return options;
     }
-
     @JsonIgnore
     public List<PatternType> patternTypes() {
         List<PatternType> colors = productDetails.stream()
@@ -134,7 +131,6 @@ public class Product {
                 .collect(Collectors.toList());
         return colors;
     }
-
     @JsonIgnore
     public boolean exitSizes(int idsize, int idpattern) {
         return productDetails.stream()
