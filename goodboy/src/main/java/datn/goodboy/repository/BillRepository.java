@@ -49,5 +49,8 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
   @Query("SELECT b FROM Bill b WHERE b.status = 1")
   List<Bill> findBillByStatus1();
+
+  int countByStatus(int status);
+
   List<Bill> findByCustomer_Id(UUID customerId);
 }
