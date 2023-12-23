@@ -49,7 +49,7 @@
                 <label for="idOrigin" class="m-auto fw-bold">Nguồn Gốc:</label>
                 <select class="form-control form-group-0 text-center  form-group-0 text-center" id="idOrigin"
                     th:field="*{idOrigin}" name="idOrigin">
-                    <option value="-1"> Chọn Nguồn Gốc</option>
+                    <option selected> Chọn Nguồn Gốc</option>
                     <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
                     </option>
                 </select>

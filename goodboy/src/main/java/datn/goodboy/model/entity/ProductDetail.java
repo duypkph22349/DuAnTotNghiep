@@ -54,6 +54,7 @@ public class ProductDetail {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_product")
     private Product idProduct;
 
@@ -79,7 +80,7 @@ public class ProductDetail {
 
     @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL)
     @ToString.Exclude
-    @JsonIgnore
+    @JsonProperty("imageProducts")
     private List<Images> imageProducts;
 
     @PrePersist
@@ -108,13 +109,14 @@ public class ProductDetail {
 
     @JsonProperty("firstImage")
     public String getFirstImage() {
-        if (!imageProducts.isEmpty()) {
+        if (imageProducts != null && !imageProducts.isEmpty()) {
             return imageProducts.get(0).getImg();
-        }
-        if (!idProduct.getImageProducts().isEmpty()) {
+        } else if (idProduct != null && idProduct.getImageProducts() != null
+                && !idProduct.getImageProducts().isEmpty()) {
             return idProduct.getImageProducts().get(0).getImg();
+        } else {
+            return null;
         }
-        return null;
     }
 
     public String toJson() {

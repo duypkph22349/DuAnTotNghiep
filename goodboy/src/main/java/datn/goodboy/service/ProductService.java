@@ -286,4 +286,8 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         return filteredProducts;
     }
 
+    public Product getProduct(int idproduct) {
+        return productRepository.findById(idproduct).get();
+    }
+
 }
