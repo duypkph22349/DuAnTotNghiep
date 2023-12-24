@@ -23,6 +23,8 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
   List<Account> getAccountByEmail(@Param("email") String email);
 
   @Query(value = "SELECT acc FROM Account acc WHERE acc.email LIKE CONCAT('%', :email, '%')")
+  Account getAccountByEmails(@Param("email") String email);
+  @Query(value = "SELECT acc FROM Account acc WHERE acc.email LIKE CONCAT('%', :email, '%')")
   List<Account> hasEmailis(@Param("email") String email);
   @Query(value = "SELECT acc FROM Account acc WHERE acc.email LIKE :email")
   Account fillAcccoutbyEmail(@Param("email") String email);

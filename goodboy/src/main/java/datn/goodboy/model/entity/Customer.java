@@ -44,11 +44,11 @@ public class Customer {
   String phone;
   @Column(name = "birth_date")
   LocalDate birth_date;
-  @Column(name = "address")
+  @Column(name = "thanh_pho")
   String address;
-  @Column(name = "districtcode")
+  @Column(name = "new_huyen")
   String city;
-  @Column(name = "wardcode")
+  @Column(name = "xa")
   String country;
   @Column(name = "fulladdress")
   String fulladdress;

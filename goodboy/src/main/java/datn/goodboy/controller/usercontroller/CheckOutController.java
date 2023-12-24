@@ -9,8 +9,15 @@ import java.util.stream.Collectors;
 
 import datn.goodboy.config.ConfigPay;
 import datn.goodboy.model.DTO.PaymentResDTO;
+import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.entity.GiaoHangNhanh;
+import datn.goodboy.repository.AccountRepository;
+import datn.goodboy.service.AccountService;
 import datn.goodboy.service.BillService;
+import datn.goodboy.service.CallAPIGHN;
+import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +26,8 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +58,11 @@ public class CheckOutController {
     private HttpSession session;
     @Autowired
     private VoucherService voucherService;
+    @Autowired
+    private CallAPIGHN callAPIGHN;
+    @Autowired
+    private CustomerService customerService;@Autowired
+    private AccountRepository accountService;
 
     @GetMapping("/shop/checkout")
     public String viewCheckout(Model model) {
@@ -58,6 +72,11 @@ public class CheckOutController {
                 .collect(Collectors.toList());
         Bill bill = cartService.getCheckOutPage(integers);
         List<Voucher> vouchers = voucherService.getAllVouchers();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account khachHang = accountService.getAccountByEmails(authentication.getName());
+        model.addAttribute("khachHang", khachHang);
+
         model.addAttribute("voucher", vouchers);
         model.addAttribute("bills", bill);
         model.addAttribute("cartDetails", cartDetails);
@@ -66,15 +85,23 @@ public class CheckOutController {
     }
 
     @PostMapping("/checkout")
-    public String saveCheckOut(@ModelAttribute("bills") Bill bill, HttpServletRequest request) {
+    public String saveCheckOut(@ModelAttribute("bills") Bill bill, HttpServletRequest request, Model model, @PathVariable("customer") UUID uuid) {
         String paymentOption = request.getParameter("paymentOption");
+        GiaoHangNhanh giaoHangNhanh = new GiaoHangNhanh();
 
         if ("0".equals(paymentOption)) {
 
             return "redirect:" + ConfigPay.vnp_PayUrl;
         } else if ("1".equals(paymentOption)) {
-            float tienShip = Float.parseFloat(request.getParameter("money_ship"));
-            bill.setMoney_ship(tienShip);
+            Customer x = customerService.customerByid(uuid);
+            giaoHangNhanh.setTo_district_name(x.getCity()); //huyện
+            giaoHangNhanh.setTo_province_name(x.getAddress()); //thành phố
+            giaoHangNhanh.setTo_ward_name(x.getCountry()); //xã
+//                giaoHangNhanh.setInsurance_value(tongTien.intValue());
+            System.out.println(x.getCity());
+            String phiShip = callAPIGHN.getAPIGHN(giaoHangNhanh);
+            model.addAttribute("phiShip", phiShip);
+
 
             // productDetailService.updateProductQuantities(bill.getBillDetail());
 
