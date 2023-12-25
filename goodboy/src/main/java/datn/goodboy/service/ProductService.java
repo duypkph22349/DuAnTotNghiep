@@ -127,6 +127,12 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         return productRepository.save(productExits);
     }
 
+    public Product updateProduct(ProductRequest request) {
+        Product productExits = this.getById(request.getId());
+        requestToEntity(request, productExits);
+        return productRepository.save(productExits);
+    }
+
     public Product getById(Integer id) {
         return productRepository.findById(id).get();
     }
