@@ -260,8 +260,7 @@ function addProductDetail(event) {
             customWrapper: "",
           });
         });
-      }
-      if (error.response.data.message) {
+      } else if (error.response.data.message) {
         new Notify({
           status: "error",
           title: "Kiểm tra lại đầu vào",
@@ -286,6 +285,8 @@ function addProductDetail(event) {
 
 function openModalAddProduct(idproduct) {
   const modalAddProduct = document.getElementById("modelAddProductDetail");
+  const form = modalAddProduct.querySelector("form");
+  form.reset();
   const input = modalAddProduct.querySelector("form input[name='idProduct']");
   input.value = idproduct;
   $("#modelAddProductDetail").modal("show");
@@ -355,7 +356,7 @@ async function generateFormProduct(product) {
   const form = document.createElement("form");
   form.setAttribute("enctype", "multipart/form-data");
   form.setAttribute("class", "row form container-fluid");
-  form.setAttribute("onsubmit", "submitForm(event)");
+  form.setAttribute("onsubmit", "updateProduct(event)");
   const materialCbb = await getMaterial();
   const stylesCbb = await getStyles();
   const brandCbb = await getBrand();
@@ -400,7 +401,7 @@ async function generateFormProduct(product) {
         <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3 ">
             <label for="idOrigin" class="m-auto fw-bold">Nguồn Gốc:</label>
             <select class="form-control form-group-0 text-center" id="idOrigin" name="idOrigin">
-                <option selected disabled> Chọn Nguồn Gốc</option>
+                <option selected disabled value ="-1"> Chọn Nguồn Gốc</option>
                 ${originCbb
                   .map(
                     (option) => `
@@ -417,7 +418,7 @@ async function generateFormProduct(product) {
         <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="idBrand" class="m-auto fw-bold">Thương hiệu:</label>
             <select class="form-control form-group-0 text-center" id="idBrand" name="idBrand">
-                <option selected disabled> Chọn Thương hiệu</option>
+                <option selected disabled  value ="-1"> Chọn Thương hiệu</option>
                 ${brandCbb
                   .map(
                     (option) => `
@@ -434,7 +435,7 @@ async function generateFormProduct(product) {
         <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="idMaterial" class="m-auto fw-bold">Chất Liệu</label>
             <select class="form-control form-group-0 text-center" id="idMaterial" name="idMaterial">
-                <option selected disabled> Chọn Chất Liệu</option>
+                <option selected disabled value ="-1"> Chọn Chất Liệu</option>
                 ${materialCbb
                   .map(
                     (option) => `
@@ -451,7 +452,7 @@ async function generateFormProduct(product) {
         <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="idCategory" class="m-auto fw-bold">Loại hàng</label>
             <select class="form-control form-group-0 text-center" id="idCategory" name="idCategory">
-                <option selected disabled> Chọn Loại hàng</option>
+                <option selected disabled value ="-1"> Chọn Loại hàng</option>
                 ${categoryCbb
                   .map(
                     (option) => `
@@ -468,7 +469,7 @@ async function generateFormProduct(product) {
         <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <label for="idStyles" class="m-auto fw-bold">Phong cách</label>
             <select class="form-control form-group-0 text-center" id="idStyles" name="idStyles">
-                <option selected disabled> Chọn Phong cách</option>
+                <option selected disabled  value ="-1"> Chọn Phong cách</option>
                 ${stylesCbb
                   .map(
                     (option) => `
@@ -503,9 +504,6 @@ function generateModalHeader(product) {
   div.classList.add("modal-header");
   const innerHtml = `
     <h5 class="modal-title" id="modelEditProductLabel">${product.name}</h5>
-    <a target="_blank" class="btn btn-success mx-3" href="/admin/product/view-update/0">
-        <i class="far fa-edit" aria-hidden="true"></i>
-    </a>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 `;
   div.innerHTML = innerHtml;
@@ -638,4 +636,136 @@ function generateModalFooter() {
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 `;
   return div;
+}
+
+function updateProduct(event) {
+  event.preventDefault();
+  const form = event.target;
+  const imageInput = form.querySelector("input[name='listimage']");
+  const formData = {
+    id: form.querySelector('input[name="id"]').value,
+    name: form.querySelector('input[name="name"]').value,
+    idOrigin: form.querySelector('select[name="idOrigin"]').value,
+    idBrand: form.querySelector('select[name="idBrand"]').value,
+    idMaterial: form.querySelector('select[name="idMaterial"]').value,
+    idCategory: form.querySelector('select[name="idCategory"]').value,
+    idStyles: form.querySelector('select[name="idStyles"]').value,
+    status: form.querySelector('input[name="status"]:checked').value,
+  };
+  // Log all information in FormData
+  console.log(formData);
+  // Make an Axios POST request
+  axios
+    .post("/admin/managerproduct/product/save", formData)
+    .then((response) => {
+      // Handle the successful response here
+      console.log(response.data);
+      new Notify({
+        status: "success",
+        title: "Thành công",
+        text: `Cập nhật "${response.data.name}" thành công`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
+      if (response.data.id) {
+        const imageFiles = Array.from(imageInput.files);
+        const updateImage = (imageFile) => {
+          const formData = new FormData();
+          formData.append("image", imageFile);
+          return axios.post(
+            `/admin/managerproduct/product/${response.data.id}/image/save`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+        };
+        imageFiles.forEach((imageFile) => {
+          updateImage(imageFile)
+            .then((response) => {
+              console.log("Image updated successfully:", response.data);
+              new Notify({
+                status: "success",
+                title: "Thành công",
+                text: "Thêm ảnh thành công",
+                effect: "fade",
+                speed: 300,
+                customClass: "",
+                customIcon: `<img src="${response.data.img}" alt="Ảnh sản phẩm" class="img-fluid" style="height: 30px;">`,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 20,
+                distance: 20,
+                type: 1,
+                position: "right top",
+                customWrapper: "",
+              });
+            })
+            .catch((error) => {
+              console.error("Error updating image:", error);
+            });
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      // Handle errors here      if (error.response.data.errors) {
+      if (error.response.data.errors) {
+        error.response.data.errors.forEach((error) => {
+          new Notify({
+            status: "error",
+            title: "Kiểm tra lại đầu vào",
+            text: error,
+            effect: "fade",
+            speed: 300,
+            customClass: "",
+            customIcon: "",
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right top",
+            customWrapper: "",
+          });
+        });
+      } else if (error.response.data.message) {
+        new Notify({
+          status: "error",
+          title: "Kiểm tra lại đầu vào",
+          text: error.response.data.message,
+          effect: "fade",
+          speed: 300,
+          customClass: "",
+          customIcon: "",
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right top",
+          customWrapper: "",
+        });
+      }
+      console.error("Error submitting form:", error);
+    });
 }

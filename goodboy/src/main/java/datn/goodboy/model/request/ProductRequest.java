@@ -38,15 +38,15 @@ public class ProductRequest {
 
   List<ImageProduct> images = new ArrayList<>();
   Integer id;
-  @Min(value = 0, message = "Vui lòng chọn")
+  @Min(value = 0, message = "Vui lòng chọn Origin")
   Integer idOrigin;
-  @Min(value = 0, message = "Vui lòng chọn")
+  @Min(value = 0, message = "Vui lòng chọn Brand")
   Integer idBrand;
-  @Min(value = 0, message = "Vui lòng chọn")
+  @Min(value = 0, message = "Vui lòng chọn Material")
   Integer idMaterial;
-  @Min(value = 0, message = "Vui lòng chọn")
+  @Min(value = 0, message = "Vui lòng chọn Category")
   Integer idCategory;
-  @Min(value = 0, message = "Vui lòng chọn")
+  @Min(value = 0, message = "Vui lòng chọn Styles")
   Integer idStyles;
   @NotNull
   @NotBlank

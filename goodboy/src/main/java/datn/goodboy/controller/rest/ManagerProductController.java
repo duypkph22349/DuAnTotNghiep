@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Category;
+import datn.goodboy.model.entity.ImageProduct;
 import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.PatternType;
@@ -25,6 +27,7 @@ import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductAddRequest;
 import datn.goodboy.model.request.ProductDetailRequest;
+import datn.goodboy.model.request.ProductRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
@@ -192,4 +195,15 @@ public class ManagerProductController {
     System.out.println(request);
     return service2.saveProductDetail(request);
   }
+
+  @PostMapping("/product/save")
+  public Product createProductDetail(@Valid @RequestBody ProductRequest request) {
+    return service.updateProduct(request);
+  }
+
+  @PostMapping("/product/{id}/image/save")
+  public ImageProduct uploadImageProduct(@PathVariable("id") int id, @RequestParam("image") MultipartFile image) {
+    return service.saveImageProduct(id, image);
+  }
+
 }
