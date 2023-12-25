@@ -16,21 +16,52 @@
 <body>
 
 <section layout:fragment="content">
+    <style>
+        .sale.ff {
+            color: red;
+            background-color: red;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .hot1 {
+            color: red;
+            font-size: 24px;
+            font-family: "Arial", sans-serif;
+            background-image: linear-gradient(to right, #ff00cc, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .product-image {
+            width: 337px;
+            height: 447px;
+        }
+    </style>
     <!-- Hero Section Begin -->
     <section  class="hero-section">
         <div class="hero-items owl-carousel">
-            <div class="single-hero-items set-bg" data-setbg="/img/Wamercy.png">
+            <div class="single-hero-items set-bg" data-setbg="/img/time-bg2.png">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
-                            <span>Túi - trẻ em</span>
-                            <h1>Black friday</h1>
+                            <span>Khăn Quàng </span>
+                            <h1>Wamercy</h1>
                             <p>Sản phẩm chất lượng, độc dáo, giá thành phải chăng.</p>
-                            <a href="/products" class="primary-btn">Mua ngay</a>
+                            <a href="/shop/product/index" class="primary-btn">Mua ngay</a>
                         </div>
                     </div>
                     <div class="off-card">
-                        <h2>Giảm giá <span>50%</span></h2>
+                        <h2>Giá <span>Cực hời</span></h2>
                     </div>
                 </div>
             </div>
@@ -38,14 +69,14 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
-                            <span>Túi - Phụ nữ</span>
-                            <h1>Black friday</h1>
+                            <span>Khăn Quàng - Freesize</span>
+                            <h1>Good Boy</h1>
                             <p>Sản phẩm chất lượng, độc dáo, giá thành phải chăng.</p>
-                            <a href="/products" class="primary-btn">Mua ngay</a>
+                            <a href="/shop/product/index" class="primary-btn">Mua ngay</a>
                         </div>
                     </div>
                     <div class="off-card">
-                        <h2>Giảm giá <span>50%</span></h2>
+                        <h2>Giảm giá <span>Cực hời</span></h2>
                     </div>
                 </div>
             </div>
@@ -59,17 +90,17 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="single-banner">
-                        <img src="/img/banner-1.jpg" alt="">
+                        <img src="/img/khannam.jpg" height="465px" width="525px" alt="">
                         <div class="inner-text">
-                            <h4>Thời trang Nam</h4>
+                            <h4>Uy Tín</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="single-banner">
-                        <img src="/img/banner-2.jpg" alt="">
+                        <img src="/img/khannu.jpg" height="465px" width="525px" alt="">
                         <div class="inner-text">
-                            <h4>Thời trang Nữ</h4>
+                            <h4>Chất Lượng</h4>
                         </div>
                     </div>
                 </div>
@@ -83,108 +114,46 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="product-large set-bg" data-setbg="/img/products/women-large.jpg">
-                        <h2>Phụ nữ</h2>
-                        <a href="#">Khám phá ngay</a>
+                    <div class="product-large set-bg" data-setbg="/img/khanquang.jpg">
+                        <h2 class="hot1"></h2>
                     </div>
                 </div>
                 <div class="col-lg-8 offset-lg-1">
                     <div class="filter-control">
                         <ul>
                             <li class="active">
-                                <h3>Thời trang</h3>
+                                <h2 class="hot1">Top 10 Sản Phẩm Bán Chạy</h2>
                             </li>
                         </ul>
                     </div>
                     <div class="product-slider owl-carousel">
-                        <div class="product-item">
+                        <div th:each="productDetails : ${productDetails}"  class="product-item">
                             <div class="pi-pic">
-                                <img src="/img/products/women-1.jpg" alt="">
-                                <div class="sale">Giảm giá</div>
+                                    <div th:if="${productDetails.idProduct.imageProducts !=null && productDetails.idProduct.imageProducts.size() > 0}">
+                                        <a th:href="@{/shop/product/detail/{productId}(productId=${productDetails.idProduct.id})}">
+                                            <img th:src="${productDetails.idProduct.imageProducts[0].img}" alt="Ảnh sản phẩm"
+                                                 class="product-image"/>
+                                        </a>
+                                    </div>
+
+                                <div class="sale ff">Hot</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
                                     <li class="w-icon active"><a href="./cart.html"><i class="icon_bag_alt"></i></a>
                                     </li>
-                                    <li class="quick-view"><a href="./productdetail.html">+ Xem chi tiết</a></li>
+                                    <li class="quick-view"><a th:href="@{/shop/product/detail/{productId}(productId=${productDetails.id})}">+ Xem chi tiết</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>
                             </div>
                             <div class="pi-text">
-                                <div class="catagory-name">Áo phông</div>
+                                <div class="catagory-name">Khăn Quàng</div>
                                 <a href="#">
-                                    <h5>Áo phông màu vàng</h5>
+                                    <h5 th:text="${productDetails.name}"></h5>
                                 </a>
                                 <div class="product-price">
-                                    $14.00
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="/img/products/women-2.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Áo phông</div>
-                                <a href="#">
-                                    <h5>Áo phông màu hồng</h5>
-                                </a>
-                                <div class="product-price">
-                                    $13.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="/img/products/women-3.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Áo phông</div>
-                                <a href="#">
-                                    <h5>Áo phông màu xám</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="/img/products/women-4.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Túi xách</div>
-                                <a href="#">
-                                    <h5>Túi xách cổ điển</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
+                                    <span th:text="${#strings.replace(#numbers.formatDecimal(productDetails.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
                                 </div>
                             </div>
                         </div>
@@ -196,15 +165,15 @@
     <!-- Women Banner Section End -->
 
     <!-- Deal Of The Week Section Begin-->
-    <section class="deal-of-week set-bg spad" data-setbg="/img/time-bg.jpg">
+    <section class="deal-of-week set-bg spad" data-setbg="/img/time-bg2.png">
         <div class="container">
             <div class="col-lg-6 text-center">
                 <div class="section-title">
-                    <h2>Mua sắm trong tuần</h2>
-                    <p>Tất cả các mặt hàng vể túi xách được giảm giá nhiều,<br /> hãy lựa chọn và mua liền tay. </p>
+                    <h2>Sản Phẩm Bán Chạy</h2>
+                    <p>Tất cả các mặt hàng vể khăn được giảm giá nhiều,<br /> hãy lựa chọn và mua liền tay. </p>
                     <div class="product-price">
-                        $35.00
-                        <span>/ Túi xách</span>
+                        270.000 VNĐ
+                        <span></span>
                     </div>
                 </div>
                 <div class="countdown-timer" id="countdown">
@@ -225,7 +194,7 @@
                         <p>Giây</p>
                     </div>
                 </div>
-                <a href="#" class="primary-btn">Mua ngay</a>
+                <a href="shop/product/detail/0" class="primary-btn">Mua ngay</a>
             </div>
         </div>
     </section>
@@ -239,107 +208,48 @@
                     <div class="filter-control">
                         <ul>
                             <li class="active">
-                                <h3>Thời trang</h3>
+                                <h3 class="hot1">Sản Phẩm Mới</h3>
                             </li>
                         </ul>
                     </div>
                     <div class="product-slider owl-carousel">
-                        <div class="product-item">
+                        <div th:each="product : ${product}"  class="product-item">
                             <div class="pi-pic">
-                                <img src="/img/products/man-1.jpg" alt="">
-                                <div class="sale">Giảm giá</div>
+                                <div th:if="${product.imageProducts !=null && product.imageProducts.size() > 0}">
+                                    <a th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">
+                                        <img th:src="${product.imageProducts[0].img}" alt="Ảnh sản phẩm"
+                                             class="product-image"/>
+                                    </a>
+                                </div>
+                                <div class="sale ff">New</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
+                                    <li class="w-icon active"><a href="./cart.html"><i class="icon_bag_alt"></i></a>
+                                    </li>
+                                    <li class="quick-view"><a th:href="@{/shop/product/detail/{productId}(productId=${product.id})}">+ Xem chi tiết</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>
                             </div>
                             <div class="pi-text">
-                                <div class="catagory-name">Balo</div>
+                                <div class="catagory-name">Khăn Quàng</div>
                                 <a href="#">
-                                    <h5>Balo vải dù cao cấp</h5>
+                                    <h5 th:text="${product.name}"></h5>
                                 </a>
-                                <div class="product-price">
-                                    $14.00
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="/img/products/man-2.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Giày</div>
-                                <a href="#">
-                                    <h5>Giày da cao cấp</h5>
-                                </a>
-                                <div class="product-price">
-                                    $13.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="/img/products/man-3.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Áo khoác</div>
-                                <a href="#">
-                                    <h5>Áo khoác dù</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="/img/products/man-4.jpg" alt="">
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
-                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Áo Jean</div>
-                                <a href="#">
-                                    <h5>Áo Jean trơn</h5>
-                                </a>
-                                <div class="product-price">
-                                    $34.00
+                                <div class="card-text" style="color: #e7ab3c; font-size: 20px;font-weight: 700;"
+                                     th:if="${product.productDetails !=null && product.productDetails.size() > 0}">
+                                    <span th:text="${#strings.replace(#numbers.formatDecimal(product.getMinPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
+                                    <span th:if="${product.getMaxPrice() > product.getMinPrice()}"
+                                          th:text="${' - ' + #strings.replace(#numbers.formatDecimal(product.getMaxPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
-                    <div class="product-large set-bg m-large" data-setbg="/img/products/man-large.jpg">
-                        <h2>Đàn ông</h2>
-                        <a href="#">Khám phá ngay</a>
+                    <div class="product-large set-bg m-large" data-setbg="/img/products/anhNam2.jpg">
+
                     </div>
                 </div>
             </div>

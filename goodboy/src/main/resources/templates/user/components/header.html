@@ -2,22 +2,60 @@
 
 <header>
     <div class="top-navigation" style="background-color: #b97155" >
+        <div class="heading">
+            <div class="container">
+                <div class="logo">
+                    <div class="menu">
+                        <a href="javascript:;" id="menuToggle"><i class="icon-menu1"></i></a>
+                    </div>
+                    <a href="/" class="image-with-background">
+                        <img src="/img/logoNhom.png">
+                    </a>
+                    <div class="cart cart-mb">
+                        <a href="/cart"><i class="fal fa-shopping-cart"></i><span class="cartCount" id="cart-total">0</span></a>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <form method="get" action="/search" class="formSearchSuggest"
+                          enctype="application/x-www-form-urlencoded">
+                        <div class="border">
+                            <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input
+                                type="text" id="kwd" name="q" placeholder="Hôm nay bạn cần tìm gì?" autocomplete="off"
+                                class="ui-autocomplete-input">
+                            <button type="submit" class="search"><i class="icon-search"></i></button>
+                        </div>
+                        <div class="searchFolding search-box"></div>
+                    </form>
+                </div>
+
+                <div class="order-tools">
+                    <div class="item check-order">
+                        <a id="btnCheckOrder" href="/shop/product/don_hang">
+                            <span class="icon"><i class="icon-truck"></i></span>
+                            <span class="text">Kiểm tra đơn hàng</span>
+                        </a>
+                    </div>
+                    <div class="item cart cart-desktop">
+                        <a href="/cart">
+                            <i class="icon-cart"></i>
+                            <label><i class="icon-left"></i><span class="cartCount" th:text="${quantity2 != null ? quantity2 : '0'}"></span></label>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <ul style="font-size: 14px">
-                <li><a href="">Giới Thiệu</a></li>
-                <li><a href="">Sản Phẩm Khuyến Mại</a></li>
-                <li><a href="">Chính Sách Bảo Hành</a></li>
-                <li><a href="">Nền Tảng Bán Hàng</a></li>
-                <li><a href="">Tuyển dụng</a></li>
+                <li><a href="/home">Trang Chủ</a></li>
+                <li><a href="/shop/product/index">Sản Phẩm</a></li>
                 <li><a href="/order/search">Tra cứu đơn hàng</a></li>
                 <li>
-                    <a>
-                        <div class="ht-right">
+
                             <div th:if="${session.authenuser == null}">
                                 <a class="login-panel px-3" data-toggle="modal" href="/login" data-target="#loginModal" type="button">
                                     <i class="fa fa-user"></i>Đăng nhập
                                 </a>
-                                <a class="login-panel px-3" href="register_modal.html">
+                                <a class="login-panel px-3" href="/user/signup">
                                     <i class="fa fa-user"></i>Đăng ký
                                 </a>
                             </div>
@@ -38,55 +76,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="heading">
-        <div class="container">
-            <div class="logo">
-                <div class="menu">
-                    <a href="javascript:;" id="menuToggle"><i class="icon-menu1"></i></a>
-                </div>
-                <a href="/" >
-                    <img src="/img/aaaaaaaaa.jpg"
-                    >
-                </a>
-                <div class="cart cart-mb">
-                    <a href="/cart"><i class="fal fa-shopping-cart"></i><span class="cartCount" id="cart-total">0</span></a>
-                </div>
-            </div>
-            <div class="search-box">
-                <form method="get" action="/search" class="formSearchSuggest"
-                      enctype="application/x-www-form-urlencoded">
-                    <div class="border">
-                        <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input
-                            type="text" id="kwd" name="q" placeholder="Hôm nay bạn cần tìm gì?" autocomplete="off"
-                            class="ui-autocomplete-input">
-                        <button type="submit" class="search"><i class="icon-search"></i></button>
-                    </div>
-                    <div class="searchFolding search-box"></div>
-                </form>
-            </div>
 
-            <div class="order-tools">
-                <div class="item check-order">
-                    <a id="btnCheckOrder" href="/shop/product/don_hang">
-                        <span class="icon"><i class="icon-truck"></i></span>
-                        <span class="text">Kiểm tra đơn hàng</span>
-                    </a>
-                </div>
-                <div class="item cart cart-desktop">
-                    <a href="/cart">
-                        <i class="icon-cart"></i>
-                        <label><i class="icon-left"></i><span class="cartCount" th:text="${quantity2 != null ? quantity2 : '0'}"></span></label>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
     <!--  Mobile version  -->
 
     <div class="sidebar mb-version-menu">

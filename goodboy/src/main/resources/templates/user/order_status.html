@@ -338,13 +338,14 @@
                                 </a></div>
                                 <div class="PgtIur">
                                     <div>
-                                        <button class="stardust-button stardust-button--secondary WgYvse btn-huy-hd"
-                                                th:if="${bills.status == 1}">Hủy Đơn Hàng
-                                        </button>
+                                        <form th:action="@{/shop/product/don_hang/{id}(id=${bills.id})}" method="post">
+                                            <button class="stardust-button stardust-button--secondary WgYvse btn-huy-hd"
+                                                    th:if="${bills.status == 1}" type="submit">Hủy Đơn Hàng
+                                            </button>
+                                        </form>
                                         <a th:href="@{/shop/product/index}">
                                             <button class="stardust-button stardust-button--secondary WgYvse"
-                                                    th:if="${bills.status != 1}"
-                                                    >Liên Hệ Shop
+                                                    th:if="${bills.status != 1}">Liên Hệ Shop
                                             </button>
                                         </a>
                                     </div>
@@ -352,15 +353,15 @@
                             </section>
                         </div>
                     </div>
-                </div>
+                    </div>
             </div>
 
-            <div class="FK6kaK">
-                <div>
-                    <div class="bi4dk5"></div>
-                    <h2 class="dYtuu1">Chưa có đơn hàng</h2>
-                </div>
-            </div>
+<!--            <div class="FK6kaK" >-->
+<!--                <div>-->
+<!--                    <div class="bi4dk5"></div>-->
+<!--                    <h2 class="dYtuu1">Chưa có đơn hàng</h2>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
 
         <script>
@@ -368,8 +369,6 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const table1Links = document.querySelectorAll('.table_1 a');
                 const table2Items = document.querySelectorAll('.table_2 .hiXKxx');
-
-                // Hàm để hiển thị các mục có trạng thái khớp với status hoặc status là 0
                 function displayMatchingItems(status) {
                     table2Items.forEach(function(item) {
                         const itemStatus = parseInt(item.querySelector('.qtUncs').getAttribute('data-status'));
@@ -382,17 +381,13 @@
                     });
                 }
 
-                // Hiển thị các mục có trạng thái khớp với trạng thái ban đầu khi tải trang
                 displayMatchingItems(0);
 
                 table1Links.forEach(function(link) {
                     link.addEventListener('click', function(event) {
                         event.preventDefault();
                         const status = parseInt(link.getAttribute('data-status'));
-
-                        // Hiển thị các mục có trạng thái khớp với status khi nhấp vào liên kết
                         displayMatchingItems(status);
-
                         const url = link.getAttribute('href');
                         const target = link.getAttribute('data-target');
 
@@ -442,10 +437,11 @@
                     confirmButtonText: 'Có, tôi chắc chắn!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var url = $(this).attr('href');
+                        var form = $(this).closest('form');
+                        var url = form.attr('action');
                         $.ajax({
                             url: url,
-                            type: 'GET',
+                            type: 'POST',
                             success: function (result) {
                                 if (result) {
                                     Swal.fire(
