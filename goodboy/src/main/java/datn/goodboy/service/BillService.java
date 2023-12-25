@@ -118,6 +118,7 @@ public class BillService {
         return billRepository.findById(id);
     }
 
+
     public void createBill(BillRequest billRequest) throws NotFoundException {
         if (billRequest != null) {
             Customer customer = customerRepository.findById(billRequest.getId_customer())

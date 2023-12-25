@@ -1,9 +1,14 @@
 package datn.goodboy.repository;
 
+import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import datn.goodboy.model.entity.BillDetail;
+
+import java.util.List;
 
 @Repository
 public interface BillDetailRepository extends JpaRepository<BillDetail, Integer> {
@@ -13,5 +18,9 @@ public interface BillDetailRepository extends JpaRepository<BillDetail, Integer>
 //    List<BillDetail> findAll();
 //
 //    Optional<Bill> findByCode(String code);
-
+        @Query("SELECT bd.productDetail, SUM(bd.quantity) AS totalQuantity " +
+                "FROM BillDetail bd " +
+                "GROUP BY bd.productDetail " +
+                "ORDER BY totalQuantity DESC")
+        List<ProductDetail> findTop10BestProducts();
 }

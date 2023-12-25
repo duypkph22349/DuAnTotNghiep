@@ -70,15 +70,19 @@ public class CartDetailService {
         return cartDetailRepository.getQuantity(cartIds);
     }
 
-    public Integer getQuantity2(List<CartDetail> cartDetails) {
-        // Lấy danh sách id của Cart từ danh sách CartDetail
-        List<Integer> cartIds = cartDetails.stream()
-                .map(cartDetail -> cartDetail.getCart().getId())
-                .collect(Collectors.toList());
+//    public Integer getQuantity2(List<CartDetail> cartDetails) {
+//        // Lấy danh sách id của Cart từ danh sách CartDetail
+//        List<Integer> cartIds = cartDetails.stream()
+//                .map(cartDetail -> cartDetail.getCart().getId())
+//                .collect(Collectors.toList());
+//
+//        // Gọi phương thức từ repository để tính tổng giá
+//        return cartDetailRepository.getQuantity2(cartIds);
+//    }
 
-        // Gọi phương thức từ repository để tính tổng giá
-        return cartDetailRepository.getQuantity2(cartIds);
-    }
+//    public int getTotalCart(int soLuong) {
+//        return cartDetailRepository.getTotalCart(soLuong);
+//    }
 
 
 }
