@@ -377,9 +377,9 @@ async function generateFormProduct(product) {
                 (image) => `
                   <div class="position-relative col-3">
                   <img class="p-1 image-fluid w-100" src="${image.img}" alt="ảnh sản phẩm">
-                  <a href="/admin/product/remove/5/image/24" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
-                    <i class="fas fa-times fa-xs" aria-hidden="true"></i>
-                  </a>
+                  <a href="javascript:void(0);" onclick="removeImageProduct(this)" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
+         <i class="fas fa-times fa-xs" aria-hidden="true"></i>
+          </a>
                   </div>
                 `
               )
@@ -768,4 +768,22 @@ function updateProduct(event) {
       }
       console.error("Error submitting form:", error);
     });
+}
+
+function removeImageProductDetails(id) {}
+function removeImageProduct(element) {
+  var parentDiv = element.parentElement;
+  parentDiv.remove();
+
+  // You can also send an AJAX request to delete the image on the server
+  // Example using fetch API:
+  // fetch('/admin/product/remove/5/image/24', { method: 'GET' })
+  //     .then(response => {
+  //         if (response.ok) {
+  //             console.log('Image deleted successfully');
+  //         } else {
+  //             console.error('Failed to delete image');
+  //         }
+  //     })
+  //     .catch(error => console.error('Error:', error));
 }
