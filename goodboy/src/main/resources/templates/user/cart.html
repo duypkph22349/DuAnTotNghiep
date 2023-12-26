@@ -59,10 +59,10 @@
                             </thead>
                             <tbody>
                             <tr th:each="cartDetail, loop : ${cartDetails}">
-                                <td><input type="checkbox" name="selectedItems"
-                                           th:value="${cartDetail.id}"/>
-                                    <span th:text="${loop.index+1}"></span></td>
-                                <td><img th:src="@{cartDetail}" alt="Ảnh sản phẩm"></td>
+                                <td th:text="${loop.index+1}"></td>
+                                <td th:if="${cartDetail.productDetail.imageProducts !=null && cartDetail.productDetail.imageProducts.size() > 0}">
+                                    <img th:src="${cartDetail.productDetail.idProduct.imageProducts[0].img}" alt="Ảnh sản phẩm" >
+                                </td>
                                 <td th:text="${cartDetail.productDetail.name}"></td>
                                 <td th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></td>
                                 <td>

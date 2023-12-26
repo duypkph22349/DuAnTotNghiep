@@ -8,7 +8,7 @@
                     <div class="menu">
                         <a href="javascript:;" id="menuToggle"><i class="icon-menu1"></i></a>
                     </div>
-                    <a href="/" class="image-with-background">
+                    <a href="/home" class="image-with-background">
                         <img src="/img/logoNhom.png">
                     </a>
                     <div class="cart cart-mb">
@@ -48,15 +48,15 @@
             <ul style="font-size: 14px">
                 <li><a href="/home">Trang Chủ</a></li>
                 <li><a href="/shop/product/index">Sản Phẩm</a></li>
-                <li><a href="/order/search">Tra cứu đơn hàng</a></li>
+                <li><a href="/shop/product/don_hang">Tra cứu đơn hàng</a></li>
                 <li>
 
                             <div th:if="${session.authenuser == null}">
                                 <a class="login-panel px-3" data-toggle="modal" href="/login" data-target="#loginModal" type="button">
-                                    <i class="fa fa-user"></i>Đăng nhập
+                                    <i class="fa fa-user"></i>&nbsp;Đăng nhập
                                 </a>
                                 <a class="login-panel px-3" href="/user/signup">
-                                    <i class="fa fa-user"></i>Đăng ký
+                                    <i class="fa fa-user"></i>&nbsp;Đăng ký
                                 </a>
                             </div>
                             <div th:if="${session.authenuser}">
