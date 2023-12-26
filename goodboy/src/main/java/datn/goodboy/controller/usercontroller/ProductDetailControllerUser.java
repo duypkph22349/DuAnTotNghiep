@@ -67,6 +67,8 @@ public class ProductDetailControllerUser {
 
     @Autowired
     private CartDetailService cartDetailService;
+
+
     // @ModelAttribute("brand-combobox")
     // public ProductDetailFilter fillter() {
     // return filter;
@@ -151,7 +153,7 @@ public class ProductDetailControllerUser {
     @GetMapping({ "index", "" })
     public String getIndexpage(Model model) {
         this.pageno = 1;
-        this.rowcount = 10;
+        this.rowcount = 8;
         this.sortBy = "createdAt";
         this.sortDir = false;
         this.pagenumbers = service.getPanigation(rowcount, pageno);
@@ -165,9 +167,9 @@ public class ProductDetailControllerUser {
         model.addAttribute("rowcount", this.rowcount);
         model.addAttribute("brands", brandService.getAllBrands());
         model.addAttribute("styles", stylesService.getAllStyles());
-        model.addAttribute("colors", colorService.getAllColor());
-
-        return "user/product.html";
+        model.addAttribute("origins", originService.getAllOrigin());
+        model.addAttribute("material", materialService.getAllMaterial());
+        return "user/product";
     }
 
 
@@ -184,6 +186,10 @@ public class ProductDetailControllerUser {
         model.addAttribute("pagenumber", pagenumbers);
         model.addAttribute("crpage", pageno);
         model.addAttribute("rowcount", rowcount);
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("styles", stylesService.getAllStyles());
+        model.addAttribute("origins", originService.getAllOrigin());
+        model.addAttribute("material", materialService.getAllMaterial());
         return "user/product";
     }
 
@@ -219,6 +225,10 @@ public class ProductDetailControllerUser {
         model.addAttribute("crpage", this.pageno);
         model.addAttribute("list", list);
         model.addAttribute("rowcount", rowcount);
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("styles", stylesService.getAllStyles());
+        model.addAttribute("origins", originService.getAllOrigin());
+        model.addAttribute("material", materialService.getAllMaterial());
         return "user/product";
     }
 
@@ -226,7 +236,7 @@ public class ProductDetailControllerUser {
     public String getProductDetailPage(Model model, @PathVariable("id") int id) {
         Product product = service.getById(id);
         model.addAttribute("product", product);
-        return "user/product_detail.html";
+        return "user/product_detail";
     }
 
     @PostMapping("addtocart/{id}")
@@ -238,7 +248,7 @@ public class ProductDetailControllerUser {
             cartDetail.setQuantity(quantity);
             cartDetailService.saveCart(cartDetail);
         }
-        return "user/cart";
+        return "redirect:/cart";
     }
 
 
