@@ -13,7 +13,7 @@ public class GiaoHangNhanh {
     private Integer payment_type_id = 2;
     private String note = "Tintest 123";
     private String required_note = "KHONGCHOXEMHANG";
-    private String return_phone = "0332190158";
+    private String return_phone = "0329761626";
     private String return_address = "39 NTT";
     private Integer return_district_id = null;
     private String return_ward_code = "";

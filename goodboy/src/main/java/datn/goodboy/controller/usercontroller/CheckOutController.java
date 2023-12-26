@@ -1,6 +1,7 @@
 package datn.goodboy.controller.usercontroller;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -80,27 +81,35 @@ public class CheckOutController {
         model.addAttribute("voucher", vouchers);
         model.addAttribute("bills", bill);
         model.addAttribute("cartDetails", cartDetails);
+        
         System.out.println(bill.getBillDetail().size());
         return "user/checkout";
     }
 
     @PostMapping("/checkout")
-    public String saveCheckOut(@ModelAttribute("bills") Bill bill, HttpServletRequest request, Model model, @PathVariable("customer") UUID uuid) {
+    public String saveCheckOut(@ModelAttribute("bills") Bill bill, HttpServletRequest request, Model model) {
         String paymentOption = request.getParameter("paymentOption");
-        GiaoHangNhanh giaoHangNhanh = new GiaoHangNhanh();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account khachHang = accountService.getAccountByEmails(authentication.getName());
+        model.addAttribute("khachHang", khachHang);
+//        BigDecimal tongTien = BigDecimal.valueOf(0);
+//        GiaoHangNhanh giaoHangNhanh = new GiaoHangNhanh();
+//        giaoHangNhanh.setTo_district_name("Huyện Hạ Quảng"); //huyện
+//        giaoHangNhanh.setTo_province_name("Tỉnh Cao Bằng"); //thành phố
+//        giaoHangNhanh.setTo_ward_name("Xã Sóc Hà"); //xã
+//        String phiShip = callAPIGHN.getAPIGHN(giaoHangNhanh);
+//        System.out.println(phiShip);
+//        if (phiShip == null){
+//            model.addAttribute("phiShip", 0);
+//        }else {
+//            model.addAttribute("phiShip", phiShip);
+//        }
+//        System.out.println(phiShip);
         if ("0".equals(paymentOption)) {
 
             return "redirect:" + ConfigPay.vnp_PayUrl;
         } else if ("1".equals(paymentOption)) {
-            Customer x = customerService.customerByid(uuid);
-            giaoHangNhanh.setTo_district_name(x.getCity()); //huyện
-            giaoHangNhanh.setTo_province_name(x.getAddress()); //thành phố
-            giaoHangNhanh.setTo_ward_name(x.getCountry()); //xã
-//                giaoHangNhanh.setInsurance_value(tongTien.intValue());
-            System.out.println(x.getCity());
-            String phiShip = callAPIGHN.getAPIGHN(giaoHangNhanh);
-            model.addAttribute("phiShip", phiShip);
+
 
 
             // productDetailService.updateProductQuantities(bill.getBillDetail());

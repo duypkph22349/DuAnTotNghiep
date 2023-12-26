@@ -78,23 +78,6 @@
 		</button>
 </div>
 <script type="text/javascript">
-	$('.alert').hide();
-	<c:if test="${success != null}">
-		alertResult('alert-success', 'Success!', '${success}');
-	</c:if>
-	<c:if test="${param.success != null}">
-		alertResult('alert-success', 'Success!', '${param.success}');
-		history.pushState({}, "", "${sessionScope.historyURI}");
-	</c:if> 
-	<c:if test="${error != null}">
-		alertResult('alert-danger', 'Error!', '${error}');
-		
-	</c:if> 
-	<c:if test="${param.error != null}">
-		alertResult('alert-danger', 'Error!', '${param.error}');
-		history.pushState({}, "", "${sessionScope.historyURI}");
-	</c:if> 
-	
 	function alertResult(cls,strong, mess){
 		$('.alert').addClass(cls);
 		$('.alert #message-strong').html(strong);
@@ -108,8 +91,3 @@
 	
 </script>
 <!-- modal -->
-<c:if test="${sessionScope.account == null}">
-	<%@include file="../components/login_modal.jsp" %>
-	<%@include file="../components/register_modal.jsp" %>
-	<%@include file="../components/forgot_modal.jsp" %>
-</c:if>
