@@ -4,6 +4,14 @@ function loadOrdersFromLocalStorage() {
   const storedOrders = sessionStorage.getItem("orders");
   return storedOrders ? JSON.parse(storedOrders) : null;
 }
+// window.addEventListener("beforeunload", function (event) {
+//   if (listtab.length > 0) {
+//     const confirmationMessage = "Are you sure you want to leave?";
+//     event.returnValue = confirmationMessage;
+//     // checkExitDataOnForm();
+//     return confirmationMessage;
+//   }
+// });
 let orders = loadOrdersFromLocalStorage() || [];
 function updateOrder(newData) {
   console.log("uodae");
@@ -62,17 +70,35 @@ function removeSanPham(idhoadon, idproduct) {
   removeProductFromOrder(idhoadon, idproduct);
   console.log(`Remove Product ${idproduct} successfully`);
 }
-
+function fillAllEmployeeByValue(orderId, value) {
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  var select = thisOrder.querySelector('select[name="employee"]');
+  fetch("/admin/counter/customers", {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach(function (employee) {
+        var option = document.createElement("option");
+        option.value = employee.id;
+        option.text = employee.name;
+        if (employee.id == value) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+    });
+}
 function restoreOrderPage() {
   console.log("Processing restore order...");
   // Assuming you have a function to restore the order page to its initial state
   orders.forEach((element) => {
     const id = element.id;
     renderOrderPage(id); // bor qua
-    restoreInformation(element);
     listtab.push(id);
     getAllprovide(id);
-    fillAllEmployee(id);
+    restoreInformation(element);
+    fillAllEmployeeByValue(id, element.employeeID);
     getFirstProductPage(id);
     countdown(id);
     getVoucherAble(`hoaDon${id}`);
@@ -98,7 +124,16 @@ function restoreInformation(element) {
   }
   updateValue("#tenKhachHang", element.customerName);
   updateValue("#soDienThoai", element.phoneNumber);
-  updateValue("select[name='employee']", element.employeeID);
+  console.log("Order Types:", element.orderTypes);
+  if (element.orderTypes == 0) {
+    // Check the radio button with value="0"
+    $("#success-outlined");
+    selectOrderType($(`#success-outlined${element.id}`), element.id);
+  } else if (element.orderTypes == 1) {
+    // Check the radio button with value="1"
+    selectOrderType($(`#danger-outlined${element.id}`), element.id);
+  }
+
   updateValue("input[name='options-outlined']", element.orderTypes);
   //   updateValue("#city", element.city);
   //   updateValue("#district", element.district);
@@ -144,7 +179,9 @@ function restoreProductOrder(idorderdetail, product) {
             onclick="giamProductIntoOrder(${idorderdetail},${product.id})">
              <i class="fas fa-minus"></i>
             </a>
-            <input name="quantity" type="number" value=1 min="0" disabled class="form-control form-control-sm text-center">
+            <input name="quantity" type="number" value="${
+              product.quantity
+            }" min="0" disabled class="form-control form-control-sm text-center">
             <a class="btn btn-link px-2"
             onclick="addProductIntoOrder(${idorderdetail},${product.id})">
               <i class="fas fa-plus"></i>
