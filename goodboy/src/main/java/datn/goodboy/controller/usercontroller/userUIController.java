@@ -33,7 +33,7 @@ public class userUIController {
     @GetMapping({ "/don_hang", "" })
     public String viewOderStatus(Model model){
         UUID customerId = billService.getCustomerId();
-        int billCount = billService.getBillCountByStatus(3);
+        int billCount = billService.getBillCountByStatus(4);
         if (customerId != null) {
             List<Bill> bills = billService.findBillsByCustomerId(customerId);
             model.addAttribute("bills", bills);

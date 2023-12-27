@@ -1,8 +1,10 @@
 package datn.goodboy.controller.usercontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import datn.goodboy.repository.BillDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -67,6 +69,9 @@ public class ProductDetailControllerUser {
 
     @Autowired
     private CartDetailService cartDetailService;
+
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
 
     // @ModelAttribute("brand-combobox")
@@ -158,6 +163,8 @@ public class ProductDetailControllerUser {
         this.sortDir = false;
         this.pagenumbers = service.getPanigation(rowcount, pageno);
         List<Product> list = service.getPageNo(1, rowcount, sortBy, sortDir);
+        List<ProductDetail> countTotal = billDetailRepository.countTotalQuantityByProductDetail();
+        model.addAttribute("countTotal", countTotal);
         this.totalpage = service.getPageNumber(rowcount);
         model.addAttribute("totalpage", this.totalpage);
         model.addAttribute("list", list);
