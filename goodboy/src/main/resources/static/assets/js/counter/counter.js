@@ -1537,10 +1537,8 @@ async function handleOrderSubmit(event) {
     });
     return;
   } else {
-    if (confirm("Xác Nhận Thanh Toán")) {
-      console.log(formData);
-      thanhtoan(JSON.stringify(formData), idform);
-    }
+    console.log(formData);
+    thanhtoan(JSON.stringify(formData), idform);
   }
 }
 async function thanhtoan(formValuesJSON, idform) {

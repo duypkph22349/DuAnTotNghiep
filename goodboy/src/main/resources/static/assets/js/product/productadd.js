@@ -7,6 +7,7 @@ const chatlieuInput = formaddproduct.querySelector("#chatlieuInput");
 const kieudangInput = formaddproduct.querySelector("#kieudangInput");
 const productdetailAdd = formaddproduct.querySelector("#productdetailAdd");
 const hoavanmuladd = document.getElementById("hoavanmuladd");
+const kichthuocmuladd = document.getElementById("kichthuocmuladd");
 const listhoavan = [];
 // lay data form backend
 function getLoaiSanPham() {
@@ -110,6 +111,34 @@ function getHoaVan() {
       console.error("Error getting chatlieu:", error);
     });
 }
+function getKichTuocMulAdd() {
+  axios
+    .get("/admin/managerproduct/size")
+    .then(function (response) {
+      for (var i = 0; i < response.data.length; i++) {
+        const newCheckbox = document.createElement("input");
+        newCheckbox.type = "checkbox";
+        newCheckbox.classList.add("form-check-input", "sizemulchoose");
+        newCheckbox.setAttribute("nametext", response.data[i].name);
+        newCheckbox.id = "sizemulCheck" + response.data[i].id;
+        newCheckbox.value = response.data[i].id;
+
+        const newLabel = document.createElement("label");
+        newLabel.classList.add("form-check-label");
+        newLabel.setAttribute("for", "sizemulCheck" + response.data[i].id);
+        newLabel.textContent = response.data[i].name;
+
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("form-check", "col-sm-6");
+        newDiv.appendChild(newCheckbox);
+        newDiv.appendChild(newLabel);
+        kichthuocmuladd.appendChild(newDiv);
+      }
+    })
+    .catch(function (error) {
+      console.error("Error getting data:", error);
+    });
+}
 function getKichThuoc(kichthuocSelect) {
   axios;
   axios
@@ -138,6 +167,24 @@ function AddLoaiSanPham(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       loaisanphamInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding addLoaiSanPham:", error);
@@ -154,6 +201,24 @@ function AddNguonGoc(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       nguongocInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding origin:", error);
@@ -170,6 +235,24 @@ function AddThuongHieu(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       thuonghieuInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding addThonghieu:", error);
@@ -186,6 +269,24 @@ function AddChatLieu(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       chatlieuInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding material:", error);
@@ -202,6 +303,24 @@ function AddKieuDang(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       kieudangInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding addkieudang:", error);
@@ -230,18 +349,72 @@ function AddHoaVan(event) {
       newDiv.appendChild(newCheckbox);
       newDiv.appendChild(newLabel);
       hoavanmuladd.appendChild(newDiv);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding HoaVan:", error);
     });
 }
+
 function AddKichThuoc(event) {
   event.preventDefault();
   var formData = new FormData(document.getElementById("addKichThuoc"));
   axios
     .post("/admin/managerproduct/addsize", formData)
     .then(function (response) {
+      const newCheckbox = document.createElement("input");
+      newCheckbox.type = "checkbox";
+      newCheckbox.classList.add("form-check-input", "sizemulchoose");
+      newCheckbox.setAttribute("nametext", response.data.name);
+      newCheckbox.id = "sizemulCheck" + response.data.id;
+      newCheckbox.value = response.data.id;
+
+      const newLabel = document.createElement("label");
+      newLabel.classList.add("form-check-label");
+      newLabel.setAttribute("for", "sizemulCheck" + response.data.id);
+      newLabel.textContent = response.data.name;
+
+      const newDiv = document.createElement("div");
+      newDiv.classList.add("form-check", "col-sm-6");
+      newDiv.appendChild(newCheckbox);
+      newDiv.appendChild(newLabel);
+      kichthuocmuladd.appendChild(newDiv);
       $("#modelAddKichThuoc").modal("hide");
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
       const listKichThuoc = formaddproduct.querySelectorAll(".kichthuocselect");
       listKichThuoc.forEach((element) => {
         const newOption = document.createElement("option");
@@ -249,10 +422,14 @@ function AddKichThuoc(event) {
         newOption.text = response.data.name;
         element.appendChild(newOption);
       });
+      1;
     })
     .catch(function (error) {
       console.error("Error adding KichThuoc:", error);
     });
+}
+function OpenModalAddKichThuoc() {
+  $("#modelAddKichThuoc").modal("show");
 }
 // function to handle submit form
 function submitForm(event) {
@@ -299,6 +476,7 @@ function submitForm(event) {
   }
   const hoavanDetails = [];
   const hoavanElements = document.querySelectorAll(".productdetail");
+
   hoavanElements.forEach(function (element) {
     const patternName = element.getAttribute("idhoavan");
     const size = element.querySelector('select[name="khichthuoc"]');
@@ -347,6 +525,42 @@ function submitForm(event) {
       .then((response) => {
         $("#modelThemProductThanhCong").modal("show");
         console.log("Response:", response.data);
+        if (response.data.id) {
+          const inputImageProductDetails = document.querySelectorAll(
+            "input[type='file'].hoavanimages"
+          );
+          const uploadPromises = [];
+          inputImageProductDetails.forEach((element) => {
+            const files = element.files;
+            const idhoavan = element.getAttribute("idhoavan");
+
+            Array.from(files).forEach((file) => {
+              const formData = new FormData();
+              formData.append("file", file);
+              formData.append("idhoavan", idhoavan);
+              formData.append("idproduct", response.data.id);
+              const uploadPromise = axios.post(
+                "product/image/productdetails",
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                }
+              );
+              uploadPromises.push(uploadPromise);
+            });
+          });
+          Promise.all(uploadPromises)
+            .then((uploadResponses) => {
+              uploadResponses.forEach((uploadResponse) => {
+                console.log("Upload Response:", uploadResponse);
+              });
+            })
+            .catch((uploadError) => {
+              console.error("Upload Error:", uploadError);
+            });
+        }
       })
       .catch((error) => {
         $("#modalThemThatBai").modal("show");
@@ -404,10 +618,14 @@ function addNewDivHoaVan(idhoavan, hoavanname) {
   // Set the HTML content for the new div
   newDiv.innerHTML = `
     <hr>
-    <div class="hoavannamemb-3 mb-2">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">${hoavanname}</span><button
+    <div class="hoavannamemb-3 mb-2 d-flex align-items-center">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">${hoavanname}</span><button
         class="btn btn-secondary mx-2" type="button" onclick="addNewFormProductDetail('${idhoavan}')">Thêm</button>
         <button
-        class="btn btn-danger mx-2" type="button" onclick="removeHoaVanChoose('${idhoavan}')">Xóa</button></div>
+        class="btn btn-danger mx-2" type="button" onclick="removeHoaVanChoose('${idhoavan}')">Xóa</button>
+        <div>
+        <input class="form-control hoavanimages" type="file" idhoavan="${idhoavan}" id="formFileMultiple" multiple />
+        </div>
+        </div>
   `;
   // Append the new div to the 'productdetailAdd' element
   productdetailAdd.appendChild(newDiv);
@@ -493,12 +711,14 @@ function checkFormKichThuocDivExits(idhoavan, idkichthuoc) {
     if (size.value == -1) {
     } else {
       if (size.value == idkichthuoc) {
+        setErrorElement(size, "Đã có kích thước này !!!");
         return true;
       }
     }
   });
   return false;
 }
+
 // function to handle set message
 function setErrorElement(element, message) {
   resetErrorElement(element);
@@ -518,6 +738,7 @@ function resetErrorElement(element) {
 }
 function init() {
   getHoaVan();
+  getKichTuocMulAdd();
   getLoaiSanPham();
   getNguonGoc();
   getThuongHieu();
@@ -525,3 +746,5 @@ function init() {
   getKieuDang();
 }
 init();
+
+//
