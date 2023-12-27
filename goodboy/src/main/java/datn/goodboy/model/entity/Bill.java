@@ -157,11 +157,22 @@ public class Bill {
   // @JsonIgnore
   // private List<BillDetail> billDetail;
 
-  // @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  // @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST,
+  // CascadeType.REFRESH })
   // // @JsonIgnore
   // private List<BillDetail> billDetail = new ArrayList<BillDetail>();
 
-  // @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  // @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST,
+  // CascadeType.REFRESH })
   // @JsonIgnore
   // private VoucherDetail voucherDetail;
+
+  public String getbillDetailString() {
+    String result = "BillDetail = [ idproductdetail = {";
+    for (BillDetail billDetail2 : billDetail) {
+      result += billDetail2.getProductDetail().getId() + ", ";
+    }
+    result += "}]";
+    return result;
+  }
 }

@@ -38,7 +38,6 @@ public class AccountService implements PanigationInterface<Account> {
   public AccountService(AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
   }
-
   public List<Account> getAllAccounts() {
     return accountRepository.findAll();
   }

@@ -28,6 +28,7 @@ import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayRepository;
 import javassist.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BillService {
@@ -87,26 +88,23 @@ public class BillService {
                 .orElseThrow(() -> new NotFoundException("Not found"));
     }
 
+
     public Bill saveBill(Bill bill) {
 
         return billRepository.save(bill);
     }
 
     public void saveBillAndDetails(Bill bill) {
-        // Lưu Bill và lấy ra ID sau khi lưu
-        Bill savedBill = billRepository.save(bill);
+        // Lưu Bill
 
-        // Gán Bill cho mỗi BillDetail và lưu danh sách BillDetail
+
+        // Lưu BillDetail
         List<BillDetail> billDetails = bill.getBillDetail();
-        if (billDetails != null && !billDetails.isEmpty()) {
-            for (BillDetail detail : billDetails) {
-                detail.setIdBill(savedBill);
-            }
-            // Lưu danh sách BillDetail
-            billDetailRepository.saveAll(billDetails);
-
+        for (BillDetail billDetail : billDetails) {
+            billDetail.setIdBill(bill);
         }
-
+        bill.setBillDetail(billDetails);
+        Bill savedBill = billRepository.save(bill);
     }
 
     public void deleteBill(int id) {

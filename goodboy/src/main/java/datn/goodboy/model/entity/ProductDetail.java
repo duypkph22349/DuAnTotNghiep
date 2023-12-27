@@ -56,6 +56,7 @@ public class ProductDetail {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "id_product")
+    @ToString.Exclude
     private Product idProduct;
 
     @ManyToOne
