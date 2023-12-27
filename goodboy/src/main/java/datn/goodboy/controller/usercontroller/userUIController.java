@@ -31,17 +31,18 @@ public class userUIController {
     private BillRepository billRepository;
 
     @GetMapping({ "/don_hang", "" })
-    public String viewOderStatus(Model model) {
+    public String viewOderStatus(Model model){
         UUID customerId = billService.getCustomerId();
-        int billCount = billService.getBillCountByStatus(3);
+        int billCount = billService.getBillCountByStatus(4);
         if (customerId != null) {
             List<Bill> bills = billService.findBillsByCustomerId(customerId);
             model.addAttribute("bills", bills);
-            model.addAttribute("billDetail", bills);
+            model.addAttribute("billDetail",bills);
             model.addAttribute("billCount", billCount);
         }
         return "/user/order_status";
     }
+
 
     @PostMapping("/don_hang/{id}")
     @ResponseBody

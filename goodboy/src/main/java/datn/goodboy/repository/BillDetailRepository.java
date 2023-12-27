@@ -23,4 +23,7 @@ public interface BillDetailRepository extends JpaRepository<BillDetail, Integer>
                 "GROUP BY bd.productDetail " +
                 "ORDER BY totalQuantity DESC")
         List<ProductDetail> findTop10BestProducts();
+
+        @Query("SELECT bd.productDetail, SUM(bd.quantity) AS totalQuantity FROM BillDetail bd GROUP BY bd.productDetail")
+        List<ProductDetail> countTotalQuantityByProductDetail();
 }

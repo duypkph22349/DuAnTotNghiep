@@ -38,6 +38,7 @@ public class ProductController {
 
     @Autowired
     private BrandService brandService;
+
     @Autowired
     TrangThaiConvert convert;
 
@@ -163,5 +164,9 @@ public class ProductController {
         productService.deleteProduct(id);
         return "redirect:/admin/product/dsProduct";
     }
+
+
+
+
 
 }
