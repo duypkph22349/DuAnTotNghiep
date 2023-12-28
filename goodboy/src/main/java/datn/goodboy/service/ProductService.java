@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import datn.goodboy.model.entity.Brand;
+import datn.goodboy.model.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -130,6 +132,13 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         });
         return productRepository.save(productExits);
     }
+
+    public Product updateProduct(ProductRequest request) {
+        Product productExits = this.getById(request.getId());
+        requestToEntity(request, productExits);
+        return productRepository.save(productExits);
+    }
+
 
     public Product getById(Integer id) {
         return productRepository.findById(id).get();
@@ -284,6 +293,10 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
                 selectedColors);
 
         return filteredProducts;
+    }
+
+    public Product getProduct(int idproduct) {
+        return productRepository.findById(idproduct).get();
     }
 
 }

@@ -6,7 +6,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,7 +25,6 @@ import datn.goodboy.repository.ThongKeRepository;
 
 @Service
 public class ThongKeService {
-
   @Autowired
   private ThongKeRepository thongKeRepository;
   @Autowired
@@ -50,6 +48,32 @@ public class ThongKeService {
     } catch (Exception e) {
       return BigDecimal.valueOf(0);
     }
+  }
+
+  public BigDecimal totalIncomeDayInWeeks(int dayofweek, LocalDateTime date_from, LocalDateTime date_to) {
+    try {
+      BigDecimal totalIncomePerHour = BigDecimal
+          .valueOf(thongKeRepository.totalIncomeDayInWeeks(dayofweek, date_from, date_to));
+      System.out.println(totalIncomePerHour.toString());
+      return totalIncomePerHour;
+    } catch (Exception e) {
+      System.out.println(e);
+      return BigDecimal.valueOf(0);
+    }
+  }
+
+  private Map<String, BigDecimal> getIncomePerDayOfWeek(LocalDateTime startOfWeek, LocalDateTime endOfWeek) {
+    Map<String, BigDecimal> dailyData = new LinkedHashMap<>();
+    try {
+      for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
+        String label = convertToVietnamese(dayOfWeek);
+        BigDecimal value = totalIncomeDayInWeeks(dayOfWeek, startOfWeek, endOfWeek);
+        dailyData.put(label, value);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return dailyData;
   }
 
   public int getTotalBill(LocalDateTime date_from, LocalDateTime date_to) {
@@ -190,7 +214,7 @@ public class ThongKeService {
     Map<String, BigDecimal> weekData = new LinkedHashMap<>();
 
     for (int day = 6; day >= 0; day--) {
-      LocalDateTime dayStart = LocalDateTime.now().toLocalDate().minusDays(day).atStartOfDay();
+      LocalDateTime dayStart = LocalDateTime.now().minusWeeks(1).toLocalDate().minusDays(day).atStartOfDay();
       LocalDateTime dayEnd = dayStart.plusDays(1).minusSeconds(1);
 
       BigDecimal value = getToTalDoanhThu(dayStart, dayEnd);
@@ -220,7 +244,7 @@ public class ThongKeService {
     return dailyData;
   }
 
-  public Map<String, BigDecimal> getDoanhNgayHomNay() {
+  public Map<String, BigDecimal> getInComePerHoursNgayHomNay() {
     Map<String, BigDecimal> hourlyData = new LinkedHashMap<>();
     LocalDateTime nowDateTime = LocalDateTime.now();
     try {
@@ -238,7 +262,7 @@ public class ThongKeService {
     return hourlyData;
   }
 
-  public Map<String, BigDecimal> getDoanhNgayHomQua() {
+  public Map<String, BigDecimal> getInComePerHoursNgayHomQua() {
     Map<String, BigDecimal> hourlyData = new LinkedHashMap<>();
     LocalDateTime nowDateTime = LocalDateTime.now();
     LocalDateTime beforDate = nowDateTime.minusDays(1);
@@ -317,6 +341,60 @@ public class ThongKeService {
     return hourlyData;
   }
 
+  public Map<String, BigDecimal> getIncomePerDayOfThisWeek() {
+    LocalDateTime startOfDay = LocalDateTime.now().with(DayOfWeek.of(1)).withHour(0).withMinute(0).withSecond(0)
+        .withNano(0);
+    return getIncomePerDayOfWeek(startOfDay, LocalDateTime.now());
+  }
+
+  public Map<String, BigDecimal> getIncomePerDayOfBeforeWeek() {
+    LocalDateTime nowDateTime = LocalDateTime.now();
+    LocalDateTime startOfDay = nowDateTime.minusWeeks(1).with(DayOfWeek.of(1)).withHour(0).withMinute(0).withSecond(0)
+        .withNano(0);
+    LocalDateTime endOfDay = nowDateTime.with(DayOfWeek.of(1)).withHour(0).withMinute(0).withSecond(0)
+        .withNano(0).minusDays(1);
+    return getIncomePerDayOfWeek(startOfDay, endOfDay);
+  }
+
+  public Map<String, BigDecimal> getIncomePerDayOfThisMonth() {
+    LocalDate now = LocalDate.now();
+    int year = now.getYear();
+    int month = now.getMonthValue();
+    LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
+    LocalDateTime nowDateTime = LocalDateTime.now();
+    return getIncomePerDayOfWeek(startOfMonth, nowDateTime);
+  }
+
+  public Map<String, BigDecimal> getIncomePerDayOfLastMonth() {
+    LocalDate now = LocalDate.now();
+    int year = now.getYear();
+    int month = now.getMonthValue();
+    LocalDateTime startOfMonth = LocalDateTime.of(year, month - 1, 1, 0, 0);
+    LocalDateTime endOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
+    return getIncomePerDayOfWeek(startOfMonth, endOfMonth);
+  }
+
+  private String convertToVietnamese(int dayOfWeek) {
+    switch (dayOfWeek) {
+      case 2:
+        return "Thứ Hai";
+      case 3:
+        return "Thứ Ba";
+      case 4:
+        return "Thứ Tư";
+      case 5:
+        return "Thứ Năm";
+      case 6:
+        return "Thứ Sáu";
+      case 7:
+        return "Thứ Bảy";
+      case 1:
+        return "Chủ Nhật";
+      default:
+        return "";
+    }
+  }
+
   private String getDayOfWeekAbbreviation(LocalDateTime date) {
     int dayOfWeek = date.getDayOfWeek().getValue();
     DateFormatSymbols symbols = new DateFormatSymbols(Locale.forLanguageTag("vi-VN"));
@@ -325,17 +403,166 @@ public class ThongKeService {
   }
 
   public float getGrowthThanToday() {
-    LocalDateTime currentDate = LocalDateTime.now();
-    LocalDateTime yesterday = currentDate.minus(1, ChronoUnit.DAYS);
+    try {
 
-    float incomeToday = getToTalDoanhThu(currentDate.toLocalDate().atStartOfDay(), currentDate).floatValue();
-    float incomeYesterday = getToTalDoanhThu(yesterday.toLocalDate().atStartOfDay(), yesterday).floatValue();
+      LocalDateTime currentDate = LocalDateTime.now();
+      LocalDateTime yesterday = currentDate.minus(1, ChronoUnit.DAYS);
 
-    if (incomeYesterday != 0) {
-      float percentGrow = 100 * (incomeToday / incomeYesterday - 1);
-      return percentGrow;
-    } else {
-      return 0;
+      float incomeToday = getToTalDoanhThu(currentDate.toLocalDate().atStartOfDay(), currentDate).floatValue();
+      float incomeYesterday = getToTalDoanhThu(yesterday.toLocalDate().atStartOfDay(), yesterday).floatValue();
+      if (incomeYesterday == 0) {
+        throw new Exception("không có doanh thu");
+      }
+      if (incomeYesterday != 0) {
+        float percentGrow = 100 * (incomeToday / incomeYesterday - 1);
+        return percentGrow;
+      } else {
+        return 0;
+      }
+    } catch (Exception e) {
+      // Handle the exception here
+      e.printStackTrace();
+      return -1000;
     }
+  }
+
+  public float getGrowthThanLastMonth() {
+    try {
+      LocalDateTime currentDate = LocalDateTime.now();
+      LocalDateTime lastMonth = currentDate.minus(1, ChronoUnit.MONTHS);
+
+      float incomeThisMonth = getToTalDoanhThu(currentDate.toLocalDate().atStartOfDay(), currentDate).floatValue();
+      float incomeLastMonth = getToTalDoanhThu(lastMonth.toLocalDate().atStartOfDay(),
+          lastMonth.withDayOfMonth(lastMonth.toLocalDate().lengthOfMonth()).toLocalDate().atStartOfDay()).floatValue();
+
+      if (incomeLastMonth == 0) {
+        throw new Exception("không có doanh thu");
+      } else {
+        float percentGrow = 100 * (incomeThisMonth / incomeLastMonth - 1);
+        return percentGrow;
+      }
+    } catch (Exception e) {
+      // Handle the exception here
+      e.printStackTrace();
+      return -1000;
+    }
+  }
+
+  public float getGrowthThanLastYear() {
+    try {
+      LocalDateTime currentDate = LocalDateTime.now();
+      LocalDateTime lastYear = currentDate.minus(1, ChronoUnit.YEARS);
+
+      float incomeThisYear = getToTalDoanhThu(currentDate.withDayOfYear(1).toLocalDate().atStartOfDay(), currentDate)
+          .floatValue();
+      float incomeLastYear = getToTalDoanhThu(lastYear.withDayOfYear(1).toLocalDate().atStartOfDay(),
+          lastYear.withDayOfYear(lastYear.toLocalDate().lengthOfYear()).toLocalDate().atStartOfDay()).floatValue();
+      if (incomeLastYear == 0) {
+        throw new Exception("không có doanh thu");
+      }
+      if (incomeLastYear != 0) {
+        float percentGrow = 100 * (incomeThisYear / incomeLastYear - 1);
+        return percentGrow;
+      } else {
+        return 0;
+      }
+    } catch (Exception e) {
+      // Handle the exception here
+      e.printStackTrace();
+      return -1000;
+    }
+  }
+
+  public Map<String, BigDecimal> getIncomeThisWeek() {
+    Map<String, BigDecimal> weekData = new LinkedHashMap<>();
+
+    for (int day = 6; day >= 0; day--) {
+      LocalDateTime dayStart = LocalDateTime.now().toLocalDate().minusDays(day).atStartOfDay();
+      LocalDateTime dayEnd = dayStart.plusDays(1).minusSeconds(1);
+      BigDecimal value = getToTalDoanhThu(dayStart, dayEnd);
+      // Format the date as "T [DayOfWeekAbbreviation]"
+      String formattedDate = getDayOfWeekAbbreviation(dayStart) + " - " + dayStart.getDayOfMonth() + "/"
+          + dayStart.getMonthValue();
+      weekData.put(formattedDate, value);
+    }
+    return weekData;
+  }
+
+  public Map<String, BigDecimal> getIncomeOn(LocalDate now) {
+    Map<String, BigDecimal> weeklyData = new LinkedHashMap<>();
+    LocalDate startOfWeek = now.with(WeekFields.of(DayOfWeek.MONDAY, 1).dayOfWeek(), 1);
+    LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+    for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) {
+      LocalDateTime startOfDay = date.atStartOfDay();
+      LocalDateTime endOfDay = startOfDay.plusDays(1).minusSeconds(1);
+
+      BigDecimal dailyIncome;
+      if (date.isEqual(now)) {
+        dailyIncome = getToTalDoanhThu(startOfDay, endOfDay);
+      } else {
+        dailyIncome = BigDecimal.ZERO;
+      }
+
+      // Format the date as "DayOfWeek - dd/MM"
+      String formattedDate = getDayOfWeekAbbreviation(startOfDay) + " - " + startOfDay.getDayOfMonth() + "/"
+          + startOfDay.getMonthValue();
+      weeklyData.put(formattedDate, dailyIncome);
+    }
+    return weeklyData;
+  }
+
+  public Map<String, BigDecimal> getInComePerHoursLastMonth() {
+    Map<String, BigDecimal> hourlyData = new LinkedHashMap<>();
+    LocalDate now = LocalDate.now();
+    LocalDate lastMonth = now.minusMonths(1);
+    LocalDateTime startOfLastMonth = lastMonth.withDayOfMonth(1).atStartOfDay();
+    LocalDateTime endOfLastMonth = lastMonth.withDayOfMonth(lastMonth.lengthOfMonth()).atTime(23, 59, 59);
+    try {
+      for (int hour = 0; hour < 24; hour++) {
+        BigDecimal value = getIncomePerHour(hour, startOfLastMonth, endOfLastMonth);
+        String label = hour + ":00";
+        hourlyData.put(label, value);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      // Handle the exception as needed, log it or rethrow it.
+    }
+    return hourlyData;
+  }
+
+  public Map<String, BigDecimal> getInComePerHoursLastWeek() {
+    Map<String, BigDecimal> hourlyData = new LinkedHashMap<>();
+    LocalDateTime startOfLastWeek = LocalDate.now().minusWeeks(1)
+        .with(WeekFields.of(DayOfWeek.MONDAY, 1).dayOfWeek(), 1).atStartOfDay();
+    LocalDateTime endOfLastWeek = startOfLastWeek.plusWeeks(1);
+
+    try {
+      for (int hour = 0; hour < 24; hour++) {
+        BigDecimal value = getIncomePerHour(hour, startOfLastWeek, endOfLastWeek);
+        String label = hour + ":00";
+        hourlyData.put(label, value);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      // Handle the exception as needed, log it, or rethrow it.
+    }
+    return hourlyData;
+  }
+
+  public Map<String, BigDecimal> getDoanhThuThangTruoc() {
+    Map<String, BigDecimal> dailyData = new LinkedHashMap<>();
+    LocalDate now = LocalDate.now();
+    int year = now.getYear();
+    int month = now.getMonthValue();
+    LocalDateTime startOfMonth = LocalDateTime.of(year, month - 1, 1, 0, 0);
+    LocalDateTime endOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
+
+    for (LocalDateTime date = startOfMonth; date.isBefore(endOfMonth.plusDays(1)); date = date.plusDays(1)) {
+      String label = getDayOfWeekAbbreviation(date) + " - " + date.getDayOfMonth() + "/" + date.getMonthValue();
+      BigDecimal value = getToTalDoanhThu(date, date.plusDays(1).minusSeconds(1));
+      dailyData.put(label, value);
+    }
+    return dailyData;
   }
 }

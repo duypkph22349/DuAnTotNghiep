@@ -3,11 +3,17 @@ package datn.goodboy.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import datn.goodboy.model.entity.*;
+import datn.goodboy.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
@@ -22,6 +28,7 @@ import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayRepository;
 import javassist.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BillService {
@@ -34,6 +41,9 @@ public class BillService {
     private PayRepository payRepository;
     @Autowired
     private BillDetailRepository billDetailRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -78,26 +88,23 @@ public class BillService {
                 .orElseThrow(() -> new NotFoundException("Not found"));
     }
 
+
     public Bill saveBill(Bill bill) {
 
         return billRepository.save(bill);
     }
 
     public void saveBillAndDetails(Bill bill) {
-        // Lưu Bill và lấy ra ID sau khi lưu
-        Bill savedBill = billRepository.save(bill);
+        // Lưu Bill
 
-        // Gán Bill cho mỗi BillDetail và lưu danh sách BillDetail
+
+        // Lưu BillDetail
         List<BillDetail> billDetails = bill.getBillDetail();
-        if (billDetails != null && !billDetails.isEmpty()) {
-            for (BillDetail detail : billDetails) {
-                detail.setIdBill(savedBill);
-            }
-            // Lưu danh sách BillDetail
-            billDetailRepository.saveAll(billDetails);
-
+        for (BillDetail billDetail : billDetails) {
+            billDetail.setIdBill(bill);
         }
-
+        bill.setBillDetail(billDetails);
+        Bill savedBill = billRepository.save(bill);
     }
 
     public void deleteBill(int id) {
@@ -108,6 +115,7 @@ public class BillService {
     public Optional<Bill> findByIdBill(int id) {
         return billRepository.findById(id);
     }
+
 
     public void createBill(BillRequest billRequest) throws NotFoundException {
         if (billRequest != null) {
@@ -168,4 +176,25 @@ public class BillService {
         bill.setStatus_pay(status_pay);
         billRepository.save(bill);
     }
+
+    public UUID getCustomerId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+            return account.getCustomer().getId();
+        }
+        return null;
+    }
+
+
+    public List<Bill> findBillsByCustomerId(UUID customerId){
+        return billRepository.findByCustomer_Id(customerId);
+    }
+
+    public int getBillCountByStatus(int status) {
+        return billRepository.countByStatus(status);
+    }
+
+
 }

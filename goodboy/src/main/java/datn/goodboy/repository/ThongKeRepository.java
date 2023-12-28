@@ -27,6 +27,12 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
                         @Param("dateFrom") LocalDateTime dateFrom,
                         @Param("dateTo") LocalDateTime dateTo);
 
+        @Query(value = "SELECT SUM(b.deposit) FROM Bill b WHERE DATEPART(dw, b.created_at) = :dayOfWeek + 1 " +
+                        "AND b.created_at BETWEEN :dateFrom AND :dateTo", nativeQuery = true)
+        Long totalIncomeDayInWeeks(@Param("dayOfWeek") int dayOfWeek,
+                        @Param("dateFrom") LocalDateTime dateFrom,
+                        @Param("dateTo") LocalDateTime dateTo);
+
         @Query(value = "SELECT SUM(bd.quantity) " +
                         "FROM BillDetail bd " +
                         "JOIN bd.idBill b " +

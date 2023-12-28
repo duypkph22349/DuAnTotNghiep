@@ -3,6 +3,7 @@ package datn.goodboy.controller.rest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.OrderCounterRequest;
 import datn.goodboy.service.CounterService;
+import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
 import datn.goodboy.service.VoucherService;
@@ -29,6 +33,8 @@ public class CounterController {
 
   @Autowired
   private EmployeeService employeeService;
+  @Autowired
+  private CustomerService customerService;
 
   @Autowired
   private ProductDetailService productDetailService;
@@ -56,6 +62,22 @@ public class CounterController {
   @GetMapping("customers")
   public ResponseEntity<List<Employee>> getAllCustomer() {
     return ResponseEntity.ok().body(employeeService.getAllEmployee());
+  }
+
+  @PostMapping("customer")
+  public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
+    System.out.println(customer);
+    return ResponseEntity.ok().body(customerService.saveCustomer(customer));
+  }
+
+  @GetMapping("customers/search")
+  public ResponseEntity<List<Customer>> getAllCustomer(@RequestParam("searchtext") String searchtext) {
+    return ResponseEntity.ok().body(customerService.searchEmployees(searchtext));
+  }
+
+  @GetMapping("customers/{id}")
+  public ResponseEntity<Customer> getCustomer(@PathVariable("id") UUID idcustomer) {
+    return ResponseEntity.ok().body(customerService.getCustomerById(idcustomer).get());
   }
 
   @GetMapping("productDetails")

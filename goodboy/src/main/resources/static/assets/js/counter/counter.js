@@ -1,4 +1,4 @@
-// 80 %
+// 90 %
 // globle Variable
 const defaultImage =
   "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
@@ -65,21 +65,6 @@ function formInOrder(id) {
                           <div class="col-100">
                               <section>
                                   <div class="box-order-product">
-                                      <div>
-                                          <button class="btn btn-danger" id="showTimeButton">
-                                              <svg class="bi bi-bag-dash" fill="currentColor" height="16"
-                                                  viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                                  <path
-                                                      d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"
-                                                      fill-rule="evenodd"></path>
-                                                  <path
-                                                      d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z">
-                                                  </path>
-                                              </svg>
-                                              Sản phẩm
-                                          </button>
-                                      </div>
-                                      <br>
                                       <div class="product-cart">
                                           <table class="table table-hover" id="cartTable">
                                               <thead>
@@ -234,7 +219,7 @@ function formInOrder(id) {
                                           <span class="ant-radio-button">
                                               <input autocomplete="off" checked class="btn-check" value="0"
                                                   id="success-outlined${id}" name="options-outlined" type="radio"
-                                                  onchange="selectOrderType(event, ${id})">
+                                                  onchange="selectOrderType(this, ${id})">
                                               <label class="btn btn-outline-success" for="success-outlined${id}"><svg
                                                       class="bi bi-house-door" fill="currentColor" height="16"
                                                       viewBox="0 0 16 16" width="16"
@@ -245,7 +230,7 @@ function formInOrder(id) {
                                                   </svg> Tại quầy</label>
                                               <input type="radio" class="btn-check" name="options-outlined" value="1"
                                                   id="danger-outlined${id}" autocomplete="off"
-                                                  onchange="selectOrderType(event, ${id})">
+                                                  onchange="selectOrderType(this, ${id})">
                                               <label class="btn btn-outline-danger" for="danger-outlined${id}"><svg
                                                       xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                       fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
@@ -259,6 +244,17 @@ function formInOrder(id) {
                                   </div>
 
                               </div>
+                              <div class="mt-2 drownsearch">
+                              <div class="select-btn search-form d-flex align-items-center" id="selectkhachhang">
+                                <input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" onkeyup="updateSearch(${id})">
+                                <button type="button"><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#modelAddKhachHang"></i></button>
+                              </div>
+                              <div class="dropdrownselect-content">
+                                <ul class="options list-group list-group-flush" id="khachhangchoose"  >
+<li class="list-group-item " onclick="updateName(this)">Iceland</li><li class="list-group-item " onclick="updateName(this)">India</li><li class="list-group-item " onclick="updateName(this)">Indonesia</li><li class="list-group-item " onclick="updateName(this)">Iran</li><li class="list-group-item " onclick="updateName(this)">Italy</li>
+                                </ul>
+                              </div>
+                            </div>
                               <div type="flex" class="ant-row ant-row-space-between box-row"
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
@@ -592,7 +588,7 @@ function formInOrder(id) {
 }
 // ui processtion
 function addnewOrderPage() {
-  if (listtab.length <= 5) {
+  if (listtab.length < 5) {
     var id = 0;
     if (listtab.length == 0) {
       id = 1;
@@ -619,10 +615,28 @@ function addnewOrderPage() {
     exitButton.className += " active";
     countdown(id);
   } else {
-    alert("Tối đa 5 hóa đơn");
+    new Notify({
+      status: "warning",
+      title: "Quá số lượng hóa đơn cho phép!!!",
+      text: "Tối đa 5 hóa đơn",
+      effect: "fade",
+      speed: 300,
+      customClass: "",
+      customIcon: "",
+      showIcon: true,
+      showCloseButton: true,
+      autoclose: true,
+      autotimeout: 3000,
+      gap: 20,
+      distance: 20,
+      type: 1,
+      position: "right top",
+      customWrapper: "",
+    });
   }
 }
-let timeouts = {}; // Create an object to store timeouts
+let timeouts = {};
+// Create an object to store timeouts
 function countdown(id) {
   const countdownElement = document.querySelector(`#hoaDon${id} #countdown`);
 
@@ -666,6 +680,7 @@ function formatTime(seconds) {
     remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
   return minutes + ":" + remainingSeconds;
 }
+// time out end
 function filterTable(orderId) {
   var input, filter, table, tbody, tr, td, i, j, txtValue;
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
@@ -725,6 +740,7 @@ async function removeOrderPage(orderId) {
     if (orderbtnrmRemove) {
       orderbtnrmRemove.remove();
     }
+    deleteOrder(orderId);
     selectLastHoaDon();
     return;
   }
@@ -760,8 +776,8 @@ function selectLastHoaDon() {
     console.error("Error selecting or clicking the last button:", error);
   }
 }
-function selectOrderType(event, id) {
-  orderType = event.target.value;
+function selectOrderType(element, id) {
+  orderType = element.value;
   const OptionOnline = document.querySelectorAll(`#hoaDon${id} .online-option`);
   const Optionincount = document.querySelectorAll(
     `#hoaDon${id} .incount-option`
@@ -988,6 +1004,7 @@ function fillAllEmployee(orderId) {
       });
     });
 }
+
 function getFirstProductPage(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var tbody = thisOrder.querySelector("#cartTableProduct tbody");
@@ -1001,8 +1018,8 @@ function getFirstProductPage(orderId) {
         var row = document.createElement("tr");
         var cells = [
           `<img src="${
-            product.imageUrl || defaultImage
-          }" class="image-fluid" style="height: 60px;">`,
+            product.firstImage || defaultImage
+          }" class="image-fluid" style="height: 60px; max-width : 60px;">`,
           `
           <div class="d-flex">
           <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop${
@@ -1101,11 +1118,26 @@ async function addProductIntoOrder(idorderdetail, id) {
       increaseProductQuantity(productExists, product);
     } else {
       if (product.quantity < 1) {
-        alert(
-          `Sản phẩm: " ${product.name} Màu sắc: ${
+        new Notify({
+          status: "warning",
+          title: "Sản phẩm đã hết",
+          text: `Sản phẩm: " ${product.name} Màu sắc: ${
             product.idColor?.name ?? ""
-          } Hoa văn: ${product.idPattern?.name ?? ""} Đã Hết`
-        );
+          } Hoa văn: ${product.idPattern?.name ?? ""} Đã Hết`,
+          effect: "fade",
+          speed: 300,
+          customClass: "",
+          customIcon: "",
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right top",
+          customWrapper: "",
+        });
       } else {
         const productsOnOrder = form.querySelector("#cartTable tbody");
         const newProductRow = createProductRow(product, idorderdetail);
@@ -1123,7 +1155,12 @@ function createProductRow(product, idorderdetail) {
   newProductRow.classList.add("table-body-row", "order-product");
   newProductRow.setAttribute("idproduct", product.id);
   newProductRow.innerHTML = `
-        <td><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
+
+        <td>
+        <img src="${
+          product.firstImage || defaultImage
+        }" class="image-fluid" style="height: 60px; max-width : 60px;     float: left;
+        "><strong>Tên:</strong> ${product.name} <strong>Hoa văn:</strong> ${
     product.idPattern?.name ?? ""
   } </td>
         <td>${formatToVND(product.price)}</td>
@@ -1182,9 +1219,24 @@ function increaseProductQuantity(productExists, product) {
     if (inputNumber instanceof Element) {
       const currentValue = parseInt(inputNumber.value, 10) || 0;
       if (currentValue >= product.quantity) {
-        alert(
-          `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`
-        );
+        new Notify({
+          status: "warning",
+          title: "Sản phẩm đã hết",
+          text: `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`,
+          effect: "fade",
+          speed: 300,
+          customClass: "",
+          customIcon: "",
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right top",
+          customWrapper: "",
+        });
       } else {
         inputNumber.value = currentValue + 1;
       }
@@ -1214,9 +1266,24 @@ function descreaseProductQuantity(productExists, product) {
     if (inputNumber instanceof Element) {
       const currentValue = parseInt(inputNumber.value, 10) || 0;
       if (currentValue >= product.quantity) {
-        alert(
-          `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`
-        );
+        new Notify({
+          status: "warning",
+          title: "Sản phẩm đã hết",
+          text: `Không thể thêm ${product.name} sản phẩm chỉ còn ${product.quantity} sản phẩm vui lòng chọn sản phẩm khác`,
+          effect: "fade",
+          speed: 300,
+          customClass: "",
+          customIcon: "",
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right top",
+          customWrapper: "",
+        });
       } else {
         if (inputNumber.value <= 1) {
           productExists.remove();
@@ -1260,6 +1327,10 @@ async function handleOrderSubmit(event) {
     10
   );
   formData.customerName = form.querySelector("#tenKhachHang").value;
+  const inputCustomer = form.querySelector("#customerid");
+  if (inputCustomer) {
+    formData.customerID = inputCustomer.value;
+  }
   formData.phoneNumber = form.querySelector("#soDienThoai").value;
   formData.city = form.querySelector("#city").value;
   formData.district = form.querySelector("#district").value;
@@ -1487,12 +1558,30 @@ async function thanhtoan(formValuesJSON, idform) {
     console.log(data);
     if (data?.status === "BAD_REQUEST") {
       alert(data?.message);
+      if (data.message) {
+        new Notify({
+          status: "error",
+          title: "Lỗi khi lưu hóa đơn",
+          text: data.message,
+          effect: "fade",
+          speed: 300,
+          customClass: "",
+          customIcon: "",
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right top",
+          customWrapper: "",
+        });
+      }
       return;
     } else {
-      if (confirm("Bạn có muốn in hoá đơn không?")) {
-        printBill(data.id);
-        handleOrderSuccess(idform);
-      }
+      printBill(data.id);
+      handleOrderSuccess(idform);
     }
   } catch (error) {
     console.error("Error:", error);
@@ -1571,163 +1660,165 @@ async function checkVoucher(formId, totalMoney) {
   resetErrorElement(voucherSelect);
   resetErrorElement(discountAmount);
   var currentTime = new Date().getTime();
-  if (voucCherId != -1) {
-    try {
-      const response = await fetch(`/admin/counter/voucher/${voucCherId}`, {
-        method: "GET",
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      if (data.code == 400) {
-        setErrorElement(voucherSelect, data.message);
-        discountAmount.innerHTML = formatToVND(0);
-        getVoucherAble(formId);
-      } else {
-        if (data.min_order > totalMoney) {
-          new Notify({
-            status: "warning",
-            title: "Voucher lỗi !!!",
-            text: "Chọn hoặc kiểm tra lại",
-            effect: "fade",
-            speed: 300,
-            customClass: "",
-            customIcon: "",
-            showIcon: true,
-            showCloseButton: true,
-            autoclose: true,
-            autotimeout: 3000,
-            gap: 20,
-            distance: 20,
-            type: 1,
-            position: "right top",
-            customWrapper: "",
-          });
-          setErrorElement(
-            voucherSelect,
-            "Không đủ điều kiện để áp dụng voucher này"
-          );
-          discountAmount.innerHTML = formatToVND(0);
-          // getVoucherAble(formId);
-          return 0;
-        } else if (data.quantily <= 0) {
-          new Notify({
-            status: "warning",
-            title: "Voucher lỗi !!!",
-            text: "Chọn hoặc kiểm tra lại",
-            effect: "fade",
-            speed: 300,
-            customClass: "",
-            customIcon: "",
-            showIcon: true,
-            showCloseButton: true,
-            autoclose: true,
-            autotimeout: 3000,
-            gap: 20,
-            distance: 20,
-            type: 1,
-            position: "right top",
-            customWrapper: "",
-          });
-          setErrorElement(voucherSelect, "Voucher đã hết hết số lượng");
-          discountAmount.innerHTML = formatToVND(0);
-          // getVoucherAble(formId);
-          return 0;
-        } else if (data.end_time <= currentTime) {
-          new Notify({
-            status: "warning",
-            title: "Voucher lỗi !!!",
-            text: "Chọn hoặc kiểm tra lại",
-            effect: "fade",
-            speed: 300,
-            customClass: "",
-            customIcon: "",
-            showIcon: true,
-            showCloseButton: true,
-            autoclose: true,
-            autotimeout: 3000,
-            gap: 20,
-            distance: 20,
-            type: 1,
-            position: "right top",
-            customWrapper: "",
-          });
-          setErrorElement(voucherSelect, "Voucher đã hết hạn sử dụng");
-          discountAmount.innerHTML = formatToVND(0);
-          // getVoucherAble(formId);
-          return 0;
-        } else if (data.status != 1) {
-          new Notify({
-            status: "warning",
-            title: "Voucher lỗi !!!",
-            text: "Chọn hoặc kiểm tra lại",
-            effect: "fade",
-            speed: 300,
-            customClass: "",
-            customIcon: "",
-            showIcon: true,
-            showCloseButton: true,
-            autoclose: true,
-            autotimeout: 3000,
-            gap: 20,
-            distance: 20,
-            type: 1,
-            position: "right top",
-            customWrapper: "",
-          });
-          setErrorElement(voucherSelect, "Voucher không còn");
-          // getVoucherAble(formId);
-          discountAmount.innerHTML = formatToVND(0);
-          return 0;
+  if (voucCherId) {
+    if (voucCherId != -1) {
+      try {
+        const response = await fetch(`/admin/counter/voucher/${voucCherId}`, {
+          method: "GET",
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        if (data.types == true) {
-          // giam theo %
-          const discountValue = (totalMoney / 100) * data.discount;
-          if (discountValue < data.max_discount) {
-            discountAmount.innerHTML = "-" + formatToVND(discountValue);
-            return discountValue;
-          } else {
-            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
-            return data.max_discount;
-          }
+        const data = await response.json();
+        if (data.code == 400) {
+          setErrorElement(voucherSelect, data.message);
+          discountAmount.innerHTML = formatToVND(0);
+          getVoucherAble(formId);
         } else {
-          const discountValue = data.discount;
-          if (discountValue < data.max_discount) {
-            discountAmount.innerHTML = "-" + formatToVND(discountValue);
-            return discountValue;
+          if (data.min_order > totalMoney) {
+            new Notify({
+              status: "warning",
+              title: "Voucher lỗi !!!",
+              text: "Chọn hoặc kiểm tra lại",
+              effect: "fade",
+              speed: 300,
+              customClass: "",
+              customIcon: "",
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: "right top",
+              customWrapper: "",
+            });
+            setErrorElement(
+              voucherSelect,
+              "Không đủ điều kiện để áp dụng voucher này"
+            );
+            discountAmount.innerHTML = formatToVND(0);
+            // getVoucherAble(formId);
+            return 0;
+          } else if (data.quantily <= 0) {
+            new Notify({
+              status: "warning",
+              title: "Voucher lỗi !!!",
+              text: "Chọn hoặc kiểm tra lại",
+              effect: "fade",
+              speed: 300,
+              customClass: "",
+              customIcon: "",
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: "right top",
+              customWrapper: "",
+            });
+            setErrorElement(voucherSelect, "Voucher đã hết hết số lượng");
+            discountAmount.innerHTML = formatToVND(0);
+            // getVoucherAble(formId);
+            return 0;
+          } else if (data.end_time <= currentTime) {
+            new Notify({
+              status: "warning",
+              title: "Voucher lỗi !!!",
+              text: "Chọn hoặc kiểm tra lại",
+              effect: "fade",
+              speed: 300,
+              customClass: "",
+              customIcon: "",
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: "right top",
+              customWrapper: "",
+            });
+            setErrorElement(voucherSelect, "Voucher đã hết hạn sử dụng");
+            discountAmount.innerHTML = formatToVND(0);
+            // getVoucherAble(formId);
+            return 0;
+          } else if (data.status != 1) {
+            new Notify({
+              status: "warning",
+              title: "Voucher lỗi !!!",
+              text: "Chọn hoặc kiểm tra lại",
+              effect: "fade",
+              speed: 300,
+              customClass: "",
+              customIcon: "",
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: "right top",
+              customWrapper: "",
+            });
+            setErrorElement(voucherSelect, "Voucher không còn");
+            // getVoucherAble(formId);
+            discountAmount.innerHTML = formatToVND(0);
+            return 0;
+          }
+          if (data.types == true) {
+            // giam theo %
+            const discountValue = (totalMoney / 100) * data.discount;
+            if (discountValue < data.max_discount) {
+              discountAmount.innerHTML = "-" + formatToVND(discountValue);
+              return discountValue;
+            } else {
+              discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+              return data.max_discount;
+            }
           } else {
-            discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
-            return data.max_discount;
+            const discountValue = data.discount;
+            if (discountValue < data.max_discount) {
+              discountAmount.innerHTML = "-" + formatToVND(discountValue);
+              return discountValue;
+            } else {
+              discountAmount.innerHTML = "-" + formatToVND(data.max_discount);
+              return data.max_discount;
+            }
           }
         }
+      } catch (error) {
+        new Notify({
+          status: "warning",
+          title: "Voucher lỗi !!!",
+          text: "Chọn hoặc kiểm tra lại",
+          effect: "fade",
+          speed: 300,
+          customClass: "",
+          customIcon: "",
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right top",
+          customWrapper: "",
+        });
+        setErrorElement(
+          voucherSelect,
+          "Voucher đã không hoạt động chọn voucher khác"
+        );
+        getVoucherAble(formId);
+        discountAmount.innerHTML = formatToVND(0);
+        console.error("Error fetching data:", error);
       }
-    } catch (error) {
-      new Notify({
-        status: "warning",
-        title: "Voucher lỗi !!!",
-        text: "Chọn hoặc kiểm tra lại",
-        effect: "fade",
-        speed: 300,
-        customClass: "",
-        customIcon: "",
-        showIcon: true,
-        showCloseButton: true,
-        autoclose: true,
-        autotimeout: 3000,
-        gap: 20,
-        distance: 20,
-        type: 1,
-        position: "right top",
-        customWrapper: "",
-      });
-      setErrorElement(
-        voucherSelect,
-        "Voucher đã không hoạt động chọn voucher khác"
-      );
-      getVoucherAble(formId);
-      discountAmount.innerHTML = formatToVND(0);
-      console.error("Error fetching data:", error);
     }
   } else {
     discountAmount.innerHTML = formatToVND(0);
@@ -1980,14 +2071,6 @@ async function getVoucherAble(formId) {
   }
 }
 async function getQrThanhToan(orderId) {}
-window.addEventListener("beforeunload", function (event) {
-  if (listtab.length > 0) {
-    const confirmationMessage = "Are you sure you want to leave?";
-    event.returnValue = confirmationMessage;
-    // checkExitDataOnForm();
-    return confirmationMessage;
-  }
-});
 function showModalHoaDon() {
   $("#billPrint").modal("show");
 }
@@ -2058,6 +2141,10 @@ async function buildFormData(formId) {
     form.querySelector("input[name='options-outlined']:checked").value,
     10
   );
+  const inputCustomer = form.querySelector("#customerid");
+  if (inputCustomer) {
+    formData.customerID = inputCustomer.value;
+  }
   formData.phoneNumber = getInputValue("#soDienThoai");
   formData.city = getInputValue("#city");
   formData.district = getInputValue("#district");
@@ -2094,6 +2181,7 @@ async function buildFormData(formId) {
           price: product.price,
           totalprice: product.price * productQuantity,
           quantity: productQuantity,
+          firstImage: product.firstImage,
         });
       }
     } catch (error) {
@@ -2104,6 +2192,7 @@ async function buildFormData(formId) {
   formData.totalMoney = totalMoney;
   return formData;
 }
+
 document.addEventListener("keydown", function (event) {
   if (event.key === "F3") {
     event.preventDefault();
@@ -2114,15 +2203,6 @@ document.addEventListener("keydown", function (event) {
         searchInput.focus();
       }
     }
-    const data = await response.json();
-    data.forEach((product) => {
-      const option = document.createElement("option");
-      option.value = product.id;
-      option.text = `${product.name}`;
-      voucherSelect.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Error fetching data:", error);
   }
   if (event.key === "F9") {
     event.preventDefault();
@@ -2149,3 +2229,185 @@ document.addEventListener("keydown", function (event) {
     addnewOrderPage();
   }
 });
+// search customers
+async function updateSearch(formid) {
+  const form = $(`#hoaDon${formid}`);
+  const drownsearch = form.find(".drownsearch");
+  const dropselect = form.find(`#selectkhachhang`),
+    searchInp = dropselect.find("#searchtext"),
+    options = drownsearch.find("#khachhangchoose");
+  let searchWord = searchInp.val();
+  options.empty();
+  if (searchWord.length > 0) {
+    let url = `/admin/counter/customers/search?searchtext=${searchWord}`;
+    try {
+      const response = await axios.get(url);
+      const data = response.data;
+      if (data.length > 0) {
+        data.forEach((customer) => {
+          let li = `<li class="list-group-item" onclick="updateName(${formid},'${customer.id}')">${customer.name} - ${customer.phone}</li>`;
+          options.append(li);
+        });
+      } else {
+        let li = `<p style="margin-top: 10px;">Oops! Không tìm thấy khách hàng</p>`;
+        options.append(li);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    drownsearch.removeClass("active");
+    drownsearch.toggleClass("active");
+  }
+  if (searchWord.length == 0) {
+    console.log("Please select");
+    drownsearch.removeClass("active");
+  }
+}
+
+async function updateName(formid, id) {
+  const form = $(`#hoaDon${formid}`);
+  const drownsearch = form.find(".drownsearch");
+  const dropselect = form.find(`#selectkhachhang`);
+  let url = `/admin/counter/customers/${id}`;
+  console.log(url);
+  try {
+    const response = await axios.get(url);
+    const customer = response.data;
+    console.log(customer);
+    drownsearch.removeClass("active");
+    dropselect.empty();
+    dropselect.append(`<span>${customer.name} - ${customer.phone}</span>`); // Add the country name
+    dropselect.append(
+      `<input type="hidden" id="customerid" value="${customer.id}">`
+    ); // Add the country name
+    dropselect.append(
+      `<button onclick="removeSelection(${formid})"><i class="bi bi-x"></i></i></button>`
+    );
+    const updateValue = (selector, value) => {
+      const input = form.find(selector);
+      if (input.length) {
+        input.val(value);
+      }
+    };
+
+    const getInputValue = (selector) => form.find(selector).val();
+
+    if (getInputValue("#tenKhachHang").trim().length == 0) {
+      updateValue("#tenKhachHang", customer.name);
+    }
+    if (getInputValue("#soDienThoai").trim().length == 0) {
+      updateValue("#soDienThoai", customer.phone);
+    }
+    updateHoaDon(formid);
+  } catch (error) {
+    console.error(error);
+  }
+}
+function removeSelection(formid) {
+  const form = $(`#hoaDon${formid}`);
+  const dropselect = form.find(`#selectkhachhang`);
+  form.find("input#tenKhachHang").val("");
+  form.find("input#soDienThoai").val("");
+  dropselect.empty(); // Clear the current content
+  dropselect.append(
+    `<input type="text" id="searchtext" name="query" placeholder="Chọn khách hàng" title="Enter search keyword" autocomplete="off" onkeyup="updateSearch(${formid})">`
+  );
+  dropselect.append(
+    '<button type="button"><i class="bi bi-plus-lg" data-bs-toggle="modal" data-bs-target="#modelAddKhachHang"></i></button>'
+  );
+}
+
+function addNewKhachHang(event) {
+  event.preventDefault();
+  var form = event.target;
+  var formData = new FormData(form);
+  // Validation rules
+  var name = formData.get("name");
+  var phone = formData.get("phone");
+  resetErrorElement(form.querySelector("input[name='name']"));
+  resetErrorElement(form.querySelector("input[name='phone']"));
+  resetErrorElement(form.querySelector("input[name='address']"));
+  var errorcount = 0;
+  if (!name || name.trim() === "") {
+    setErrorElement(
+      form.querySelector("input[name='name']"),
+      "Tên không được để trống"
+    );
+    errorcount++;
+  }
+  var phonePattern = /^[0-9]{10}$/; // Adjust this pattern to match your phone number format
+  if (!phone || !phonePattern.test(phone)) {
+    setErrorElement(
+      form.querySelector("input[name='phone']"),
+      "Số điện thoại không hợp lệ"
+    );
+    errorcount++;
+  }
+  if (errorcount > 0) {
+    return false;
+  }
+
+  // Build customer object
+  var customer = {
+    name: formData.get("name"),
+    phone: formData.get("phone"),
+    address: formData.get("address"),
+    gender: formData.get("gender") === "true",
+    birth_date: formData.get("birth_date"),
+    city: formData.get("city"),
+    country: formData.get("country"),
+    fulladdress: formData.get("fulladdress"),
+  };
+  // Convert the customer object to JSON
+  var customerJson = JSON.stringify(customer);
+  axios
+    .post("/admin/counter/customer", customerJson, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+      $("#modelAddKhachHang").modal("hide");
+      new Notify({
+        status: "success",
+        title: "Thành công",
+        text: "Thêm khách hàng mới thành công",
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      new Notify({
+        status: "error",
+        title: "Lỗi",
+        text: "Thêm khách hàng mới không thành công !!",
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
+    });
+}
+// form.submit();

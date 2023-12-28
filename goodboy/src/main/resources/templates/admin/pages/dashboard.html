@@ -59,6 +59,7 @@
               <div class="ps-3">
                 <h6 id="totalSalesIncome">
                 </h6>
+                <span class="text-success small pt-1 fw-bold" id="incomegrow"></span>
               </div>
             </div>
           </div>
@@ -126,14 +127,17 @@
       <!-- Char  -->
       <div class="col-12 bg-light">
         <div class="card top-selling overflow-auto">
-          <h5 class="card-title mx-3">Doanh thu</h5>
+          <h5 class="card-title mx-3">Doanh thu <span id="fillterforchar">| Hôm nay</span></h5>
           <div>
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="navtab-char">
               <li class="nav-item">
-                <button class="nav-link" href="#">Theo giờ</button>
+                <button class="nav-link char-cate active" onclick="selectChar(this, 1)">Theo giờ</button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" href="#">Theo ngày</button>
+                <button class="nav-link char-cate" onclick="selectChar(this ,2)">Theo Thứ</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link char-cate" onclick="selectChar(this,3)">Theo ngày</button>
               </li>
             </ul>
           </div>
@@ -143,10 +147,13 @@
               <li class="dropdown-header text-start">
                 <h6>Filter</h6>
               </li>
-              <li><a class="dropdown-item" onclick="getThisWeekIncomeChart()">Tuần nay</a></li>
-              <li><a class="dropdown-item" onclick="getThisMouthIncomeChart()">Tháng nay</a></li>
-              <li><a class="dropdown-item" onclick="getThisYearIncomeChart()">Năm nay</a></li>
-              <li><a class="dropdown-item" onclick="getFiveYearLastIncomeChart()">5 năm</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,1)">Hôm nay</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,2)">Hôm qua</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,3)">Tuần này</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,4)">Tuần trước</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,5)">Tháng nay</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,6)">Tháng trước</a></li>
+              <!-- <li><a class="dropdown-item" onclick="getFiveYearLastIncomeChart()">5 năm</a></li> -->
             </ul>
           </div>
           <div class="card-body pb-0" style="min-height: 200px;">

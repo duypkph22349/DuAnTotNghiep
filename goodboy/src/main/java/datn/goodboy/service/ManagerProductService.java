@@ -15,14 +15,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import datn.goodboy.model.entity.ImageProduct;
 import datn.goodboy.model.entity.Images;
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.request.ProductAddRequest;
+import datn.goodboy.model.request.ProductRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
+import datn.goodboy.repository.ImageProductRepository;
 import datn.goodboy.repository.ImageRepository;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
@@ -39,6 +42,8 @@ public class ManagerProductService implements PanigationInterface<Product> {
   private ProductDetailRepository productDetailRepository;
   @Autowired
   private BrandService brandService;
+  @Autowired
+  private ProductService productService;
 
   @Autowired
   private MaterialService materialService;
@@ -62,6 +67,8 @@ public class ManagerProductService implements PanigationInterface<Product> {
   CloudinaryImageService cloudService;
   @Autowired
   ImageRepository imagesRepository;
+  @Autowired
+  ImageProductRepository imagesProductRepository;
 
   public Page<Product> findAll(Pageable pageable) {
     return productRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -185,6 +192,7 @@ public class ManagerProductService implements PanigationInterface<Product> {
       Size size = sizeService.getById(productDetailAdd.getIdSize());
       productDetail.setIdPattern(pattern);
       productDetail.setIdSize(size);
+      productDetail.setIdProduct(productsave);
       productDetail.setDescription(productDetailAdd.getDescription());
       productDetail.setPrice(productDetailAdd.getPrice());
       productDetail.setQuantity(productDetailAdd.getQuantity());
@@ -227,4 +235,23 @@ public class ManagerProductService implements PanigationInterface<Product> {
     return null;
   }
 
+  public ImageProduct saveImageProduct(int id, MultipartFile image) {
+    Optional<Product> product = productRepository.findById(id);
+    if (product.isPresent()) {
+      try {
+        String url = cloudService.saveImage(image);
+        ImageProduct images = new ImageProduct();
+        images.setImg(url);
+        images.setIdProduct(product.get());
+        return imagesProductRepository.save(images);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return null;
+  }
+
+  public Product updateProduct(ProductRequest request) {
+    return productService.updateProduct(request);
+  }
 }

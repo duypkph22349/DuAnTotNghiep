@@ -34,10 +34,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Page<Product> getProductSalesByPriceAsc(Pageable pageable);
 
-    // @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND
-    // p.deleted = false")
+    @Query("SELECT p FROM Product p WHERE SIZE(p.productDetails) > 0 AND  p.deleted = false")
 
-    // Page<Product> getProductSalesByPriceDesc(Pageable pageable);
+    Page<Product> getProductSalesByPriceDesc(Pageable pageable);
+
     Page<Product> findAll(Pageable pageable);
 
     @Query("SELECT p FROM Product p " +
@@ -48,5 +48,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("selectedScarfTypes") List<Long> selectedScarfTypes,
             @Param("selectedColors") List<Long> selectedColors);
 
-    Page<Product> getProductSalesByPriceDesc(Pageable pageable);
 }

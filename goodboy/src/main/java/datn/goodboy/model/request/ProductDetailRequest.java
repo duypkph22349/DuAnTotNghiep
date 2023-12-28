@@ -37,13 +37,13 @@ public class ProductDetailRequest {
   }
 
   List<Images> image = new ArrayList<>();
-  int id;
+  Integer id;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idProduct;
+  Integer idProduct;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idPattern;
+  Integer idPattern;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idSize;
+  Integer idSize;
 
   String description;
   @NotNull(message = "Trường này không thể bỏ qua")
@@ -52,9 +52,9 @@ public class ProductDetailRequest {
   int quantity;
   @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
   Float price;
-  @NotNull
-  @NotBlank
-  @Length(min = 5, message = "Tên không thể quá ngắn")
+  // @NotNull
+  // @NotBlank
+  // @Length(min = 5, message = "Tên không thể quá ngắn")
   String name;
   @NotNull
   int status;

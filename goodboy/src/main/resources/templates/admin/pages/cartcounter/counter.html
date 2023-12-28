@@ -17,7 +17,7 @@
 
 <body layout:fragment="content">
     <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/selectdropdown.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/dropdownselect.css}">
     <div class="pagetitle">
         <h1>Dashboard</h1>
         <nav>
@@ -195,9 +195,199 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modelAddKhachHang" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel"><strong>Thêm khách hàng mới</strong></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="addNewKhachHang(event)" class="row g-3">
+                        <div>
+                            <label><b>Tên:</b></label>
+                            <input type="text" name="name" class="form-control">
+                        </div>
+                        <div>
+                            <label><b>Số điện thoại:</b></label>
+                            <input type="text" name="phone" class="form-control">
+                        </div>
+                        <div>
+                            <label><b>Địa Chỉ:</b></label>
+                            <input type="text" name="address" class="form-control">
+                        </div>
+                        <div>
+                            <label><b>Giới tính:</b></label>
+                            <input type="radio" name="gender" value="false" checked="true">Nam
+                            <input type="radio" name="gender" value="true">Nữ
+                        </div>
+                        <div>
+                            <label><b>Ngày sinh:</b></label>
+                            <input type="date" name="birth_date" class="form-control">
+                        </div>
+                        <div class="container">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <label><b>Thành phố</b></label>
+                                    <select class="form-select" id="Provinces" onchange="getDistricts()">
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label><b>Huyện</b></label>
+                                    <select class="form-select" id="Districts" name="city" onchange="getWards()">
+
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label><b>Xã</b></label>
+                                    <select class="form-select" name="country" onchange="setFullAdress()" id="Wards">
+                                        Chọn
+                                        Thị trấn/ Xã/ Phường
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="FullAddress" name="fulladdress">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><b>Đóng</b>
+                            </button>
+                            <button type="submit" class="btn btn-success"><b>Thêm</b></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script th:src="@{/assets/js/counter/counter.js}"></script>
     <script th:src="@{/assets/js/counter/localStore.js}"></script>
-    <script th:src="@{/assets/js/counter/dropdownselect.js}"></script>
+    <script>
+        const modaladdKhachHang = document.getElementById("modelAddKhachHang");
+        const provinceSelect = modaladdKhachHang.querySelector("#Provinces");
+        const districtSelect = modaladdKhachHang.querySelector("#Districts");
+        const wardSelect = modaladdKhachHang.querySelector("#Wards");
+        function getProvinces() {
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province",{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    const defaultOption = document.createElement("option");
+                    defaultOption.value = ""; // Set the value as needed
+                    defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+                    // Set the 'disabled' and 'selected' attributes to make it the default option
+                    defaultOption.disabled = true;
+                    defaultOption.selected = true;
+                    provinceSelect.appendChild(defaultOption);
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].ProvinceName; // Set the text of the option
+                        option.setAttribute("providecode",options[i].ProvinceID);
+                        provinceSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:",error));
+        }
+        function getDistricts() {
+            const selectedOption = provinceSelect.options[provinceSelect.selectedIndex];
+            const customAttribute = selectedOption.getAttribute("providecode");
+            const provinceid = parseInt(customAttribute);
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({ province_id: provinceid }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    //remove all child
+                    resetDistrict();
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].DistrictName; // Set the text of the option
+                        option.setAttribute("districtcode",options[i].DistrictID);
+                        districtSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:",error));
+        }
+        function getWards() {
+            const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+            const customAttribute = selectedOption.getAttribute("districtcode");
+            const districtid = parseInt(customAttribute);
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({ district_id: districtid }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    //remove all child
+                    resetWard();
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].WardName;
+                        // Set the text of the option
+                        wardSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:",error));
+        }
+        function setFullAdress() {
+            const proselect = provinceSelect.options[provinceSelect.selectedIndex];
+            const proname = proselect.text;
+            const districselect = districtSelect.options[districtSelect.selectedIndex];
+            const distname = districselect.text;
+            const wardName = wardSelect.options[wardSelect.selectedIndex];
+            const wardname = wardName.text;
+            const fullAdress = wardname + ", " + distname + " ," + proname;
+            modaladdKhachHang.querySelector("#FullAddress").value = String(fullAdress);
+            console.log(fullAdress)
+        }
+        function resetDistrict() {
+            while (districtSelect.firstChild) {
+                districtSelect.removeChild(districtSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+
+            districtSelect.appendChild(defaultOption);
+            resetWard();
+        }
+        function resetWard() {
+            while (wardSelect.firstChild) {
+                wardSelect.removeChild(wardSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            wardSelect.appendChild(defaultOption);
+        }
+        getProvinces();
+    </script>
+    <!-- <script th:src="@{/assets/js/counter/dropdownselect.js}"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 </body>
 

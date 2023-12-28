@@ -3,6 +3,7 @@ package datn.goodboy.controller.usercontroller;
 import java.util.List;
 import java.util.Map;
 
+import datn.goodboy.repository.BillDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.ColorService;
+import datn.goodboy.service.ImageProductService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.PatternTypeService;
@@ -61,6 +63,21 @@ public class ProductDetailControllerUser {
 
     @Autowired
     private StylesService stylesService;
+
+    @Autowired
+    private CartDetailService cartDetailService;
+
+
+    @Autowired
+    private BillDetailRepository billDetailRepository;
+
+
+    // @ModelAttribute("brand-combobox")
+    // public ProductDetailFilter fillter() {
+    // return filter;
+    // }
+    @Autowired
+    private ImageProductService imageProductService;
 
     @ModelAttribute("brandCbb")
     public List<Map<Integer, String>> getComboboxBrand() {
@@ -119,9 +136,6 @@ public class ProductDetailControllerUser {
         return convert;
     }
 
-    @Autowired
-    private CartDetailService cartDetailService;
-
     public int rowcount = 10;
     public int[] pagenumbers;
     public String sortBy = "createdAt";
@@ -137,11 +151,13 @@ public class ProductDetailControllerUser {
     @GetMapping({ "index", "" })
     public String getIndexpage(Model model) {
         this.pageno = 1;
-        this.rowcount = 10;
+        this.rowcount = 8;
         this.sortBy = "createdAt";
         this.sortDir = false;
         this.pagenumbers = service.getPanigation(rowcount, pageno);
         List<Product> list = service.getPageNo(1, rowcount, sortBy, sortDir);
+        List<ProductDetail> countTotal = billDetailRepository.countTotalQuantityByProductDetail();
+        model.addAttribute("countTotal", countTotal);
         this.totalpage = service.getPageNumber(rowcount);
         model.addAttribute("totalpage", this.totalpage);
         model.addAttribute("list", list);
@@ -151,10 +167,11 @@ public class ProductDetailControllerUser {
         model.addAttribute("rowcount", this.rowcount);
         model.addAttribute("brands", brandService.getAllBrands());
         model.addAttribute("styles", stylesService.getAllStyles());
-        model.addAttribute("colors", colorService.getAllColor());
-
-        return "user/product.html";
+        model.addAttribute("origins", originService.getAllOrigin());
+        model.addAttribute("material", materialService.getAllMaterial());
+        return "user/product";
     }
+
 
     // panigation and sort
     @GetMapping("getcountrow")
@@ -187,7 +204,11 @@ public class ProductDetailControllerUser {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("rowcount", rowcount);
-        return "user/product.html";
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("styles", stylesService.getAllStyles());
+        model.addAttribute("origins", originService.getAllOrigin());
+        model.addAttribute("material", materialService.getAllMaterial());
+        return "user/product";
     }
 
     // @ModelAttribute("filter") ProductFilter filter
@@ -257,6 +278,10 @@ public class ProductDetailControllerUser {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("list", list);
         model.addAttribute("rowcount", rowcount);
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("styles", stylesService.getAllStyles());
+        model.addAttribute("origins", originService.getAllOrigin());
+        model.addAttribute("material", materialService.getAllMaterial());
         return "user/product";
     }
 
@@ -264,7 +289,7 @@ public class ProductDetailControllerUser {
     public String getProductDetailPage(Model model, @PathVariable("id") int id) {
         Product product = service.getById(id);
         model.addAttribute("product", product);
-        return "user/product_detail.html";
+        return "user/product_detail";
     }
 
     @PostMapping("addtocart/{id}")
@@ -276,7 +301,10 @@ public class ProductDetailControllerUser {
             cartDetail.setQuantity(quantity);
             cartDetailService.saveCart(cartDetail);
         }
-        return "user/cart";
+        return "redirect:/cart";
     }
+
+
+
 
 }

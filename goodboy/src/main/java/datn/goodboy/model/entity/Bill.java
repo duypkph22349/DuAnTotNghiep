@@ -3,10 +3,22 @@ package datn.goodboy.model.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -134,4 +146,14 @@ public class Bill {
   @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
   @JsonIgnore
   private VoucherDetail voucherDetail;
+
+
+  public String getbillDetailString() {
+    String result = "BillDetail = [ idproductdetail = {";
+    for (BillDetail billDetail2 : billDetail) {
+      result += billDetail2.getProductDetail().getId() + ", ";
+    }
+    result += "}]";
+    return result;
+  }
 }

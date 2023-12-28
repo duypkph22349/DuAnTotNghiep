@@ -1,11 +1,7 @@
 package datn.goodboy.controller.usercontroller;
 
-import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.model.entity.Customer;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.repository.CartRepository;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 import datn.goodboy.service.ProductDetailService;
@@ -13,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,8 +38,6 @@ public class CartControllerUser {
         Integer quantity = cartDetailService.getQuantity(cartDetails);
         model.addAttribute("quantity", quantity);
 
-        Integer quantity2 = cartDetailService.getQuantity2(cartDetails);
-        model.addAttribute("quantity2", quantity2);
         return "user/cart";
     }
 

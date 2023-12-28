@@ -7,10 +7,8 @@ const chatlieuInput = formaddproduct.querySelector("#chatlieuInput");
 const kieudangInput = formaddproduct.querySelector("#kieudangInput");
 const productdetailAdd = formaddproduct.querySelector("#productdetailAdd");
 const hoavanmuladd = document.getElementById("hoavanmuladd");
-
 const listhoavan = [];
 // lay data form backend
-
 function getLoaiSanPham() {
   axios
     .get("/admin/managerproduct/category")
@@ -241,7 +239,7 @@ function AddKichThuoc(event) {
   event.preventDefault();
   var formData = new FormData(document.getElementById("addKichThuoc"));
   axios
-    .post("/admin/managerproduct/addpattern", formData)
+    .post("/admin/managerproduct/addsize", formData)
     .then(function (response) {
       $("#modelAddKichThuoc").modal("hide");
       const listKichThuoc = formaddproduct.querySelectorAll(".kichthuocselect");

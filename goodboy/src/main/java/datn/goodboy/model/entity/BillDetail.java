@@ -1,5 +1,6 @@
 package datn.goodboy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class BillDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

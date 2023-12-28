@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,11 +45,11 @@ public class Customer {
   String phone;
   @Column(name = "birth_date")
   LocalDate birth_date;
-  @Column(name = "address")
+  @Column(name = "thanh_pho")
   String address;
-  @Column(name = "districtcode")
+  @Column(name = "new_huyen")
   String city;
-  @Column(name = "wardcode")
+  @Column(name = "xa")
   String country;
   @Column(name = "fulladdress")
   String fulladdress;
@@ -65,6 +67,7 @@ public class Customer {
 
   @OneToOne(mappedBy = "customer")
   @ToString.Exclude
+  @JsonIgnore
   private Cart cart;
 
 }
