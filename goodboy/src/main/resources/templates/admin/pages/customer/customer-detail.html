@@ -44,11 +44,28 @@
         <input type="text" th:name="phone"  class="form-control" th:value="${detail.phone}">
     </div>
     <div style="clear: both; display: block; height: 10px"></div>
-    <select id="Provinces"  onchange="getDistricts()"></select>
-    <select id="Districts"th:selected="${detail.city==city}" th:name="city" onchange="getWards()">
-    </select>
-    <select th:name="country" onchange="setFullAdress()" id="Wards">
-    </select>
+    <div class="form-group col-4">
+        <label>Tỉnh/Thành phố</label>
+        <select class="form-control" id="province"
+                th:name="address">
+            <option th:value="${detail.address}" th:text="${detail.address}">Chọn Tỉnh/Thành phố</option>
+        </select>
+    </div>
+
+    <div class="form-group col-4">
+        <label>Quận/Huyện</label>
+        <select class="form-control " id="district"
+                th:name="city">
+            <option th:value="${detail.city}" th:text="${detail.city}">Chọn Quận/Huyện</option>
+        </select>
+    </div>
+
+    <div class="form-group col-4">
+        <label>Xã/Phường</label>
+        <select class="form-control" id="ward" th:name="country">
+            <option th:value="${detail.country}" th:text="${detail.country}">Chọn Xã/Phường</option>
+        </select>
+    </div>
     <input type="hidden" id="FullAddress" th:name="fulladdress">
     <div style="clear: both; display: block; height: 10px"></div>
     <div>
@@ -203,6 +220,152 @@
 
     getProvinces();
 </script>
+    <script>
+        const host = "https://provinces.open-api.vn/api/";
+        var callAPI = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "province", "Tỉnh/Thành phố");
+                });
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district", "Quận/Huyện");
+                });
+        }
+        var callApiWard = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward", "Xã/Phường");
+                });
+        }
+
+        var renderData = (array, select, type) => {
+            let row = ' <option disable value="" selected>Chọn ' + type + '</option>';
+
+            array.forEach(element => {
+                row += `<option value="${element.name}" data-code="${element.code}">${element.name}</option>`
+            });
+            document.querySelector("#" + select).innerHTML = row
+        }
+
+        $("#province").change(() => {
+            const selectedCode = $("#province option:selected").data("code");
+            callApiDistrict(host + "p/" + selectedCode + "?depth=2");
+            printResult();
+        });
+        $("#district").change(() => {
+            const selectedCode = $("#district option:selected").data("code");
+            callApiWard(host + "d/" + selectedCode + "?depth=2");
+            printResult();
+        });
+        $("#ward").change(() => {
+            printResult();
+        })
+
+        var printResult = () => {
+            if ($("#district").val() != "" && $("#province").val() != "" &&
+                $("#ward").val() != "") {
+                let result = $("#province option:selected").text() +
+                    " | " + $("#district option:selected").text() + " | " +
+                    $("#ward option:selected").text();
+                $("#result").text(result)
+            }
+        }
+
+
+        var callAPI2 = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "province2", "Tỉnh/Thành phố");
+
+                });
+        }
+        callAPI2('https://provinces.open-api.vn/api/?depth=1');
+        var callApiDistrict2 = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district2", "Quận/Huyện");
+                });
+        }
+        var callApiWard2 = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward2", "Xã/Phường");
+                });
+        }
+
+        $("#province2").change(() => {
+            const selectedCode = $("#province2 option:selected").data("code");
+            callApiDistrict2(host + "p/" + selectedCode + "?depth=2");
+            printResult2();
+        });
+        $("#district2").change(() => {
+            const selectedCode = $("#district2 option:selected").data("code");
+            callApiWard2(host + "d/" + selectedCode + "?depth=2");
+            printResult2();
+        });
+        $("#ward2").change(() => {
+            printResult2();
+        })
+
+        var printResult2 = () => {
+            if ($("#district2").val() != "" && $("#province2").val() != "" &&
+                $("#ward2").val() != "") {
+                let result = $("#province2 option:selected").text() +
+                    " | " + $("#district2 option:selected").text() + " | " +
+                    $("#ward2 option:selected").text();
+                $("#result2").text(result)
+            }
+        }
+
+        $(document).ready(function () {
+            $(".btn-detail").click(function () {
+                var madc = $(this).attr("madc");
+                var form = $("#exampleModal2"); // Chọn tất cả các thẻ <form> trên trang
+                $.ajax({
+                    url: "http://localhost:2020/rest/diachi/" + "getDiaChiByMa/" + madc,
+                    method: "GET",
+                    dataType: "json", // Kiểu dữ liệu trả về từ máy chủ (json, html, text, etc.)
+                    success: function (data) {
+                        form.find('[name="id"]').val(data.id);
+                        form.find('[name="madc"]').val(data.ma);
+                        form.find('[name="tendiachi"]').val(data.tendiachi);
+                        form.find('[name="thanhpho"]').val(data.thanhpho);
+                        let selected1 = $("#province2 option:selected").data("code");
+                        callApiDistrict2(host + "p/" + selected1 + "?depth=2");
+                        setTimeout(function () {
+                            form.find('[name="huyen"]').val(data.huyen);
+                            let selected2 = $("#district2 option:selected").data("code");
+                            callApiWard2(host + "d/" + selected2 + "?depth=2");
+                            setTimeout(function () {
+                                form.find('[name="xa"]').val(data.xa);
+                            }, 300);
+                        }, 200);
+                        form.find('[name="sdt_nguoi_nhan"]').val(data.sdt_nguoi_nhan);
+                        form.find('[name="ten_nguoi_nhan"]').val(data.ten_nguoi_nhan);
+                        form.find('[name="khachHang.id"]').val(data.khachHang.id);
+                        form.find('[name="trangthai"]').each(function () {
+                            if ($(this).val() == data.trangthai) {
+                                $(this).prop('checked', true);
+                                $(this).attr('disable', true);
+                            } else {
+                                $(this).prop('checked', false);
+                                $(this).attr('disable', false);
+                            }
+                        });
+
+                    },
+                    error: function (error) {
+                        console.log("Lỗi khi tải dữ liệu: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+
 </section>
 </body>
 </html>

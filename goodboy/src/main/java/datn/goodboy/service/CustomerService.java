@@ -38,6 +38,10 @@ public class CustomerService {
     public Optional<Customer> getCustomerById(UUID id) {
         return customerRepository.findById(id);
     }
+    public Optional<Customer> getCustomerByIds(Customer id) {
+        return customerRepository.findById(id.getId());
+    }
+
 
     public Customer customerByid(UUID id) {
         return customerRepository.findById(id).get();

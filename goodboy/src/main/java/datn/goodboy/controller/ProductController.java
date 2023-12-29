@@ -25,9 +25,7 @@ import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ImageProductService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
-import datn.goodboy.service.PatternTypeService;
 import datn.goodboy.service.ProductService;
-import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
@@ -37,6 +35,10 @@ import jakarta.validation.Valid;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private BrandService brandService;
+
     @Autowired
     TrangThaiConvert convert;
 
@@ -45,9 +47,6 @@ public class ProductController {
     public TrangThaiConvert convert() {
         return convert;
     }
-
-    @Autowired
-    private BrandService brandService;
 
     @Autowired
     private MaterialService materialService;
@@ -165,4 +164,9 @@ public class ProductController {
         productService.deleteProduct(id);
         return "redirect:/admin/product/dsProduct";
     }
+
+
+
+
+
 }
