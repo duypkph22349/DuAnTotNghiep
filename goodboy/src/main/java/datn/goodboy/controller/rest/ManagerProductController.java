@@ -207,11 +207,11 @@ public class ManagerProductController {
     return service.saveImageProduct(id, image);
   }
 
-  @PostMapping(value = "product/image/productdetails", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(value = "product/image/productdetails")
   public String postMethodName(
-      @RequestPart("file") MultipartFile file,
-      @RequestPart("idhoavan") String idhoavan,
-      @RequestPart("idproduct") String idproduct) {
-    return "responseEntity";
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("idhoavan") int idhoavan,
+      @RequestParam("idproduct") int idproduct) {
+    return service.saveImage(idproduct, idhoavan, file);
   }
 }

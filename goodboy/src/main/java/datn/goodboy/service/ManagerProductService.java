@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -230,6 +231,30 @@ public class ManagerProductService implements PanigationInterface<Product> {
         return url;
       } catch (IOException e) {
         e.printStackTrace();
+      }
+    }
+    return null;
+  }
+
+  public String saveImage(int idProduct, int idhoavan, MultipartFile image) {
+    Optional<Product> product = productRepository.findById(idProduct);
+    if (product.isPresent()) {
+      List<ProductDetail> listHoaVanProduct = product.get().getProductDetails().stream()
+          .filter(t -> t.getIdPattern().getId() == idhoavan).collect(Collectors.toList());
+      if (!listHoaVanProduct.isEmpty()) {
+        try {
+          String url = cloudService.saveImage(image);
+          listHoaVanProduct.stream().forEach(
+              element -> {
+                Images images = new Images();
+                images.setImg(url);
+                images.setIdProductDetail(element);
+                imagesRepository.save(images);
+              });
+          return url;
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
     return null;

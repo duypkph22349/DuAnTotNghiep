@@ -139,15 +139,32 @@ function getKichTuocMulAdd() {
       console.error("Error getting data:", error);
     });
 }
-function getKichThuoc(kichthuocSelect) {
-  axios;
-  axios
+async function getKichThuoc(kichthuocSelect) {
+  await axios
     .get("/admin/managerproduct/size")
     .then(function (response) {
       for (var i = 0; i < response.data.length; i++) {
         const newOption = document.createElement("option");
         newOption.value = response.data[i].id;
         newOption.text = response.data[i].name;
+        kichthuocSelect.appendChild(newOption);
+      }
+    })
+    .catch(function (error) {
+      console.error("Error getting size:", error);
+    });
+}
+async function getKichThuocSelected(kichthuocSelect, selected) {
+  await axios
+    .get("/admin/managerproduct/size")
+    .then(function (response) {
+      for (var i = 0; i < response.data.length; i++) {
+        const newOption = document.createElement("option");
+        newOption.value = response.data[i].id;
+        newOption.text = response.data[i].name;
+        if (selected == response.data[i].id) {
+          newOption.selected = true;
+        }
         kichthuocSelect.appendChild(newOption);
       }
     })
@@ -529,7 +546,9 @@ function submitForm(event) {
           const inputImageProductDetails = document.querySelectorAll(
             "input[type='file'].hoavanimages"
           );
+
           const uploadPromises = [];
+
           inputImageProductDetails.forEach((element) => {
             const files = element.files;
             const idhoavan = element.getAttribute("idhoavan");
@@ -539,8 +558,9 @@ function submitForm(event) {
               formData.append("file", file);
               formData.append("idhoavan", idhoavan);
               formData.append("idproduct", response.data.id);
+
               const uploadPromise = axios.post(
-                "product/image/productdetails",
+                "/admin/managerproduct/product/image/productdetails",
                 formData,
                 {
                   headers: {
@@ -548,13 +568,34 @@ function submitForm(event) {
                   },
                 }
               );
+
               uploadPromises.push(uploadPromise);
             });
           });
+
           Promise.all(uploadPromises)
             .then((uploadResponses) => {
               uploadResponses.forEach((uploadResponse) => {
                 console.log("Upload Response:", uploadResponse);
+
+                new Notify({
+                  status: "success",
+                  title: "Thành công",
+                  text: "Thêm ảnh thành công",
+                  effect: "fade",
+                  speed: 300,
+                  customClass: "",
+                  customIcon: `<img src="${uploadResponse.data}" alt="Ảnh sản phẩm" class="img-fluid" style="height: 30px;">`,
+                  showIcon: true,
+                  showCloseButton: true,
+                  autoclose: true,
+                  autotimeout: 3000,
+                  gap: 20,
+                  distance: 20,
+                  type: 1,
+                  position: "right top",
+                  customWrapper: "",
+                });
               });
             })
             .catch((uploadError) => {
@@ -577,7 +618,7 @@ function getAllHoaVanChoose() {
       if (!listhoavan.includes(checkbox.value)) {
         listhoavan.push(checkbox.value);
         text = checkbox.getAttribute("nametext");
-        addNewDivHoaVan(`${checkbox.value}`, text);
+        addNewDivHoaVan(`${checkbox.value}`, text, getAllSizeChoose());
       }
     } else {
       checkbox.disabled = false;
@@ -587,7 +628,25 @@ function getAllHoaVanChoose() {
       }
     }
   });
+  removeSizeChoose();
   return listhoavan;
+}
+function getAllSizeChoose() {
+  const checkboxes = kichthuocmuladd.querySelectorAll(".sizemulchoose");
+  let listsize = [];
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      checkbox.disabled = true;
+      listsize.push(checkbox.value);
+    } else {
+      checkbox.disabled = false;
+      const index = listsize.indexOf(checkbox.value);
+      if (index !== -1) {
+        listsize.splice(index, 1);
+      }
+    }
+  });
+  return listsize;
 }
 function removeHoaVanChoose(idHoaVan) {
   // Remove the specified idHoaVan from the listhoavan array
@@ -606,7 +665,16 @@ function removeHoaVanChoose(idHoaVan) {
   }
   return listhoavan;
 }
-function addNewDivHoaVan(idhoavan, hoavanname) {
+function removeSizeChoose() {
+  const checkboxes = kichthuocmuladd.querySelectorAll(`input.sizemulchoose`);
+  checkboxes.forEach((element) => {
+    if (element) {
+      element.disabled = false;
+      element.checked = false; // Uncheck the checkbox if needed
+    }
+  });
+}
+async function addNewDivHoaVan(idhoavan, hoavanname, sizeSelects) {
   const hoavanexits = document.getElementById(idhoavan);
   if (hoavanexits) {
     return;
@@ -629,9 +697,15 @@ function addNewDivHoaVan(idhoavan, hoavanname) {
   `;
   // Append the new div to the 'productdetailAdd' element
   productdetailAdd.appendChild(newDiv);
-  addNewFormProductDetail(`${idhoavan}`);
+  if (!sizeSelects || sizeSelects.length === 0) {
+    addNewFormProductDetail(`${idhoavan}`);
+  } else {
+    sizeSelects.forEach(async (size) => {
+      await addNewFormProductDetailKichThuoc(`${idhoavan}`, size);
+    });
+  }
 }
-function addNewFormProductDetail(idhoavan) {
+async function addNewFormProductDetail(idhoavan) {
   // Create a new div element for the product detail form
   const newFormDiv = document.createElement("div");
   newFormDiv.classList.add("row", "border", "py-3", "mb-3", "productdetail");
@@ -678,13 +752,58 @@ function addNewFormProductDetail(idhoavan) {
   const targetElement = document.getElementById(`hoavan${idhoavan}`);
   targetElement.appendChild(newFormDiv);
   const kichthuocselect = newFormDiv.querySelector(".kichthuocselect");
-  getKichThuoc(kichthuocselect);
+  await getKichThuoc(kichthuocselect);
+  await checkHoaVanSeleted(`hoavan${idhoavan}`);
 }
-function removeProductDetail(element) {
-  const productDetailDiv = element.closest(".productdetail");
-  if (productDetailDiv) {
-    productDetailDiv.remove();
-  }
+async function addNewFormProductDetailKichThuoc(idhoavan, idkichthuocselect) {
+  // Create a new div element for the product detail form
+  const newFormDiv = document.createElement("div");
+  newFormDiv.classList.add("row", "border", "py-3", "mb-3", "productdetail");
+  newFormDiv.setAttribute("idhoavan", idhoavan);
+  // HTML content for the product detail form
+  newFormDiv.innerHTML = `
+                      <div class="col-6 row mb-3">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Kích thước</label>
+                      <div class="col-sm-6">
+                        <select class="form-select kichthuocselect" aria-label="Default select example" name="khichthuoc" id="kichthuocInput" onchange="checkHoaVanSeleted('hoavan${idhoavan}')">
+                          <option value="-1" selected="selected" disabled > Chọn kích thước </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3">
+                      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddKichThuoc">
+                        Thêm</button>
+                      </div>
+                    </div>
+                    <div class="col-6 row mb-3">
+                      <label for="inputNumber" class="col-sm-4 col-form-label">Số lượng</label>
+                      <div class="col-sm-6">
+                        <input type="number" class="form-control" value=0 min=0 name="soluong">
+                      </div>
+                    </div>
+                    <div class="col-6 row mb-3">
+                      <label for="inputNumber" class="col-sm-3 col-form-label">Giá</label>
+                      <div class="col-sm-9">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text">đ</span>
+                          <input type="text" class="form-control" value=0 min=0  name="gia" aria-label="Amount (to the nearest dollar)">
+                          <span class="input-group-text">Vnđ</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-floating mb-3 col-12">
+                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                        style="height: 18px;" name="mota"></textarea>
+                      <label for="floatingTextarea">Mô tả</label>
+                    </div>
+                    <div class="col-2">
+                      <button class="btn btn-danger" onclick="removeFormProductDetails(event)">Xóa</button>
+                    </div>
+  `;
+  const targetElement = document.getElementById(`hoavan${idhoavan}`);
+  targetElement.appendChild(newFormDiv);
+  const kichthuocselect = newFormDiv.querySelector(".kichthuocselect");
+  await getKichThuocSelected(kichthuocselect, idkichthuocselect);
+  await checkHoaVanSeleted(`hoavan${idhoavan}`);
 }
 // Add a click event listener to the "Xóa" button
 function removeFormProductDetails(event) {
@@ -698,24 +817,6 @@ function checkHoaVanDivExits(idhoavan) {
   if (hoavanexits) {
     return true;
   }
-  return false;
-}
-function checkFormKichThuocDivExits(idhoavan, idkichthuoc) {
-  if (idkichthuoc == -1) {
-    return false;
-  }
-  const hoavandivCheck = document.getElementById(idhoavan);
-  const hoavanElements = hoavandivCheck.querySelectorAll(".productdetail");
-  hoavanElements.forEach(function (element) {
-    const size = element.querySelector('select[name="khichthuoc"]');
-    if (size.value == -1) {
-    } else {
-      if (size.value == idkichthuoc) {
-        setErrorElement(size, "Đã có kích thước này !!!");
-        return true;
-      }
-    }
-  });
   return false;
 }
 
@@ -744,6 +845,21 @@ function init() {
   getThuongHieu();
   getChatLieu();
   getKieuDang();
+}
+async function checkHoaVanSeleted(idhoavan) {
+  const hoavandivCheck = document.getElementById(idhoavan);
+  const allSizeSelects = hoavandivCheck.querySelectorAll(
+    'select[name="khichthuoc"]'
+  );
+  const allSizeValues = Array.from(allSizeSelects).map(
+    (sizeSelect) => sizeSelect.value
+  );
+  allSizeSelects.forEach((sizeSelect) => {
+    Array.from(sizeSelect.options).forEach((option) => {
+      option.disabled =
+        allSizeValues.includes(option.value) || option.value == -1;
+    });
+  });
 }
 init();
 
