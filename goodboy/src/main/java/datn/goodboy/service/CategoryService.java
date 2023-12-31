@@ -3,15 +3,12 @@ package datn.goodboy.service;
 import java.util.List;
 import java.util.Map;
 
-import datn.goodboy.model.entity.Brand;
-import datn.goodboy.model.entity.Color;
+import datn.goodboy.model.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import datn.goodboy.model.entity.Category;
-import datn.goodboy.model.entity.Material;
 import datn.goodboy.repository.CategoryRepository;
 
 @Service
@@ -27,8 +24,8 @@ public class CategoryService {
         return categoryRepository.getCategoryAble();
     }
 
-    public Category add(Category entity) {
-        return categoryRepository.save(entity);
+    public Category add(Category category) {
+        return categoryRepository.save(category);
     }
 
     public List<Category> getCategoryList() {
@@ -43,7 +40,15 @@ public class CategoryService {
         return categoryRepository.getComboBoxMap();
     }
 
-    public Page<Category> searchColorByKeyword(String keyword, Pageable pageable) {
+    public Page<Category> searchCategoryByKeyword(String keyword, Pageable pageable) {
         return categoryRepository.searchByKeyword(keyword, pageable);
+    }
+
+    public Category update(Integer id, Category category) {
+        Category category1 = categoryRepository.findById(id).get();
+        category1.setName(category.getName());
+        category1.setUpdatedAt(category.getUpdatedAt());
+        category1.setStatus(category.getStatus());
+        return categoryRepository.save(category1);
     }
 }

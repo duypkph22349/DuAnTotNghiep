@@ -3,7 +3,6 @@ package datn.goodboy.repository;
 import java.util.List;
 import java.util.Map;
 
-import datn.goodboy.model.entity.Color;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +26,8 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
   Page<Category> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
   Page<Category> findAllByOrderByCreatedAtDesc(Pageable pageable);
+<<<<<<< HEAD
+=======
+
+>>>>>>> d207771 (sửa giao diện, add category)
 }

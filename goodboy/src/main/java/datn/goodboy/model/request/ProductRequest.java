@@ -44,7 +44,7 @@ public class ProductRequest {
   Integer idBrand;
   @Min(value = 0, message = "Vui lòng chọn Material")
   Integer idMaterial;
-  @Min(value = 0, message = "Vui lòng chọn Category")
+  @Min(value = 0, message = "Vui lòng chọn CategoryController")
   Integer idCategory;
   @Min(value = 0, message = "Vui lòng chọn Styles")
   Integer idStyles;

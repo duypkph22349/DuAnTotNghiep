@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Origin</title>
+    <title>Category</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://kit.fontawesome.com/e56307bebd.js" crossorigin="anonymous"></script>
     <style>
@@ -14,28 +14,17 @@
         }
     </style>
 </head>
-
 <body>
 <section layout:fragment="content">
-<!--    <div class="pagetitle">-->
-<!--        <h1>Dashboard</h1>-->
-<!--        <nav>-->
-<!--            <ol class="breadcrumb">-->
-<!--                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>-->
-<!--                <li class="breadcrumb-item active">Origin</li>-->
-<!--            </ol>-->
-<!--        </nav>-->
-<!--    </div>&lt;!&ndash; End Page Title &ndash;&gt;-->
-    <div>
-        <h1 style="text-align: center">DANH SÁCH XUẤT XỨ</h1>
 
-        <form class="search-form d-flex align-items-center" method="get" th:action="@{'/admin/origin/search'}">
-            <input type="text" name="keyword" placeholder="Search" title="Enter search keyword"
-                   th:value="${keyword}">
+    <div>
+        <h1 style="text-align: center">CÔNG DỤNG CỦA KHĂN CHOÀNG</h1>
+
+        <form class="search-form d-flex align-items-center" method="get" th:action="@{'/admin/category/search'}">
+            <input type="text" name="keyword" placeholder="Search" title="Enter search keyword" th:value="${keyword}">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
         </form>
-        <button type="button" class="btn btn-success add-button" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-success add-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <i class="bi bi-plus"></i>
         </button>
         <table class="table mt-2 table-responsive">
@@ -50,22 +39,13 @@
             </tr>
             </thead>
             <tbody class="text-center">
-            <tr th:each="b, i : ${brandPage}">
+            <tr th:each="b, i : ${categoryPage}">
                 <td th:text="${i.index + 1}"></td>
                 <td th:text="${b.code}"></td>
                 <td th:text="${b.name}"></td>
-
-                <td th:unless="${b.deleted}" th:text="${convert.convertTrangThai(b.status)}"></td>
-                <td th:if="${b.deleted}" class="text-decoration-line-through"
-                    th:text="${convert.convertTrangThaiEmployee(b.status)}"></td>
+                <td th:text="${b.status}"></td>
                 <td>
-<!--                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${b.deleted}"-->
-<!--                       th:href="@{/admin/origin/delete(id=${b.id})}" class="btn btn-danger"><i-->
-<!--                            class="fas fa-trash-alt"></i></a>-->
-<!--                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${b.deleted}"-->
-<!--                       th:href="@{/admin/origin/delete(id=${b.id})}" class="btn btn-secondary"><i-->
-<!--                            class="fas fa-undo-alt"></i></a>-->
-                    <a th:href="@{'/admin/origin/view-update/' + ${b.id}}" class="btn btn-info"><i
+                  <a th:href="@{'/admin/category/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>
                 </td>
             </tr>
@@ -74,16 +54,15 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li th:class="${pageNum == 1} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{/admin/origin/dsOrigin(pageNum=1)}">Previous</a>
+                    <a class="page-link" th:href="@{/admin/category/dsCategory(pageNum=1)}">Previous</a>
                 </li>
                 <li class="page-item" th:each="page,iterStat : ${#numbers.sequence(1, totalPage)}">
-                    <a class="page-link"
-                       th:class="${pageNum == iterStat.index + 1} ? 'page-link active' : 'page-link'"
-                       th:href="@{/admin/origin/dsOrigin(pageNum=${iterStat.index + 1})}"
+                    <a class="page-link" th:class="${pageNum == iterStat.index + 1} ? 'page-link active' : 'page-link'"
+                       th:href="@{/admin/category/dsCategory(pageNum=${iterStat.index + 1})}"
                        th:text="${iterStat.index + 1}"></a>
                 </li>
                 <li class="page-item" th:class="${pageNum == totalPage} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{/admin/origin/dsOrigin(pageNum=${totalPage})}">Next</a>
+                    <a class="page-link" th:href="@{/admin/category/dsCategory(pageNum=${totalPage})}">Next</a>
                 </li>
             </ul>
         </nav>
@@ -94,8 +73,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form th:action="@{/admin/origin/add}" action="#" method="post">
-                        <h5 class="modal-title" id="exampleModalLabel">Thêm thương hiệu</h5>
+                    <form th:action="@{/admin/category/add}" action="#" method="post">
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm công dụng mới</h5>
                         <div>
                             <label>Tên:</label>
                             <input type="text" th:name="name" class="form-control">
@@ -119,5 +98,4 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </body>
-
 </html>
