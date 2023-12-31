@@ -22,6 +22,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
   @Query("SELECT new map(e.id as key, e.name as value) FROM Category e")
   List<Map<Integer, String>> getComboBoxMap();
+
   @Query("SELECT b FROM Category b WHERE b.code LIKE %:keyword% OR b.name LIKE %:keyword%")
   Page<Category> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 

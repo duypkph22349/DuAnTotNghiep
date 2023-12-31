@@ -41,6 +41,8 @@ public class CategoryService {
 
     public List<Map<Integer, String>> getCombobox() {
         return categoryRepository.getComboBoxMap();
+    }
+
     public Page<Category> searchColorByKeyword(String keyword, Pageable pageable) {
         return categoryRepository.searchByKeyword(keyword, pageable);
     }
