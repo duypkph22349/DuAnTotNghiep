@@ -22,7 +22,6 @@ import datn.goodboy.model.request.ProductDetailFilter;
 import datn.goodboy.model.request.ProductDetailRequest;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.ColorService;
-import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.ImageService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
@@ -282,6 +281,15 @@ public class ProductDetailController {
     productDetailRequest.resetRequest();
     model.addAttribute("productDetailRequest", productDetailRequest);
     return "/admin/pages/productdetail/form-productdetail.html";
+  }
+
+  @GetMapping("/product/{idproductdetail}/create")
+  public String goToCreateHaveProductForm(Model model, @PathVariable("idproductdetail") Integer idproductdetail) {
+    productDetailRequest = new ProductDetailRequest();
+    productDetailRequest.resetRequest();
+    productDetailRequest.setIdProduct(idproductdetail);
+    model.addAttribute("productDetailRequest", productDetailRequest);
+    return "/admin/pages/productdetail/product-productdetailform.html";
   }
 
   @GetMapping("delete")

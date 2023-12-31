@@ -1,11 +1,7 @@
 package datn.goodboy.controller.usercontroller;
 
-import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
-import datn.goodboy.model.entity.Customer;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.repository.CartRepository;
 import datn.goodboy.service.CartDetailService;
 import datn.goodboy.service.CartService;
 import datn.goodboy.service.ProductDetailService;
@@ -13,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +29,7 @@ public class CartControllerUser {
     @GetMapping("/cart")
     public String viewCart( Model model){
         Cart cart = cartService.getCart();
-        System.out.println(cart.getId());
+        System.out.println("ID cart ="+cart.getId());
         List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
         model.addAttribute("cartDetails", cartDetails);
         BigDecimal tongTien = cartDetailService.getTotal(cartDetails);
@@ -42,8 +37,10 @@ public class CartControllerUser {
 
         Integer quantity = cartDetailService.getQuantity(cartDetails);
         model.addAttribute("quantity", quantity);
+
         return "user/cart";
     }
+
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model) {
@@ -60,7 +57,7 @@ public class CartControllerUser {
 
     ){
 
-        CartDetail  cartDetail = cartDetailService.findByIdCart(id);
+        CartDetail cartDetail = cartDetailService.findByIdCart(id);
 
         if (cartDetail != null) {
             if ("tang".equals(actions)) {

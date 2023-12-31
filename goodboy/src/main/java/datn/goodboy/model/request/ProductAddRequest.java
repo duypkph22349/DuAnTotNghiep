@@ -1,10 +1,16 @@
 package datn.goodboy.model.request;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,21 +25,27 @@ import lombok.ToString;
 public class ProductAddRequest {
 
   @JsonProperty("name")
+  @NotBlank(message = "Tên không thể trống")
   String name;
 
   @JsonProperty("idOrigin")
+  @Min(value = 0, message = "nguồn gốc không hợp lệ")
   int idOrigin;
 
   @JsonProperty("idBrand")
+  @Min(value = 0, message = "thương hiệu không hợp lệ")
   int idBrand;
 
   @JsonProperty("idMaterial")
+  @Min(value = 0, message = "chất liệu không hợp lệ")
   int idMaterial;
 
   @JsonProperty("idCategory")
+  @Min(value = 0, message = "danh mục không hợp lệ")
   int idCategory;
 
   @JsonProperty("idStyles")
+  @Min(value = 0, message = "phong cách không hợp lệ")
   int idStyles;
 
   @JsonProperty("productDetails")
@@ -57,23 +69,39 @@ public class ProductAddRequest {
     this.productDetails = productDetails;
   }
 
+  public List<String> validateError() {
+    Set<String> uniqueProductDetails = new HashSet<>();
+    List<String> duplicateErrors = productDetails.stream()
+        .map(productDetail -> {
+          String key = productDetail.getIdPattern() + "-" + productDetail.getIdSize();
+          return uniqueProductDetails.add(key) ? null
+              : "Có sản phẩm chi tiết trùng lặp với idPattern và idSize giống nhau: " + key;
+        })
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    return duplicateErrors;
+  }
+
   @Getter
   @Setter
   @NoArgsConstructor
   @ToString
   public static class ProductDetailAdd {
     @JsonProperty("price")
+    @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
     float price;
+
     @JsonProperty("quantity")
-
+    @Min(value = 0, message = "Số lượng phải lớn hơn hoặc bằng 0")
     int quantity;
+
     @JsonProperty("idSize")
-
+    @Min(value = 0, message = "kích thước không hợp lệ")
     int idSize;
-    @JsonProperty("idPattern")
 
+    @JsonProperty("idPattern")
+    @Min(value = 0, message = "mẫu không hợp lệ")
     int idPattern;
-    @JsonProperty("description")
 
     String description;
 

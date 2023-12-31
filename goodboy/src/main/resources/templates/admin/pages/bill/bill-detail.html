@@ -92,18 +92,22 @@
                     Chờ xác nhận
                 </div>
                 <div data-value="2" id="tab_2" class="tab-item">
+                    <i class="tab-item bi bi-cart"></i>
+                    Chờ lấy hàng
+                </div>
+                <div data-value="3" id="tab_3" class="tab-item">
                     <i class="tab-icon bi bi-cart-check"></i>
                     Chờ giao hàng
                 </div>
-                <div data-value="3" id="tab_3" class="tab-item">
+                <div data-value="4" id="tab_4" class="tab-item">
                     <i class="tab-icon bi bi-car-front-fill"></i>
                     Đang giao hàng
                 </div>
-                <div data-value="4" id="tab_4" class="tab-item">
+                <div data-value="5" id="tab_5" class="tab-item">
                     <i class="tab-icon bi bi-box-seam"></i>
                     Đã giao hàng
                 </div>
-                <div data-value="5" id="tab_5" class="tab-item">
+                <div data-value="6" id="tab_6" class="tab-item">
                     <i class="tab-icon bi bi-check-lg"></i>
                     Thành công
                 </div>
@@ -147,10 +151,11 @@
                     <div class="item status">
                         <label>Trạng Thái</label>
                         <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
-                        <span style="background-color:gold" th:if="${bill.status == 2}">Chờ giao hàng</span>
-                        <span style="background-color:gold" th:if="${bill.status == 3}">Đang giao hàng</span>
-                        <span style="background-color:gold" th:if="${bill.status == 4}">Đã giao hàng</span>
-                        <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                        <span style="background-color:gold" th:if="${bill.status == 2}">Chờ lấy hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 3}">Chờ giao hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 5}">Đã giao hàng</span>
+                        <span style="background-color:gold" th:if="${bill.status == 6}">Thành công</span>
                     </div>
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>

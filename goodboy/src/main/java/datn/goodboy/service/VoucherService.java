@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.entity.VoucherDetail;
 import datn.goodboy.model.request.VoucherRequest;
@@ -114,6 +115,10 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucherDetail.setVoucher(voucher.get());
       voucherRepository.save(voucher.get());
       bill.setReduction_amount(voucherdetailRepository.save(voucherDetail).getMoney_reduction());
+      for (BillDetail billDetail : bill.getBillDetail()) {
+        billDetail
+            .setTotalMoney(billDetail.getTotalMoney() * (1 - (bill.getReduction_amount() / bill.getTotal_money())));
+      }
     }
   }
 

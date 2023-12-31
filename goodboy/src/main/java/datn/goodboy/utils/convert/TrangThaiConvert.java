@@ -1,5 +1,6 @@
 package datn.goodboy.utils.convert;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,12 @@ public class TrangThaiConvert {
     if (status == 2) {
     }
     return "Error";
+  }
+
+  public static BigDecimal convertNumber(Double yourNumber) {
+    BigDecimal bd = new BigDecimal(yourNumber);
+    // String result = bd.toPlainString();
+    return bd;
   }
 
   public static String convertTrangThaiEmployee(int status) {

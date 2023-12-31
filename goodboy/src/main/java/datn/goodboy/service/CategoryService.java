@@ -1,6 +1,7 @@
 package datn.goodboy.service;
 
 import java.util.List;
+import java.util.Map;
 
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Color;
@@ -38,7 +39,12 @@ public class CategoryService {
         return categoryRepository.findById(idCategory).get();
     }
 
+<<<<<<< HEAD
     public Page<Category> searchColorByKeyword(String keyword, Pageable pageable) {
         return categoryRepository.searchByKeyword(keyword, pageable);
+=======
+    public List<Map<Integer, String>> getCombobox() {
+        return categoryRepository.getComboBoxMap();
+>>>>>>> developer
     }
 }

@@ -1,6 +1,7 @@
 package datn.goodboy.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import datn.goodboy.model.entity.Color;
 import org.springframework.data.domain.Page;
@@ -19,8 +20,13 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
   @Query("SELECT ca FROM Category ca WHERE ca.status = 1 AND ca.deleted = false")
   List<Category> getCategoryList();
 
+<<<<<<< HEAD
   @Query("SELECT b FROM Category b WHERE b.code LIKE %:keyword% OR b.name LIKE %:keyword%")
   Page<Category> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
   Page<Category> findAllByOrderByCreatedAtDesc(Pageable pageable);
+=======
+  @Query("SELECT new map(e.id as key, e.name as value) FROM Category e")
+  List<Map<Integer, String>> getComboBoxMap();
+>>>>>>> developer
 }

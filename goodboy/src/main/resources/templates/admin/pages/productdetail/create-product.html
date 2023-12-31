@@ -147,7 +147,7 @@
 
     <!-- modal add hoavan -->
     <div class="modal fade" id="hoavanadd" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalToggleLabel">Chọn hoa văn mới</h5>
@@ -158,6 +158,11 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row mb-3" id="hoavanmuladd">
+            </div>
+            <hr>
+            <button type="button" class="btn btn-secondary" onclick="OpenModalAddKichThuoc()">
+              Thêm</button>
+            <div class="row mb-3" id="kichthuocmuladd">
             </div>
             <div class="">
               <button type="button" class="btn btn-success" onclick="getAllHoaVanChoose()">
@@ -275,7 +280,7 @@
           <div class="modal-body">
             <form onsubmit="AddKichThuoc(event)" id="addKichThuoc">
               <div class="row mb-3">
-                <label for="inputKichThuoc" class="col-sm-4 col-form-label">Tên kiểu dáng</label>
+                <label for="inputKichThuoc" class="col-sm-4 col-form-label">kích thước</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" name="name" id="inputKichThuoc">
                 </div>

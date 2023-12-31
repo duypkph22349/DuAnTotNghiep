@@ -1,6 +1,7 @@
 package datn.goodboy.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CategoryService;
+import datn.goodboy.service.ColorService;
+import datn.goodboy.service.ImageService;
 import datn.goodboy.service.ManagerProductService;
+import datn.goodboy.service.MaterialService;
+import datn.goodboy.service.OriginService;
+import datn.goodboy.service.PatternTypeService;
+import datn.goodboy.service.ProductService;
+import datn.goodboy.service.SizeService;
+import datn.goodboy.service.StylesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 
 @RequestMapping("/admin/managerproduct")
@@ -25,6 +36,85 @@ public class ManagerProductController {
   @ModelAttribute("convert")
   public TrangThaiConvert convert() {
     return convert;
+  }
+
+  @Autowired
+  private BrandService brandService;
+
+  @Autowired
+  private ColorService colorService;
+
+  @Autowired
+  private MaterialService materialService;
+
+  @Autowired
+  private OriginService originService;
+
+  @Autowired
+  private PatternTypeService patternTypeService;
+
+  @Autowired
+  private ProductService productService;
+
+  @Autowired
+  private SizeService sizeService;
+
+  @Autowired
+  private StylesService stylesService;
+
+  @Autowired
+  private CategoryService categoryService;
+
+  // @ModelAttribute("brand-combobox")
+  // public ProductDetailFilter fillter() {
+  // return filter;
+  // }
+  @ModelAttribute("categoryCbb")
+  public List<Map<Integer, String>> getComboboxCategory() {
+    return categoryService.getCombobox();
+  }
+
+  @Autowired
+  private ImageService imageService;
+
+  @ModelAttribute("brandCbb")
+  public List<Map<Integer, String>> getComboboxBrand() {
+    return brandService.getCombobox();
+  }
+
+  @ModelAttribute("colorCbb")
+  public List<Map<Integer, String>> getComboboxColor() {
+    return colorService.getCombobox();
+  }
+
+  @ModelAttribute("materialCbb")
+  public List<Map<Integer, String>> getComboboxMaterial() {
+    return materialService.getCombobox();
+  }
+
+  @ModelAttribute("originCbb")
+  public List<Map<Integer, String>> getComboboxOrigin() {
+    return originService.getCombobox();
+  }
+
+  @ModelAttribute("productCbb")
+  public List<Map<Integer, String>> getComboboxProduct() {
+    return productService.getCombobox();
+  }
+
+  @ModelAttribute("pattenCbb")
+  public List<Map<Integer, String>> getComboboxPattern() {
+    return patternTypeService.getCombobox();
+  }
+
+  @ModelAttribute("sizeCbb")
+  public List<Map<Integer, String>> getComboboxSize() {
+    return sizeService.getCombobox();
+  }
+
+  @ModelAttribute("stylesCbb")
+  public List<Map<Integer, String>> getComboboxStyles() {
+    return stylesService.getCombobox();
   }
 
   public int rowcount = 10;

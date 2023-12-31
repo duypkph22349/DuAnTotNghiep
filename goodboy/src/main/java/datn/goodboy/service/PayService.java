@@ -3,6 +3,7 @@ package datn.goodboy.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import datn.goodboy.service.serviceinterface.PayMentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import datn.goodboy.model.entity.Pay;
 import datn.goodboy.repository.PayRepository;
 
 @Service
-public class PayService {
+public class PayService  {
     @Autowired
     PayRepository payRepository;
 

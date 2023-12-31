@@ -1,11 +1,24 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,7 +75,7 @@ public class Bill {
   String address;
 
   @Column(name = "money_ship")
-  float money_ship;
+  Double money_ship;
 
   @Column(name = "total_money")
   Double total_money;
@@ -96,16 +109,76 @@ public class Bill {
 
   @PrePersist
   protected void onCreate() {
+
+    if (this.money_ship == null) {
+      this.money_ship = 0d;
+    }
+    if (this.total_money == null) {
+      this.total_money = 0d;
+    }
+    if (this.reduction_amount == null) {
+      reduction_amount = 0d;
+    }
+    this.deposit = this.total_money + this.money_ship - this.reduction_amount;
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
   }
 
+  // @PreUpdate
+  // protected void onUpdate() {
+  //   if (this.money_ship == null) {
+  //     this.money_ship = 0d;
+  //   }
+  //   if (this.total_money == null) {
+  //     this.total_money = 0d;
+  //   }
+  //   if (this.reduction_amount == null) {
+  //     reduction_amount = 0d;
+  //   }
+  //   this.deposit = this.total_money + this.money_ship - this.reduction_amount;
+  //   this.updatedAt = LocalDateTime.now();
+  // }
+
+  // @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST,
+  // CascadeType.REFRESH })
+  // // @JsonIgnore
+  // private List<BillDetail> billDetail = new ArrayList<BillDetail>();
+
+  // @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST,
+  // CascadeType.REFRESH })
+  // @JsonIgnore
+  // private VoucherDetail voucherDetail;
+  // }
+
   @PreUpdate
   protected void onUpdate() {
+    if (this.money_ship == null) {
+      this.money_ship = 0d;
+    }
+    if (this.total_money == null) {
+      this.total_money = 0d;
+    }
+    if (this.reduction_amount == null) {
+      reduction_amount = 0d;
+    }
+    this.deposit = this.total_money + this.money_ship - this.reduction_amount;
     this.updatedAt = LocalDateTime.now();
   }
 
-  @OneToMany(mappedBy = "idBill")
+  @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
   // @JsonIgnore
-  private List<BillDetail> billDetail;
+  private List<BillDetail> billDetail = new ArrayList<BillDetail>();
+
+  @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  @JsonIgnore
+  private VoucherDetail voucherDetail;
+
+  public String getbillDetailString() {
+    String result = "BillDetail = [ idproductdetail = {";
+    for (BillDetail billDetail2 : billDetail) {
+      result += billDetail2.getProductDetail().getId() + ", ";
+    }
+    result += "}]";
+    return result;
+  }
 }

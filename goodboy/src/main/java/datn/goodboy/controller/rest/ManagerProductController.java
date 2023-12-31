@@ -1,19 +1,26 @@
 package datn.goodboy.controller.rest;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import datn.goodboy.exeption.rest.ApiError;
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Category;
+import datn.goodboy.model.entity.ImageProduct;
 import datn.goodboy.model.entity.Material;
 import datn.goodboy.model.entity.Origin;
 import datn.goodboy.model.entity.PatternType;
@@ -22,6 +29,8 @@ import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Size;
 import datn.goodboy.model.entity.Styles;
 import datn.goodboy.model.request.ProductAddRequest;
+import datn.goodboy.model.request.ProductDetailRequest;
+import datn.goodboy.model.request.ProductRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
@@ -29,15 +38,20 @@ import datn.goodboy.service.ManagerProductService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.PatternTypeService;
+import datn.goodboy.service.ProductDetailService;
+import datn.goodboy.service.ProductService;
 import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 
 @RequestMapping("/admin/managerproduct")
 @RestController("restManagerProductController")
 public class ManagerProductController {
   @Autowired
   private ManagerProductService service;
-
+  @Autowired
+  ProductDetailService service2;
   @Autowired
   private BrandService brandService;
 
@@ -58,11 +72,17 @@ public class ManagerProductController {
 
   @Autowired
   private CategoryService categoryService;
+  @Autowired
+  private ProductService productService;
 
   @PostMapping("saveproduct")
-  public Product addProduct(@RequestBody ProductAddRequest request) {
-    System.out.println(request.toString());
-    return service.saveProduct(request);
+  public ResponseEntity<?> addProduct(@Valid @RequestBody ProductAddRequest request) {
+    List<String> validationErrors = request.validateError();
+    if (!validationErrors.isEmpty()) {
+      ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiError(HttpStatus.BAD_REQUEST, "Lỗi khi tạo Product", validationErrors));
+    }
+    return ResponseEntity.ok(service.saveProduct(request));
   }
 
   @PostMapping("addbrand")
@@ -163,8 +183,42 @@ public class ManagerProductController {
     return categoryService.getCategoryList();
   }
 
+  @GetMapping("/product/get/{idproduct}")
+  public ResponseEntity<Product> getProduct(@PathVariable("idproduct") int idproduct) {
+    return ResponseEntity.ok().body(productService.getProduct(idproduct));
+  }
+
   @PostMapping("/update/product")
   public ProductDetail updateProductDetail(@RequestBody UpdateProductDetail request) {
     return service.updateProductDetails(request);
+  }
+
+  @PostMapping("/update/product/{id}/saveimage")
+  public String saveimage(@PathVariable("id") int id, @RequestParam("image") MultipartFile image) {
+    return service.saveImage(id, image);
+  }
+
+  @PostMapping("/productdetail/save")
+  public ProductDetail createProductDetail(@Valid @RequestBody ProductDetailRequest request) throws IOException {
+    System.out.println(request);
+    return service2.saveProductDetail(request);
+  }
+
+  @PostMapping("/product/save")
+  public Product createProductDetail(@Valid @RequestBody ProductRequest request) {
+    return service.updateProduct(request);
+  }
+
+  @PostMapping("/product/{id}/image/save")
+  public ImageProduct uploadImageProduct(@PathVariable("id") int id, @RequestParam("image") MultipartFile image) {
+    return service.saveImageProduct(id, image);
+  }
+
+  @PostMapping(value = "product/image/productdetails")
+  public String postMethodName(
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("idhoavan") int idhoavan,
+      @RequestParam("idproduct") int idproduct) {
+    return service.saveImage(idproduct, idhoavan, file);
   }
 }

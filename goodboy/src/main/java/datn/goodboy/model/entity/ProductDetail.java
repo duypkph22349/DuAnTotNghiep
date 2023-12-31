@@ -3,6 +3,7 @@ package datn.goodboy.model.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,7 +54,9 @@ public class ProductDetail {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_product")
+    @ToString.Exclude
     private Product idProduct;
 
     @ManyToOne
@@ -78,7 +81,7 @@ public class ProductDetail {
 
     @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL)
     @ToString.Exclude
-    @JsonIgnore
+    @JsonProperty("imageProducts")
     private List<Images> imageProducts;
 
     @PrePersist
@@ -105,6 +108,18 @@ public class ProductDetail {
         return true;
     }
 
+    @JsonProperty("firstImage")
+    public String getFirstImage() {
+        if (imageProducts != null && !imageProducts.isEmpty()) {
+            return imageProducts.get(0).getImg();
+        } else if (idProduct != null && idProduct.getImageProducts() != null
+                && !idProduct.getImageProducts().isEmpty()) {
+            return idProduct.getImageProducts().get(0).getImg();
+        } else {
+            return null;
+        }
+    }
+
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -114,4 +129,5 @@ public class ProductDetail {
             return "{}";
         }
     }
+
 }

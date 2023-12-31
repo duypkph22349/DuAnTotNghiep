@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
 import datn.goodboy.model.entity.PayDetail;
@@ -61,7 +62,14 @@ public class CounterService {
     bill.setDeleted(false);
     bill.setReduction_amount(0d);
     bill.setDeposit(0d);
-    bill.setCustomer(cusService.getCounterCustomer());
+    if (request.getCustomerID() == null) {
+      bill.setCustomer(cusService.getCounterCustomer());
+    } else {
+      Optional<Customer> customer = cusService.getCustomerById(request.getCustomerID());
+      if (customer.isPresent()) {
+        bill.setCustomer(customer.get());
+      }
+    }
     Optional<Employee> emp = empRepository.findById(request.getEmployeeID());
     if (emp.isPresent()) {
       bill.setEmployee(emp.get());
@@ -80,23 +88,19 @@ public class CounterService {
       if (productdetail.isPresent()) {
         productDetailService.saleProduct(productdetail.get().getId(), product.getQuantity());
         BillDetail billDetail = new BillDetail();
-        billDetail.setIdBill(bill);
         billDetail.setProductDetail(productdetail.get());
+        billDetail.setIdBill(bill);
         billDetail.setQuantity(product.getQuantity());
         total += product.getQuantity() * (productdetail.get().getPrice());
         billDetail.setTotalMoney(Double.valueOf(product.getQuantity() * (productdetail.get().getPrice())));
         billDetail.setCreatedAt(LocalDateTime.now());
         billDetail.setStatus(1);
         billDetail.setDeleted(false);
-        billDetailRepository.save(billDetail);
+        bill.getBillDetail().add(billDetail);
       }
     }
     bill.setTotal_money(total);
-
     // appy voucher
-    if (request.getVoucher() > 0) {
-      voucherService.useVoucher(bill, request.getVoucher());
-    }
     // thanh toan
     if (request.getOrderTypes() == 0) {
       if (request.getCashMoney() > 0) {
@@ -124,12 +128,19 @@ public class CounterService {
     } else if (request.getOrderTypes() == 1) {
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setAddress(request.getSpecificAddress() + ", " + request.getFullAddress());
-      bill.setMoney_ship(request.getTotalShip());
+      bill.setMoney_ship((double) request.getTotalShip());
       bill.setStatus(2);
       bill.setPay(payService.getTransferMethod());
     }
     bill.setDeposit(bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
     bill.setNote(request.getNote());
+    if (request.getVoucher() > 0) {
+      voucherService.useVoucher(bill, request.getVoucher());
+    }
     return billRepository.save(bill);
+  }
+
+  public Bill saveWaitBill(OrderCounterRequest orderCounterRequest) {
+    return null;
   }
 }
