@@ -39,12 +39,11 @@ public class CategoryService {
         return categoryRepository.findById(idCategory).get();
     }
 
-<<<<<<< HEAD
     public Page<Category> searchColorByKeyword(String keyword, Pageable pageable) {
         return categoryRepository.searchByKeyword(keyword, pageable);
-=======
+    }
+
     public List<Map<Integer, String>> getCombobox() {
         return categoryRepository.getComboBoxMap();
->>>>>>> developer
     }
 }
