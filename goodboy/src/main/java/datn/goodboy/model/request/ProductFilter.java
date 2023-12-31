@@ -75,7 +75,7 @@ public class ProductFilter {
     List<String> result = new ArrayList<String>();
 
     if (idCategory != -1) {
-      result.add("Category");
+      result.add("CategoryController");
     }
     if (idOrigin != -1) {
       result.add("Origin");
