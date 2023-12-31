@@ -9,15 +9,7 @@
 </head>
 <body>
 <section layout:fragment="content">
-<!--    <div class="pagetitle">-->
-<!--        <h1>Dashboard</h1>-->
-<!--        <nav>-->
-<!--            <ol class="breadcrumb">-->
-<!--                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>-->
-<!--                <li class="breadcrumb-item active">Color</li>-->
-<!--            </ol>-->
-<!--        </nav>-->
-<!--    </div>&lt;!&ndash; End Page Title &ndash;&gt;-->
+
     <h1 style="text-align: center">Cập nhật công dụng của khăn</h1>
     <form th:object="${categoryU}" th:action="@{'/admin/category/update/' + ${categoryU.id}}" method="post">
 
