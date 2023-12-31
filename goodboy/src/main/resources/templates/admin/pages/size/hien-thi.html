@@ -16,15 +16,7 @@
 </head>
 <body>
 <section layout:fragment="content">
-<!--    <div class="pagetitle">-->
-<!--        <h1>Dashboard</h1>-->
-<!--        <nav>-->
-<!--            <ol class="breadcrumb">-->
-<!--                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>-->
-<!--                <li class="breadcrumb-item active">Size</li>-->
-<!--            </ol>-->
-<!--        </nav>-->
-<!--    </div>&lt;!&ndash; End Page Title &ndash;&gt;-->
+
     <div>
         <h1 style="text-align: center">DANH SÁCH KÍCH CỠ</h1>
 
@@ -59,12 +51,6 @@
                     <a th:href="@{'/admin/size/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>
 
-<!--                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${b.deleted}"-->
-<!--                       th:href="@{/admin/size/delete(id=${b.id})}" class="btn btn-danger"><i-->
-<!--                            class="fas fa-trash-alt"></i></a>-->
-<!--                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${b.deleted}"-->
-<!--                       th:href="@{/admin/size/delete(id=${b.id})}" class="btn btn-secondary"><i-->
-<!--                            class="fas fa-undo-alt"></i></a>-->
                 </td>
 
             </tr>
