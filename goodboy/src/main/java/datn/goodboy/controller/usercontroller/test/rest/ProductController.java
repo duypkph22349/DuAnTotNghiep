@@ -26,4 +26,14 @@ public class ProductController {
     return productService.getPageNo(filterRequest.getPageno(), filterRequest.getRowcount(), filterRequest.getSortBy(),
         filterRequest.isSortDir(), filterRequest);
   }
+
+  @PostMapping(value = "/getPanigation")
+  public int[] getPanigation(@RequestBody ProductFilter filterRequest) {
+    return productService.getPanigation(filterRequest.getRowcount(), filterRequest.getPageno(), filterRequest);
+  }
+
+  @PostMapping(value = "/getTotalPage")
+  public int getTotalPage(@RequestBody ProductFilter filterRequest) {
+    return productService.getPageNumber(filterRequest.getRowcount(), filterRequest);
+  }
 }
