@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1240,shrink-to-fit=no">
+  <title>User</title>
+  <link th:href="@{https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap}"
+    rel="stylesheet">
+  <script th:src="@{https://kit.fontawesome.com/e56307bebd.js}" crossorigin="anonymous"></script>
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+  <link th:href="@{/css/themify-icons.css}" rel="stylesheet">
+  <link th:href="@{/css/elegant-icons.css}" rel="stylesheet">
+  <link th:href="@{/css/owl.carousel.min.css}" rel="stylesheet">
+  <link th:href="@{/css/nice-select.css}" rel="stylesheet">
+  <link th:href="@{/css/slicknav.min.css}" rel="stylesheet">
+  <link th:href="@{/css/style1.css}" rel="stylesheet">
+  <link th:href="@{https://i1.sndcdn.com/artworks-000097949231-9zo3dh-t500x500.jpg}" rel="icon"
+    type="image/vnd.microsoft.icon">
+  <link rel="stylesheet" th:href="@{https://web.nvnstatic.net/css/fontAwesome/fontawesome.5.15.3.min.css?v=3}"
+    type="text/css">
+  <link rel="stylesheet" th:href="@{https://web.nvnstatic.net/css/owlCarousel/owl.carousel.min.2.3.4.css?v=3}"
+    type="text/css">
+
+  <link rel="stylesheet" th:href="@{https://web.nvnstatic.net/css/font.css?v=3}" type="text/css">
+  <link rel="stylesheet" th:href="@{https://web.nvnstatic.net/tp/T0415/css/style.css?v=8}" type="text/css">
+  <link rel="stylesheet" th:href="@{https://web.nvnstatic.net/tp/T0415/css/responsive.css?v=8}" type="text/css">
+  <link rel="stylesheet" th:href="@{https://web.nvnstatic.net/tp/T0415/css/store/119888.css?v=8}" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <style>
+    main.--savior-overlay-z-index-top .channel-root__player-container+div,
+    main.--savior-overlay-z-index-top .video-player-hosting-ui__container+div {
+      opacity: 0.1;
+    }
+
+    .--savior-overlay-z-index-reset [class*="DivSideNavContainer"],
+    .--savior-overlay-z-index-reset [class*="DivHeaderContainer"],
+    .--savior-overlay-z-index-reset [data-testid="sidebarColumn"],
+    .--savior-overlay-z-index-reset header[role="banner"],
+    .--savior-overlay-z-index-reset [aria-label="Home timeline"]>div:first-child,
+    .--savior-overlay-z-index-reset [aria-label="Home timeline"]>div:nth-child(3) {
+      z-index: -1 !important;
+    }
+
+    .--savior-overlay-z-index-reset [data-testid="cellInnerDiv"] .--savior-backdrop+div {
+      z-index: 2147483643 !important;
+    }
+
+    .videoWrap+div>div {
+      pointer-events: unset;
+    }
+
+    section.--savior-overlay-z-index-reset>main[role="main"].--savior-overlay-z-index-reset+nav {
+      z-index: -1 !important;
+    }
+
+    section.--savior-overlay-z-index-reset>main[role="main"].--savior-overlay-z-index-reset section.--savior-overlay-z-index-reset div.--savior-overlay-z-index-reset~div {
+      position: relative;
+    }
+
+    @-moz-keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @-o-keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="~{/user/components/header :: header}"></div>
+  <main id="main" class="main">
+    <section class="section dashboard">
+      <div class="content-wrapper" layout:fragment="content">
+      </div>
+    </section>
+  </main>
+  <div th:replace="~{/user/components/footer :: footer}"></div>
+  <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+  <script th:src="@{/js/owl.carousel.min.js}"></script>
+  <script th:src="@{/js/main.js}"></script>
+  <script th:src="@{/js/validate.js}"></script>
+</body>
+
+</html>

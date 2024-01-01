@@ -35,8 +35,8 @@
             <div class="container">
                 <form th:action="@{/checkout}" th:object="${bills}" method="post" id="checkout" class="checkout-form"
                     onsubmit="return checkout()">
-                    <input type="hidden" th:each="cartDetail, loop : ${cartDetails}" th:name="cartDetails"
-                        th:value="${cartDetail.id}">
+                    <!-- <input type="hidden" th:each="cartDetail, loop : ${cartDetails}" th:name="cartDetails"
+                        th:value="${cartDetail.id}"> -->
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
@@ -112,7 +112,8 @@
                                                             (+84)[[${khachHang.customer.phone}]]-[[${khachHang.customer.country}]]-[[${khachHang.customer.city}]]-[[${khachHang.customer.address}]]
                                                         </option>
                                                         <option>[[${khachHang.customer.name}]]
-                                                            (+84)[[${khachHang.customer.phone}]]-'Xã Phước Hội'-'Huyện Mỏ Cày Nam'-'Tỉnh Bến Tre'</option>
+                                                            (+84)[[${khachHang.customer.phone}]]-'Xã Phước Hội'-'Huyện
+                                                            Mỏ Cày Nam'-'Tỉnh Bến Tre'</option>
                                                     </select>
 
                                                     <div class="radio">
@@ -259,7 +260,7 @@
                         <div class="order-total">
                             <ul class="order-table">
                                 <li>Sản phẩm <span>Tổng giá</span></li>
-                                <div th:each="cartDetail, loop : ${cartDetails}">
+                                <!-- <div th:each="cartDetail, loop : ${cartDetails}">
                                     <li class="fw-normal d-flex align-items-center justify-content-between"
                                         id="tongTien">
                                         <div
@@ -268,7 +269,7 @@
                                         <span th:name="total_money"
                                             th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price * cartDetail.quantity, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
                                     </li>
-                                </div>
+                                </div> -->
                                 <li style="color: red">Voucher <span id="voucher"
                                         th:text="${voucherAmount != null && voucherAmount != NaN ? voucherAmount + ' VNĐ' : '0 VNĐ'}">0
                                         VNĐ</span>
@@ -682,7 +683,7 @@
             var inputField = document.getElementById('soDiemDaDung');
             var inputField1 = document.getElementById('diemHienCo');
 
-            function displayErrorMessage(elementId, message) {
+            function displayErrorMessage(elementId,message) {
                 var errorElement = document.getElementById(elementId);
                 errorElement.innerText = message;
                 errorElement.style.color = 'red';
@@ -694,15 +695,15 @@
                 });
             }
             function callAPIGHN() {
-                var thanhPho= $("#province option:selected").text();
-                var huyen= $("#district option:selected").text();
-                var xa= $("#ward option:selected").text();
-                console.log("xa:"+xa);
-                console.log("huyen"+huyen);
-                console.log("thanh pho:"+thanhPho);
+                var thanhPho = $("#province option:selected").text();
+                var huyen = $("#district option:selected").text();
+                var xa = $("#ward option:selected").text();
+                console.log("xa:" + xa);
+                console.log("huyen" + huyen);
+                console.log("thanh pho:" + thanhPho);
                 $.ajax({
                     type: "POST",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create" , // Đường dẫn của bạn để lấy thông tin chi tiết
+                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create", // Đường dẫn của bạn để lấy thông tin chi tiết
                     headers: {
                         'Token': '50ea92cd-6b53-11ee-a6e6-e60958111f48', // Thay thế YOUR_API_TOKEN_HERE bằng token của bạn
                         'Content-Type': 'application/json',
@@ -740,18 +741,18 @@
                         "deliver_station_id": null,
                         "insurance_value": 100000,
                         "service_id": 0,
-                        "service_type_id":2,
-                        "coupon":null,
-                        "pickup_time":1692840132,
-                        "pick_shift":[2]
+                        "service_type_id": 2,
+                        "coupon": null,
+                        "pickup_time": 1692840132,
+                        "pick_shift": [2]
                     }),
-                    success: function(response) {
+                    success: function (response) {
                         // Giả sử phản hồi trả về là một đối tượng JSON với các thuộc tính như ma, hoTen,...
                         console.log("Thành Công");
-                        console.log("xa:"+xa);
-                        console.log("huyen"+huyen);
-                        console.log("thanh pho:"+thanhPho);
-                        document.getElementById('phiShip').innerText = response.data.total_fee +"VNĐ";
+                        console.log("xa:" + xa);
+                        console.log("huyen" + huyen);
+                        console.log("thanh pho:" + thanhPho);
+                        document.getElementById('phiShip').innerText = response.data.total_fee + "VNĐ";
                         let tienShipChechLech = Number.parseInt(response.data.total_fee) - Number.parseInt(document.getElementById('phiShip1').value);
 
                         document.getElementById('phiShip1').value = response.data.total_fee;
@@ -761,44 +762,44 @@
 
                         let tienThanhToanSau = 0;
                         console.log(tienShipChechLech);
-                        if(tienShipChechLech>0){
+                        if (tienShipChechLech > 0) {
                             tienThanhToanSau = Number.parseInt(tienThanhToan.value) + tienShipChechLech;
-                            console.log("1"+tienThanhToanSau);
+                            console.log("1" + tienThanhToanSau);
 
                         } else {
                             tienThanhToanSau = Number.parseInt(tienThanhToan.value) + tienShipChechLech;
-                            console.log("2"+tienThanhToanSau);
+                            console.log("2" + tienThanhToanSau);
                         }
                         console.log(tienThanhToanSau);
-                        if (soDiemDaDung.value === ""){
-                            soDiemDaDung.value=0;
+                        if (soDiemDaDung.value === "") {
+                            soDiemDaDung.value = 0;
                         }
                         tienThanhToan.value = tienThanhToanSau;
-                        tienThanhToan1.value = tienThanhToanSau+Number.parseInt(soDiemDaDung.value);
+                        tienThanhToan1.value = tienThanhToanSau + Number.parseInt(soDiemDaDung.value);
                         console.log(tienThanhToan.value);
-                        tienThanhToantext.innerHTML = tienThanhToanSau.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        tienThanhToantext.innerHTML = tienThanhToanSau.toLocaleString('vi-VN',{ style: 'currency',currency: 'VND' });
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error);
                         alert("Lỗi khi lấy thông tin");
                     }
                 });
             }
             function callAPIGHN2() {
-                var dia_chi= document.getElementById("dia_chi");
+                var dia_chi = document.getElementById("dia_chi");
                 var selectedIndex = dia_chi.selectedIndex;
-                var dia_chi_text= dia_chi.options[selectedIndex].text;
+                var dia_chi_text = dia_chi.options[selectedIndex].text;
                 console.log(dia_chi_text);
                 var value = dia_chi_text.split("-");
-                var thanhPho= value[4].trim();
-                var huyen= value[3].trim();
-                var xa= value[2].trim();
+                var thanhPho = value[4].trim();
+                var huyen = value[3].trim();
+                var xa = value[2].trim();
                 console.log(thanhPho);
                 console.log(huyen);
                 console.log(xa);
                 $.ajax({
                     type: "POST",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create" , // Đường dẫn của bạn để lấy thông tin chi tiết
+                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create", // Đường dẫn của bạn để lấy thông tin chi tiết
                     headers: {
                         'Token': '50ea92cd-6b53-11ee-a6e6-e60958111f48', // Thay thế YOUR_API_TOKEN_HERE bằng token của bạn
                         'Content-Type': 'application/json',
@@ -836,17 +837,17 @@
                         "deliver_station_id": null,
                         "insurance_value": 10000,
                         "service_id": 0,
-                        "service_type_id":2,
-                        "coupon":null,
-                        "pickup_time":1692840132,
-                        "pick_shift":[2]
+                        "service_type_id": 2,
+                        "coupon": null,
+                        "pickup_time": 1692840132,
+                        "pick_shift": [2]
                     }),
-                    success: function(response) {
+                    success: function (response) {
                         // Giả sử phản hồi trả về là một đối tượng JSON với các thuộc tính như ma, hoTen,...
                         console.log("Thành Công");
-                        console.log("xa:"+xa);
-                        console.log("huyen"+huyen);
-                        console.log("thanh pho:"+thanhPho);
+                        console.log("xa:" + xa);
+                        console.log("huyen" + huyen);
+                        console.log("thanh pho:" + thanhPho);
                         document.getElementById('phiShip').innerText = response.data.total_fee;
                         let tienShipChechLech = Number.parseInt(response.data.total_fee) - Number.parseInt(document.getElementById('phiShip1').value);
 
@@ -854,26 +855,26 @@
                         let soDiemDaDung = document.getElementById("soDiemDaDung");
                         let tienThanhToan = document.getElementById("tienThanhToan");
                         let tienThanhToantext = document.getElementById("tienThanhToantext");
-                        if (soDiemDaDung.value === ""){
-                            soDiemDaDung.value=0;
+                        if (soDiemDaDung.value === "") {
+                            soDiemDaDung.value = 0;
                         }
                         let tienThanhToanSau = 0;
                         console.log(tienShipChechLech);
-                        if(tienShipChechLech>0){
+                        if (tienShipChechLech > 0) {
                             tienThanhToanSau = Number.parseInt(tienThanhToan.value) + tienShipChechLech;
-                            console.log("1"+tienThanhToanSau);
+                            console.log("1" + tienThanhToanSau);
 
                         } else {
                             tienThanhToanSau = Number.parseInt(tienThanhToan.value) + tienShipChechLech;
-                            console.log("2"+tienThanhToanSau);
+                            console.log("2" + tienThanhToanSau);
                         }
                         console.log(tienThanhToanSau);
                         tienThanhToan.value = tienThanhToanSau;
-                        tienThanhToan1.value = tienThanhToanSau+Number.parseInt(soDiemDaDung.value);
+                        tienThanhToan1.value = tienThanhToanSau + Number.parseInt(soDiemDaDung.value);
                         console.log(tienThanhToan.value);
-                        tienThanhToantext.innerHTML = tienThanhToanSau.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        tienThanhToantext.innerHTML = tienThanhToanSau.toLocaleString('vi-VN',{ style: 'currency',currency: 'VND' });
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error);
                         alert("Lỗi khi lấy thông tin nhân viên");
                     }
@@ -883,24 +884,24 @@
             var callAPI = (api) => {
                 return axios.get(api)
                     .then((response) => {
-                        renderData(response.data, "province", "Tỉnh/Thành phố");
+                        renderData(response.data,"province","Tỉnh/Thành phố");
                     });
             }
             callAPI('https://provinces.open-api.vn/api/?depth=1');
             var callApiDistrict = (api) => {
                 return axios.get(api)
                     .then((response) => {
-                        renderData(response.data.districts, "district", "Quận/Huyện");
+                        renderData(response.data.districts,"district","Quận/Huyện");
                     });
             }
             var callApiWard = (api) => {
                 return axios.get(api)
                     .then((response) => {
-                        renderData(response.data.wards, "ward", "Xã/Phường");
+                        renderData(response.data.wards,"ward","Xã/Phường");
                     });
             }
 
-            var renderData = (array, select, type) => {
+            var renderData = (array,select,type) => {
                 let row = ' <option disable value="" selected>Chọn ' + type + '</option>';
 
                 array.forEach(element => {
@@ -937,7 +938,7 @@
             var callAPI2 = (api) => {
                 return axios.get(api)
                     .then((response) => {
-                        renderData(response.data, "province2", "Tỉnh/Thành phố");
+                        renderData(response.data,"province2","Tỉnh/Thành phố");
 
                     });
             }
@@ -945,13 +946,13 @@
             var callApiDistrict2 = (api) => {
                 return axios.get(api)
                     .then((response) => {
-                        renderData(response.data.districts, "district2", "Quận/Huyện");
+                        renderData(response.data.districts,"district2","Quận/Huyện");
                     });
             }
             var callApiWard2 = (api) => {
                 return axios.get(api)
                     .then((response) => {
-                        renderData(response.data.wards, "ward2", "Xã/Phường");
+                        renderData(response.data.wards,"ward2","Xã/Phường");
                     });
             }
 
@@ -1000,19 +1001,19 @@
                                 callApiWard2(host + "d/" + selected2 + "?depth=2");
                                 setTimeout(function () {
                                     form.find('[name="xa"]').val(data.xa);
-                                }, 300);
-                            }, 200);
+                                },300);
+                            },200);
                             form.find('[name="sdt_nguoi_nhan"]').val(data.sdt_nguoi_nhan);
                             form.find('[name="ten_nguoi_nhan"]').val(data.ten_nguoi_nhan);
                             form.find('[name="khachHang.id"]').val(data.khachHang.id);
                             form.find('[name="trangthai"]').each(function () {
                                 if ($(this).val() == data.trangthai) {
-                                    $(this).prop('checked', true);
-                                    $(this).attr('disable', true);
+                                    $(this).prop('checked',true);
+                                    $(this).attr('disable',true);
                                 }
                                 else {
-                                    $(this).prop('checked', false);
-                                    $(this).attr('disable', false);
+                                    $(this).prop('checked',false);
+                                    $(this).attr('disable',false);
                                 }
                             });
 

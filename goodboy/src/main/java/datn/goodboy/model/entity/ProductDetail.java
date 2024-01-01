@@ -120,6 +120,18 @@ public class ProductDetail {
         }
     }
 
+    @JsonProperty("nameProduct")
+    public String getNameProduct() {
+        if (this.name == null) {
+            return idProduct.getName();
+        }
+        if (this.name.equals("")) {
+            return idProduct.getName();
+        } else {
+            return this.name;
+        }
+    }
+
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

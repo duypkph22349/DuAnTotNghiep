@@ -100,7 +100,8 @@ public class SpringSecurityConfig {
       throws Exception {
     http
         .authorizeHttpRequests(authorize -> {
-          authorize.requestMatchers("/sendresetpasswordcode", "/resetpasswordcode", "/resetpassword").permitAll();
+          authorize.requestMatchers("/sendresetpasswordcode", "/resetpasswordcode", "/resetpassword", "/test/**")
+              .permitAll();
         })
         .authorizeHttpRequests((authorize) -> {
           authorize.requestMatchers("/shop/product/**").permitAll();
