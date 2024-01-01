@@ -13,10 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.BillRequest;
+import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
@@ -32,6 +35,11 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
+
+    @Autowired
+    ProductDetailService productDetailService;
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -120,6 +128,35 @@ public class BillService {
         }
     }
 
+    public void updateBillDetails(int idBill, int quantity, int productId) {
+        Bill bill = billRepository.findStatusById(idBill);
+        Optional<ProductDetail> productdetail = productDetailService.getProductDetailById(productId);
+        bill.setTotal_money(bill.getTotal_money() + (productdetail.get().getPrice() * quantity));
+        billRepository.save(bill);
+
+        BillDetail billDetail = billDetailRepository.findByIdBillAndIdProduct(idBill, productId);
+        if (billDetail != null) {
+            billDetail.setQuantity(billDetail.getQuantity() + quantity);
+            billDetail.setTotalMoney(billDetail.getTotalMoney() + (productdetail.get().getPrice() * quantity));
+            billDetailRepository.save(billDetail);
+        } else {
+            if (productdetail.isPresent()) {
+                productDetailService.saleProduct(productdetail.get().getId(), quantity);
+                BillDetail bd = new BillDetail();
+                bd.setProductDetail(productdetail.get());
+                bd.setIdBill(bill);
+                bd.setQuantity(quantity);
+                bd.setTotalMoney(Double.valueOf(quantity * (productdetail.get().getPrice())));
+                bd.setCreatedAt(LocalDateTime.now());
+                bd.setStatus(1);
+                bd.setDeleted(false);
+                bill.getBillDetail().add(bd);
+                billDetailRepository.save(bd);
+            }
+        }
+
+    }
+
     public Page<Bill> searchBillByCode(Integer numberSize, String code) {
         Pageable pageable = PageRequest.of(numberSize, 5);
         return billRepository.searchBillByCodeAndDeletedFalse(pageable, code);
@@ -140,6 +177,13 @@ public class BillService {
 
     public void updateStatus(Integer id, Integer status) throws NotFoundException {
         Bill bill = getBillById(id);
+        bill.setStatus(status);
+        billRepository.save(bill);
+    }
+
+    public void updateStatusAndPayStatus(Integer id, Integer status) throws NotFoundException {
+        Bill bill = getBillById(id);
+        bill.setStatus_pay(1);
         bill.setStatus(status);
         billRepository.save(bill);
     }

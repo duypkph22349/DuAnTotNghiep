@@ -14,27 +14,33 @@
 
 
     <title>Bill</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+<!-- Font Awesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- jQuery 3.6.0 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap 5 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
+
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"></script>
+
+<!-- Bootstrap SweetAlert -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
 
 </head>
 
@@ -110,7 +116,7 @@
             width: 32px;
             position: relative;
             top: 2px;
-        }
+        } 
 
         .tab-item:hover {
             opacity: 1;
@@ -122,6 +128,12 @@
             opacity: 1;
             font-weight: 600;
         }
+        .scrollable-table {
+            max-height: 520px; /* Đặt chiều cao tối đa của bảng */
+            overflow-y: auto;  /* Tạo thanh cuộn dọc khi vượt quá chiều cao */
+        }
+
+        
     </style>
 
     <span id="status" th:data-value="${bill.status}"></span>
@@ -130,13 +142,17 @@
         <div class="status  mt-2 p-4 " style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
             <div class="top d-flex justify-content-center align-items-center">
                 <div class="tabs">
+                    <div data-value="6" id="tab_6" class="tab-item">
+                        <i class="tab-icon bi bi-cart"></i>
+                        Hủy Hàng
+                    </div>
                     <div data-value="1" id="tab_1" class="tab-item">
-                        <i class="tab-item bi bi-cart"></i>
+                        <i class="tab-icon bi bi-cart"></i>
                         Chờ xác nhận
                     </div>
 
                     <div data-value="2" id="tab_2" class="tab-item">
-                        <i class="tab-item bi bi-cart"></i>
+                        <i class="tab-icon bi bi-cart"></i>
                         Chờ lấy hàng
                     </div>
                     <div data-value="3" id="tab_3" class="tab-item">
@@ -148,10 +164,6 @@
                         Đang giao hàng
                     </div>
                     <div data-value="5" id="tab_5" class="tab-item">
-                        <i class="tab-icon bi bi-box-seam"></i>
-                        Đã giao hàng
-                    </div>
-                    <div data-value="6" id="tab_6" class="tab-item">
                         <i class="tab-icon bi bi-check-lg"></i>
                         Thành công
                     </div>
@@ -161,6 +173,9 @@
             <hr>
             <div style="display: none" class="bottom justify-content-between">
                 <div class="lf">
+                    <a href="">
+                        <button class="btn btn-primary">Hủy Hàng</button>
+                    </a>
                     <a href="">
                         <button class="btn btn-primary">Chờ xác nhận</button>
                     </a>
@@ -199,7 +214,12 @@
                 <div class="row">
                     <div class="col-6 lf">
                         <div class="item code">
+                            <label>Tên nhân viên</label>
+                            <span id="employee" th:text="${bill.employee.name}" ></span>
+                        </div>
+                        <div class="item code">
                             <label>Mã Đơn Hàng</label>
+                            <input hidden id="billId" type="text" th:value="${bill.id}">
                             <span id="code" th:text="${bill.code}" style="background-color: rgb(206, 240, 240);"></span>
                         </div>
                         <div class="item type">
@@ -214,6 +234,7 @@
                             <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
                             <span style="background-color:gold" th:if="${bill.status == 5}">Đã giao hàng</span>
                             <span style="background-color:gold" th:if="${bill.status == 6}">Thành công</span>
+                            <span style="background-color:gold" th:if="${bill.status == 7}">Hủy hàng</span>
                         </div>
                         <div class="item dateOrder">
                             <label>Ngày Đặt Hàng</label>
@@ -273,6 +294,7 @@
         <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
             <div class="top d-flex justify-content-between">
                 <h2> Thông tin giỏ hàng </h2>
+                <button data-bs-toggle="modal" data-bs-target="#modalProduct" class="btn btn-success" th:if="${bill.status == 1}" onclick="loadProduct()">Thêm sản phẩm</button>
             </div>
             <hr>
             <div class="info-order">
@@ -329,7 +351,7 @@
                             </label>
                         </td>
                         <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                            <span style="font-weight: bold;" th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            <span style="font-weight: bold;" th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                         </td>
                     </tr>
                 </table>
@@ -381,9 +403,9 @@
                         </label>
                     </td>
                         <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                        <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
-                              th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                        <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                        <span style="font-weight: bold;" th:if="${bill?.total_money != null and bill.total_money != 0}"
+                              th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                        <span style="font-weight: bold;" th:if="${bill?.total_money == null or bill.total_money == 0}">
     <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
 </span>
                         </td>
@@ -405,6 +427,48 @@
 
 
     </div>
+    <!-- Modal -->
+        <div class="modal fade" id="modalProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <!-- Search -->
+                        <div class="input-group mb-3">
+                            <input aria-label="Text input with segmented dropdown button"
+                            class="form-control" id="searchInput" onkeyup="filterTable()"
+                            placeholder="Tìm kiếm theo mã sản phẩm, tên sản phẩm, giá bán...."
+                            type="text">
+                        </div>
+                    
+                    <div class="scrollable-table">
+                    <table class="table table-hover" id="cartTableProduct" style="width: 100%; border-collapse: collapse;">
+                        <thead style="position: sticky; top: 0;">
+                            <tr>
+                                <th>#</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Hoa văn</th>
+                                <th>Kích thước</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyProduct">
+
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
@@ -426,37 +490,13 @@
                     return;
                 }
                 let id = document.getElementById("id").getAttribute("data-value");
-                location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
-                var message = '';
-                if(status == 1){
-                    message = 'Chờ xác nhận';
-                }else if(status == 2){
-                    message = 'Chờ lấy hàng';
-                }else if(status == 3){
-                    message = 'Chờ giao hàng';
-                }else if(status == 4){
-                    message = 'Đang giao hàng';
-                }else if(status == 5){
-                    message = 'Đã giao hàng';
-                }else if(status == 6){
-                    message = 'Thành công';
+
+                var result = confirm("Bạn có chắc chắn muốn chuyển trạng thái không?");
+                if(result){
+                    location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
                 }
-                alert("Đã chuyển trạng thái thành " + message)
             };
         });
-
-        // fill data
-        // Bắt các phần tử cần thiết trong HTML
-        // let codeElement = document.querySelector('.item.code span');
-        // let typeElement = document.querySelector('.item.type span');
-        // let statusElement = document.querySelector('.item.status span');
-        // let dateOrderElement = document.querySelector('.item.dateOrder span');
-        // let dateShipElement = document.querySelector('.item.dateShip span');
-        // let customerNameElement = document.querySelector('.item.customerName span');
-        // let phoneElement = document.querySelector('.item.phone span');
-        // let emailElement = document.querySelector('.item.email span');
-        // let addressElement = document.querySelector('.item.address span');
-        // let noteElement = document.querySelector('.item.note span');
 
         let statusTpye ={
             TD :"Tạo Đơn Hàng",
@@ -520,6 +560,92 @@
                     alert("Cập nhật thất bại!");
                     location.reload();
                 });
+        }
+
+        const defaultImage =
+                "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
+        function loadProduct(){
+            fetch("/rest/data/counter/productDetails", {
+                method: "GET",
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    data.forEach(function (product) {
+                    var bodyTable = document.getElementById('bodyProduct');
+                    bodyTable.innerHTML += `<tr>
+                        <td>
+                            <img src="${product.imageUrl || defaultImage}" class="image-fluid" style="height: 60px;">
+                        </td>
+                        <td>
+                            ${product.name}
+                        </td>
+                        <td>
+                            ${product.price}
+                        </td>
+                        <td>
+                            ${product.quantity}
+                        </td>
+                        <td>
+                            ${product.idPattern.name}
+                        </td>
+                        <td>
+                            ${product.idSize.name}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success  mx-1" onclick="addProduct(${product.id})"><i class="far fa-plus"></i></button>
+                        </td>
+                    </tr>`
+                });
+            });
+        }
+        function filterTable() {
+            var input, filter, table, tbody, tr, td, i, j, txtValue;
+            var tbody = document.querySelector("#cartTableProduct tbody");
+            input = document.querySelector("#searchInput");
+
+            filter = input.value.toUpperCase();
+            table = document.getElementById("cartTableProduct");
+            // tbody = table.getElementsByTagName("tbody")[0];
+            tr = tbody.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                // Tìm kiếm trong tất cả các cột (loại bỏ cột thứ 1, tức là stt)
+                for (j = 1; j < tr[i].cells.length; j++) {
+                td = tr[i].getElementsByTagName("td")[j];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break; // Nếu tìm thấy, thoát khỏi vòng lặp để hiển thị hàng
+                    } else {
+                    tr[i].style.display = "none";
+                    }
+                }
+                }
+            }
+            }
+
+        function addProduct(productId){
+                var quantity = prompt("Nhập số lượng sản phẩm muốn thêm: ");
+                if(quantity !== null){
+                    var idBill = document.getElementById('billId').value;
+                    var formData = new FormData();
+                    formData.append('idBill', idBill);
+                    formData.append('quantity', quantity);
+                    formData.append('productId', productId);
+
+                    fetch("/rest/data/counter/addProduct", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(response => {
+                            location.reload();
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+
+                }
         }
     </script>
 </section>

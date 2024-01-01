@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import datn.goodboy.model.entity.Bill;
@@ -18,6 +19,7 @@ import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.OrderCounterRequest;
+import datn.goodboy.service.BillService;
 import datn.goodboy.service.ConterService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.ProductDetailService;
@@ -35,8 +37,12 @@ public class RestCounterController {
 
   @Autowired
   private VoucherService voucherService;
+
   @Autowired
   private ConterService countService;
+
+  @Autowired
+  private BillService billService;
 
   @GetMapping("voucherAble")
   public ResponseEntity<List<Voucher>> getAbleVoucher() {
@@ -61,6 +67,13 @@ public class RestCounterController {
   @GetMapping("productDetails")
   public ResponseEntity<List<ProductDetail>> getAllProductDetails() {
     return ResponseEntity.ok().body(productDetailService.getAllProductDetail());
+  }
+
+  @PostMapping("addProduct")
+  public ResponseEntity<String> addProduct(@RequestParam("idBill") int id, @RequestParam("quantity") int quantity,
+      @RequestParam("productId") int productId) {
+    billService.updateBillDetails(id, quantity, productId);
+    return ResponseEntity.ok("Success");
   }
 
   @GetMapping("productDetails/{id}")
