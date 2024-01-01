@@ -48,6 +48,11 @@ public class BillService {
     @Autowired
     ProductDetailService productDetailService;
 
+    @Autowired
+    ProductDetailService productDetailService;
+    @Autowired
+    private BillDetailRepository billDetailRepository;
+
     public BillService() {
         this.billRepository = billRepository;
     }
