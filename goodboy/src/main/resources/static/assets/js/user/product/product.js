@@ -50,6 +50,19 @@ class SearchFilter {
     }
   }
 }
+const productview = document.querySelector("#productview");
+const brandAll = document.querySelector("#brand-all");
+const materialAll = document.querySelector("#material-all");
+const originAll = document.querySelector("#origin-all");
+const stylesAll = document.querySelector("#styles-all");
+const panigation = document.querySelector("#panigation");
+
+const idBrands = document.querySelectorAll("input[name='idBrands']");
+const idMaterials = document.querySelectorAll("input[name='idMaterials']");
+const idStyless = document.querySelectorAll("input[name='idStyless']");
+const idCategorys = document.querySelectorAll("input[name='idCategorys']");
+const idOrigins = document.querySelectorAll("input[name='idOrigins']");
+
 var searchFilter = new SearchFilter();
 
 const productExample = {
@@ -327,58 +340,209 @@ const productExample = {
   ],
 };
 function generateProductDiv(product) {
-  const divPorduct = document.createElement("div");
-  divPorduct.classList.add("col-lg-4 col-md-6 col-sm-6 pb-1");
-  divPorduct.innerHTML = `
-  <div class="product-item bg-light mb-4">
-  <div class="product-img position-relative overflow-hidden">
-      <img class="img-fluid w-100" src="${product.images[0]}" alt="">
-  </div>
-  <div class="text-center py-4">
-      <a class="h6 text-decoration-none text-truncate" href="">${
-        product.name
-      }</a>
-      <div class="d-flex align-items-center justify-content-center mt-2">
-          <h5>${formatToVND(product.minprice)} - ${formatToVND(
-    product.maxprice
-  )} </h5>
+  const divProduct = document.createElement("div");
+
+  // Split the classes into an array
+  const classes = ["col-lg-4", "col-md-6", "col-sm-6", "pb-1"];
+
+  // Add each class individually
+  classes.forEach((className) => {
+    divProduct.classList.add(className);
+  });
+
+  divProduct.innerHTML = `
+    <div class="product-item bg-light mb-4">
+      <div class="product-img position-relative overflow-hidden">
+          <img class="img-fluid w-100" src="${product.images[0]}" alt="">
       </div>
-      <div class="d-flex align-items-center justify-content-center mb-1">
-          <small class="fa fa-star text-primary mr-1"></small>
-          <small class="fa fa-star text-primary mr-1"></small>
-          <small class="fa fa-star text-primary mr-1"></small>
-          <small class="fa fa-star text-primary mr-1"></small>
-          <small class="fa fa-star text-primary mr-1"></small>
-          <small>(99)</small>
+      <div class="text-center py-4">
+          <a class="h6 text-decoration-none text-truncate" href="">${
+            product.name
+          }</a>
+          <div class="d-flex align-items-center justify-content-center mt-2">
+              <h5>${formatToVND(product.minprice)} - ${formatToVND(
+    product.maxprice
+  )}</h5>
           </div>
+          <div class="d-flex align-items-center justify-content-center mb-1">
+              <small class="fa fa-star text-primary mr-1"></small>
+              <small class="fa fa-star text-primary mr-1"></small>
+              <small class="fa fa-star text-primary mr-1"></small>
+              <small class="fa fa-star text-primary mr-1"></small>
+              <small class="fa fa-star text-primary mr-1"></small>
+              <small>(99)</small>
           </div>
-          </div>
-          `;
-  console.log(divPorduct);
+      </div>
+    </div>
+  `;
+  return divProduct;
 }
 
-function updateFillter() {}
+async function updateFillter() {
+  const checkedBrands = getCheckedValues(idBrands);
+  const checkedMaterials = getCheckedValues(idMaterials);
+  const checkedStyles = getCheckedValues(idStyless);
+  const checkedCategorys = getCheckedValues(idCategorys);
+  const checkedidOrigins = getCheckedValues(idOrigins);
+  const filterData = {
+    idBrands: checkedBrands,
+    idMaterials: checkedMaterials,
+    idStyless: checkedStyles,
+    idCategorys: checkedCategorys,
+    idOrigins: checkedidOrigins,
+    pageno:1
+  };
+  searchFilter.updateFilter(filterData);
+  console.log(searchFilter);
+  await getPageProducts();
+}
+function getCheckedValues(nodeList) {
+  const checkedValues = Array.from(nodeList)
+    .filter((input) => input.checked)
+    .map((input) => input.value);
+  if (checkedValues.length > 0) {
+    return checkedValues;
+  } else {
+    return getAllValue(nodeList);
+  }
+}
+function getAllValue(nodeList) {
+  const checkedValues = Array.from(nodeList).map((input) => input.value);
+  return checkedValues;
+}
 
-function getPageNo(value) {}
-function sortBy(value) {}
-function updateNumBerOfRow(value) {}
+async function getPageNo(value) {
+  searchFilter.updateFilter({
+    pageno: value,
+  });
+  await getPageProducts();
+}
+async function sortBy(sortBy, sortDir) {
+  searchFilter.updateFilter({
+    sortBy: sortBy,
+    sortDir: sortDir,
+  });
+  console.log(searchFilter);
+
+  await getPageProducts();
+}
+async function updateNumBerOfRow(value) {
+  searchFilter.updateFilter({
+    rowcount: value,
+    pageno: 1,
+  });
+  console.log(searchFilter);
+  await getPageProducts();
+}
 function updateNumBerOfRowUI() {}
 
-function getPageProducts() {
-  axios
-    .post("/product/test/rest/getProducts", JSON.stringify(searchFilter), {
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+async function getPageProducts() {
+  try {
+    const response = await axios.post(
+      "/product/test/rest/getProducts",
+      JSON.stringify(searchFilter),
+      {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+
+    console.log("Response Data:", response.data);
+    if (response.data) {
+      productview.innerHTML = "";
+      response.data.forEach((product) => {
+        productview.appendChild(generateProductDiv(product));
+      });
+      await updatePanigation();
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+    throw error; // Rethrow the error if needed
+  }
+}
+function init() {
+  const checkedBrands = getCheckedValues(idBrands);
+  const checkedMaterials = getCheckedValues(idMaterials);
+  const checkedStyles = getCheckedValues(idStyless);
+  const checkedCategorys = getCheckedValues(idCategorys);
+  const checkedidOrigins = getCheckedValues(idOrigins);
+  const filterData = {
+    idBrands: checkedBrands,
+    idMaterials: checkedMaterials,
+    idStyless: checkedStyles,
+    idCategorys: checkedCategorys,
+    idOrigins: checkedidOrigins,
+  };
+  searchFilter.updateFilter(filterData);
 }
 
+async function updatePanigation() {
+  try {
+    const pani = await axios.post(
+      "/product/test/rest/getPanigation",
+      JSON.stringify(searchFilter),
+      {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+    const totalpage = await axios.post(
+      "/product/test/rest/getTotalPage",
+      JSON.stringify(searchFilter),
+      {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+    panigationUi(pani.data, totalpage.data);
+  } catch (error) {
+    console.error("Error:", error.message);
+    throw error; // Rethrow the error if needed
+  }
+}
+function pre() {
+  getPageNo(searchFilter.pageno - 1);
+}
+function next() {
+  getPageNo(searchFilter.pageno + 1);
+}
+function panigationUi(panigationData, totalpage) {
+  panigation.innerHTML = ""; // Clear existing content
+
+  // Previous Button
+  const previousButton = document.createElement("li");
+  previousButton.classList.add("page-item");
+  if (1 === searchFilter.pageno) {
+    previousButton.classList.add("disabled");
+  }
+  previousButton.innerHTML = `<a class="page-link" role="button" onclick="pre()">Previous</a>`;
+  panigation.appendChild(previousButton);
+
+  // Page Numbers
+  panigationData.forEach((pani) => {
+    const pageItem = document.createElement("li");
+    pageItem.classList.add("page-item");
+    if (searchFilter.pageno === pani) {
+      pageItem.classList.add("active"); // Fix: Use pageItem instead of previousButton
+    }
+    pageItem.innerHTML = `<a class="page-link" role="button" onclick="getPageNo(${pani})" >${pani}</a>`;
+    panigation.appendChild(pageItem);
+  });
+
+  // Next Button
+  const nextButton = document.createElement("li");
+  nextButton.classList.add("page-item");
+  if (totalpage === searchFilter.pageno) {
+    nextButton.classList.add("disabled");
+  }
+  nextButton.innerHTML = `<a class="page-link" role="button" onclick="next()">Next</a>`;
+  panigation.appendChild(nextButton);
+}
+
+init();
 function formatToVND(amount) {
   const formatter = new Intl.NumberFormat("vi-VN", {
     style: "currency",

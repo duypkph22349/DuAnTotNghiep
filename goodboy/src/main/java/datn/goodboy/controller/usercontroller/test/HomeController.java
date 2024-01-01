@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import datn.goodboy.service.BrandService;
+import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ColorService;
-import datn.goodboy.service.ImageService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
-import datn.goodboy.service.PatternTypeService;
-import datn.goodboy.service.ProductDetailService;
-import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
 import datn.goodboy.service.test.ProductService;
 
@@ -41,6 +38,13 @@ public class HomeController {
 
   @Autowired
   private StylesService stylesService;
+  @Autowired
+  private CategoryService categoryService;
+
+  @ModelAttribute("categoryCbb")
+  public List<Map<Integer, String>> getComboboxCategory() {
+    return categoryService.getCombobox();
+  }
 
   @ModelAttribute("brandCbb")
   public List<Map<Integer, String>> getComboboxBrand() {
@@ -96,7 +100,7 @@ public class HomeController {
 
   @GetMapping("shop")
   public String viewIndex(Model model) {
-
+    model.addAttribute("products", productService.getTopProductSaleThisYear(20));
     return "user2/shop";
   }
 

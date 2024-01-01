@@ -59,7 +59,7 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
             .collect(Collectors.toList());
       } else {
         return productRepository.filterAll(filter).stream()
-            .sorted(Comparator.comparing(Product::getMaxPrice))
+            .sorted(Comparator.comparing(Product::getMaxPrice).reversed())
             .skip((pageNo - 1) * pageSize) // Skip items on previous pages
             .limit(pageSize) // Limit the number of items per page
             .collect(Collectors.toList());

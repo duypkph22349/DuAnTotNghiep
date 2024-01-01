@@ -54,32 +54,18 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
         @Query("SELECT p FROM Product p " +
                         "WHERE " +
-                        // "(LOWER(p.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
-                        // "OR LOWER(p.idOrigin.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}),
-                        // '%') " +
-                        // "OR LOWER(p.idBrand.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%')
-                        // " +
-                        // "OR LOWER(p.idMaterial.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}),
-                        // '%') " +
-                        // "OR LOWER(p.idCategory.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}),
-                        // '%') " +
-                        // "OR LOWER(p.idStyles.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}),
-                        // '%')) AND " +
-                        // "(SIZE(:#{#filter.idOrigins}) = 0 OR p.idOrigin.id IN :#{#filter.idOrigins})
-                        // "
-                        // +
-                        // "AND (SIZE(:#{#filter.idBrands}) = 0 OR p.idBrand.id IN :#{#filter.idBrands})
-                        // "
-                        // +
-                        // "AND (SIZE(:#{#filter.idMaterials}) = 0 OR p.idMaterial.id IN
-                        // :#{#filter.idMaterials}) "
-                        // +
-                        // "AND (SIZE(:#{#filter.idStyless}) = 0 OR p.idStyles.id IN
-                        // :#{#filter.idStyless}) "
-                        // +
-                        "(-1 IN :#{#filter.idStyless}) OR (p.idStyles.id IN :#{#filter.idStyless})"
-        // "AND SIZE(p.productDetails) > 0 AND p.deleted = false"
-        )
+                        "(LOWER(p.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "OR LOWER(p.idOrigin.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "OR LOWER(p.idBrand.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "OR LOWER(p.idMaterial.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "OR LOWER(p.idCategory.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "OR LOWER(p.idStyles.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%')) " +
+                        "AND (:#{#filter.idOrigins} IS NULL OR p.idOrigin.id IN :#{#filter.idOrigins}) " +
+                        "AND (:#{#filter.idBrands} IS NULL OR p.idBrand.id IN :#{#filter.idBrands}) " +
+                        "AND (:#{#filter.idMaterials} IS NULL OR p.idMaterial.id IN :#{#filter.idMaterials}) " +
+                        "AND (:#{#filter.idStyless} IS NULL OR p.idStyles.id IN :#{#filter.idStyless}) " +
+                        "AND (:#{#filter.idCategorys} IS NULL OR p.idCategory.id IN :#{#filter.idCategorys}) " +
+                        "AND SIZE(p.productDetails) > 0 AND p.deleted = false")
         Page<Product> filter(@Param("filter") ProductFilter filter, Pageable pageable);
 
         @Query("SELECT p FROM Product p " +
