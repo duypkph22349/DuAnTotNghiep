@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -182,5 +183,20 @@ public class Bill {
     }
     result += "}]";
     return result;
+  }
+
+  @JsonProperty("totalmoney")
+  public Double getTotalMoney() {
+    return billDetail.stream()
+        .mapToDouble(bildt -> bildt.getProductDetail().getPrice() * bildt.getQuantity())
+        .sum();
+  }
+
+  @JsonProperty("reductionamout")
+  public Double getReductionAmount() {
+    Double totalMoney = billDetail.stream()
+        .mapToDouble(bildt -> bildt.getProductDetail().getPrice() * bildt.getQuantity())
+        .sum();
+    return totalMoney;
   }
 }

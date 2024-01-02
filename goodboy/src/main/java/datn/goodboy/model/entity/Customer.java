@@ -86,4 +86,10 @@ public class Customer {
         .collect(Collectors.groupingBy(Bill::getStatus));
     return billMap;
   }
+
+
+  @OneToOne(mappedBy = "customer")
+  @ToString.Exclude
+  @JsonIgnore
+  private Account account;
 }
