@@ -15,6 +15,7 @@ import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.repository.AccountRepository;
 import datn.goodboy.repository.BillRepository;
@@ -68,6 +69,16 @@ public class BillService {
       bill.setDeposit(0d);
       bill.setMoney_ship(0d);
       return bill;
+    }
+    return null;
+  }
+
+  public Customer getCustomer() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (!(authentication instanceof AnonymousAuthenticationToken)) {
+      String currentUserName = authentication.getName();
+      Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+      return account.getCustomer();
     }
     return null;
   }

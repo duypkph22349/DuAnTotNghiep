@@ -1,5 +1,6 @@
 const totalMoney = document.getElementById("TotalMoney");
 const carttable = document.getElementById("carttable");
+const billApi = "/bill/test";
 function selectAll(checked) {
   console.log(" All selected are: " + checked);
   // Add your logic here to handle the checkbox state
@@ -34,7 +35,7 @@ function checkoutpage() {
   // Check if any items are selected
   if (CartDetailIds.length > 0) {
     const queryParams = "carts=" + CartDetailIds.join("&carts=");
-    const checkoutUrl = "/test/checkout?" + queryParams;
+    const checkoutUrl = `${billApi}/checkout?` + queryParams;
 
     // Redirect to the checkout URL
     window.location.href = checkoutUrl;
@@ -51,13 +52,16 @@ async function updateQuantity(element) {
   if (quantity <= 0) {
     deletedCart(idCartDetails);
   }
-  updateCartDetailUI(await updateCartDetail(element, idCartDetails, quantity));
+  await updateCartDetail(idCartDetails, quantity);
+  await updateCartDetailUI(await getCartDetail(idCartDetails));
+  updateTotalMoney();
 }
 
 async function deletedCart(idcartdetail) {
   confirm("Bạn chắc chắn có muốn xóa không ?");
   {
     await deleteCartDetail(idcartdetail);
+    updateTotalMoney();
   }
 }
 function deletedCartUI(idcartdetail) {
@@ -66,12 +70,13 @@ function deletedCartUI(idcartdetail) {
     cartdetailDiv.remove();
   }
 }
-function updateCartDetailUI(cartdetail) {
+async function updateCartDetailUI(cartdetail) {
   const cartdetailDiv = carttable.querySelector(`#cartdetail${cartdetail.id}`);
   console.log(cartdetailDiv);
   if (cartdetailDiv) {
     const totalMoney = cartdetailDiv.querySelector(".totalMoney");
-    console.log(totalMoney);
+    const quantityinput = cartdetailDiv.querySelector(".quantityinput");
+    quantityinput.value = cartdetail.quantity;
     totalMoney.innerHTML = formatToVND(cartdetail.totalMoeny);
   }
 }
@@ -97,7 +102,7 @@ const addToCart = async (productId, quantity) => {
   }
 };
 
-const updateCartDetail = async (element, cartDetailId, newQuantity) => {
+const updateCartDetail = async (cartDetailId, newQuantity) => {
   try {
     const response = await axios.patch(
       `${API_BASE_URL}/update/${cartDetailId}/quantity/${newQuantity}`
@@ -140,6 +145,7 @@ const updateCartDetail = async (element, cartDetailId, newQuantity) => {
       position: "right top",
       customWrapper: "",
     });
+    return;
   }
 };
 
@@ -188,7 +194,12 @@ const deleteCartDetail = async (cartDetailId) => {
     });
   }
 };
-
+const getCartDetail = async (cartDetailId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/cart/${cartDetailId}`);
+    return response.data;
+  } catch (error) {}
+};
 const updateTotalMoney = async () => {
   const CartDetailIds = [];
   document

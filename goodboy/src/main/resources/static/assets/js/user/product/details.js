@@ -2,6 +2,8 @@ const hovanchooses = document.querySelectorAll(
   "input[type='radio'].hovanchoose"
 );
 const quantityinput = document.querySelector("input#quantitypr");
+const API_BASE_URL = "/test/api/cart";
+
 function openHoavan(cityName) {
   var i;
   var x = document.getElementsByClassName("hoavandiv");
@@ -50,8 +52,8 @@ async function addToCart() {
             return;
           } else {
             axios
-              .post(
-                `/test/api/cart/add/${idproductselect}?quantity=${quantityValue}`
+              .get(
+                `${API_BASE_URL}/add/${idproductselect}?quantity=${quantityValue}`
               )
               .then((response) => {
                 console.log("Item added to cart:", response.data);

@@ -40,10 +40,12 @@ public class Bill {
 
   @ManyToOne
   @JoinColumn(name = "id_customer")
+  @JsonIgnore
   private Customer customer;
 
   @ManyToOne
   @JoinColumn(name = "id_employee")
+  @JsonIgnore
   private Employee employee;
 
   @ManyToOne
@@ -126,17 +128,17 @@ public class Bill {
 
   // @PreUpdate
   // protected void onUpdate() {
-  //   if (this.money_ship == null) {
-  //     this.money_ship = 0d;
-  //   }
-  //   if (this.total_money == null) {
-  //     this.total_money = 0d;
-  //   }
-  //   if (this.reduction_amount == null) {
-  //     reduction_amount = 0d;
-  //   }
-  //   this.deposit = this.total_money + this.money_ship - this.reduction_amount;
-  //   this.updatedAt = LocalDateTime.now();
+  // if (this.money_ship == null) {
+  // this.money_ship = 0d;
+  // }
+  // if (this.total_money == null) {
+  // this.total_money = 0d;
+  // }
+  // if (this.reduction_amount == null) {
+  // reduction_amount = 0d;
+  // }
+  // this.deposit = this.total_money + this.money_ship - this.reduction_amount;
+  // this.updatedAt = LocalDateTime.now();
   // }
 
   // @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST,

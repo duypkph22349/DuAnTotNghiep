@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
@@ -19,6 +20,7 @@ import datn.goodboy.service.ColorService;
 import datn.goodboy.service.MaterialService;
 import datn.goodboy.service.OriginService;
 import datn.goodboy.service.StylesService;
+import datn.goodboy.service.test.CartService;
 import datn.goodboy.service.test.ProductService;
 
 @Controller("testHomeController")
@@ -81,8 +83,13 @@ public class HomeController {
     return "user/home";
   }
 
+  @Autowired
+  private CartService cartService;
+
   @GetMapping("cart")
   public String viewCart(Model model) {
+    Cart cart = cartService.getCart();
+    model.addAttribute("cart", cart);
     return "user2/cart";
   }
 

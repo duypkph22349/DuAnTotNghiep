@@ -3,9 +3,13 @@ package datn.goodboy.model.entity;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -70,4 +75,15 @@ public class Customer {
   @JsonIgnore
   private Cart cart;
 
+  @OneToMany(mappedBy = "customer")
+  @ToString.Exclude
+  @JsonProperty("bills")
+  private List<Bill> bills;
+
+  @JsonProperty("billsbyStatus")
+  private Map<Integer, List<Bill>> getBillByStatus() {
+    Map<Integer, List<Bill>> billMap = bills.stream()
+        .collect(Collectors.groupingBy(Bill::getStatus));
+    return billMap;
+  }
 }
