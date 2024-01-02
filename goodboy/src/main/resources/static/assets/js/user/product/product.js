@@ -356,21 +356,13 @@ function generateProductDiv(product) {
           <img class="img-fluid w-100" src="${product.images[0]}" alt="">
       </div>
       <div class="text-center py-4">
-          <a class="h6 text-decoration-none text-truncate" href="">${
+          <a class="h6 text-decoration-none text-truncate" href="/home/test/detail/${product.id}">${
             product.name
           }</a>
           <div class="d-flex align-items-center justify-content-center mt-2">
               <h5>${formatToVND(product.minprice)} - ${formatToVND(
     product.maxprice
   )}</h5>
-          </div>
-          <div class="d-flex align-items-center justify-content-center mb-1">
-              <small class="fa fa-star text-primary mr-1"></small>
-              <small class="fa fa-star text-primary mr-1"></small>
-              <small class="fa fa-star text-primary mr-1"></small>
-              <small class="fa fa-star text-primary mr-1"></small>
-              <small class="fa fa-star text-primary mr-1"></small>
-              <small>(99)</small>
           </div>
       </div>
     </div>
@@ -475,6 +467,7 @@ function init() {
     idOrigins: checkedidOrigins,
   };
   searchFilter.updateFilter(filterData);
+  getPageProducts();
 }
 
 async function updatePanigation() {

@@ -13,7 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductFilter;
+import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
 import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
@@ -22,6 +24,8 @@ import datn.goodboy.service.serviceinterface.PanigationInterface;
 public class ProductService implements PanigationInterface<Product>, IPanigationWithFIllter<Product, ProductFilter> {
   @Autowired
   private ProductRepository productRepository;
+  @Autowired
+  private ProductDetailRepository productDetailRepository;
 
   public List<Product> getNewProducts(int pageSize) {
     Sort sort = Sort.by("createdAt").ascending();
@@ -135,4 +139,7 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
     return productRepository.findById(id).get();
   }
 
+  public ProductDetail getProductDetails(int idProduct) {
+    return productDetailRepository.findById(idProduct).get();
+  }
 }
