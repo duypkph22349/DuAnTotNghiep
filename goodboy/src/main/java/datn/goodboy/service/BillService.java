@@ -48,8 +48,6 @@ public class BillService {
 
     @Autowired
     ProductDetailService productDetailService;
-    @Autowired
-    private BillDetailRepository billDetailRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -94,7 +92,6 @@ public class BillService {
                 .orElseThrow(() -> new NotFoundException("Not found"));
     }
 
-
     public Bill saveBill(Bill bill) {
 
         return billRepository.save(bill);
@@ -102,7 +99,6 @@ public class BillService {
 
     public void saveBillAndDetails(Bill bill) {
         // Lưu Bill
-
 
         // Lưu BillDetail
         List<BillDetail> billDetails = bill.getBillDetail();
@@ -121,7 +117,6 @@ public class BillService {
     public Optional<Bill> findByIdBill(int id) {
         return billRepository.findById(id);
     }
-
 
     public void createBill(BillRequest billRequest) throws NotFoundException {
         if (billRequest != null) {
@@ -229,14 +224,12 @@ public class BillService {
         return null;
     }
 
-
-    public List<Bill> findBillsByCustomerId(UUID customerId){
+    public List<Bill> findBillsByCustomerId(UUID customerId) {
         return billRepository.findByCustomer_Id(customerId);
     }
 
     public int getBillCountByStatus(int status) {
         return billRepository.countByStatus(status);
     }
-
 
 }

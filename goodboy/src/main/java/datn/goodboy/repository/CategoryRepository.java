@@ -26,8 +26,4 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
   Page<Category> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
   Page<Category> findAllByOrderByCreatedAtDesc(Pageable pageable);
-<<<<<<< HEAD
-=======
-
->>>>>>> d207771 (sửa giao diện, add category)
 }
