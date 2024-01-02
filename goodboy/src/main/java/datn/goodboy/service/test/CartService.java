@@ -130,4 +130,8 @@ public class CartService {
     return null;
   }
 
+  public CartDetail getCartDetails(int id) {
+    return cartDetailRepository.findById(id).get();
+  }
+
 }

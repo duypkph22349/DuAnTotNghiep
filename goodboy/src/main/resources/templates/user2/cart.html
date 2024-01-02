@@ -63,7 +63,7 @@
                                                     </button>
                                                 </div>
                                                 <input type="text"
-                                                    class="form-control form-control-sm bg-secondary border-0 text-center"
+                                                    class="form-control form-control-sm bg-secondary border-0 text-center quantityinput"
                                                     th:id-cartdetails="${cartDetail.id}"
                                                     th:value="${cartDetail.quantity}" onchange="updateQuantity(this)"
                                                     pattern="[0-9]+"
@@ -127,7 +127,7 @@
         </p>
     </div>
     <div th:unless="${cart}" class="text-center h3">
-        Đăng nhập để xem giỏ hàng
+        Đăng nhập để xem giỏ hàng <a href="/login">Đăng nhập</a>
     </div>
     <script th:src="@{/assets/js/user/product/cart.js}"></script>
 </body>
