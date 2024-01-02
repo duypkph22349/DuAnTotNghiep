@@ -356,9 +356,9 @@ function generateProductDiv(product) {
           <img class="img-fluid w-100" src="${product.images[0]}" alt="">
       </div>
       <div class="text-center py-4">
-          <a class="h6 text-decoration-none text-truncate" href="/home/test/detail/${product.id}">${
-            product.name
-          }</a>
+          <a class="h6 text-decoration-none text-truncate" href="/home/test/detail/${
+            product.id
+          }">${product.name}</a>
           <div class="d-flex align-items-center justify-content-center mt-2">
               <h5>${formatToVND(product.minprice)} - ${formatToVND(
     product.maxprice
@@ -382,7 +382,7 @@ async function updateFillter() {
     idStyless: checkedStyles,
     idCategorys: checkedCategorys,
     idOrigins: checkedidOrigins,
-    pageno:1
+    pageno: 1,
   };
   searchFilter.updateFilter(filterData);
   console.log(searchFilter);
@@ -441,12 +441,16 @@ async function getPageProducts() {
     );
 
     console.log("Response Data:", response.data);
+    productview.innerHTML = "";
     if (response.data) {
-      productview.innerHTML = "";
-      response.data.forEach((product) => {
-        productview.appendChild(generateProductDiv(product));
-      });
-      await updatePanigation();
+      if (response.data.length > 0) {
+        response.data.forEach((product) => {
+          productview.appendChild(generateProductDiv(product));
+        });
+        await updatePanigation();
+      }
+    } else {
+      productview.innerHTML = `<p class="text-center">Không có sản phẩm</p>`;
     }
   } catch (error) {
     console.error("Error:", error.message);
