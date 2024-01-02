@@ -1,5 +1,6 @@
 package datn.goodboy.controller.usercontroller.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import datn.goodboy.model.entity.Product;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ColorService;
@@ -93,14 +96,17 @@ public class HomeController {
     return "user2/index";
   }
 
-  @GetMapping("detail")
-  public String viewProductDetails(Model model) {
+  @GetMapping("detail/{id}")
+  public String viewProductDetails(Model model, @PathVariable("id") int id) {
+    List<Product> product = productService.getTopProductSaleThisYear(10);
+    model.addAttribute("productrelasze", product);
+    model.addAttribute("product", productService.getById(id));
     return "user2/detail";
   }
 
   @GetMapping("shop")
   public String viewIndex(Model model) {
-    model.addAttribute("products", productService.getTopProductSaleThisYear(20));
+
     return "user2/shop";
   }
 

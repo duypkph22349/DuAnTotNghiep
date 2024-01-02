@@ -3,12 +3,15 @@ package datn.goodboy.controller.usercontroller.test.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.ProductFilter;
 import datn.goodboy.service.test.ProductService;
 
@@ -35,5 +38,10 @@ public class ProductController {
   @PostMapping(value = "/getTotalPage")
   public int getTotalPage(@RequestBody ProductFilter filterRequest) {
     return productService.getPageNumber(filterRequest.getRowcount(), filterRequest);
+  }
+
+  @GetMapping(value = "/detail/{idproduct}")
+  public ProductDetail getProductDetail(@PathVariable("idproduct") int idProduct) {
+    return productService.getProductDetails(idProduct);
   }
 }
