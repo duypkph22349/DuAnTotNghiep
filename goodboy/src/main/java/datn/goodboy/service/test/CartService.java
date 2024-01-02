@@ -3,7 +3,6 @@ package datn.goodboy.service.test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -91,9 +90,12 @@ public class CartService {
     if (cartDetailOptional.isPresent()) {
       CartDetail cartDetail = cartDetailOptional.get();
       cartDetail.setQuantity(quantity);
+      if (cartDetail.getProductDetail().getQuantity() < quantity) {
+        throw new RuntimeException("Sản phảm không chỉ còn: " + cartDetail.getProductDetail().getQuantity());
+      }
       return cartDetailRepository.save(cartDetail);
     } else {
-      throw new RuntimeException("CartDetail not found with id: " + idcartdetails);
+      throw new RuntimeException("Sản phẩm không tồn tại trong cart : " + idcartdetails);
     }
   }
 

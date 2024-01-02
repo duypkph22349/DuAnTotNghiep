@@ -19,6 +19,6 @@ public class CartController {
   public String viewCart(Model model) {
     Cart cart = cartService.getCart();
     model.addAttribute("cart", cart);
-    return "user/cart";
+    return "user2/cart";
   }
 }

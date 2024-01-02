@@ -7,7 +7,6 @@
 </head>
 
 <body layout:fragment="content">
-
     <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
@@ -22,183 +21,115 @@
     </div>
     <!-- Breadcrumb End -->
     <!-- Cart Start -->
-    <div class="container-fluid">
+    <div class="container-fluid" th:if="${cart}">
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
-                <table class="table table-light table-borderless table-hover text-center mb-0">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Products</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody class="align-middle">
-                        <tr>
-                            <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> Product
-                                Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text"
-                                        class="form-control form-control-sm bg-secondary border-0 text-center"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i
-                                        class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-2.jpg" alt="" style="width: 50px;"> Product
-                                Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text"
-                                        class="form-control form-control-sm bg-secondary border-0 text-center"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i
-                                        class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-3.jpg" alt="" style="width: 50px;"> Product
-                                Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text"
-                                        class="form-control form-control-sm bg-secondary border-0 text-center"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i
-                                        class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-4.jpg" alt="" style="width: 50px;"> Product
-                                Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text"
-                                        class="form-control form-control-sm bg-secondary border-0 text-center"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i
-                                        class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-5.jpg" alt="" style="width: 50px;"> Product
-                                Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text"
-                                        class="form-control form-control-sm bg-secondary border-0 text-center"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i
-                                        class="fa fa-times"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-lg-4">
-                <form class="mb-30" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-0 p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
+                <div class="row" th:unless="${cart.getCartDetails().isEmpty()}">
+                    <div class="col-lg-12">
+                        <div class="cart-table">
+                            <table class="table table-light table-borderless table-hover text-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="thead-dark" style="width: 10%"><input type="checkbox"
+                                                name="selectall" id="selectAll" onclick="selectAll(this.checked)">
+                                        </th>
+                                        <th style="width: 10%">Hình ảnh</th>
+                                        <th style="width: 25%" class="p-name">Tên sản phẩm</th>
+                                        <th style="width: 20%">Giá</th>
+                                        <th style="width: 20%">Số lượng</th>
+                                        <th style="width: 20%">Tổng giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle" id="carttable">
+                                    <tr th:each="cartDetail, loop : ${cart.getCartDetails()}"
+                                        th:id="${'cartdetail'+cartDetail.id}">
+                                        <td class="align-middle"><input type="checkbox" name="pdselect" class="pdselect"
+                                                onclick="selectProductDetails()" th:id-cart-detail="${cartDetail.id}">
+                                        </td>
+                                        <td class="align-middle">
+                                            <img th:src="${cartDetail.productDetail.getFirstImage()}" alt="Ảnh sản phẩm"
+                                                style="width: 50px;">
+                                        </td>
+                                        <td class="align-middle" th:text="${cartDetail.productDetail.getNameProduct()}">
+                                        </td>
+                                        <td class="align-middle"
+                                            th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
+                                        </td>
+                                        <td class="align-middle quantitytd">
+                                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary btn-minus"><i
+                                                            class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="text"
+                                                    class="form-control form-control-sm bg-secondary border-0 text-center"
+                                                    th:id-cartdetails="${cartDetail.id}"
+                                                    th:value="${cartDetail.quantity}" onchange="updateQuantity(this)"
+                                                    pattern="[0-9]+"
+                                                    title="Please enter a valid quantity (only digits)">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary btn-plus">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="totalMoney align-middle" th:if="${cartDetail.getTotalMoney()==0}"
+                                            th:text="${'0 ₫'}">
+                                        </td>
+                                        <td class="totalMoney align-middle" th:unless="${cartDetail.getTotalMoney()==0}"
+                                            th:text="
+                                            ${#strings.replace(#numbers.formatDecimal(cartDetail.getTotalMoney(),
+                                            0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
+                                        </td>
+                                        <td class=" align-middle close-td first-row">
+                                            <a class="btn btn-outline-danger"
+                                                th:onclick="'deletedCart(' + ${cartDetail.id} + ')'">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                    <path
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </form>
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Cart
-                        Summary</span></h5>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thanh
+                        toán</span></h5>
                 <div class="bg-light p-30 mb-5">
                     <div class="border-bottom pb-2">
                         <div class="d-flex justify-content-between mb-3">
-                            <h6>Subtotal</h6>
-                            <h6>$150</h6>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
+                            <h6>Tổng giá sản phẩm</h6>
+                            <h6 id="TotalMoney"></h6>
                         </div>
                     </div>
                     <div class="pt-2">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5>Total</h5>
-                            <h5>$160</h5>
-                        </div>
-                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To
-                            Checkout</button>
+                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                            onclick="checkoutpage()">Tới trang thanh
+                            toán</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Cart End -->
+    <div th:if="${cart}" class="text-center h3">
+        <p th:if="${cart.getCartDetails().isEmpty()}">
+            Chưa có sản phẩm trong giỏ hàng
+        </p>
+    </div>
+    <div th:unless="${cart}" class="text-center h3">
+        Đăng nhập để xem giỏ hàng
+    </div>
+    <script th:src="@{/assets/js/user/product/cart.js}"></script>
 </body>
 
 </html>

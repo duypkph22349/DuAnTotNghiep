@@ -29,7 +29,6 @@ import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayRepository;
 import javassist.NotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BillService {
