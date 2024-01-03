@@ -131,7 +131,17 @@ public class ProductDetail {
             return this.name;
         }
     }
-
+    @JsonProperty("fullnameProduct")
+    public String getFullNameProduct() {
+        if (this.name == null) {
+            return idProduct.getName() + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        }
+        if (this.name.equals("")) {
+            return idProduct.getName() + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        } else {
+            return this.name + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        }
+    }
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

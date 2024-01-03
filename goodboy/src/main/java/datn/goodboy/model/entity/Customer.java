@@ -77,16 +77,17 @@ public class Customer {
 
   @OneToMany(mappedBy = "customer")
   @ToString.Exclude
-  @JsonProperty("bills")
+  // @JsonProperty("bills")
+  @JsonIgnore
   private List<Bill> bills;
 
-  @JsonProperty("billsbyStatus")
+  @JsonIgnore
+  // @JsonProperty("billsbyStatus")
   private Map<Integer, List<Bill>> getBillByStatus() {
     Map<Integer, List<Bill>> billMap = bills.stream()
         .collect(Collectors.groupingBy(Bill::getStatus));
     return billMap;
   }
-
 
   @OneToOne(mappedBy = "customer")
   @ToString.Exclude
