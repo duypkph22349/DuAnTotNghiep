@@ -29,7 +29,7 @@ public class BillController {
   @GetMapping("/history")
   public String viewHistoryBill(Model model) {
     Customer customer = billService.getCustomer();
-      model.addAttribute("bills", customer.getBills());
+    model.addAttribute("customer", customer);
     return "user2/userbills";
   }
 }

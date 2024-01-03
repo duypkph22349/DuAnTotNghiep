@@ -41,12 +41,12 @@ public class Bill {
 
   @ManyToOne
   @JoinColumn(name = "id_customer")
-  @JsonIgnore
+  // @JsonIgnore
   private Customer customer;
 
   @ManyToOne
   @JoinColumn(name = "id_employee")
-  @JsonIgnore
+  // @JsonIgnore
   private Employee employee;
 
   @ManyToOne
