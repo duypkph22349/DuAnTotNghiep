@@ -13,9 +13,8 @@
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                    <span class="breadcrumb-item active">Shop Detail</span>
+                    <a class="breadcrumb-item text-dark" href="/index">Trang chủ</a>
+                    <span class="breadcrumb-item active">Sản Phẩm</span>
                 </nav>
             </div>
         </div>
@@ -41,7 +40,8 @@
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${brandCbb}">
                             <input type="checkbox" class="custom-control-input brand-fillter" th:value="${option.key}"
-                                th:id-brand="${option.key}" th:id="${'brand-'+option.key}" name="idBrands" onclick="updateFillter()">
+                                th:id-brand="${option.key}" th:id="${'brand-'+option.key}" name="idBrands"
+                                onclick="updateFillter()">
                             <label class="custom-control-label" th:for="${'brand-'+option.key}"
                                 th:text="${option.value}"></label>
                         </div>
@@ -104,7 +104,8 @@
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${originCbb}">
                             <input type="checkbox" class="custom-control-input origin-fillter" th:value="${option.key}"
-                                th:id-brand="${option.key}" th:id="${'origin-'+option.key}" name="idOrigins" onclick="updateFillter()">
+                                th:id-brand="${option.key}" th:id="${'origin-'+option.key}" name="idOrigins"
+                                onclick="updateFillter()">
                             <label class="custom-control-label" th:for="${'origin-'+option.key}"
                                 th:text="${option.value}"></label>
                         </div>
@@ -123,8 +124,9 @@
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${stylesCbb}">
-                            <input type="checkbox" class="custom-control-input styles-fillter" th:value="${option.key}" onclick="updateFillter()"
-                                th:id-brand="${option.key}" th:id="${'styles-'+option.key}" name="idStyless">
+                            <input type="checkbox" class="custom-control-input styles-fillter" th:value="${option.key}"
+                                onclick="updateFillter()" th:id-brand="${option.key}" th:id="${'styles-'+option.key}"
+                                name="idStyless">
                             <label class="custom-control-label" th:for="${'styles-'+option.key}"
                                 th:text="${option.value}"></label>1
                         </div>

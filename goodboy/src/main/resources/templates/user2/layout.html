@@ -77,16 +77,31 @@
           </button>
           <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
-              <a href="/home/test/index" class="nav-item nav-link">Trang chủ</a>
-              <a href="/home/test/shop" class="nav-item nav-link">Sản Phẩm</a>
+              <a href="/index" class="nav-item nav-link">Trang chủ</a>
+              <a href="/product" class="nav-item nav-link">Sản Phẩm</a>
             </div>
             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
               <!-- <a href="" class="btn px-0">
                 <i class="fas fa-heart text-primary"></i>
               </a> -->
-              <a href="/home/test/cart" class="btn px-0 ml-3">
+              <a href="/shop/cart" class="btn px-0 ml-3">
                 <i class="fas fa-shopping-cart text-primary"></i>
               </a>
+              <div class="btn-group">
+                <button type="button" class="btn px-0 ml-3 dropdown-toggle" data-toggle="dropdown"><i
+                    class="fas fa-user text-primary"></i></button>
+                <div class="dropdown-menu dropdown-menu-right" th:unless="${session.authenuser}">
+                  <button class="dropdown-item" type="button">Đăng Nhập</button>
+                  <button class="dropdown-item" type="button">Đăng ký</button>
+                </div>
+                <div class="dropdown-menu dropdown-menu-right" th:if="${session.authenuser}">
+                  <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
+                  <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
+                  <a class="dropdown-item" th:href="@{/shop/order/history}">Đơn hàng</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" th:href="@{/login}">Đăng xuất</a>
+                </div>
+              </div>
             </div>
           </div>
         </nav>

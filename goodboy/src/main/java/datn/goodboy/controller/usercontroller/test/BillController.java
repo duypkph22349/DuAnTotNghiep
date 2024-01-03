@@ -14,7 +14,7 @@ import datn.goodboy.model.entity.Customer;
 import datn.goodboy.service.test.BillService;
 
 @Controller("testBillController")
-@RequestMapping("/bill/test")
+@RequestMapping("/shop/order")
 public class BillController {
   @Autowired
   BillService billService;

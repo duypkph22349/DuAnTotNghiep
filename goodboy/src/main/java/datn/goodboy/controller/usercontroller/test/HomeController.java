@@ -24,7 +24,6 @@ import datn.goodboy.service.test.CartService;
 import datn.goodboy.service.test.ProductService;
 
 @Controller("testHomeController")
-@RequestMapping("/home/test")
 public class HomeController {
   @Autowired
   private ProductService productService;
@@ -76,7 +75,7 @@ public class HomeController {
     return stylesService.getCombobox();
   }
 
-  @GetMapping
+  @GetMapping("/index")
   public String view(Model model) {
     model.addAttribute("productDetails", productService.getTopProductSaleThisYear(10));
     model.addAttribute("product", productService.getNewProducts(20));
@@ -86,24 +85,24 @@ public class HomeController {
   @Autowired
   private CartService cartService;
 
-  @GetMapping("cart")
+  @GetMapping("/shop/cart")
   public String viewCart(Model model) {
     Cart cart = cartService.getCart();
     model.addAttribute("cart", cart);
     return "user2/cart";
   }
 
-  @GetMapping("checkout")
+  @GetMapping("/shop/checkout")
   public String viewCheckOut(Model model) {
     return "user2/checkout";
   }
 
-  @GetMapping("index")
-  public String viewProduct(Model model) {
-    return "user2/index";
-  }
+  // @GetMapping("/index")
+  // public String viewProduct(Model model) {
+  // return "user2/index";
+  // }
 
-  @GetMapping("detail/{id}")
+  @GetMapping("/product/detail/{id}")
   public String viewProductDetails(Model model, @PathVariable("id") int id) {
     List<Product> product = productService.getTopProductSaleThisYear(10);
     model.addAttribute("productrelasze", product);
@@ -111,9 +110,8 @@ public class HomeController {
     return "user2/detail";
   }
 
-  @GetMapping("shop")
+  @GetMapping("/product")
   public String viewIndex(Model model) {
-
     return "user2/shop";
   }
 
