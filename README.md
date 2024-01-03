@@ -31,13 +31,13 @@ Mã này áp dụng vào status cho tất cả bảng
 - 0: Ngừng kích hoạt (Deactivated)
 - 1: Kích hoạt (Activated)
 
-## Bill Status Timeline
+## Bill Status
 
 Mã này áp dụng cho timeline trạng thái đơn hàng
 
-- 1:Chờ xác nhận (Confirmed successfully)
-- 2:Chờ lấy hàng
+- 1: Chờ xác nhận (Confirmed successfully)
+- 2: Chờ lấy hàng
 - 3: Chờ giao hàng (Pending delivery)
 - 4: Đang giao hàng (In transit)
-- 5: Đã giao hàng (Delivered)
-- 6: Thành công (Successful)
+- 5: Thành công (Successful)
+- 6: Đã hủy
