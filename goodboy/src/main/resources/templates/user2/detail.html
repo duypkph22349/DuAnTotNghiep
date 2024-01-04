@@ -13,8 +13,8 @@
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="/home/test">Trang chủ</a>
-                    <a class="breadcrumb-item text-dark" href="/home/test/shop">Sản Phẩm</a>
+                    <a class="breadcrumb-item text-dark" href="/index">Trang chủ</a>
+                    <a class="breadcrumb-item text-dark" href="/product">Sản Phẩm</a>
                     <span class="breadcrumb-item active" th:text="${product.name}"></span>
                 </nav>
             </div>
@@ -79,7 +79,8 @@
                                 th:each="productsize : ${pattensize}">
                                 <input type="radio" class="custom-control-input product-chooese"
                                     th:id="${'productdetail1'+ productsize.id}" name="product"
-                                    th:id-product="${productsize.id}" th:product-quantity="${productsize.quantity}">
+                                    th:disabled="${productsize.quantity ==0 }" th:id-product="${productsize.id}"
+                                    th:product-quantity="${productsize.quantity}">
                                 <label class=" custom-control-label" th:for="${'productdetail1'+ productsize.id}"
                                     th:text="${productsize.idSize.name +' - '+ #strings.replace(#numbers.formatDecimal(productsize.price, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></label>
                             </div>
@@ -270,7 +271,7 @@
                         </div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
-                                th:href="@{'/home/test/detail/'+${product.id}}" th:text="${product.name}"></a>
+                                th:href="@{'/product/detail/'+${product.id}}" th:text="${product.name}"></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
                                 <h5
                                     th:text="${#strings.replace(#numbers.formatDecimal(product.getMinPrice(), 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ '}">

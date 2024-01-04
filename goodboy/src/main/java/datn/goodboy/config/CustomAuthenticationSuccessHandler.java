@@ -73,7 +73,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         } else if (roles.contains("STAFF")) {
             url = "/admin";
         } else if (roles.contains("USER")) {
-            url = "/home";
+            url = "/index";
         }
         return url;
     }

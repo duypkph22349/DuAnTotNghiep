@@ -13,9 +13,10 @@
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                    <span class="breadcrumb-item active">Shop Detail</span>
+                    <a class="breadcrumb-item text-dark" href="/index">Trang chủ</a>
+                    <span class="breadcrumb-item active" th:unless="${textSearch}">Sản Phẩm</span>
+                    <span class="breadcrumb-item active" th:if="${textSearch}"
+                        th:text="'kết quả tìm kiếm cho: ' + ${textSearch}"></span>
                 </nav>
             </div>
         </div>
@@ -27,59 +28,58 @@
         <div class="row px-xl-5">
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-4">
-                <!-- brand Start -->
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thương
-                        Hiệu</span></h5>
-                <div class="bg-light p-4 mb-30">
-                    <form>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="brand-all">
-                            <label class="custom-control-label" for="brand-all">Tất cả</label>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" id="text-search"
+                            th:value="${textSearch != null ? textSearch : ''}">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary" onclick="updateFillter()">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </span>
                         </div>
-                        <!-- th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}" -->
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
-                            th:each="option : ${brandCbb}">
-                            <input type="checkbox" class="custom-control-input brand-fillter" th:value="${option.key}"
-                                th:id-brand="${option.key}" th:id="${'brand-'+option.key}" name="idBrands" onclick="updateFillter()">
-                            <label class="custom-control-label" th:for="${'brand-'+option.key}"
-                                th:text="${option.value}"></label>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <!-- category End -->
                 <!-- category Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Loại
                         khăn</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="category-all">
-                            <label class="custom-control-label" for="category-all">Tất cả</label>
-                        </div>
                         <!-- th:each="option : ${categoryCbb}" th:value="${option.key}" th:text="${option.value}" -->
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${categoryCbb}">
                             <input type="checkbox" class="custom-control-input category-fillter"
                                 th:value="${option.key}" th:id-category="${option.key}"
-                                th:id="${'category-'+option.key}" name="idCategorys" onclick="updateFillter()">
+                                th:checked="${categorychoose != null and option.key == categorychoose}"
+                                th:id=" ${'category-'+option.key}" name="idCategorys" onclick="updateFillter()">
                             <label class="custom-control-label" th:for="${'category-'+option.key}"
                                 th:text="${option.value}"></label>
                         </div>
                     </form>
                 </div>
                 <!-- category End -->
+                <!-- brand Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thương
+                        Hiệu</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        <!-- th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}" -->
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+                            th:each="option : ${brandCbb}">
+                            <input type="checkbox" class="custom-control-input brand-fillter" th:value="${option.key}"
+                                th:id-brand="${option.key}" th:id="${'brand-'+option.key}" name="idBrands"
+                                onclick="updateFillter()">
+                            <label class="custom-control-label" th:for="${'brand-'+option.key}"
+                                th:text="${option.value}"></label>
+                        </div>
+                    </form>
+                </div>
+                <!-- category End -->
+
                 <!-- material Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Chất
                         liệu</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="material-all">
-                            <label class="custom-control-label" for="material-all">Tất cả</label>
-                        </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${materialCbb}">
                             <input type="checkbox" class="custom-control-input material-fillter"
@@ -96,15 +96,12 @@
                         gốc</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="origin-all">
-                            <label class="custom-control-label" for="origin-all">Tất cả</label>
-                        </div>
+
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${originCbb}">
                             <input type="checkbox" class="custom-control-input origin-fillter" th:value="${option.key}"
-                                th:id-brand="${option.key}" th:id="${'origin-'+option.key}" name="idOrigins" onclick="updateFillter()">
+                                th:id-brand="${option.key}" th:id="${'origin-'+option.key}" name="idOrigins"
+                                onclick="updateFillter()">
                             <label class="custom-control-label" th:for="${'origin-'+option.key}"
                                 th:text="${option.value}"></label>
                         </div>
@@ -116,15 +113,12 @@
                         dáng</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="styles-all">
-                            <label class="custom-control-label" for="styles-all">Tất cả</label>
-                        </div>
+
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
                             th:each="option : ${stylesCbb}">
-                            <input type="checkbox" class="custom-control-input styles-fillter" th:value="${option.key}" onclick="updateFillter()"
-                                th:id-brand="${option.key}" th:id="${'styles-'+option.key}" name="idStyless">
+                            <input type="checkbox" class="custom-control-input styles-fillter" th:value="${option.key}"
+                                onclick="updateFillter()" th:id-brand="${option.key}" th:id="${'styles-'+option.key}"
+                                name="idStyless">
                             <label class="custom-control-label" th:for="${'styles-'+option.key}"
                                 th:text="${option.value}"></label>1
                         </div>

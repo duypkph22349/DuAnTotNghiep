@@ -1590,13 +1590,14 @@ function printBill(id) {
     .get(`/admin/api/bill/${id}`)
     .then((response) => {
       const billData = response.data;
+      console.log(billData);
       $("#bill #billcode").text(billData.code);
       $("#bill #customername").text(billData.customer_name);
       $("#bill #phonenumber").text(billData.phone);
       $("#bill #fulladdress").text(billData.address);
       // Update employee information
       $("#bill #hoadoncode").text(billData.code);
-      $("#bill #employename").text(billData.employee.name);
+      $("#bill #employename").text(billData.employee?.name);
       $("#bill #orderstatus").html(getStatusBadge(billData.status)); // Assuming orderstatus is a property in your billData
       // Assuming ordertype is a property in your billData
       if (billData.loaiDon === 0) {

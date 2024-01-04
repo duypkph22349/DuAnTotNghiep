@@ -56,7 +56,7 @@ const materialAll = document.querySelector("#material-all");
 const originAll = document.querySelector("#origin-all");
 const stylesAll = document.querySelector("#styles-all");
 const panigation = document.querySelector("#panigation");
-
+const textSearch = document.querySelector("#text-search");
 const idBrands = document.querySelectorAll("input[name='idBrands']");
 const idMaterials = document.querySelectorAll("input[name='idMaterials']");
 const idStyless = document.querySelectorAll("input[name='idStyless']");
@@ -353,10 +353,10 @@ function generateProductDiv(product) {
   divProduct.innerHTML = `
     <div class="product-item bg-light mb-4">
       <div class="product-img position-relative overflow-hidden">
-          <img class="img-fluid w-100" src="${product.images[0]}" alt="">
+          <img class="img-fluid w-100" src="${product.images[0]}" alt=""  style="max-width: 100%; max-height: 300px; min-width: 150px;">
       </div>
       <div class="text-center py-4">
-          <a class="h6 text-decoration-none text-truncate" href="/home/test/detail/${
+          <a class="h6 text-decoration-none text-truncate" href="/product/detail/${
             product.id
           }">${product.name}</a>
           <div class="d-flex align-items-center justify-content-center mt-2">
@@ -377,6 +377,7 @@ async function updateFillter() {
   const checkedCategorys = getCheckedValues(idCategorys);
   const checkedidOrigins = getCheckedValues(idOrigins);
   const filterData = {
+    txtSearch: textSearch.value,
     idBrands: checkedBrands,
     idMaterials: checkedMaterials,
     idStyless: checkedStyles,
@@ -464,6 +465,7 @@ function init() {
   const checkedCategorys = getCheckedValues(idCategorys);
   const checkedidOrigins = getCheckedValues(idOrigins);
   const filterData = {
+    txtSearch: textSearch.value,
     idBrands: checkedBrands,
     idMaterials: checkedMaterials,
     idStyless: checkedStyles,
