@@ -199,4 +199,9 @@ public class Bill {
         .sum();
     return totalMoney;
   }
+
+  @OneToMany(mappedBy = "bill")
+  // @JsonIgnore
+  @JsonIgnore
+  private List<Evaluate> evaluates;
 }

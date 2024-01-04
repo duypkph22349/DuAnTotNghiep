@@ -115,4 +115,51 @@ public class TrangThaiConvert {
     }
     return "<span class=\"badge text-bg-dark\">Không xác định</span>";
   }
+
+  public static String ratingAvager(Double rating, int totalRatings) {
+    if (totalRatings == 0) {
+      return """
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small>(0)</small>
+          """;
+    }
+    int roundedRating = (int) Math.round(rating);
+    double remainder = rating - roundedRating;
+
+    StringBuilder result = new StringBuilder();
+
+    for (int i = 0; i < 5; i++) {
+      if (i < roundedRating) {
+        result.append("<small class=\"fa fa-star text-primary mr-1\"></small>");
+      } else if (i == roundedRating && remainder > 0) {
+        result.append("<small class=\"fa fa-star-half text-primary mr-1\"></small>");
+      } else {
+        result.append("<small class=\"fa fa-star mr-1\"></small>");
+      }
+    }
+    result.append("<small>(").append(totalRatings).append(")</small>");
+    return result.toString();
+  }
+
+  public static String rating(Double rating) {
+    int roundedRating = (int) Math.round(rating);
+    double remainder = rating - roundedRating;
+
+    StringBuilder result = new StringBuilder();
+
+    for (int i = 0; i < 5; i++) {
+      if (i < roundedRating) {
+        result.append("<small class=\"fa fa-star text-primary mr-1\"></small>");
+      } else if (i == roundedRating && remainder > 0) {
+        result.append("<small class=\"fa fa-star-half text-primary mr-1\"></small>");
+      } else {
+        result.append("<small class=\"fa fa-star mr-1\"></small>");
+      }
+    }
+    return result.toString();
+  }
 }

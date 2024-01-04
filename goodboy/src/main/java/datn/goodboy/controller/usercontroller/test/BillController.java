@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,8 +18,10 @@ import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.request.EvaluateRequest;
 import datn.goodboy.service.test.BillService;
 import datn.goodboy.service.test.CartService;
+import jakarta.validation.Valid;
 
 @Controller("testBillController")
 @RequestMapping("/shop/order")
@@ -25,6 +30,13 @@ public class BillController {
   BillService billService;
   @Autowired
   CartService cartService;
+  @Autowired
+  EvaluateRequest evaluateRequest;
+
+  @ModelAttribute("evaluateRequest")
+  public EvaluateRequest getEvaluateRequest() {
+    return evaluateRequest;
+  }
 
   @GetMapping("/checkout")
   public String viewCheckout(Model model, @RequestParam("carts") List<Integer> cartDetails) {
@@ -64,5 +76,19 @@ public class BillController {
     Customer customer = billService.getCustomer();
     model.addAttribute("customer", customer);
     return "user2/userbills";
+  }
+
+  @GetMapping("/evaluate/{idbill}")
+  public String evaluateBill(Model model, @PathVariable("idbill") int bill) {
+    evaluateRequest = billService.getEvaluateRequest(bill);
+    System.out.println(evaluateRequest);
+    model.addAttribute("evaluateRequest", evaluateRequest);
+    return "user2/evaluate";
+  }
+
+  @PostMapping("/evaluate/save")
+  public String saveEvaluate(@Valid @ModelAttribute("evaluateRequest") EvaluateRequest request, Model model) {
+    billService.saveEvaluate(request);
+    return "redirect:/shop/order/history";
   }
 }

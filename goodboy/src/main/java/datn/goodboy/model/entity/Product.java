@@ -1,6 +1,7 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -147,12 +148,39 @@ public class Product {
 
     @JsonProperty("images")
     public List<String> getAllImage() {
-        List<String> resList = Stream.concat(
-                imageProducts.stream().map(ImageProduct::getImg),
-                productDetails.stream()
-                        .flatMap(pd -> pd.getImageProducts().stream())
-                        .map(Images::getImg))
+        List<String> resList = new ArrayList<>();
+
+        List<String> imageProductUrls = imageProducts.stream()
+                .map(ImageProduct::getImg)
                 .collect(Collectors.toList());
+
+        List<String> productDetailsUrls = productDetails.stream()
+                .flatMap(pd -> pd.getImageProducts().stream())
+                .map(Images::getImg)
+                .collect(Collectors.toList());
+
+        resList.addAll(imageProductUrls);
+        resList.addAll(productDetailsUrls);
         return resList;
+    }
+
+    @JsonProperty("evaluates")
+    public List<Evaluate> getEvaluates() {
+        return productDetails.stream()
+                .flatMap(productDetail -> productDetail.getEvaluates().stream())
+                .collect(Collectors.toList());
+    }
+
+    @JsonProperty("averageRating")
+    public Double getAverageRating() {
+        List<Evaluate> evaluates = getEvaluates();
+        if (evaluates.isEmpty()) {
+            return 0.0; // or whatever default value you prefer
+        }
+        double averageRating = evaluates.stream()
+                .mapToDouble(Evaluate::getStart)
+                .average()
+                .orElse(0.0);
+        return averageRating;
     }
 }

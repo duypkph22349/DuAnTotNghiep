@@ -176,7 +176,7 @@
                         <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:if="${bill.status == 1 || bill.status == 6 }" th:href="${'/shop/order/reorder/'+bill.id}"
                           class="btn btn-primary mx-3">Mua lại</a>
-                        <a th:if="${bill.status == 6}" th:href="${'/shop/order/cancel/'+bill.id}"
+                        <a th:if="${bill.status == 6 && bill.evaluates.size() == 0}" th:href="${'/shop/order/evaluate/'+bill.id}"
                           class="btn btn-warning mx-3">Đánh giá</a>
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
                           class="btn btn-danger mx-3"
@@ -876,7 +876,8 @@
                       <div class="d-flex justify-content-end">
                         <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:href="${'/shop/order/reorder/'+bill.id}" class="btn btn-primary mx-3">Mua lại</a>
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
+                        <a th:if="${bill.evaluates.size() == 0}" th:href="${'/shop/order/evaluate/'+bill.id}"
+                          class="btn btn-warning mx-3">Đánh giá</a>
                       </div>
                     </div>
                   </li>

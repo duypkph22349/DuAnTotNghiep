@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -49,16 +50,20 @@ public class Evaluate {
   @ManyToOne
   @JoinColumn(name = "id_bill")
   @JsonIgnore
+  @ToString.Exclude
+
   private Bill bill;
 
   @ManyToOne
   @JoinColumn(name = "id_customer")
   @JsonIgnore
-  private Customer customer;
+  @ToString.Exclude
 
+  private Customer customer;
   @ManyToOne
   @JoinColumn(name = "id_product_detail")
   @JsonIgnore
+  @ToString.Exclude
   private ProductDetail productDetail;
 
   @PrePersist

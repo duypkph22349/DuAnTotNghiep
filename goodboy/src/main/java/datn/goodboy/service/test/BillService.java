@@ -3,6 +3,7 @@ package datn.goodboy.service.test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,18 @@ import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Customer;
+import datn.goodboy.model.entity.Evaluate;
 import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.model.request.EvaluateRequest;
+import datn.goodboy.model.request.EvaluateRequest.EvaluateProduct;
 import datn.goodboy.repository.AccountRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CartDetailRepository;
 import datn.goodboy.repository.CartRepository;
+import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.ProductDetailRepository;
+import datn.goodboy.service.EvaluateService;
+import jakarta.validation.Valid;
 
 @Service("testBillService")
 public class BillService {
@@ -31,6 +38,11 @@ public class BillService {
   CartDetailRepository cartDetailRepository;
   @Autowired
   AccountRepository accountRepository;
+
+  @Autowired
+  CustomerRepository customerRepository;
+  @Autowired
+  EvaluateService evaluateService;
   @Autowired
   ProductDetailRepository productDetailRepository;
   @Autowired
@@ -122,4 +134,42 @@ public class BillService {
     }
   }
 
+  public EvaluateRequest getEvaluateRequest(int idBill) {
+    Optional<Bill> bill = billRepository.findById(idBill);
+    if (bill.isPresent() && bill.get().getStatus() == 6) {
+      List<EvaluateProduct> evaluateProducts = bill.get().getBillDetail().stream()
+          .map(billdetail -> new EvaluateProduct(
+              billdetail.getProductDetail(),
+              0,
+              ""))
+          .collect(Collectors.toList());
+      // Assuming you have the customer ID available
+      UUID customerId = bill.get().getCustomer().getId();
+      return new EvaluateRequest(idBill, customerId, evaluateProducts);
+    }
+    return null;
+  }
+
+  public void saveEvaluate(@Valid EvaluateRequest request) {
+    Optional<Bill> bill = billRepository.findById(request.getIdbill());
+    Optional<Customer> customer = customerRepository.findById(request.getIdCustomer());
+    if (!bill.isPresent()) {
+      return;
+    }
+    if (!customer.isPresent()) {
+      return;
+    }
+    request.getEvaluateProducts().stream().forEach(evaluate -> {
+      Optional<ProductDetail> productDetail = productDetailRepository.findById(evaluate.getIdproductdetails().getId());
+      if (productDetail.isPresent()) {
+        Evaluate evld = new Evaluate();
+        evld.setBill(bill.get());
+        evld.setCustomer(customer.get());
+        evld.setProductDetail(productDetail.get());
+        evld.setDescription(evaluate.getDiscription());
+        evld.setStart(evaluate.getRating());
+        evaluateService.createEvaluate(evld);
+      }
+    });
+  }
 }
