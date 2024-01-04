@@ -84,6 +84,11 @@ public class ProductDetail {
     @JsonProperty("imageProducts")
     private List<Images> imageProducts;
 
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonProperty("evaluates")
+    private List<Evaluate> evaluates;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

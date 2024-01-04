@@ -1,6 +1,6 @@
 const totalMoney = document.getElementById("TotalMoney");
 const carttable = document.getElementById("carttable");
-const billApi = "/bill/test";
+const billApi = "/shop/order";
 function selectAll(checked) {
   console.log(" All selected are: " + checked);
   // Add your logic here to handle the checkbox state
@@ -58,8 +58,7 @@ async function updateQuantity(element) {
 }
 
 async function deletedCart(idcartdetail) {
-  confirm("Bạn chắc chắn có muốn xóa không ?");
-  {
+  if (confirm("Bạn chắc chắn có muốn xóa không ?")) {
     await deleteCartDetail(idcartdetail);
     updateTotalMoney();
   }
@@ -221,3 +220,4 @@ const updateTotalMoney = async () => {
     totalMoney.innerHTML = formatToVND(0);
   }
 };
+selectProductDetails();

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.ProductDetail;
@@ -47,8 +48,9 @@ public class CartService {
       } else {
         return account.getCustomer().getCart();
       }
+    } else {
+      throw new RuntimeException("Vui lòng đăng nhập");
     }
-    return null;
   };
 
   public void deleteCartDetails(int idcartdetails) {
@@ -107,23 +109,40 @@ public class CartService {
 
   public List<CartDetail> reorderBill(int idBill) {
     Cart cartExits = getCart();
-    Optional<Bill> bill = billRepository.findById(idBill);
-    if (bill.isPresent()) {
+    Optional<Bill> optionalBill = billRepository.findById(idBill);
+
+    if (optionalBill.isPresent()) {
+      Bill bill = optionalBill.get();
       List<CartDetail> results = new ArrayList<>();
-      bill.get().getBillDetail().stream().forEach(billdetail -> {
-        if (!cartExits.getCartDetails().stream().anyMatch(cartDetails -> {
-          return cartDetails.getProductDetail().getId() == billdetail.getProductDetail().getId();
-        })) {
+
+      List<Integer> existingProductDetailIds = new ArrayList<>();
+      for (CartDetail cartDetail : cartExits.getCartDetails()) {
+        existingProductDetailIds.add(cartDetail.getProductDetail().getId());
+      }
+
+      for (BillDetail billDetail : bill.getBillDetail()) {
+        int productId = billDetail.getProductDetail().getId();
+
+        if (!existingProductDetailIds.contains(productId)) {
           CartDetail cartDetail = new CartDetail();
-          cartDetail.setProductDetail(billdetail.getProductDetail());
-          cartDetail.setQuantity(billdetail.getQuantity());
+          cartDetail.setProductDetail(billDetail.getProductDetail());
+          cartDetail.setQuantity(billDetail.getQuantity());
           cartDetail.setCart(cartExits);
           results.add(cartDetailRepository.save(cartDetail));
+        } else {
+          for (CartDetail existingCartDetail : cartExits.getCartDetails()) {
+            if (existingCartDetail.getProductDetail().getId() == productId) {
+              existingCartDetail.setQuantity(billDetail.getQuantity());
+              results.add(cartDetailRepository.save(existingCartDetail));
+              break;
+            }
+          }
         }
-      });
+      }
       return results;
     }
-    return null;
+
+    return null; // Return an empty list if the Bill is not present
   }
 
   public Bill getCheckOutPage(List<Integer> cartDetails) {

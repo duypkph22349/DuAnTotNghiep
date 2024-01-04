@@ -3,6 +3,8 @@ package datn.goodboy.model.entity;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -82,11 +84,98 @@ public class Customer {
   private List<Bill> bills;
 
   @JsonIgnore
-  // @JsonProperty("billsbyStatus")
-  private Map<Integer, List<Bill>> getBillByStatus() {
-    Map<Integer, List<Bill>> billMap = bills.stream()
-        .collect(Collectors.groupingBy(Bill::getStatus));
-    return billMap;
+  public List<Bill> getAllBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getConFirmBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 1)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getCancelBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == -1)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getWaitingForGetBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 2)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getWaitingForDeliveryBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 3)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getDeliveringBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 4)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getSuccessBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 6)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getDeliveredBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 5)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
   }
 
   @OneToOne(mappedBy = "customer")

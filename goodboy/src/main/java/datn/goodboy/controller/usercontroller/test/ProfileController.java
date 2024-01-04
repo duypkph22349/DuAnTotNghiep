@@ -1,4 +1,4 @@
-package datn.goodboy.controller.usercontroller;
+package datn.goodboy.controller.usercontroller.test;
 
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.service.AccountService;
@@ -20,13 +20,13 @@ public class ProfileController {
     @GetMapping("/shop/profile")
     public String profile() {
 
-        return "/user/profile";
+        return "/user2/profile";
     }
 
     @GetMapping("/shop/edit_profile")
     public String ediProfile() {
 
-        return "/user/edit_profile";
+        return "/user2/edit_profile";
     }
 
     @PostMapping("/shop/edit_profile")
@@ -38,11 +38,12 @@ public class ProfileController {
     @GetMapping("/shop/change_password")
     public String change_password(Model model) {
         model.addAttribute("change_password", new Account());
-        return "/user/change_password";
+        return "/user2/change_password";
     }
 
     @PostMapping("/doimatkhau/{id}")
-    public String doiMatKhau(@PathVariable("id") Integer id, @RequestParam("newpassword") String password, @RequestParam("newconfirm") String newconfirm,@ModelAttribute("doimatkhau") Account account) {
+    public String doiMatKhau(@PathVariable("id") Integer id, @RequestParam("newpassword") String password,
+            @RequestParam("newconfirm") String newconfirm, @ModelAttribute("doimatkhau") Account account) {
 
         if (password == newconfirm) {
             service.saveAccount(account);
