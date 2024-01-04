@@ -183,4 +183,7 @@ public class Product {
                 .orElse(0.0);
         return averageRating;
     }
+
+    @Column(name = "description")
+    private String description;
 }
