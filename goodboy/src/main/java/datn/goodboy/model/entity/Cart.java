@@ -55,7 +55,7 @@ public class Cart {
         return cartItems;
     }
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @ToString.Include
     public List<CartDetail> cartDetails;
 

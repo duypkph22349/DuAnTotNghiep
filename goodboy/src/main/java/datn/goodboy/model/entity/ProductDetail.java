@@ -84,6 +84,11 @@ public class ProductDetail {
     @JsonProperty("imageProducts")
     private List<Images> imageProducts;
 
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonProperty("evaluates")
+    private List<Evaluate> evaluates;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -131,6 +136,7 @@ public class ProductDetail {
             return this.name;
         }
     }
+
     @JsonProperty("fullnameProduct")
     public String getFullNameProduct() {
         if (this.name == null) {
@@ -142,6 +148,7 @@ public class ProductDetail {
             return this.name + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
         }
     }
+
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
