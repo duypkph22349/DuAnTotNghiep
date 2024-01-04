@@ -76,7 +76,7 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between">
                   <p class="card-text"
-                    th:text="'Thành công ngày : ' + ${#temporals.format(bill.completion_date, 'dd/MM/yyyy')}">
+                    th:text="'Ngày đặt : ' + ${#temporals.format(bill.completion_date, 'dd/MM/yyyy')}">
                   </p>
                   <p th:utext="${convert.statusOfBill(bill.status)}"></p>
                 </div>
@@ -162,11 +162,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -181,7 +179,8 @@
                         <a th:if="${bill.status == 6}" th:href="${'/shop/order/cancel/'+bill.id}"
                           class="btn btn-warning mx-3">Đánh giá</a>
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
-                          class="btn btn-danger mx-3">Hủy</a>
+                          class="btn btn-danger mx-3"
+                          onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
                       </div>
                     </div>
                   </li>
@@ -285,11 +284,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -299,7 +296,9 @@
                       <hr>
                       <div class="d-flex justify-content-end">
                         <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-danger mx-3">Hủy</a>
+                        <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
+                          class="btn btn-danger mx-3"
+                          onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
                       </div>
                     </div>
                   </li>
@@ -402,11 +401,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -519,11 +516,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -637,11 +632,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -755,11 +748,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -872,11 +863,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -990,11 +979,9 @@
                               </label>
                             </td>
                             <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                              <span style="font-weight: bold;"
-                                th:if="${bill?.total_money == null or bill.total_money == 0}">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                               </span>
                             </td>
@@ -1033,4 +1020,5 @@
   </script>
   <script th:src="@{/assets/js/user/product/bill.js}"></script>
 </body>
+
 </html>

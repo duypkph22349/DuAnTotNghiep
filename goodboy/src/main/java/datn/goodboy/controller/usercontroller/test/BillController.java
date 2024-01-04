@@ -43,7 +43,7 @@ public class BillController {
   @GetMapping("/cancel/{idbill}")
   public String cancelBill(Model model, @PathVariable("idbill") int bill) {
     billService.cancelInvoice(bill);
-    return "redirect:history";
+    return "redirect:/shop/order/history";
   }
 
   @GetMapping("/reorder/{idbill}")

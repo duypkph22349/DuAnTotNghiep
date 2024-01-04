@@ -87,7 +87,7 @@ public class BillService {
     Optional<Bill> bill = billRepository.findById(idBill);
     if (bill.isPresent()) {
       if (bill.get().getStatus() == 1) {
-        bill.get().setStatus(6);
+        bill.get().setStatus(-1);
         bill.get().getBillDetail().stream().forEach(billdetail -> {
           Optional<ProductDetail> productDetails = productDetailRepository
               .findById(billdetail.getProductDetail().getId());
