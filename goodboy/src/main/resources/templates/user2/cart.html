@@ -43,7 +43,13 @@
                                 <tbody class="align-middle" id="carttable">
                                     <tr th:each="cartDetail, loop : ${cart.getCartDetails()}"
                                         th:id="${'cartdetail'+cartDetail.id}">
-                                        <td class="align-middle"><input type="checkbox" name="pdselect" class="pdselect"
+                                        <td class="align-middle">
+                                            <input type="checkbox" name="pdselect" class="pdselect"
+                                                th:if="${cartchooes != null and cartchooes.contains(cartDetail.id)}"
+                                                onclick="selectProductDetails()" th:id-cart-detail="${cartDetail.id}"
+                                                checked>
+                                            <input type="checkbox" name="pdselect" class="pdselect"
+                                                th:unless="${cartchooes != null and cartchooes.contains(cartDetail.id)}"
                                                 onclick="selectProductDetails()" th:id-cart-detail="${cartDetail.id}">
                                         </td>
                                         <td class="align-middle">

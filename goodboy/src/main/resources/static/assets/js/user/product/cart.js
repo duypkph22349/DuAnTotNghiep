@@ -220,3 +220,4 @@ const updateTotalMoney = async () => {
     totalMoney.innerHTML = formatToVND(0);
   }
 };
+selectProductDetails();
