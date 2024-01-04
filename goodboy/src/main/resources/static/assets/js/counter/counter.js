@@ -1672,6 +1672,7 @@ async function checkVoucher(formId, totalMoney) {
           setErrorElement(voucherSelect, data.message);
           discountAmount.innerHTML = formatToVND(0);
           getVoucherAble(formId);
+          return 0;
         } else {
           if (data.min_order > totalMoney) {
             new Notify({
@@ -1816,6 +1817,7 @@ async function checkVoucher(formId, totalMoney) {
         getVoucherAble(formId);
         discountAmount.innerHTML = formatToVND(0);
         console.error("Error fetching data:", error);
+        return 0;
       }
     }
   } else {
@@ -1903,7 +1905,9 @@ async function updateTongTien(formId) {
   }
 
   const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
-  finalAmount.innerHTML = formatToVND(totalMoney - discountValue);
+  finalAmount.innerHTML = formatToVND(
+    totalMoney - (isNaN(discountValue) ? 0 : discountValue)
+  );
   finalPrice(formId);
 }
 async function getShipCost(orderId, quantity) {
@@ -2029,7 +2033,10 @@ async function finalPrice(formId) {
   } else {
     remainPrice.innerHTML = formatToVND(0);
     changeAmount.innerHTML = formatToVND(
-      totalMoney - (transferAmountvl + surchargeAmountvl + discountValue)
+      totalMoney -
+        (transferAmountvl +
+          surchargeAmountvl +
+          (isNaN(discountValue) ? 0 : discountValue))
     );
   }
 }
@@ -2409,4 +2416,3 @@ function addNewKhachHang(event) {
       });
     });
 }
-// form.submit();

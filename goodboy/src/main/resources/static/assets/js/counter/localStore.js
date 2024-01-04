@@ -53,10 +53,15 @@ async function updateHoaDon(id) {
 // Sample implementation of updateOrder and buildFormData functions
 
 function removeOrder(idhoadon) {
-  // Assuming you have a function to remove an order by its ID
-  console.log(idhoadon);
-  deleteOrder(idhoadon);
-  console.log("removeOrder successfully");
+  try {
+    // Assuming you have a function to remove an order by its ID
+    console.log(idhoadon);
+    deleteOrder(idhoadon);
+    console.log("removeOrder successfully");
+  } catch (e) {
+    console.error(e);
+    sessionStorage.removeItem("orders");
+  }
 }
 
 function addSanPham(idhoadon, idproduct) {

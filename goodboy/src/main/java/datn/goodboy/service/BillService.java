@@ -21,6 +21,7 @@ import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.Pay;
+import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.request.BillRequest;
 import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
@@ -28,7 +29,6 @@ import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayRepository;
 import javassist.NotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BillService {
@@ -44,6 +44,9 @@ public class BillService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    ProductDetailService productDetailService;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -88,7 +91,6 @@ public class BillService {
                 .orElseThrow(() -> new NotFoundException("Not found"));
     }
 
-
     public Bill saveBill(Bill bill) {
 
         return billRepository.save(bill);
@@ -96,7 +98,6 @@ public class BillService {
 
     public void saveBillAndDetails(Bill bill) {
         // Lưu Bill
-
 
         // Lưu BillDetail
         List<BillDetail> billDetails = bill.getBillDetail();
@@ -115,7 +116,6 @@ public class BillService {
     public Optional<Bill> findByIdBill(int id) {
         return billRepository.findById(id);
     }
-
 
     public void createBill(BillRequest billRequest) throws NotFoundException {
         if (billRequest != null) {
@@ -147,6 +147,35 @@ public class BillService {
         }
     }
 
+    public void updateBillDetails(int idBill, int quantity, int productId) {
+        Bill bill = billRepository.findStatusById(idBill);
+        Optional<ProductDetail> productdetail = productDetailService.getProductDetailById(productId);
+        bill.setTotal_money(bill.getTotal_money() + (productdetail.get().getPrice() * quantity));
+        billRepository.save(bill);
+
+        BillDetail billDetail = billDetailRepository.findByIdBillAndIdProduct(idBill, productId);
+        if (billDetail != null) {
+            billDetail.setQuantity(billDetail.getQuantity() + quantity);
+            billDetail.setTotalMoney(billDetail.getTotalMoney() + (productdetail.get().getPrice() * quantity));
+            billDetailRepository.save(billDetail);
+        } else {
+            if (productdetail.isPresent()) {
+                productDetailService.saleProduct(productdetail.get().getId(), quantity);
+                BillDetail bd = new BillDetail();
+                bd.setProductDetail(productdetail.get());
+                bd.setIdBill(bill);
+                bd.setQuantity(quantity);
+                bd.setTotalMoney(Double.valueOf(quantity * (productdetail.get().getPrice())));
+                bd.setCreatedAt(LocalDateTime.now());
+                bd.setStatus(1);
+                bd.setDeleted(false);
+                bill.getBillDetail().add(bd);
+                billDetailRepository.save(bd);
+            }
+        }
+
+    }
+
     public Page<Bill> searchBillByCode(Integer numberSize, String code) {
         Pageable pageable = PageRequest.of(numberSize, 5);
         return billRepository.searchBillByCodeAndDeletedFalse(pageable, code);
@@ -171,6 +200,13 @@ public class BillService {
         billRepository.save(bill);
     }
 
+    public void updateStatusAndPayStatus(Integer id, Integer status) throws NotFoundException {
+        Bill bill = getBillById(id);
+        bill.setStatus_pay(1);
+        bill.setStatus(status);
+        billRepository.save(bill);
+    }
+
     public void updateStatusPay(Integer id, Integer status_pay) throws NotFoundException {
         Bill bill = getBillById(id);
         bill.setStatus_pay(status_pay);
@@ -187,14 +223,12 @@ public class BillService {
         return null;
     }
 
-
-    public List<Bill> findBillsByCustomerId(UUID customerId){
+    public List<Bill> findBillsByCustomerId(UUID customerId) {
         return billRepository.findByCustomer_Id(customerId);
     }
 
     public int getBillCountByStatus(int status) {
         return billRepository.countByStatus(status);
     }
-
 
 }

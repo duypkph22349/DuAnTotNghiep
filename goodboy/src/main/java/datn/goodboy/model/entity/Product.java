@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -64,7 +65,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "id_color")
-    private Styles idColor;
+    private Color idColor;
 
     @NotNull
     @NotBlank
@@ -99,7 +100,8 @@ public class Product {
     @ToString.Exclude
     @JsonIgnore
     private List<ProductDetail> productDetails;
-    @JsonIgnore
+
+    @JsonProperty("minprice")
     public Float getMinPrice() {
         Optional<ProductDetail> minPrice = productDetails.stream()
                 .min((val1, val2) -> {
@@ -108,7 +110,7 @@ public class Product {
         return minPrice.get().getPrice();
     }
 
-    @JsonIgnore
+    @JsonProperty("maxprice")
     public Float getMaxPrice() {
         Optional<ProductDetail> maxPrice = productDetails.stream()
                 .max((val1, val2) -> {
@@ -127,6 +129,7 @@ public class Product {
                 .collect(Collectors.toList());
         return options;
     }
+
     @JsonIgnore
     public List<PatternType> patternTypes() {
         List<PatternType> colors = productDetails.stream()
@@ -135,9 +138,21 @@ public class Product {
                 .collect(Collectors.toList());
         return colors;
     }
+
     @JsonIgnore
     public boolean exitSizes(int idsize, int idpattern) {
         return productDetails.stream()
                 .anyMatch(p -> p.getIdSize().getId() == idsize && p.getIdPattern().getId() == idpattern);
+    }
+
+    @JsonProperty("images")
+    public List<String> getAllImage() {
+        List<String> resList = Stream.concat(
+                imageProducts.stream().map(ImageProduct::getImg),
+                productDetails.stream()
+                        .flatMap(pd -> pd.getImageProducts().stream())
+                        .map(Images::getImg))
+                .collect(Collectors.toList());
+        return resList;
     }
 }

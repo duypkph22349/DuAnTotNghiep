@@ -124,7 +124,8 @@ public class CounterService {
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setCompletion_date(LocalDateTime.now());
       bill.setPay(counterPay);
-      bill.setStatus(5);
+      bill.setStatus(6);
+      bill.setStatus_pay(1);
     } else if (request.getOrderTypes() == 1) {
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setAddress(request.getSpecificAddress() + ", " + request.getFullAddress());

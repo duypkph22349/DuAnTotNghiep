@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html layout:decorate="~{user2/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Shope</title>
+</head>
+
+<body layout:fragment="content">
+  <style>
+    /* Add custom styles here if needed */
+
+    /* Override Bootstrap's default styles for the tab */
+    .tab {
+      border: none;
+    }
+
+    /* Override Bootstrap's default styles for the buttons inside the tab */
+    .tab button {
+      background-color: #f1f1f1;
+      color: #333;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    /* Override Bootstrap's default styles for the active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+  </style>
+  <div class="container-fluid mt-5">
+    <ul class="nav nav-tabs tab nav-fill" id="myTabs">
+      <li class="nav-item">
+        <a class="nav-link active" id="allbill-tab" data-toggle="tab" href="#allbill" role="tab" aria-controls="allbill"
+          aria-selected="true">Tất cả</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="confirmwait-tab" data-toggle="tab" href="#confirmwait" role="tab"
+          aria-controls="confirmwait" aria-selected="false">Chờ xác nhận </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="cholayhang-tab" data-toggle="tab" href="#cholayhang" role="tab"
+          aria-controls="cholayhang" aria-selected="false">Chờ lấy hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="chogiaohang-tab" data-toggle="tab" href="#chogiaohang" role="tab"
+          aria-controls="chogiaohang" aria-selected="false">Chờ giao hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="danggiaohang-tab" data-toggle="tab" href="#danggiaohang" role="tab"
+          aria-controls="danggiaohang" aria-selected="false">Đang giao hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="dagiaohang-tab" data-toggle="tab" href="#dagiaohang" role="tab"
+          aria-controls="dagiaohang" aria-selected="false">Đã giao hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="thanhcong-tab" data-toggle="tab" href="#thanhcong" role="tab" aria-controls="thanhcong"
+          aria-selected="false">Thành Công</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="huy-tab" data-toggle="tab" href="#huy" role="tab" aria-controls="huy"
+          aria-selected="false">Đã hủy</a>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="myTabsContent">
+      <div class="tab-pane fade show active" id="allbill" role="tabpanel" aria-labelledby="allbill-tab">
+        <div th:each="bill : ${customer.getBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+                <p class="card-text" th:text="'Ngày Đặt Hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                </p>
+                <ul class="list-group">
+                  <li class="list-group-item" th:each="billdetail : ${bill.billDetail}">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <img th:src="${billdetail.productDetail.getFirstImage()}" alt="Item 1" class="img-fluid"
+                          style="height: 110px; max-width : 200px;">
+                      </div>
+                      <div class="col-md-10">
+                        <h6 th:text="${'Sản phẩm: ' +billdetail.productDetail.getFullNameProduct()}"></h6>
+                        <p th:text="${'Số Lượng: ' +billdetail.quantity}"></p>
+                        <p
+                          th:text="${'Giá: ' +#strings.replace(#numbers.formatDecimal(billdetail.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' ₫'}">
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="cart-footer">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="confirmwait" role="tabpanel" aria-labelledby="confirmwait-tab">
+        </div>
+        <div class="tab-pane fade" id="cholayhang" role="tabpanel" aria-labelledby="cholayhang-tab">
+        </div>
+        <div class="tab-pane fade" id="chogiaohang" role="tabpanel" aria-labelledby="chogiaohang-tab">
+        </div>
+        <div class="tab-pane fade" id="danggiaohang" role="tabpanel" aria-labelledby="danggiaohang-tab">
+        </div>
+        <div class="tab-pane fade" id="dagiaohang" role="tabpanel" aria-labelledby="dagiaohang-tab">
+        </div>
+        <div class="tab-pane fade" id="thanhcong" role="tabpanel" aria-labelledby="thanhcong-tab">
+        </div>
+        <div class="tab-pane fade" id="huy" role="tabpanel" aria-labelledby="huy-tab">
+        </div>
+      </div>
+    </div>
+    <script>
+      function openCity(evt,cityName) {
+        var i,tabcontent,tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active","");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+    </script>
+    <script th:src="@{/assets/js/user/product/bill.js}"></script>
+</body>
+
+</html>

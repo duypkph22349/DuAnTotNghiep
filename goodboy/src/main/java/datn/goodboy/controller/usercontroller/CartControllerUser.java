@@ -26,10 +26,11 @@ public class CartControllerUser {
 
     @Autowired
     private CartService cartService;
+
     @GetMapping("/cart")
-    public String viewCart( Model model){
+    public String viewCart(Model model) {
         Cart cart = cartService.getCart();
-        System.out.println("ID cart ="+cart.getId());
+        System.out.println("ID cart =" + cart.getId());
         List<CartDetail> cartDetails = cartDetailService.findAllByCartId(cart.getId());
         model.addAttribute("cartDetails", cartDetails);
         BigDecimal tongTien = cartDetailService.getTotal(cartDetails);
@@ -41,21 +42,20 @@ public class CartControllerUser {
         return "user/cart";
     }
 
-
     @GetMapping("delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model) {
         cartDetailService.deleteCart(id);
-        model.addAttribute("view","Bạn đã xóa sản phẩm khỏi giỏ hàng");
+        model.addAttribute("view", "Bạn đã xóa sản phẩm khỏi giỏ hàng");
         return "redirect:/cart";
     }
 
     @RequestMapping("/updateSoLuong/{id}")
     public String updateSoLuong(Model model,
-                                @PathVariable("id") int id,
-                                @RequestParam("actions") String actions,
-                                @RequestParam("quantity") Integer quantity
+            @PathVariable("id") int id,
+            @RequestParam("actions") String actions,
+            @RequestParam("quantity") Integer quantity
 
-    ){
+    ) {
 
         CartDetail cartDetail = cartDetailService.findByIdCart(id);
 
@@ -71,7 +71,6 @@ public class CartControllerUser {
             cartDetail.setPrice(donGiaFloat);
             cartDetailService.saveCart(cartDetail);
         }
-
 
         return "redirect:/cart";
 

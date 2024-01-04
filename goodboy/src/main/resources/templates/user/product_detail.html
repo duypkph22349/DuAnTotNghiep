@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user}"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{user/layout_user2}"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
@@ -10,6 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Khăn choàng</title>
 </head>
+
 <body layout:fragment="content">
     <section>
         <div class="breacrumb-section">
@@ -30,19 +31,19 @@
         <section class="product-shop spad page-details pt-3">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 px-5">
+                    <div class="col-lg-6 px-5" th:unless="${product.getAllImage().isEmpty()}">
                         <div class="product-pic text-center mb-3">
-                            <img th:src="${product.imageProducts[0]?.img}" alt="Ảnh sản phẩm" />
+                            <img th:src="${product.getAllImage().get(0)}" alt="Ảnh sản phẩm" />
                         </div>
                         <div class="product-thumbs">
                             <div class="product-thumbs-track ps-slider owl-carousel owl-loaded owl-drag">
                                 <div class="owl-stage-outer">
                                     <div class="owl-stage"
                                         style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;display: flex;">
-                                        <div th:each="image,loop : ${product.imageProducts}">
+                                        <div th:each="image,loop : ${product.getAllImage()}">
                                             <div class="owl-item" style="width: 111,6665px; margin-right: 0.5px;">
                                                 <div class="pt">
-                                                    <img class="p-1 image-fluid w-100" th:src="${image?.img}"
+                                                    <img class="p-1 image-fluid w-100" th:src="${image}"
                                                         id="product_image${loop.index}" alt="ảnh sản phẩm">
                                                 </div>
                                             </div>
@@ -100,284 +101,166 @@
                                         <div class="font-weight-bold"
                                             th:text="${productdetailincolor.get(0).idPattern.name}">
                                         </div>
-                                        <div th:each="pddt : ${productdetailincolor}">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                data-bs-toggle="modal"
-                                                th:attr="data-bs-target='#staticBackdrop'+ ${pddt.id}"
-                                                th:text="${pddt.getIdSize().getName()}">
-                                            </button>
-                                            <div class=" modal fade" th:id="'staticBackdrop' + ${pddt.id}"
-                                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div th:if="${pddt.imageProducts.size() > 0}"
-                                                    class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="staticBackdropLabel"
-                                                                th:text="${pddt.idProduct?.name}"></h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-6">
-                                                                    <div class="product-pic text-center mb-3">
-                                                                        <img th:src="${pddt.imageProducts[0]?.img}"
-                                                                            alt="Ảnh sản phẩm" />
-                                                                    </div>
-                                                                    <div class="product-thumbs">
-                                                                        <div
-                                                                            class="product-thumbs-track ps-slider owl-carousel owl-loaded owl-drag">
-                                                                            <div class="owl-stage-outer">
-                                                                                <div class="owl-stage"
-                                                                                    style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;display: flex;">
-                                                                                    <div
-                                                                                        th:each="image,loop : ${pddt.imageProducts}">
-                                                                                        <div class="owl-item"
-                                                                                            style="width: 111,6665px; margin-right: 0.5px;">
-                                                                                            <div class="pt">
-                                                                                                <img class="p-1 image-fluid w-100"
-                                                                                                    th:src="${image?.img}"
-                                                                                                    id="product_image${loop.index}"
-                                                                                                    alt="ảnh sản phẩm">
+                                        <div class="d-flex flex-wrap">
+                                            <div th:each="pddt : ${productdetailincolor}">
+                                                <button type="button" class="btn btn-outline-secondary mx-2 mb-1"
+                                                    data-bs-toggle="modal"
+                                                    th:attr="data-bs-target='#productdetailModal'+ ${pddt.id}"
+                                                    th:text="${pddt.getIdSize().getName()}">
+                                                </button>
+                                                <div class="modal fade" th:id="'productdetailModal' + ${pddt.id}">
+                                                    <div th:if="${pddt.imageProducts.size() > 0}"
+                                                        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="productdetailModalLabel"
+                                                                    th:text="${pddt.idProduct?.name}"></h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="product-pic text-center mb-3">
+                                                                            <img th:src="${pddt.imageProducts[0]?.img}"
+                                                                                alt="Ảnh sản phẩm" />
+                                                                        </div>
+                                                                        <div class="product-thumbs">
+                                                                            <div
+                                                                                class="product-thumbs-track ps-slider owl-carousel owl-loaded owl-drag">
+                                                                                <div class="owl-stage-outer">
+                                                                                    <div class="owl-stage"
+                                                                                        style="transform: translate3d(-233px, 0px, 0px); transition: all 0s ease 0s; width: 934px;display: flex;">
+                                                                                        <div
+                                                                                            th:each="image,loop : ${pddt.imageProducts}">
+                                                                                            <div class="owl-item"
+                                                                                                style="width: 111,6665px; margin-right: 0.5px;">
+                                                                                                <div class="pt">
+                                                                                                    <img class="p-1 image-fluid w-100"
+                                                                                                        th:src="${image}"
+                                                                                                        id="product_image${loop.index}"
+                                                                                                        alt="ảnh sản phẩm">
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="owl-nav">
-                                                                                <button type="button"
-                                                                                    role="presentation"
-                                                                                    class="owl-prev">
-                                                                                    <i class="fa fa-angle-left"></i>
-                                                                                </button>
-                                                                                <button type="button"
-                                                                                    role="presentation"
-                                                                                    class="owl-next disabled">
-                                                                                    <i class="fa fa-angle-right"></i>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="owl-dots disabled">
+                                                                                <div class="owl-nav">
+                                                                                    <button type="button"
+                                                                                        role="presentation"
+                                                                                        class="owl-prev">
+                                                                                        <i class="fa fa-angle-left"></i>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                        role="presentation"
+                                                                                        class="owl-next disabled">
+                                                                                        <i
+                                                                                            class="fa fa-angle-right"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="owl-dots disabled">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-6">
-                                                                    <p><strong>Giá :</strong>
-                                                                        <span
-                                                                            th:text="${#strings.replace(#numbers.formatDecimal(pddt.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
-                                                                        </span>
-                                                                    </p>
-                                                                    </p>
-                                                                    <p><strong>Số lượng :</strong>
-                                                                        <span th:text="${pddt.quantity}"></span>
-                                                                    </p>
-                                                                    <p><strong>Kích thước :</strong>
-                                                                        <span th:text="${pddt.idSize?.name}"></span>
-                                                                    </p>
-                                                                    <p><strong>Mô tả :</strong>
-                                                                        <span th:text="${pddt.description}"></span>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <form class="quantity">
-                                                                <input type="hidden" name="idproduct"
-                                                                    th:value="${pddt.id}">
-                                                                <div class="pro-qty">
-                                                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                                        <span class="dec qtybtn"
-                                                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                                            -
-                                                                        </span>
-                                                                        <input min="1" name="quantity" value="1"
-                                                                            th:max="${pddt.quantity}" type="number"
-                                                                            onchange="checkQuantity()" />
-                                                                        <span class="inc qtybtn"
-                                                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                                            +
-                                                                        </span>
+                                                                    <div class="col-6">
+                                                                        <p><strong>Giá :</strong>
+                                                                            <span
+                                                                                th:text="${#strings.replace(#numbers.formatDecimal(pddt.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                                                            </span>
+                                                                        </p>
+                                                                        </p>
+                                                                        <p><strong>Số lượng :</strong>
+                                                                            <span th:text="${pddt.quantity}"></span>
+                                                                        </p>
+                                                                        <p><strong>Kích thước :</strong>
+                                                                            <span th:text="${pddt.idSize?.name}"></span>
+                                                                        </p>
+                                                                        <p><strong>Mô tả :</strong>
+                                                                            <span th:text="${pddt.description}"></span>
+                                                                        </p>
                                                                     </div>
                                                                 </div>
-                                                                <button type="submit"
-                                                                    class="btn mx-2 primary-btn pd-cart"
-                                                                    btn-action="buynow">Mua Ngay</button>
-                                                                <button type="button" btn-action="addtocart"
-                                                                    class="fa-solid fa-cart-shopping"></i></button>
-                                                            </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form class="quantity" onsubmit="addtoCart(event)">
+                                                                    <input type="hidden" name="idproduct"
+                                                                        th:value="${pddt.id}">
+                                                                    <div class="pro-qty">
+                                                                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                                            <span class="dec qtybtn"
+                                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                                                -
+                                                                            </span>
+                                                                            <input min="1" name="quantity" value="1"
+                                                                                th:max="${pddt.quantity}" type="number"
+                                                                                th:onchange="'checkQuantity('+${pddt.id}+')'" />
+                                                                            <span class="inc qtybtn"
+                                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                                                +
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                        class="btn mx-2 primary-btn pd-cart"><i
+                                                                            class="fa-solid fa-cart-shopping"></i></button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div th:unless="${pddt.imageProducts.size() > 0}"
+                                                        class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="productdetailModalLabel"
+                                                                    th:text="${pddt.idProduct?.name}"></h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p><strong>Giá :</strong>
+                                                                    <span
+                                                                        th:text="${#strings.replace(#numbers.formatDecimal(pddt.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                                                    </span>
+                                                                </p>
+                                                                </p>
+                                                                <p><strong>Số lượng :</strong>
+                                                                    <span th:text="${pddt.quantity}"></span>
+                                                                </p>
+                                                                <p><strong>Kích thước :</strong>
+                                                                    <span th:text="${pddt.idSize?.name}"></span>
+                                                                </p>
+                                                                <p><strong>Mô tả :</strong>
+                                                                    <span th:text="${pddt.description}"></span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form class="quantity" onsubmit="addtoCart(event)">
+                                                                    <input type="hidden" name="idproduct"
+                                                                        th:value="${pddt.id}">
+                                                                    <div class="pro-qty">
+                                                                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                                            <span class="dec qtybtn"
+                                                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                                                -
+                                                                            </span>
+                                                                            <input min="1" name="quantity" value="1"
+                                                                                th:max="${pddt.quantity}" type="number"
+                                                                                th:onchange="'checkQuantity('+${pddt.id}+')'" />
+                                                                            <span class="inc qtybtn"
+                                                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                                                +
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                        class="btn mx-2 primary-btn pd-cart"><i
+                                                                            class="fa-solid fa-cart-shopping"></i></button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div th:unless="${pddt.imageProducts.size() > 0}"
-                                                    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="staticBackdropLabel"
-                                                                th:text="${pddt.idProduct?.name}"></h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p><strong>Giá :</strong>
-                                                                <span
-                                                                    th:text="${#strings.replace(#numbers.formatDecimal(pddt.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
-                                                                </span>
-                                                            </p>
-                                                            </p>
-                                                            <p><strong>Số lượng :</strong>
-                                                                <span th:text="${pddt.quantity}"></span>
-                                                            </p>
-                                                            <p><strong>Kích thước :</strong>
-                                                                <span th:text="${pddt.idSize?.name}"></span>
-                                                            </p>
-                                                            <p><strong>Mô tả :</strong>
-                                                                <span th:text="${pddt.description}"></span>
-                                                            </p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <form class="quantity" onsubmit="addtoCart(event)">
-                                                                <input type="hidden" name="idproduct"
-                                                                    th:value="${pddt.id}">
-                                                                <div class="pro-qty">
-                                                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                                        <span class="dec qtybtn"
-                                                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                                            -
-                                                                        </span>
-                                                                        <input min="1" name="quantity" value="1"
-                                                                            th:max="${pddt.quantity}" type="number"
-                                                                            onchange="checkQuantity()" />
-                                                                        <span class="inc qtybtn"
-                                                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                                            +
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <button type="submit"
-                                                                    class="btn mx-2 primary-btn pd-cart"
-                                                                    btn-action="buynow">Mua Ngay</button>
-                                                                <button type="submit"
-                                                                    class="btn mx-2 primary-btn pd-cart"
-                                                                    btn-action="addtocart"><i
-                                                                        class="fa-solid fa-cart-shopping"></i></button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <button class="primary-btn pd-cart btn" data-bs-toggle="modal"
-                                    data-bs-target='#buynow'>Mua sản phẩm</button>
-                                <button class="primary-btn pd-cart btn" data-bs-toggle="modal"
-                                    data-bs-target='#addtocart'><i class="fa-solid fa-cart-shopping"></i></button>
-                                <div class=" modal fade" id="buynow" data-bs-backdrop="static" data-bs-keyboard="false"
-                                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Mua ngay</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!--  set link buy now to cart -->
-                                                <form action="" method="get" id="buyform"
-                                                    onsubmit="return validateBuyForm()">
-                                                    <div
-                                                        th:each=" productdetailincolor : ${product.getListOptionProduct()}">
-                                                        <div class="font-weight-bold"
-                                                            th:text="${productdetailincolor.get(0).idPattern.name}">
-                                                        </div>
-                                                        <div th:each="pddt : ${productdetailincolor}">
-                                                            <label th:for="'productbuy'+${pddt.id}"
-                                                                class="buylabel btn border"
-                                                                th:text="${pddt.getIdSize().getName()}">
-                                                            </label>
-                                                            <input type="radio" name="productbuy"
-                                                                th:id="'productbuy'+${pddt.id}" class="d-none"
-                                                                th:value="${pddt.id}" onchange="buyChoose()">
-                                                        </div>
-                                                    </div>
-                                                    <p id="buyerror" class="text-danger"></p>
-                                                    <div class="quantity mt-3">
-                                                        <div class="pro-qty">
-                                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                                <span class="dec qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown(),checkbuyQuantity()">
-                                                                    -
-                                                                </span>
-                                                                <input min="1" name="quantity" value="1" disable
-                                                                    type="number" onchange="checkbuyQuantity()" />
-                                                                <span class="inc qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp(),checkbuyQuantity()">
-                                                                    +
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <button type="submit" class="primary-btn pd-cart btn">Mua
-                                                            Ngay</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" modal fade" id="addtocart" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Thêm vào
-                                                    giỏ hàng</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="get" id="cartform"
-                                                    onsubmit="return validateCartForm()">
-                                                    <div
-                                                        th:each=" productdetailincolor : ${product.getListOptionProduct()}">
-                                                        <div class="font-weight-bold"
-                                                            th:text="${productdetailincolor.get(0).idPattern.name}">
-                                                        </div>
-                                                        <div th:each="pddt : ${productdetailincolor}">
-                                                            <label th:for="'productcart'+${pddt.id}"
-                                                                class="cartlabel btn border"
-                                                                th:text="${pddt.getIdSize().getName()}">
-                                                            </label>
-                                                            <input type="radio" name="productcart"
-                                                                th:id="'productcart'+${pddt.id}" class="d-none"
-                                                                th:value="${pddt.id}"
-                                                                th:attr="product-quantity=${pddt.quantity}"
-                                                                onchange="cartChoose()">
-                                                        </div>
-                                                    </div>
-                                                    <p id="carterror" class="text-danger"></p>
-                                                    <div class="quantity mt-3">
-                                                        <div class="pro-qty">
-                                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                                <span class="dec qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown(),checkcartQuantity()">
-                                                                    -
-                                                                </span>
-                                                                <input min="1" name="quantity" value="1" type="number"
-                                                                    onchange="checkcartQuantity()" />
-                                                                <span class="inc qtybtn"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp(),checkcartQuantity()">
-                                                                    +
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <button type="submit" class="primary-btn pd-cart btn"><i
-                                                                class="fa-solid fa-cart-shopping"></i></button>
-                                                    </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -390,8 +273,6 @@
         </section>
     </section>
     <script>
-        const carterror = document.querySelector(`#cartform #carterror`);
-        const buyerror = document.querySelector(`#buyform #buyerror`);
         function setMessage(errorElement,message) {
             errorElement.classList.add("d-invalid-message");
             errorElement.innerHTML = message;
@@ -405,112 +286,57 @@
             errorElement.innerHTML = "";
             errorElement.style.display = "none";
         }
-        function cartChoose() {
-            var radioButtons = document.querySelectorAll('input[name="productcart"]');
-            radioButtons.forEach(function (radio) {
-                radio.addEventListener('change',function () {
-                    var labelId = this.id;
-                    var label = document.querySelector('label[for="' + labelId + '"]');
-                    var cartlables = document.querySelectorAll('label.cartlabel');
-                    cartlables.forEach(function (label) {
-                        label.classList.remove('border-warning-subtle');
-                    });
-                    if (this.checked) {
-                        label.classList.add('border-warning-subtle'); // Change this line
-                    } else {
-                        label.classList.remove('border-warning-subtle'); // Change this line
-                    }
-                });
-            });
-        };
-        function checkcartQuantity() {
-            const checkedRadioButton = document.querySelector('input[name="productcart"]:checked');
-            const quantityInput = document.querySelector(`#cartform input[name="quantity"]`);
-            if (checkedRadioButton) {
-                resetMessage(carterror);
-                const productQuantity = checkedRadioButton.getAttribute('product-quantity');
-                if (parseInt(quantityInput.value) > parseInt(productQuantity)) {
-                    quantityInput.value = productQuantity;
-                }
-            }
-            else {
-                setMessage(carterror,'Chọn sản phẩm trước');
-                quantityInput.value = 1;
-            }
+        function checkQuantity(id) {
+            console.log(id);
         }
-        function buyChoose() {
-            var radioButtons = document.querySelectorAll('input[name="productbuy"]');
-            radioButtons.forEach(function (radio) {
-                radio.addEventListener('change',function () {
-                    var labelId = this.id;
-                    var label = document.querySelector('label[for="' + labelId + '"]');
-                    var buylables = document.querySelectorAll('label.buylabel');
-                    buylables.forEach(function (label) {
-                        label.classList.remove('border-warning-subtle');
-                    });
-                    if (this.checked) {
-                        label.classList.add('border-warning-subtle'); // Change this line
-                    } else {
-                        label.classList.remove('border-warning-subtle'); // Change this line
-                    }
-                });
-            });
-        };
-        function checkbuyQuantity() {
-            const checkedRadioButton = document.querySelector('input[name="productbuy"]:checked');
-            const quantityInput = document.querySelector(`#buyform input[name="quantity"]`);
-            if (checkedRadioButton) {
-                resetMessage(buyerror);
-                const productQuantity = checkedRadioButton.getAttribute('product-quantity');
-                if (parseInt(quantityInput.value) > parseInt(productQuantity)) {
-                    quantityInput.value = productQuantity;
-                }
-            }
-            else {
-                setMessage(buyerror,'Chọn sản phẩm trước');
-                quantityInput.value = 1;
-            }
-        }
-        function checkQuantity() { }
-        function beforeAddtoCart() {
-        }
-        function validateCartForm() {
-            const checkedRadioButton = document.querySelector('input[name="productcart"]:checked');
-            if (checkedRadioButton) {
-                resetMessage(carterror);
-                return true;
-            } else {
-                setMessage(carterror,'Chọn sản phẩm trước');
-                return false;
-            }
-            return true;
-        }
-        function validateBuyForm() {
-            const checkedRadioButton = document.querySelector('input[name="productbuy"]:checked');
-            if (checkedRadioButton) {
-                resetMessage(buyerror);
-                return true;
-            } else {
-                setMessage(buyerror,'Chọn sản phẩm trước');
-                return false;
-            }
-            return true;
-        }
+
         function addtoCart(event) {
             event.preventDefault();
             const form = event.target;
-            const data = {
-                id: form.querySelector("input[name='idproduct']").value,
-                quantity: form.querySelector("input[name='quantity']").value
-            }
-            console.log(data);
-            const action = event.submitter.getAttribute('btn-action');
-            if (action == "buynow") {
-                console.log("Buy now action");
-            }
-            if (action == "addtocart") {
-                console.log("addtocart now action");
-            }
+            const id = form.querySelector("input[name='idproduct']").value;
+            const quantity = form.querySelector("input[name='quantity']").value;
+            axios.post(`/test/api/cart/add/${id}?quantity=${quantity}`)
+                .then(response => {
+                    console.log('Item added to cart:',response.data);
+                    new Notify({
+                        status: 'success',
+                        title: 'Thêm vào cart thành công',
+                        text: 'Đã thêm sản phẩm',
+                        effect: 'fade',
+                        speed: 300,
+                        customClass: '',
+                        customIcon: '',
+                        showIcon: true,
+                        showCloseButton: false,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 20,
+                        distance: 20,
+                        type: 1,
+                        position: 'right top',
+                        customWrapper: '',
+                    })
+                })
+                .catch(error => {
+                    new Notify({
+                        status: 'error',
+                        title: 'Thêm thất bại',
+                        text: 'Đã thêm sản phẩm',
+                        effect: 'fade',
+                        speed: 300,
+                        customClass: '',
+                        customIcon: '',
+                        showIcon: true,
+                        showCloseButton: false,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 20,
+                        distance: 20,
+                        type: 1,
+                        position: 'right top',
+                        customWrapper: '',
+                    })
+                });
         }
     </script>
 </body>
