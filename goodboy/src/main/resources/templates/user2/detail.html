@@ -79,7 +79,8 @@
                                 th:each="productsize : ${pattensize}">
                                 <input type="radio" class="custom-control-input product-chooese"
                                     th:id="${'productdetail1'+ productsize.id}" name="product"
-                                    th:id-product="${productsize.id}" th:product-quantity="${productsize.quantity}">
+                                    th:disabled="${productsize.quantity ==0 }" th:id-product="${productsize.id}"
+                                    th:product-quantity="${productsize.quantity}">
                                 <label class=" custom-control-label" th:for="${'productdetail1'+ productsize.id}"
                                     th:text="${productsize.idSize.name +' - '+ #strings.replace(#numbers.formatDecimal(productsize.price, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></label>
                             </div>

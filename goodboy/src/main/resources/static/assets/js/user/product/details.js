@@ -80,7 +80,7 @@ async function addToCart() {
                 new Notify({
                   status: "error",
                   title: "Thêm thất bại",
-                  text: "Đã thêm sản phẩm",
+                  text:  error.response ? error.response.data : error.message,
                   effect: "fade",
                   speed: 300,
                   customClass: "",

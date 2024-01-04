@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.Product;
@@ -79,6 +80,13 @@ public class HomeController {
   public String view(Model model) {
     model.addAttribute("productDetails", productService.getTopProductSaleThisYear(10));
     model.addAttribute("product", productService.getNewProducts(20));
+    return "user2/index";
+  }
+
+  @GetMapping("/index2")
+  public String view2(Model model) {
+    model.addAttribute("productDetails", productService.getTopProductSaleThisYear(10));
+    model.addAttribute("product", productService.getNewProducts(20));
     return "user/home";
   }
 
@@ -111,7 +119,15 @@ public class HomeController {
   }
 
   @GetMapping("/product")
-  public String viewIndex(Model model) {
+  public String viewIndex(Model model,
+      @RequestParam(value = "category", required = false) Integer category,
+      @RequestParam(value = "textSearch", required = false) String textSearch) {
+    if (category != null) {
+      model.addAttribute("categorychoose", category);
+    }
+    if (textSearch != null) {
+      model.addAttribute("textSearch", textSearch);
+    }
     return "user2/shop";
   }
 

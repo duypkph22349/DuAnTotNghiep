@@ -37,11 +37,11 @@
         </a>
       </div>
       <div class="col-lg-4 col-6 text-left">
-        <form action="">
+        <form id="searchForm" onsubmit="submitSearchForm();return false;">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+            <input id="searchInput" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
             <div class="input-group-append">
-              <span class="input-group-text bg-transparent text-primary">
+              <span class="input-group-text bg-transparent text-primary" onclick="submitSearchForm()">
                 <i class="fa fa-search"></i>
               </span>
             </div>
@@ -65,8 +65,8 @@
         <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
           id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
           <div class="navbar-nav w-100">
-            <a href="" class="nav-item nav-link">Shirts</a>
-            <a href="" class="nav-item nav-link">Jeans</a>
+            <a class="nav-item nav-link" th:each="category : ${categories}"
+              th:href="${'/product?category='+category.id}" th:text="${category.name}"></a>
           </div>
         </nav>
       </div>
@@ -91,8 +91,8 @@
                 <button type="button" class="btn px-0 ml-3 dropdown-toggle" data-toggle="dropdown"><i
                     class="fas fa-user text-primary"></i></button>
                 <div class="dropdown-menu dropdown-menu-right" th:unless="${session.authenuser}">
-                  <button class="dropdown-item" type="button">Đăng Nhập</button>
-                  <button class="dropdown-item" type="button">Đăng ký</button>
+                  <a class="dropdown-item" th:href="@{/login}">Đăng Nhập</a>
+                  <a class="dropdown-item" th:href="@{/user/signup}">Đăng ký</a>
                 </div>
                 <div class="dropdown-menu dropdown-menu-right" th:if="${session.authenuser}">
                   <a class="dropdown-item" th:href="@{/shop/profile}">Thông tin</a>
@@ -203,6 +203,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.js"
     integrity="sha512-Fd3EQng6gZYBGzHbKd52pV76dXZZravPY7lxfg01nPx5mdekqS8kX4o1NfTtWiHqQyKhEGaReSf4BrtfKc+D5w=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    function submitSearchForm() {
+      var searchText = $('#searchInput').val();
+      window.location.href = 'product?textSearch=' + encodeURIComponent(searchText);
+    }
+  </script>
 </body>
 
 </html>

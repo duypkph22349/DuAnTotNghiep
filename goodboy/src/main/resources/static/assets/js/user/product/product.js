@@ -56,7 +56,7 @@ const materialAll = document.querySelector("#material-all");
 const originAll = document.querySelector("#origin-all");
 const stylesAll = document.querySelector("#styles-all");
 const panigation = document.querySelector("#panigation");
-
+const textSearch = document.querySelector("#text-search");
 const idBrands = document.querySelectorAll("input[name='idBrands']");
 const idMaterials = document.querySelectorAll("input[name='idMaterials']");
 const idStyless = document.querySelectorAll("input[name='idStyless']");
@@ -377,6 +377,7 @@ async function updateFillter() {
   const checkedCategorys = getCheckedValues(idCategorys);
   const checkedidOrigins = getCheckedValues(idOrigins);
   const filterData = {
+    txtSearch: textSearch.value,
     idBrands: checkedBrands,
     idMaterials: checkedMaterials,
     idStyless: checkedStyles,
@@ -464,6 +465,7 @@ function init() {
   const checkedCategorys = getCheckedValues(idCategorys);
   const checkedidOrigins = getCheckedValues(idOrigins);
   const filterData = {
+    txtSearch: textSearch.value,
     idBrands: checkedBrands,
     idMaterials: checkedMaterials,
     idStyless: checkedStyles,

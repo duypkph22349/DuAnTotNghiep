@@ -47,8 +47,9 @@ public class CartService {
       } else {
         return account.getCustomer().getCart();
       }
+    } else {
+      throw new RuntimeException("Vui lòng đăng nhập");
     }
-    return null;
   };
 
   public void deleteCartDetails(int idcartdetails) {
