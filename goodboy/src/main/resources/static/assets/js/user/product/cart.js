@@ -1,6 +1,6 @@
 const totalMoney = document.getElementById("TotalMoney");
 const carttable = document.getElementById("carttable");
-const billApi = "/shop/order";
+// const billApi = "/shop/order";
 function selectAll(checked) {
   console.log(" All selected are: " + checked);
   // Add your logic here to handle the checkbox state
@@ -51,9 +51,10 @@ async function updateQuantity(element) {
   console.log("quantity: " + quantity);
   if (quantity <= 0) {
     deletedCart(idCartDetails);
+  }else{
+    await updateCartDetail(idCartDetails, quantity);
+    await updateCartDetailUI(await getCartDetail(idCartDetails));
   }
-  await updateCartDetail(idCartDetails, quantity);
-  await updateCartDetailUI(await getCartDetail(idCartDetails));
   updateTotalMoney();
 }
 

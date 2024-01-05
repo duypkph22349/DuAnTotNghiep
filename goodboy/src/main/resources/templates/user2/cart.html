@@ -21,7 +21,7 @@
     </div>
     <!-- Breadcrumb End -->
     <!-- Cart Start -->
-    <div class="container-fluid" th:if="${cart}">
+    <div class="container-fluid" th:if="${cart}" id="cartuser">
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
                 <div class="row" th:unless="${cart.getCartDetails().isEmpty()}">
@@ -33,11 +33,13 @@
                                         <th class="thead-dark" style="width: 10%"><input type="checkbox"
                                                 name="selectall" id="selectAll" onclick="selectAll(this.checked)">
                                         </th>
-                                        <th style="width: 10%">Hình ảnh</th>
-                                        <th style="width: 25%" class="p-name">Tên sản phẩm</th>
-                                        <th style="width: 20%">Giá</th>
-                                        <th style="width: 20%">Số lượng</th>
-                                        <th style="width: 20%">Tổng giá</th>
+                                        <th>Hình ảnh</th>
+                                        <th class="p-name">Tên sản phẩm</th>
+                                        <th>Kích thước</th>
+                                        <th>Hoa văn</th>
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng giá</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-middle" id="carttable">
@@ -57,6 +59,11 @@
                                                 style="width: 50px;">
                                         </td>
                                         <td class="align-middle" th:text="${cartDetail.productDetail.getNameProduct()}">
+                                        </td>
+
+                                        <td class="align-middle" th:text="${cartDetail.productDetail.idSize?.name}">
+                                        </td>
+                                        <td class="align-middle" th:text="${cartDetail.productDetail.idPattern?.name}">
                                         </td>
                                         <td class="align-middle"
                                             th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
@@ -132,10 +139,124 @@
             Chưa có sản phẩm trong giỏ hàng
         </p>
     </div>
-    <div th:unless="${cart}" class="text-center h3">
-        Đăng nhập để xem giỏ hàng <a href="/login">Đăng nhập</a>
+    <div th:unless="${cart}" class="container-fluid" id="cartcookie">
+        <div th:if="${cartcookie}">
+            <div class="row px-xl-5">
+                <div class="col-lg-8 table-responsive mb-5">
+                    <div class="row" th:unless="${cartcookie.isEmpty()}">
+                        <div class="col-lg-12">
+                            <div class="cart-table">
+                                <table class="table table-light table-borderless table-hover text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="thead-dark" style="width: 10%"><input type="checkbox"
+                                                    name="selectall" id="selectAll"
+                                                    onclick="selectCookieAll(this.checked)">
+                                            </th>
+                                            <th>Hình ảnh</th>
+                                            <th class="p-name">Tên sản phẩm</th>
+                                            <th>Kích thước</th>
+                                            <th>Hoa văn</th>
+                                            <th>Giá</th>
+                                            <th>Số lượng</th>
+                                            <th>Tổng giá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="align-middle" id="cartcookietable">
+                                        <tr th:each="cartDetail : ${cartcookie}"
+                                            th:id="${'productdetail'+cartDetail.productDetaill.id}">
+                                            <td class="align-middle">
+                                                <input type="checkbox" name="pdselect" class="pdselect"
+                                                    onclick="selectProductDetailsCookie()"
+                                                    th:id-product-detail="${cartDetail.productDetaill.id}">
+                                            </td>
+                                            <td class="align-middle">
+                                                <img th:src="${cartDetail.productDetaill.getFirstImage()}"
+                                                    alt="Ảnh sản phẩm" style="width: 50px;">
+                                            </td>
+                                            <td class="align-middle"
+                                                th:text="${cartDetail.productDetaill.getNameProduct()}">
+                                            </td>
+                                            <td class="align-middle"
+                                                th:text="${cartDetail.productDetaill.idSize?.name}">
+                                            </td>
+                                            <td class="align-middle"
+                                                th:text="${cartDetail.productDetaill.idPattern?.name}">
+                                            </td>
+                                            <td class="align-middle"
+                                                th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetaill.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
+                                            </td>
+                                            <td class="align-middle quantitytd">
+                                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-sm btn-primary btn-minus"><i
+                                                                class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm bg-secondary border-0 text-center quantityinput"
+                                                        th:id-productdetails="${cartDetail.productDetaill.id}"
+                                                        th:value="${cartDetail.quantity}"
+                                                        onchange="updateQuantityCookie(this)" pattern="[0-9]+"
+                                                        title="Please enter a valid quantity (only digits)">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-sm btn-primary btn-plus">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="totalMoney align-middle" th:if="${cartDetail.quantity==0}"
+                                                th:text="${'0 ₫'}">
+                                            </td>
+                                            <td class="totalMoney align-middle" th:unless="${cartDetail.quantity==0}"
+                                                th:text="
+                                                ${#strings.replace(#numbers.formatDecimal(cartDetail.quantity * cartDetail.productDetaill.price ,
+                                                0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
+                                            </td>
+                                            <td class=" align-middle close-td first-row">
+                                                <a class="btn btn-outline-danger"
+                                                    th:onclick="'deletedCartCookie(' + ${cartDetail.productDetaill.id} + ')'">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                        <path
+                                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span
+                            class="bg-secondary pr-3">Thanh
+                            toán</span></h5>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="border-bottom pb-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6>Tổng giá sản phẩm</h6>
+                                <h6 id="TotalCookieMoney"></h6>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                                onclick="checkoutpage()">Tới trang thanh
+                                toán</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- Cart End -->
     <script th:src="@{/assets/js/user/product/cart.js}"></script>
+    <script th:src="@{/assets/js/user/product/cartcookie.js}"></script>
 </body>
 
 </html>

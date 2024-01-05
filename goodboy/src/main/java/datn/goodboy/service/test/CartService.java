@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import datn.goodboy.exeption.AuthenticationException;
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
@@ -34,6 +35,8 @@ public class CartService {
   ProductDetailRepository productDetailRepository;
   @Autowired
   BillRepository billRepository;
+  @Autowired // You need to implement getProductDetailsById method
+  CartCookieService cartCookieService;
 
   public Cart getCart() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,7 +52,7 @@ public class CartService {
         return account.getCustomer().getCart();
       }
     } else {
-      throw new RuntimeException("Vui lòng đăng nhập");
+      throw new AuthenticationException("Vui lòng đăng nhập");
     }
   };
 
@@ -63,20 +66,20 @@ public class CartService {
 
     if (productDetailOptional.isPresent()) {
       ProductDetail productDetail = productDetailOptional.get();
-
-      // Check if the Cart already contains a CartDetail with the same ProductDetail
       Optional<CartDetail> existingCartDetailOptional = cart.getCartDetails()
           .stream()
           .filter(cd -> cd.getProductDetail().equals(productDetail))
           .findFirst();
 
       if (existingCartDetailOptional.isPresent()) {
-        // Cart already contains the same ProductDetail, update quantity
         CartDetail existingCartDetail = existingCartDetailOptional.get();
-        existingCartDetail.setQuantity(existingCartDetail.getQuantity() + quantity);
+        if (existingCartDetail.getQuantity() + quantity < existingCartDetail.getProductDetail().getQuantity()) {
+          existingCartDetail.setQuantity(existingCartDetail.getQuantity() + quantity);
+        } else {
+          existingCartDetail.setQuantity(existingCartDetail.getProductDetail().getQuantity());
+        }
         cartDetailRepository.save(existingCartDetail);
       } else {
-        // Cart does not contain the ProductDetail, add a new CartDetail
         CartDetail cartDetail = new CartDetail();
         cartDetail.setProductDetail(productDetail);
         cartDetail.setCart(cart);
@@ -126,7 +129,11 @@ public class CartService {
         if (!existingProductDetailIds.contains(productId)) {
           CartDetail cartDetail = new CartDetail();
           cartDetail.setProductDetail(billDetail.getProductDetail());
-          cartDetail.setQuantity(billDetail.getQuantity());
+          if (cartDetail.getQuantity() > billDetail.getProductDetail().getQuantity()) {
+            cartDetail.setQuantity(billDetail.getProductDetail().getQuantity());
+          } else {
+            cartDetail.setQuantity(billDetail.getQuantity());
+          }
           cartDetail.setCart(cartExits);
           results.add(cartDetailRepository.save(cartDetail));
         } else {
