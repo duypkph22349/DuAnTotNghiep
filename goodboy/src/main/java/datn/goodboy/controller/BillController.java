@@ -25,7 +25,7 @@ public class BillController {
 
     @GetMapping({ "/dsBill", "" })
     public String hienThi(Model model, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Bill> bill = billService.getPage(pageable);
@@ -50,13 +50,28 @@ public class BillController {
 
     @GetMapping("/bill-detail-update-status")
     public String updateStatusBillDetail(@RequestParam("id") Integer id,
-            @RequestParam("status") Integer status) {
+                                         @RequestParam("status") Integer status) {
         try {
-            if (status == 6) {
+            if (status == 5) {
                 billService.updateStatusAndPayStatus(id, status);
             } else {
                 billService.updateStatus(id, status);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/bill/bill-detail?id=" + id;
+    }
+
+    @GetMapping("/bill-detail-cancel")
+    public String cancelStatusBillDetail(@RequestParam("id") Integer id,
+                                         @RequestParam("status") Integer status, @RequestParam("idBill") Integer ibBill,
+                                         @RequestParam("note") String note) {
+        try {
+            billService.updateStatusAndNote(id, status, note);
+
+            //
+            billService.cancelBill(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -119,7 +119,7 @@
         <h1>Hóa Đơn</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="http://localhost:8080/admin/bill/dsBill">Hóa Đơn</a></li>
+                <li class="breadcrumb-item"><a href="http://localhost:8080/admin/bill/dsBill" style="font-size: 13px">Hóa Đơn</a></li>
 
             </ol>
         </nav>
@@ -166,7 +166,7 @@
     <Br>
     <div class="input-group mb-3">
         <button data-value="1" class="cbbSelect btn btn-outline-secondary " type="button"
-                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px">Tìm kiếm
+                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 16px">Tìm kiếm
         </button>
         <script>
             let cbbSelect = document.querySelector(".cbbSelect");
@@ -192,18 +192,18 @@
         </script>
 
         <input type="text" class="form-control col-6 d-flex" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" style="font-size: 14px;" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
+               id="searchInput" onkeyup="myFunction()" style="font-size: 16px;" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng">
 
     </div>
 
     <Br>
 
     <div class="d-flex">
-<!--        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">-->
-<!--            Tải File Excel-->
-<!--        </a>-->
-        <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 14px">Làm mới</button>
-        <select id="statusSelect" class="form-select me-2" style="  width: 120px; height: 38px; font-size: 11px;"
+        <!--        <a href="/admin/bill/get-file-excel" class="btn btn-primary me-2 d-flex align-items-center" style="font-size: 14px">-->
+        <!--            Tải File Excel-->
+        <!--        </a>-->
+        <button class="btn btn-primary me-2" id="refreshButton" style="font-size: 16px">Làm mới</button>
+        <select id="statusSelect" class="form-select me-2" style="  width: 120px; height: 38px; font-size: 13px;"
                 onchange="selectFilterAction(this.value)">
             <option value="0">Chọn trạng thái</option>
             <option value="8">Hủy hàng</option>
@@ -215,50 +215,49 @@
             <option value="6">Chưa thanh toán</option>
             <option value="7">Đã thanh toán</option>
         </select>
-        <select id="orderTypeSelect" class="form-select" style="  width: 130px; height: 38px; font-size: 11px;"
+        <select id="orderTypeSelect" class="form-select" style="  width: 140px; height: 38px; font-size: 13px;"
                 onchange="selectFilterOrderType(this.value)">
             <option value="">Chọn loại hóa đơn</option>
             <option value="0">Tại quầy</option>
             <option value="1">Online</option>
         </select>
-        <div class="col-2 d-flex">
+        <div class="col-2 d-flex" >
             <label>Từ ngày</label>
-            <input type="date" class="form-control" id="startDate">
+            <input type="date" class="form-control" id="startDate" style="font-size: 13px">
         </div>
         <div class="col-2 d-flex">
             <label>Đến ngày</label>
-            <input type="date" class="form-control" id="endDate">
+            <input type="date" class="form-control" id="endDate" style="font-size: 13px">
         </div>
-        <button class="btn btn-primary" style="font-size: 14px" onclick="filterDate()">Lọc</button>
+        <button class="btn btn-primary" style="font-size: 16px" onclick="filterDate()">Lọc</button>
     </div>
 
     <!-- Table -->
     <div style="height: 500px; overflow: auto; ">
 
-        <table class="table table-hover" id="myTable" style="font-size: 13px" >
+        <table class="table table-hover" id="myTable" style="font-size: 16px" >
             <thead class="position-sticky top-0">
 
             <tr class="ex">
                 <th>#</th>
                 <th>Mã hóa đơn</th>
                 <th>Khách hàng</th>
-                <th>Trạng thái thanh toán</th>
-                <th>Phương thức thanh toán</th>
+                <th>Trạng thái TT</th>
+                <th>Phương thức TT</th>
                 <th>Số điện thoại</th>
                 <th>Loại đơn hàng</th>
                 <th>Tổng tiền</th>
                 <th>Trạng thái</th>'
-                <th>Ghi chú</th>
                 <th>
                     <div class="btn-group">
-                        <button type="button" class="btn p-0 m-0" style="font-size: 14px" >
-                            <p class="p-0 m-0 fw-bold" style="font-size: 14px" >Ngày tạo</p>
+                        <button type="button" class="btn p-0 m-0" style="font-size: 16px" >
+                            <p class="p-0 m-0 fw-bold" style="font-size: 16px" >Ngày tạo</p>
                         </button>
                         <button type="button" class="btn p-0 m-0 dropdown-toggle dropdown-toggle-split"
-                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
+                                data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 15px">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu" style="font-size: 14px">
+                        <ul class="dropdown-menu" style="font-size: 16px">
                             <div class="container">
                                 <div class="row" id="fillter_month">
 
@@ -266,7 +265,7 @@
                         </ul>
                     </div>
                 </th>
-                <th>Action</th>
+                <th>Hành động</th>
                 <th></th>
             </tr>
             </thead>
@@ -474,7 +473,7 @@
                             <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
                             <td >${formattedTotalMoney} VNĐ</td>
                             <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ lấy hàng' : item.status === 3 ? 'Chờ giao hàng' : item.status === 4 ? 'Đang giao hàng' : item.status === 5 ? 'Thành công' :  item.status === 6 ? 'Hủy Hàng' : ''}</td>
-                            <td>${item.note}</td>
+
                             <td  >${formattedDate}</td>
 
 
@@ -482,17 +481,13 @@
                             <th>
                                <a href="/admin/bill/bill-detail?id=${item.id}">
                                      <button
-                                        type="button" class="btn btn-primary"  style="font-size: 14px""
+                                        type="button" class="btn btn-primary"  style="font-size: 16px""
                                      >
                                         Chi tiết
                                     </button>
                                </a>
 
-                                     <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                        type="button" class="btn btn-success"  style="font-size: 14px""
-                                     >
-                                        Thanh toán
-                                    </button>
+
 
                              </th>
                          </tr>
@@ -697,8 +692,8 @@
                             <td>${item.phone}</td>
                             <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
                             <td >${formattedTotalMoney} VNĐ</td>
-                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ lấy hàng' : item.status === 3 ? 'Chờ giao hàng' : item.status === 4 ? 'Đang giao hàng' : item.status === 5 ? 'Đã giao hàng' : item.status === 6  ? 'Thành công' : item.status === 7 ? 'Hủy Hàng' : ''}</td>
-                            <td>${item.note}</td>
+                            <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ lấy hàng' : item.status === 3 ? 'Chờ giao hàng' : item.status === 4 ? 'Đang giao hàng' : item.status === 5 ? 'Thành công' :  item.status === 6 ? 'Hủy Hàng' : ''}</td>
+
                             <td  >${formattedDate}</td>
 
 
@@ -706,17 +701,17 @@
                             <th>
                                <a href="/admin/bill/bill-detail?id=${item.id}">
                                      <button
-                                        type="button" class="btn btn-primary"  style="font-size: 14px""
+                                        type="button" class="btn btn-primary"  style="font-size: 16px""
                                      >
                                         Chi tiết
                                     </button>
                                </a>
 
-                                     <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                        type="button" class="btn btn-success"  style="font-size: 14px""
-                                     >
-                                        Thanh toán
-                                    </button>
+                                    //  <button onclick="payment_VNPay(${item.total_money},${item.id})"
+                                    //     type="button" class="btn btn-success"  style="font-size: 16px""
+                                    //  >
+                                    //     Thanh toán
+                                    // </button>
 
                              </th>
                          </tr>
@@ -845,8 +840,8 @@
                                     <td>${item.phone}</td>
                                     <td>${item.loaiDon === 0 ? 'Tại quầy' : 1 ? 'online' : ''}</td>
                                     <td >${formattedTotalMoney} VNĐ</td>
-                                    <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ giao hàng' : item.status === 3 ? 'Đang giao hàng' : item.status === 4 ? 'Đã giao hàng' : item.status === 5 ? 'Thành công' : ''}</td>
-                                    <td>${item.note}</td>
+                                   <td>${item.status === 1 ? 'Chờ xác nhận' : item.status === 2 ? 'Chờ lấy hàng' : item.status === 3 ? 'Chờ giao hàng' : item.status === 4 ? 'Đang giao hàng' : item.status === 5 ? 'Thành công' :  item.status === 6 ? 'Hủy Hàng' : ''}</td>
+
                                     <td  >${formattedDate}</td>
 
 
@@ -854,18 +849,18 @@
                                     <th>
                                     <a href="/admin/bill/bill-detail?id=${item.id}">
                                             <button
-                                                type="button" class="btn btn-primary"  style="font-size: 14px""
+                                                type="button" class="btn btn-primary"  style="font-size: 16px""
                                             >
                                                 Chi tiết
                                             </button>
                                     </a>
 
-                                            <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                                type="button" class="btn btn-success"  style="font-size: 14px""
-                                            >
-                                                Thanh toán
-                                            </button>
-                                            ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 14px">Xác nhận</button>' : ''}
+                                            // <button onclick="payment_VNPay(${item.total_money},${item.id})"
+                                            //     type="button" class="btn btn-success"  style="font-size: 16px""
+                                            // >
+                                            //     Thanh toán
+                                            // </button>
+                                            ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 16px">Xác nhận</button>' : ''}
                                     </th>
                                 </tr>
                             `
