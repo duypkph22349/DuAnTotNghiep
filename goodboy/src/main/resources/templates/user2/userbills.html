@@ -31,7 +31,10 @@
       background-color: #ccc;
     }
   </style>
-  <div class="container-fluid mt-5">
+  <div th:unless="${customer}">
+    <p class="text-center">Đăng nhập để xem lịch sử</p>
+  </div>
+  <div class="container-fluid mt-5" th:if="${customer}">
     <ul class="nav nav-tabs tab nav-fill" id="myTabs">
       <li class="nav-item">
         <a class="nav-link active" id="allbill-tab" data-toggle="tab" href="#allbill" role="tab" aria-controls="allbill"
@@ -176,8 +179,8 @@
                         <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:if="${bill.status == 1 || bill.status == 6 }" th:href="${'/shop/order/reorder/'+bill.id}"
                           class="btn btn-primary mx-3">Mua lại</a>
-                        <a th:if="${bill.status == 6 && bill.evaluates.size() == 0}" th:href="${'/shop/order/evaluate/'+bill.id}"
-                          class="btn btn-warning mx-3">Đánh giá</a>
+                        <a th:if="${bill.status == 6 && bill.evaluates.size() == 0}"
+                          th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
                           class="btn btn-danger mx-3"
                           onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
