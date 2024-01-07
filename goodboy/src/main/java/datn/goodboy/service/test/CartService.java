@@ -43,6 +43,9 @@ public class CartService {
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();
       Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+      if (account == null) {
+        throw new AuthenticationException("Vui lòng đăng nhập");
+      }
       Cart cart = null;
       if (account.getCustomer().getCart() == null) {
         cart = new Cart();
