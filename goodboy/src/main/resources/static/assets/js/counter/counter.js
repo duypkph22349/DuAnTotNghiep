@@ -255,6 +255,7 @@ function formInOrder(id) {
                                 </ul>
                               </div>
                             </div>
+
                               <div type="flex" class="ant-row ant-row-space-between box-row"
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
@@ -271,6 +272,11 @@ function formInOrder(id) {
                                               id="soDienThoai">
                                       </div>
                                       <!-- Địa chỉ -->
+                                      <div  class="col-md-4 online-option d-none">
+                                          <label class="form-label">Chọn địa chỉ</label>
+                                      <select class="form-select" id="diachichoose" onchange="selectdiachikhachhang(${id})">
+                                      </select>
+                                      </div>
                                       <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Thành
                                               Phố</label>

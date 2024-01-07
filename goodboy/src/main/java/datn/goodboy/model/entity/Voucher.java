@@ -1,6 +1,9 @@
 package datn.goodboy.model.entity;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.util.Currency;
+import java.util.Locale;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -70,6 +73,36 @@ public class Voucher {
   @PreUpdate
   protected void onUpdate() {
     this.updated_at = LocalDateTime.now();
+  }
+
+  public String getDiscountValue() {
+    String message = "";
+    if (types) {
+      message += "Giảm " + discount + " %";
+    } else {
+      NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+      format.setCurrency(Currency.getInstance("VND"));
+      String formattedPrice = format.format(discount);
+      message += "Giảm " + formattedPrice + " VND";
+    }
+    if (max_discount != null) {
+      NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+      format.setCurrency(Currency.getInstance("VND"));
+      String formattedPrice = format.format(discount);
+      message += "- Tối đa " + formattedPrice + " VND";
+    }
+    return message;
+  }
+
+  public String getConditionVoucher() {
+    String message = "";
+    if (min_order != null) {
+      NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+      format.setCurrency(Currency.getInstance("VND"));
+      String formattedPrice = format.format(min_order);
+      message += "Áp dụng với Hóa đơn có giá trị từ: " + formattedPrice;
+    }
+    return message;
   }
 
 }

@@ -33,6 +33,8 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
   VoucherRepository voucherRepository;
   @Autowired
   VoucherDetailRepository voucherdetailRepository;
+  @Autowired
+  EmailService emailService;
 
   public List<Voucher> getAllVouchers() {
     return voucherRepository.findAll();
@@ -62,7 +64,9 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setMax_discount(voucher.getMaxDiscount());
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setDeleted(false);
-    return voucherRepository.save(voucher1);
+    Voucher savevoucher = voucherRepository.save(voucher1);
+    // if(voucher.)
+    return savevoucher;
   }
 
   public void deleteVoucher(int id) {
