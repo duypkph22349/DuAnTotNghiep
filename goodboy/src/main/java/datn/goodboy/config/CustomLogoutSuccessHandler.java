@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
@@ -19,6 +20,7 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
   public void onLogoutSuccess(final HttpServletRequest request, final HttpServletResponse response,
       final Authentication authentication) throws IOException, ServletException {
     final String targetUrl = determineTargetUrl(authentication);
+    removeSessionAuthenAttributes(request);
     this.getRedirectStrategy().sendRedirect(request, response, targetUrl);
   }
 
@@ -36,8 +38,14 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     } else if (roles.contains("STAFF")) {
       url = "/login";
     } else if (roles.contains("USER")) {
-      url = "/";
+      url = "/index";
     }
     return url;
+  }
+
+  public void removeSessionAuthenAttributes(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    session.removeAttribute("authenuser");
+    session.removeAttribute("authenemployee");
   }
 }

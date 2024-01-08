@@ -81,6 +81,34 @@ public class TrangThaiConvert {
     return "<span class=\"badge text-bg-dark\">Không xác định</span>";
   }
 
+  public static String statusOfBillText(int status) {
+    if (status == 6) {
+      return "Đã Hủy";
+    }
+    if (status == 5) {
+      return "Thành công";
+    }
+    if (status == 1) {
+      return "Chờ xác nhận";
+    }
+    if (status == 2) {
+      return "Chờ lấy hàng";
+    }
+    if (status == 3) {
+      return "Chờ giao hàng";
+    }
+    if (status == 4) {
+      return "Đang giao hàng";
+    }
+    if (status == -1) {
+      return "Đã Hủy";
+    }
+    if (status == -2) {
+      return "Đã Hủy";
+    }
+    return "Không xác định";
+  }
+
   public static String statusOfVoucher(Voucher voucher) {
     LocalDateTime now = LocalDateTime.now();
     if (voucher.isDeleted()) {

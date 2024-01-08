@@ -9,8 +9,9 @@ import org.thymeleaf.context.Context;
 
 import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.model.entity.Bill;
 import datn.goodboy.repository.AccountRepository;
-import datn.goodboy.repository.CustomerRepository;
+import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -89,5 +90,24 @@ public class EmailService {
           } catch (MessagingException e) {
           }
         });
+  }
+
+  public void sendEmailBill(Bill bill, String title) {
+    MimeMessage message = emailSender.createMimeMessage();
+    try {
+      System.out.println(
+          "Start sending bill mail for custmoer: " + bill.getCustomer().getAccount().getEmail());
+      MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+      helper.setFrom("thatdeptraivjpro@26kleft.com");
+      helper.setTo(bill.getCustomer().getAccount().getEmail());
+      helper.setSubject(title);
+      Context context = new Context();
+      context.setVariable("bill", bill);
+      context.setVariable("convert", new TrangThaiConvert());
+      String htmlCode = templateEngine.process("mail/billTemplate", context);
+      helper.setText(htmlCode, true);
+      emailSender.send(message);
+    } catch (MessagingException e) {
+    }
   }
 }
