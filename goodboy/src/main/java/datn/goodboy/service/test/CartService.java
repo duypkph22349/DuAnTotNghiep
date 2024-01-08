@@ -71,9 +71,13 @@ public class CartService {
 
   public void addCookieCartToUser(HttpServletRequest request, HttpServletResponse response) {
     List<CartResponse> cartResponses = cartCookieServices.getCartResponses(request, response);
-    cartResponses.stream().forEach(cart -> {
+    if (cartResponses == null) {
+      return;
+    }
+    cartResponses.forEach(cart -> {
       addToCart(cart.getProductDetaill().getId(), cart.getQuantity());
     });
+    cartCookieService.deleltedCartCookie(request, response);
   }
 
   public Cart addToCart(int idproduct, int quantity) {
@@ -164,7 +168,6 @@ public class CartService {
       }
       return results;
     }
-
     return null; // Return an empty list if the Bill is not present
   }
 
