@@ -61,74 +61,65 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="w-100" id="bill" style="
-                        font-size: 10px;
-                        ">
-                        <p style="color: #7e8d9f; font-size: 20px;">Hóa Đơn&gt;&gt; <strong id="billcode"></strong>
-                        </p>
-                        <div class="row">
-                            <div class="col-6 col-md-6">
-                                <h3 style="color: #007bff;">Thông tin khách hàng</h3>
-                                <div class="row">
-                                    <div class="col-md-4 col-3 fw-bold">Tên:</div>
-                                    <div class="col-md-8 col-9" id="customername"></div>
-                                    <div class="col-3 col-md-4 fw-bold">Số điện thoại:</div>
-                                    <div class="col-9 col-md-8" id="phonenumber"></div>
-                                    <div class="col-3 col-md-4 fw-bold">Địa chỉ:</div>
-                                    <div class="col-9 col-md-8" id="fulladdress"></div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <h3 style="color: #007bff;">Trạng thái hóa đơn</h3>
-                                <div class="row">
-                                    <div class="col-md-4 col-3 fw-bold">Mã hóa đơn:</div>
-                                    <div class="col-9 col-md-8" id="hoadoncode"></div>
-                                    <div class="col-md-4 col-3 fw-bold">Nhân viên:</div>
-                                    <div class="col-9 col-md-8" id="employename"></div>
-                                    <div class="col-md-4 col-3 fw-bold">Trạng thái hóa đơn:</div>
-                                    <div class="col-9 col-md-8" id="orderstatus"></div>
-                                    <div class="col-md-4 col-3 fw-bold">Loại hóa đơn:</div>
-                                    <div class="col-9 col-md-8" id="ordertype"></div>
-                                </div>
-                            </div>
+                    <div id="bill">
+                        <div class="logo d-flex align-items-center justify-content-center m-auto mb-2">
+                            <p class="d-none d-lg-block">
+                            <h3 style="font-weight: 500;">Wamercy</h3>
+                            </p>
+                        </div>
+                        <center>
+                            <p class="mb-0">Địa chỉ: <span class="ms-2">193/220 phú diễn, phường phú diễn, quận nam từ
+									liêm, hà nội</span></p>
+                            <p class="mb-0">Điện thoại: <span class="ms-2">0335535229</span></p>
+                            <br>
+                            <h3 style="font-weight: 500;">HOÁ ĐƠN BÁN HÀNG</h3>
+                            <p class="mb-0">Số hóa đơn: <span class="ms-2" id="hoadoncode">09ku2</span></p>
+                            <p>Loại hóa đơn: <span class="ms-2" id="ordertype">09ku2</span></p>
+                        </center>
+                        <div>
+                            <p class="mb-0">Nhân viên: <span class="ms-2" id="employename">09ku2</span></p>
+                            <p class="mb-0">Khách hàng: <span class="ms-2" id="customername">09ku2</span></p>
+                            <p class="mb-0">Số điện thoại: <span class="ms-2" id="phonenumber">09ku2</span></p>
+                            <p class="mb-0">Địa chỉ: <span class="ms-2" id="fulladdress">09ku2</span></p>
+
                         </div>
                         <table class="table table-striped">
                             <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Tên sản phẩm</th>
-                                    <th scope="col">Số lượng</th>
-                                    <th scope="col">Giá</th>
-                                    <th scope="col">Thanh tiền</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Thành tiền</th>
+                            </tr>
                             </thead>
-                            <tbody id="sanphaminbill">
-
-                            </tbody>
+                            <tbody id="sanphaminbill"></tbody>
                         </table>
-                        <hr>
-                        <div class="row">
-                            <div class="col-8">
-                                <span>Note:</span>
-                                <p class="ms-3" id="note">Add additional notes and payment information</p>
-                            </div>
-                            <div class="col-4">
-                                <ul class="list-unstyled">
-                                    <li class="text-muted ms-3"><span class="text-black me-4 mx-3">Tổng tiền sản
-                                            phẩm:
-                                        </span><span id="total-products"></span>
-                                    </li>
-                                    <li class="text-muted ms-3 mt-2"><span
-                                            class="text-black me-4 mx-3">Giảm:</span><span id="discount"></span>
-                                    </li>
-                                    <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Tiền
-                                            ship:</span><span id="shipping-cost"></span>
-                                    </li>
-                                </ul>
-                                <p class="text-black float-start"><span class="text-black me-3 mx-3"> Tổng
-                                        giá</span><span style="font-size: 14px;"><span id="total-price"></span></span>
+                        <div class="row justify-content-end"  >
+                            <ul class="list-unstyled" >
+                                <li class="text-muted ms-3"><span class="text-black me-4 mx-3">Tổng tiền sản
+										phẩm:
+									</span><span id="total-products"></span>
+                                </li>
+                                <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Giảm:</span><span
+                                        id="discount"></span>
+                                </li>
+                                <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Tiền
+										ship:</span><span id="shipping-cost"></span>
+                                </li>
+
+                                <li class="text-black ms-3 mt-2 "><span class="text-black me-3 mx-3"> Tổng
+									giá</span><span style="font-size: 14px;"><span id="total-price"></span></span>
+                                </li>
+                            </ul>
+                            <br>
+                            <center>
+                                <p class="text-black mx-auto">
+                                    Cảm ơn và hẹn gặp lại
                                 </p>
-                            </div>
+                            </center>
+
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -139,6 +130,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="hoadoncho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
