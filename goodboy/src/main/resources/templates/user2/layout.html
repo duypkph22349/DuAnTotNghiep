@@ -107,7 +107,7 @@
                     <a class="dropdown-item" th:href="@{/shop/change_password}">Đổi mật khẩu</a>
                     <a class="dropdown-item" th:href="@{/shop/order/history}">Đơn hàng</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" th:href="@{/index}">Đăng xuất</a>
+                    <a class="dropdown-item" th:href="@{/signOut}">Đăng xuất</a>
                   </div>
                 </div>
               </div>
@@ -213,6 +213,7 @@
   <!-- Template Javascript -->
   <script th:src="@{/assets/js/mainuser.js}"></script>
   <script th:src="@{/assets/dist/simple-notify.min.js}"></script>
+  <script th:src="@{/assets/js/user/product/cart.js}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.min.js"
     integrity="sha512-d5Jr3NflEZmFDdFHZtxeJtBzk0eB+kkRXWFQqEc1EKmolXjHm2IKCA7kTvXBNjIYzjXfD5XzIjaaErpkZHCkBg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -220,6 +221,7 @@
     integrity="sha512-Fd3EQng6gZYBGzHbKd52pV76dXZZravPY7lxfg01nPx5mdekqS8kX4o1NfTtWiHqQyKhEGaReSf4BrtfKc+D5w=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
+
     function submitSearchForm() {
       var searchText = $('#searchInput').val();
       window.location.href = 'product?textSearch=' + encodeURIComponent(searchText);
@@ -236,7 +238,10 @@
       setTimeout(() => {
         document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
       }, 100)
+
+      console.log("hehe")
     }
+
 
   </script>
 </body>
