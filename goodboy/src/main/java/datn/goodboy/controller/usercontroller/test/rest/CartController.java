@@ -38,10 +38,12 @@ public class CartController {
       @PathVariable("id") int productId,
       @RequestParam("quantity") int quantity, HttpServletRequest request, HttpServletResponse response) {
     try {
+//      ADD TO CART LOGIN
       cartService.addToCart(productId, quantity);
       return ResponseEntity.ok("Thêm sản phẩm thành công");
     } catch (AuthenticationException e) {
       try {
+//        ADD TO CART LOGIN
         cartCookieService.addToCart(productId, quantity, request, response);
       } catch (Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());

@@ -129,7 +129,7 @@ public class CartCookieService {
     ProductDetail productDetail = productRepository.findById(productId).orElse(null);
     if (productDetail != null) {
       if (productDetail.getQuantity() < cartItems.getOrDefault(productId, 0) + quantity) {
-        throw new RuntimeException("Sản phảm không chỉ còn: " + productDetail.getQuantity());
+        throw new RuntimeException("Sản phẩm chỉ còn: " + productDetail.getQuantity());
       }
       cartItems.put(productId, cartItems.getOrDefault(productId, 1) + quantity);
       // request.getSession().setAttribute(CART_COOKIE_NAME, cartItems);

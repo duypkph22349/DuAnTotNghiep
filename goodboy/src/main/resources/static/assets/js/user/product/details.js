@@ -51,7 +51,7 @@ async function addToCart() {
             });
             return;
           } else {
-            axios
+             await axios
               .get(
                 `${API_BASE_URL}/add/${idproductselect}?quantity=${quantityValue}`
               )
@@ -59,7 +59,7 @@ async function addToCart() {
                 console.log("Item added to cart:", response.data);
                 new Notify({
                   status: "success",
-                  title: "Thêm vào cart thành công",
+                  title: "Thêm vào giỏ hàng thành công",
                   text: "Đã thêm sản phẩm",
                   effect: "fade",
                   speed: 300,
@@ -96,6 +96,8 @@ async function addToCart() {
                   customWrapper: "",
                 });
               });
+
+             await  get_quantity_of_cart();
           }
         }
       } catch (err) {
@@ -168,4 +170,17 @@ async function getProductDetails(id) {
     alert("Không thể tìm thấy sản phẩm !!!");
     throw error;
   }
+}
+
+const get_quantity_of_cart = () => {
+  // UPDATE QUANTITY
+  var quantity = 0;
+  axios.get(
+      `/client/cart/quantity`
+  ).then((e) =>{
+    quantity = e.data
+  })
+  setTimeout(() => {
+    document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
+  }, 100)
 }

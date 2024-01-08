@@ -1,6 +1,6 @@
 const totalMoney = document.getElementById("TotalMoney");
 const carttable = document.getElementById("carttable");
-// const billApi = "/shop/order";
+const billApi = "/shop/order";
 function selectAll(checked) {
   console.log(" All selected are: " + checked);
   // Add your logic here to handle the checkbox state
@@ -91,7 +91,8 @@ const addToCart = async (productId, quantity) => {
     const response = await axios.put(
       `${API_BASE_URL}/add/${productId}?quantity=${quantity}`
     );
-    console.log(response.data);
+
+    await get_quantity_of_cart()
     // Handle the response as needed
   } catch (error) {
     console.error(
@@ -107,6 +108,8 @@ const updateCartDetail = async (cartDetailId, newQuantity) => {
     const response = await axios.patch(
       `${API_BASE_URL}/update/${cartDetailId}/quantity/${newQuantity}`
     );
+
+    await get_quantity_of_cart()
     new Notify({
       status: "success",
       title: "Thành công",
@@ -155,6 +158,7 @@ const deleteCartDetail = async (cartDetailId) => {
       `${API_BASE_URL}/delete/${cartDetailId}`
     );
     deletedCartUI(cartDetailId);
+    await get_quantity_of_cart()
     new Notify({
       status: "success",
       title: "Thành công",
@@ -222,3 +226,16 @@ const updateTotalMoney = async () => {
   }
 };
 selectProductDetails();
+
+const get_quantity_of_cart = () => {
+  // UPDATE QUANTITY
+  var quantity = 0;
+  axios.get(
+      `/client/cart/quantity`
+  ).then((e) =>{
+    quantity = e.data
+  })
+  setTimeout(() => {
+    document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
+  }, 100)
+}
