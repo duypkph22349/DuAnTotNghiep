@@ -25,6 +25,7 @@ public class CartController {
   @GetMapping("/shop/cart")
   public String viewCart(Model model, HttpServletRequest request, HttpServletResponse response) {
     try {
+      cartService.addCookieCartToUser(request, response);
       Cart cart = cartService.getCart();
       model.addAttribute("cart", cart);
     } catch (AuthenticationException e) {

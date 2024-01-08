@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class VoucherService implements PanigationInterface<Voucher>, PanigationWithSearchStatus<Voucher> {
@@ -65,7 +66,11 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setDeleted(false);
     Voucher savevoucher = voucherRepository.save(voucher1);
-    // if(voucher.)
+    if (savevoucher.checkVoucher()) {
+      CompletableFuture.runAsync(() -> {
+        emailService.sendVoucherMail(savevoucher);
+      });
+    }
     return savevoucher;
   }
 
@@ -95,7 +100,14 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucher1.setTypes(request.isTypes());
       voucher1.setMax_discount(request.getMaxDiscount());
       voucher1.setMin_order(request.getMinOrder());
-      return voucherRepository.save(voucher1);
+      Voucher savevoucher = voucherRepository.save(voucher1);
+
+      if (savevoucher.checkVoucher()) {
+        CompletableFuture.runAsync(() -> {
+          emailService.sendVoucherMail(savevoucher);
+        });
+      }
+      return savevoucher;
     } else {
       return null;
     }

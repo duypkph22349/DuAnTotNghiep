@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.exeption.AuthenticationException;
+import datn.goodboy.model.cookieentity.CartResponse;
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
@@ -22,11 +23,16 @@ import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CartDetailRepository;
 import datn.goodboy.repository.CartRepository;
 import datn.goodboy.repository.ProductDetailRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service("testCartService")
 public class CartService {
   @Autowired
   CartRepository cartRepository;
+
+  @Autowired
+  private CartCookieService cartCookieServices;
   @Autowired
   CartDetailRepository cartDetailRepository;
   @Autowired
@@ -61,6 +67,13 @@ public class CartService {
 
   public void deleteCartDetails(int idcartdetails) {
     cartDetailRepository.delete(cartDetailRepository.findById(idcartdetails).get());
+  }
+
+  public void addCookieCartToUser(HttpServletRequest request, HttpServletResponse response) {
+    List<CartResponse> cartResponses = cartCookieServices.getCartResponses(request, response);
+    cartResponses.stream().forEach(cart -> {
+      addToCart(cart.getProductDetaill().getId(), cart.getQuantity());
+    });
   }
 
   public Cart addToCart(int idproduct, int quantity) {

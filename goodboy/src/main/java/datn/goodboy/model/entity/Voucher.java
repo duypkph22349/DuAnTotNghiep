@@ -1,6 +1,7 @@
 package datn.goodboy.model.entity;
 
 import java.text.NumberFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Locale;
@@ -83,13 +84,13 @@ public class Voucher {
       NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
       format.setCurrency(Currency.getInstance("VND"));
       String formattedPrice = format.format(discount);
-      message += "Giảm " + formattedPrice + " VND";
+      message += "Giảm " + formattedPrice;
     }
     if (max_discount != null) {
       NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
       format.setCurrency(Currency.getInstance("VND"));
-      String formattedPrice = format.format(discount);
-      message += "- Tối đa " + formattedPrice + " VND";
+      String formattedPrice = format.format(max_discount);
+      message += " - Tối đa " + formattedPrice;
     }
     return message;
   }
@@ -105,4 +106,12 @@ public class Voucher {
     return message;
   }
 
+  public boolean checkVoucher() {
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    return !this.isDeleted()
+        && this.getStart_time().isBefore(currentDateTime)
+        && (this.getEnd_time() == null || this.getEnd_time().isAfter(currentDateTime))
+        && this.getStatus() == 1
+        && this.getQuantily() > 0;
+  }
 }

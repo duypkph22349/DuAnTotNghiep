@@ -9,6 +9,7 @@ import org.thymeleaf.context.Context;
 
 import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.repository.AccountRepository;
 import datn.goodboy.repository.CustomerRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -20,7 +21,7 @@ public class EmailService {
   @Autowired
   private JavaMailSender emailSender;
   @Autowired
-  private CustomerRepository CustomerRepository;
+  private AccountRepository accountRepository;
 
   public void activeEmailMessage(VertifyEmail request) {
     MimeMessage message = emailSender.createMimeMessage();
@@ -65,22 +66,24 @@ public class EmailService {
 
   public void sendVoucherMail(Voucher voucher) {
     MimeMessage message = emailSender.createMimeMessage();
-    CustomerRepository.findAll().stream().forEach(
+    accountRepository.findAll().stream().forEach(
         cutomer -> {
           try {
+            System.out.println(
+                "Start sending mail for custmoer" + cutomer.getEmail());
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom("thatdeptraivjpro@26kleft.com");
-            helper.setTo(cutomer.getAccount().getEmail());
-            helper.setSubject("Khôi phục mật khẩu Email");
+            helper.setTo(cutomer.getEmail());
+            helper.setSubject("Nhận Voucher mới");
             Context context = new Context();
-            context.setVariable("fullNameCustomer", cutomer.getName());
+            context.setVariable("fullNameCustomer", cutomer.getCustomer().getName());
             context.setVariable("codeVoucher", voucher.getCode());
             context.setVariable("valueVoucher", voucher.getDiscountValue());
             context.setVariable("conditionVoucher", voucher.getConditionVoucher());
             context.setVariable("startTime", voucher.getStart_time());
             context.setVariable("endTime", voucher.getEnd_time());
             context.setVariable("message", "Chúc quý khách có trải nghiệm mua sắm vui vẻ <3333");
-            String htmlCode = templateEngine.process("mail/resetCode", context);
+            String htmlCode = templateEngine.process("mail/template-voucher", context);
             helper.setText(htmlCode, true);
             emailSender.send(message);
           } catch (MessagingException e) {

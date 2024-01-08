@@ -219,10 +219,9 @@ public class SecurityController {
   }
 
   @GetMapping("/resetpasswordcode")
-  public String getResetPasswordCodePage(
-      Model model) {
+  public String getResetPasswordCodePage(Model model) {
     model.addAttribute("vertifyemail", new VertifyEmail());
-    return "redirect:/resetpasswordcode";
+    return "reset-password-code";
   }
 
   @PostMapping("/resetpasswordcode")
@@ -235,9 +234,10 @@ public class SecurityController {
       thRedirectAttributes.addFlashAttribute("message", "Xác thực thành công nhập mật khẩu mới!!!");
       return "redirect:/resetpassword";
     }
-    thRedirectAttributes.addFlashAttribute("message",
+    model.addAttribute("message",
         "Xác thực không thành công mã kích hoạt không đúng hoặc đã hết hạn vui lòng thử lại !!!");
-    return "redirect:/resetpasswordcode";
+    model.addAttribute("vertifyemail", new VertifyEmail());
+    return "reset-password-code";
   }
 
   @GetMapping("resetpassword")
