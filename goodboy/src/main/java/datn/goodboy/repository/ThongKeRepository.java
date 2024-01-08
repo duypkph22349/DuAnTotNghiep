@@ -18,17 +18,17 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
         @Query(value = "SELECT COUNT(b) FROM Bill b WHERE b.createdAt BETWEEN :dateFrom AND :dateTo")
         int totalBill(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
-        @Query(value = "SELECT SUM(b.deposit) FROM Bill b WHERE b.createdAt BETWEEN :dateFrom AND :dateTo")
+        @Query(value = "SELECT SUM(b.deposit) FROM Bill b WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.status = 5")
         Long totalIncome(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
         @Query(value = "SELECT SUM(b.deposit) FROM Bill b WHERE EXTRACT(HOUR FROM b.createdAt) = :hour " +
-                        "AND b.createdAt BETWEEN :dateFrom AND :dateTo")
+                        "AND b.createdAt BETWEEN :dateFrom AND :dateTo  AND b.status = 5")
         Long totalIncomeForHour(@Param("hour") int hour,
                         @Param("dateFrom") LocalDateTime dateFrom,
                         @Param("dateTo") LocalDateTime dateTo);
 
         @Query(value = "SELECT SUM(b.deposit) FROM Bill b WHERE DATEPART(dw, b.created_at) = :dayOfWeek + 1 " +
-                        "AND b.created_at BETWEEN :dateFrom AND :dateTo", nativeQuery = true)
+                        "AND b.created_at BETWEEN :dateFrom AND :dateTo  AND b.status = 5", nativeQuery = true)
         Long totalIncomeDayInWeeks(@Param("dayOfWeek") int dayOfWeek,
                         @Param("dateFrom") LocalDateTime dateFrom,
                         @Param("dateTo") LocalDateTime dateTo);
@@ -37,7 +37,7 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
                         "FROM BillDetail bd " +
                         "JOIN bd.idBill b " +
                         "JOIN bd.productDetail pd " +
-                        "WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.deleted = false")
+                        "WHERE b.createdAt BETWEEN :dateFrom AND :dateTo AND b.deleted = false  AND b.status = 5")
         int totalProductSale(@Param("dateFrom") LocalDateTime dateFrom, @Param("dateTo") LocalDateTime dateTo);
 
         @Query(value = "SELECT\r\n TOP 5" + //
@@ -46,7 +46,7 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
                         ",sum(bd.[total_money])\r\n" + //
                         "from [bill_detail] bd join [bill] b on b.[id]=bd.[id_bill]\r\n" + //
                         "        join [product_detail] pd on pd.[id]=bd.[id_product_detail]\r\n" + //
-                        "where (b.[created_at] BETWEEN :dateFrom AND :dateTo) AND b.[status] != -1 and b.[deleted] = 0\r\n"
+                        "where (b.[created_at] BETWEEN :dateFrom AND :dateTo) AND b.[status] = 5 and b.[deleted] = 0\r\n"
                         + //
                         "group by pd.[id],pd.[name],pd.[price]\r\n" + //
                         "order by sum(bd.[total_money]) desc", nativeQuery = true)

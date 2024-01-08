@@ -431,15 +431,13 @@
                                     <td
                                             style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
 											<span style="font-weight: bold;"
-                                                  th:if="${bill?.total_money != null and bill.total_money != 0}"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(totalAmountWithShipping, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                                  th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                                         <span style="font-weight: bold;"
-                                              th:if="${bill?.total_money == null or bill.total_money == 0}">
+                                              th:if="${bill?.deposit == null or bill.deposit == 0}">
 												<th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
 											</span>
                                     </td>
-
-
                                 </tr>
                             </table>
                         </th:block>
