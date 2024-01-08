@@ -27,7 +27,7 @@
             <div style="margin-left: 18px;margin-bottom: 5px;color: #3D464D ">
                 Bạn có mã giảm giá?
                 <div style="display: inline-block; color: #004aad;cursor: pointer;" onclick="openEditVoucher()">
-                    Ấn vào đây đây để nhập mã
+                    Ấn vào đây để nhập mã
                 </div>
             </div>
             <div id="voucher_zone"
@@ -84,7 +84,7 @@
                                 <span style="display: inline-block;">*</span>
                             </label>
                             <input class="form-control" type="text" placeholder="Nguyễn" id="name"
-                                th:value="${bill.customer.name}">
+                               >
                         </div>
                         <div class="col-md-6 form-group">
                             <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
@@ -92,12 +92,12 @@
                                 <span style="display: inline-block;">*</span>
                             </label>
                             <input class="form-control" type="text" placeholder="099999999"
-                                th:value="${bill.customer.phone}" id="phone_number">
+                                id="phone_number">
                         </div>
                         <div class="col-md-6 form-group">
                             <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Email (tùy chọn)</label>
                             <input class="form-control" type="text" placeholder="example@email.com"
-                                   th:value="${bill.customer.account.email}" id="email">
+                                  id="email">
                         </div>
                         <div class="col-md-6 form-group">
                             <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">

@@ -137,7 +137,7 @@ const getFeeShipping = async() => {
             var total_amount = parseFloat(document.querySelector("#total_price_value").value)
 
             document.querySelector("#ship_fee").innerHTML = `
-            <div class="border-bottom ">
+            <div class="border-bottom " style="margin-top: 10px">
                 <div class=" d-flex justify-content-between">
                    <p class="font-weight-medium" style="display:inline-block;font-size: 14px;">Đơn vị vận chuyển</p>
                    <p class="font-weight-medium" style="display:inline-block;font-size: 14px;">Giao hàng nhanh</p>
