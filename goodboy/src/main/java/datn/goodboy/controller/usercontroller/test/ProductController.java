@@ -132,8 +132,8 @@ public class ProductController {
     this.sortDir = false;
     this.pagenumbers = service.getPanigation(rowcount, pageno);
     List<Product> list = service.getPageNo(1, rowcount, sortBy, sortDir);
-    List<ProductDetail> countTotal = billDetailRepository.countTotalQuantityByProductDetail();
-    model.addAttribute("countTotal", countTotal);
+    // List<ProductDetail> countTotal = billDetailRepository.countTotalQuantityByProductDetail();
+    // model.addAttribute("countTotal", countTotal);
     this.totalpage = service.getPageNumber(rowcount);
     model.addAttribute("totalpage", this.totalpage);
     model.addAttribute("list", list);

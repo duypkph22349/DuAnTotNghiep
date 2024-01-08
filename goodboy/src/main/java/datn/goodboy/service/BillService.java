@@ -40,14 +40,9 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
-    @Autowired
-    private BillDetailRepository billDetailRepository;
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    ProductDetailService productDetailService;
 
     @Autowired
     ProductDetailService productDetailService;

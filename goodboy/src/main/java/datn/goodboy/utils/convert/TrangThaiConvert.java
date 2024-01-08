@@ -55,10 +55,10 @@ public class TrangThaiConvert {
 
   public static String statusOfBill(int status) {
     if (status == 6) {
-      return "<span class=\"badge text-bg-success\">Thành Công</span>";
+      return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
     }
     if (status == 5) {
-      return "<span class=\"badge text-bg-success\">Đã giao hàng</span>";
+      return "<span class=\"badge text-bg-success\">Thành công</span>";
     }
     if (status == 1) {
       return "<span class=\"badge text-bg-warning\">Chờ xác nhận</span>";
