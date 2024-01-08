@@ -66,9 +66,9 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setDeleted(false);
     Voucher savevoucher = voucherRepository.save(voucher1);
-    if (savevoucher.checkVoucher()) {
+    if (savevoucher.sendMail()) {
       CompletableFuture.runAsync(() -> {
-        emailService.sendVoucherMail(savevoucher);
+        emailService.sendVoucherMail(savevoucher, "Thông báo cập nhật Voucher mới");
       });
     }
     return savevoucher;
@@ -102,9 +102,9 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucher1.setMin_order(request.getMinOrder());
       Voucher savevoucher = voucherRepository.save(voucher1);
 
-      if (savevoucher.checkVoucher()) {
+      if (savevoucher.sendMail()) {
         CompletableFuture.runAsync(() -> {
-          emailService.sendVoucherMail(savevoucher);
+          emailService.sendVoucherMail(savevoucher, "Thông báo Voucher mới");
         });
       }
       return savevoucher;

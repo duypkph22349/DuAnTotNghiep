@@ -64,17 +64,17 @@ public class EmailService {
     }
   }
 
-  public void sendVoucherMail(Voucher voucher) {
+  public void sendVoucherMail(Voucher voucher, String title) {
     MimeMessage message = emailSender.createMimeMessage();
     accountRepository.findAll().stream().forEach(
         cutomer -> {
           try {
             System.out.println(
-                "Start sending mail for custmoer" + cutomer.getEmail());
+                "Start sending mail for custmoer: " + cutomer.getEmail());
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom("thatdeptraivjpro@26kleft.com");
             helper.setTo(cutomer.getEmail());
-            helper.setSubject("Nhận Voucher mới");
+            helper.setSubject(title);
             Context context = new Context();
             context.setVariable("fullNameCustomer", cutomer.getCustomer().getName());
             context.setVariable("codeVoucher", voucher.getCode());

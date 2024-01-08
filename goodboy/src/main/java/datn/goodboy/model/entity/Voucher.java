@@ -106,6 +106,16 @@ public class Voucher {
     return message;
   }
 
+  public boolean sendMail() {
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    return !this.isDeleted()
+        && (this.getStart_time().isBefore(currentDateTime) || this.getStart_time().isAfter(currentDateTime))
+        && (this.getEnd_time() == null || this.getEnd_time().isAfter(currentDateTime))
+        && (this.getStart_time().isBefore(this.getEnd_time()))
+        && this.getStatus() == 1
+        && this.getQuantily() > 0;
+  }
+
   public boolean checkVoucher() {
     LocalDateTime currentDateTime = LocalDateTime.now();
     return !this.isDeleted()
