@@ -18,20 +18,21 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-  public static final Logger LOG = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
+    public static final Logger LOG = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
 
-  @Override
-  public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exc)
-      throws IOException {
-    Authentication auth = SecurityContextHolder.getContext()
-        .getAuthentication();
-    if (auth != null) {
-      LOG.warn("User: " + auth.getName() + " attempted to access the protected URL: " + request.getRequestURI());
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exc)
+            throws IOException {
+        Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth != null) {
+            LOG.warn("User: " + auth.getName() + " attempted to access the protected URL: " + request.getRequestURI());
+        }
+
+        response.sendRedirect(request.getContextPath() + determineTargetUrl(auth));
     }
 
-    response.sendRedirect(request.getContextPath() + determineTargetUrl(auth));
-  }
- protected String determineTargetUrl(Authentication authentication) {
+    protected String determineTargetUrl(Authentication authentication) {
         String url = "";
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<String>();
@@ -41,11 +42,11 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         if (roles.contains("NOT_ACCTIVE")) {
             url = "/sendvertifyemail";
         } else if (roles.contains("ADMIN")) {
-            url = "/admin";
+            url = "/access-denied";
         } else if (roles.contains("STAFF")) {
-            url = "/admin";
+            url = "/access-denied";
         } else if (roles.contains("USER")) {
-            url = "/home";
+            url = "/access-denied";
         }
         return url;
     }

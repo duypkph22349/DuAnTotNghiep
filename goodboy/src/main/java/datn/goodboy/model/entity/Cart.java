@@ -55,7 +55,7 @@ public class Cart {
         return cartItems;
     }
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
     @ToString.Include
     public List<CartDetail> cartDetails;
 

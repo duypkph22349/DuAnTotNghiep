@@ -127,32 +127,6 @@ public class Bill {
     this.updatedAt = LocalDateTime.now();
   }
 
-  // @PreUpdate
-  // protected void onUpdate() {
-  // if (this.money_ship == null) {
-  // this.money_ship = 0d;
-  // }
-  // if (this.total_money == null) {
-  // this.total_money = 0d;
-  // }
-  // if (this.reduction_amount == null) {
-  // reduction_amount = 0d;
-  // }
-  // this.deposit = this.total_money + this.money_ship - this.reduction_amount;
-  // this.updatedAt = LocalDateTime.now();
-  // }
-
-  // @OneToMany(mappedBy = "idBill", cascade = { CascadeType.PERSIST,
-  // CascadeType.REFRESH })
-  // // @JsonIgnore
-  // private List<BillDetail> billDetail = new ArrayList<BillDetail>();
-
-  // @OneToOne(mappedBy = "bill", cascade = { CascadeType.PERSIST,
-  // CascadeType.REFRESH })
-  // @JsonIgnore
-  // private VoucherDetail voucherDetail;
-  // }
-
   @PreUpdate
   protected void onUpdate() {
     if (this.money_ship == null) {

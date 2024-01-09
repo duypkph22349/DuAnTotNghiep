@@ -368,11 +368,10 @@ public class ThongKeService {
 
   public Map<String, BigDecimal> getIncomePerDayOfLastMonth() {
     LocalDate now = LocalDate.now();
-    int year = now.getYear();
-    int month = now.getMonthValue();
-    LocalDateTime startOfMonth = LocalDateTime.of(year, month - 1, 1, 0, 0);
-    LocalDateTime endOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
-    return getIncomePerDayOfWeek(startOfMonth, endOfMonth);
+    LocalDate lastMonth = now.minusMonths(1);
+    LocalDateTime startOfLastMonth = lastMonth.withDayOfMonth(1).atStartOfDay();
+    LocalDateTime endOfLastMonth = lastMonth.withDayOfMonth(lastMonth.lengthOfMonth()).atTime(23, 59, 59);
+    return getIncomePerDayOfWeek(startOfLastMonth, endOfLastMonth);
   }
 
   private String convertToVietnamese(int dayOfWeek) {
@@ -554,12 +553,11 @@ public class ThongKeService {
   public Map<String, BigDecimal> getDoanhThuThangTruoc() {
     Map<String, BigDecimal> dailyData = new LinkedHashMap<>();
     LocalDate now = LocalDate.now();
-    int year = now.getYear();
-    int month = now.getMonthValue();
-    LocalDateTime startOfMonth = LocalDateTime.of(year, month - 1, 1, 0, 0);
-    LocalDateTime endOfMonth = LocalDateTime.of(year, month, 1, 0, 0);
+    LocalDate lastMonth = now.minusMonths(1);
+    LocalDateTime startOfLastMonth = lastMonth.withDayOfMonth(1).atStartOfDay();
+    LocalDateTime endOfLastMonth = lastMonth.withDayOfMonth(lastMonth.lengthOfMonth()).atTime(23, 59, 59);
 
-    for (LocalDateTime date = startOfMonth; date.isBefore(endOfMonth.plusDays(1)); date = date.plusDays(1)) {
+    for (LocalDateTime date = startOfLastMonth; date.isBefore(endOfLastMonth.plusDays(1)); date = date.plusDays(1)) {
       String label = getDayOfWeekAbbreviation(date) + " - " + date.getDayOfMonth() + "/" + date.getMonthValue();
       BigDecimal value = getToTalDoanhThu(date, date.plusDays(1).minusSeconds(1));
       dailyData.put(label, value);

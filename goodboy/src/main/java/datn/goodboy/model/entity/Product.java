@@ -95,12 +95,12 @@ public class Product {
     @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with Images
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude
-    private List<ImageProduct> imageProducts;
+    private List<ImageProduct> imageProducts = new ArrayList<>();
     @OneToMany(mappedBy = "idProduct", cascade = CascadeType.ALL) // Define the relationship with ProductDetail
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude
     @JsonIgnore
-    private List<ProductDetail> productDetails;
+    private List<ProductDetail> productDetails = new ArrayList<>();
 
     @JsonProperty("minprice")
     public Float getMinPrice() {
@@ -108,7 +108,7 @@ public class Product {
                 .min((val1, val2) -> {
                     return val1.getPrice().compareTo(val2.getPrice());
                 });
-        return minPrice.get().getPrice();
+        return minPrice.map(ProductDetail::getPrice).orElse(0f);
     }
 
     @JsonProperty("maxprice")
@@ -117,13 +117,14 @@ public class Product {
                 .max((val1, val2) -> {
                     return val1.getPrice().compareTo(val2.getPrice());
                 });
-        return maxPrice.get().getPrice();
+        return maxPrice.map(ProductDetail::getPrice).orElse(0f);
     }
 
     // @JsonIgnore
     @JsonProperty("productdetails")
     public List<List<ProductDetail>> getListOptionProduct() {
-        List<List<ProductDetail>> options = patternTypes().stream()
+        List<List<ProductDetail>> options = new ArrayList<>();
+        options = patternTypes().stream()
                 .map(color -> productDetails.stream()
                         .filter(p -> p.getIdPattern().equals(color))
                         .collect(Collectors.toList()))
@@ -133,7 +134,8 @@ public class Product {
 
     @JsonIgnore
     public List<PatternType> patternTypes() {
-        List<PatternType> colors = productDetails.stream()
+        List<PatternType> colors = new ArrayList<>();
+        colors = productDetails.stream()
                 .map(ProductDetail::getIdPattern)
                 .distinct()
                 .collect(Collectors.toList());
@@ -166,9 +168,11 @@ public class Product {
 
     @JsonProperty("evaluates")
     public List<Evaluate> getEvaluates() {
-        return productDetails.stream()
+        List<Evaluate> resList = new ArrayList<>();
+        resList = productDetails.stream()
                 .flatMap(productDetail -> productDetail.getEvaluates().stream())
                 .collect(Collectors.toList());
+        return resList;
     }
 
     @JsonProperty("averageRating")

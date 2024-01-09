@@ -255,6 +255,7 @@ function formInOrder(id) {
                                 </ul>
                               </div>
                             </div>
+
                               <div type="flex" class="ant-row ant-row-space-between box-row"
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
@@ -271,6 +272,11 @@ function formInOrder(id) {
                                               id="soDienThoai">
                                       </div>
                                       <!-- Địa chỉ -->
+                                      <div  class="col-md-4 online-option d-none">
+                                          <label class="form-label">Chọn địa chỉ</label>
+                                      <select class="form-select" id="diachichoose" onchange="selectdiachikhachhang(${id})">
+                                      </select>
+                                      </div>
                                       <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Thành
                                               Phố</label>
@@ -985,6 +991,7 @@ function resetServiceShip(orderId) {
   }
   resetTotalShip(orderId);
 }
+
 // GHN API Service
 
 //load data
@@ -2305,6 +2312,15 @@ async function updateName(formid, id) {
     if (getInputValue("#soDienThoai").trim().length == 0) {
       updateValue("#soDienThoai", customer.phone);
     }
+    if (customer.country != null) {
+      getAllCustomerprovide(formid, customer.country);
+      if (customer.city != null) {
+        getAllCustomerDistrict(formid, customer.city);
+        if (customer.wardcode != null) {
+          getFullCustomerWardCode(formid, customer.wardcode);
+        }
+      }
+    }
     updateHoaDon(formid);
   } catch (error) {
     console.error(error);
@@ -2353,7 +2369,6 @@ function addNewKhachHang(event) {
   if (errorcount > 0) {
     return false;
   }
-
   // Build customer object
   var customer = {
     name: formData.get("name"),
@@ -2417,3 +2432,110 @@ function addNewKhachHang(event) {
       });
     });
 }
+// get adddress of customer
+async function getAllCustomerprovide(citycode, orderId) {
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  const selectCity = thisOrder.querySelector("#city");
+  await fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      const defaultOption = document.createElement("option");
+      defaultOption.value = -1; // Set the value as needed
+      defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+      // Set the 'disabled' and 'selected' attributes to make it the default option
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectCity.appendChild(defaultOption);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].ProvinceName; // Set the text of the option
+        option.setAttribute("providecode", options[i].ProvinceID);
+        if (citycode == options[i].ProvinceName) {
+          option.selected = true;
+        }
+        selectCity.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+async function getAllCustomerDistrict(districtcode, orderId) {
+  const selectCity = document.querySelector(`#hoaDon${orderId} #city`);
+  const selectedOption = selectCity.options[selectCity.selectedIndex];
+  const customAttribute = selectedOption.getAttribute("providecode");
+  const provinceid = parseInt(customAttribute);
+  const selectDistrict = document.querySelector(`#hoaDon${orderId} #district`);
+  await fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+      body: JSON.stringify({ province_id: provinceid }),
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      resetDistrict(orderId);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].DistrictName; // Set the text of the option
+        option.setAttribute("districtcode", options[i].DistrictID);
+        if (districtcode == options[i].DistrictName) {
+          option.selected = true;
+        }
+        selectDistrict.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+async function getFullCustomerWardCode(wardcode, orderId) {
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  const selecteDistrict = thisOrder.querySelector("#district");
+  const selectWardCode = thisOrder.querySelector("#ward");
+  const selectedOption = selecteDistrict.options[selecteDistrict.selectedIndex];
+  const customAttribute = selectedOption.getAttribute("districtcode");
+  const districtid = parseInt(customAttribute);
+  await fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+      body: JSON.stringify({ district_id: districtid }),
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      //remove all child
+      resetWard(orderId);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].WardName; // Set the text of the option
+        if (wardcode == options[i].WardName) {
+          option.selected = true;
+        }
+        selectWardCode.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+// end

@@ -123,6 +123,20 @@ public class CartCookieService {
     }
   }
 
+  public void deleltedCartCookie(HttpServletRequest request, HttpServletResponse response) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals(CART_COOKIE_NAME)) {
+          cookie.setValue("");
+          cookie.setMaxAge(0);
+          cookie.setPath("/");
+          response.addCookie(cookie);
+        }
+      }
+    }
+  }
+
   public CartResponse addToCart(Integer productId, int quantity, HttpServletRequest request,
       HttpServletResponse response) {
     Map<Integer, Integer> cartItems = getCartItems(request, response);

@@ -99,7 +99,7 @@ public class BillService {
     Optional<Bill> bill = billRepository.findById(idBill);
     if (bill.isPresent()) {
       if (bill.get().getStatus() == 1) {
-        bill.get().setStatus(-1);
+        bill.get().setStatus(6);
         bill.get().getBillDetail().stream().forEach(billdetail -> {
           Optional<ProductDetail> productDetails = productDetailRepository
               .findById(billdetail.getProductDetail().getId());
@@ -136,7 +136,7 @@ public class BillService {
 
   public EvaluateRequest getEvaluateRequest(int idBill) {
     Optional<Bill> bill = billRepository.findById(idBill);
-    if (bill.isPresent() && bill.get().getStatus() == 6) {
+    if (bill.isPresent() && bill.get().getStatus() == 5) {
       List<EvaluateProduct> evaluateProducts = bill.get().getBillDetail().stream()
           .map(billdetail -> new EvaluateProduct(
               billdetail.getProductDetail(),

@@ -28,6 +28,7 @@ import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.repository.PayRepository;
+import datn.goodboy.repository.ProductDetailRepository;
 import javassist.NotFoundException;
 
 @Service
@@ -39,14 +40,17 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
-    @Autowired
-    private BillDetailRepository billDetailRepository;
 
     @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
     ProductDetailService productDetailService;
+
+    @Autowired
+    ProductDetailRepository productDetailRepository;
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
     public BillService() {
         this.billRepository = billRepository;
@@ -198,6 +202,22 @@ public class BillService {
         Bill bill = getBillById(id);
         bill.setStatus(status);
         billRepository.save(bill);
+    }
+
+    public void updateStatusAndNote(Integer id, Integer status, String note) throws NotFoundException {
+        Bill bill = getBillById(id);
+        bill.setNote(note);
+        bill.setStatus(status);
+        billRepository.save(bill);
+    }
+
+    public void cancelBill(Integer id) {
+        List<BillDetail> bdt = billDetailRepository.findByIdListBill(id);
+        for (int i = 0; i < bdt.size(); i++) {
+            ProductDetail pd = productDetailRepository.findProductByLongId(bdt.get(i).getProductDetail().getId());
+            pd.setQuantity(pd.getQuantity() + bdt.get(i).getQuantity());
+            productDetailRepository.save(pd);
+        }
     }
 
     public void updateStatusAndPayStatus(Integer id, Integer status) throws NotFoundException {

@@ -91,22 +91,26 @@ public class SecurityController {
     }
     if (request.validateHasError()) {
       model.addAttribute("message", request.ValidateError());
+      model.addAttribute("typeMessage", "danger");
       return "admin/pages-register.html";
     }
     if (emailHelper.isEmailExists(request.getEmail())) {
-      model.addAttribute("message", "Email already exists");
+      model.addAttribute("message", "Email đã tồn tại");
+      model.addAttribute("typeMessage", "success");
       return "admin/pages-register.html";
     } else {
 
       try {
         if (signUpService.signUpAsEmployee(request) == null) {
           model.addAttribute("message", "Đang có lỗi xẩy ra vui lòng thử lại sau");
+          model.addAttribute("typeMessage", "danger");
           return "admin/pages-register.html";
         }
         redirectAttributes.addFlashAttribute("signupsuccess", "Tạo tài khoản thành công !!!");
         return "redirect:/login";
       } catch (Exception e) {
         model.addAttribute("message", "Đang có lỗi xẩy ra vui lòng thử lại sau");
+        model.addAttribute("typeMessage", "danger");
         return "admin/pages-register.html";
       }
     }
@@ -130,7 +134,7 @@ public class SecurityController {
       return "user/pages-register.html";
     }
     if (emailHelper.isEmailExists(request.getEmail())) {
-      model.addAttribute("message", "Email already exists");
+      model.addAttribute("message", "Email đã tồn tại");
       return "user/pages-register.html";
     } else {
       try {
@@ -184,7 +188,7 @@ public class SecurityController {
       vertifyemail.setEmail(username);
       if (vertifyEmailsService.vertifyEmail(vertifyemail)) {
         securityService.ActiveAccount();
-        thRedirectAttributes.addFlashAttribute("message", "Xác thực thành công vui lòng đăng nhập lại!!!");
+        thRedirectAttributes.addFlashAttribute("sucssesmessage", "Xác thực thành công vui lòng đăng nhập lại!!!");
         return "redirect:/signOut";
       } else {
         thRedirectAttributes.addFlashAttribute("message",
@@ -219,10 +223,9 @@ public class SecurityController {
   }
 
   @GetMapping("/resetpasswordcode")
-  public String getResetPasswordCodePage(
-      Model model) {
+  public String getResetPasswordCodePage(Model model) {
     model.addAttribute("vertifyemail", new VertifyEmail());
-    return "redirect:/resetpasswordcode";
+    return "reset-password-code";
   }
 
   @PostMapping("/resetpasswordcode")
@@ -232,12 +235,13 @@ public class SecurityController {
       @ModelAttribute("vertifyemail") VertifyEmail vertifyemail) {
     vertifyemail.setEmail(emailrest);
     if (vertifyEmailsService.vertifyEmail(vertifyemail)) {
-      thRedirectAttributes.addFlashAttribute("message", "Xác thực thành công nhập mật khẩu mới!!!");
+      thRedirectAttributes.addFlashAttribute("sucssesmessage", "Xác thực thành công nhập mật khẩu mới!!!");
       return "redirect:/resetpassword";
     }
-    thRedirectAttributes.addFlashAttribute("message",
+    model.addAttribute("message",
         "Xác thực không thành công mã kích hoạt không đúng hoặc đã hết hạn vui lòng thử lại !!!");
-    return "redirect:/resetpasswordcode";
+    model.addAttribute("vertifyemail", new VertifyEmail());
+    return "reset-password-code";
   }
 
   @GetMapping("resetpassword")

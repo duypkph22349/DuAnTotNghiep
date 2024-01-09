@@ -55,10 +55,10 @@ public class TrangThaiConvert {
 
   public static String statusOfBill(int status) {
     if (status == 6) {
-      return "<span class=\"badge text-bg-success\">Thành Công</span>";
+      return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
     }
     if (status == 5) {
-      return "<span class=\"badge text-bg-success\">Đã giao hàng</span>";
+      return "<span class=\"badge text-bg-success\">Thành công</span>";
     }
     if (status == 1) {
       return "<span class=\"badge text-bg-warning\">Chờ xác nhận</span>";
@@ -79,6 +79,34 @@ public class TrangThaiConvert {
       return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
     }
     return "<span class=\"badge text-bg-dark\">Không xác định</span>";
+  }
+
+  public static String statusOfBillText(int status) {
+    if (status == 6) {
+      return "Đã Hủy";
+    }
+    if (status == 5) {
+      return "Thành công";
+    }
+    if (status == 1) {
+      return "Chờ xác nhận";
+    }
+    if (status == 2) {
+      return "Chờ lấy hàng";
+    }
+    if (status == 3) {
+      return "Chờ giao hàng";
+    }
+    if (status == 4) {
+      return "Đang giao hàng";
+    }
+    if (status == -1) {
+      return "Đã Hủy";
+    }
+    if (status == -2) {
+      return "Đã Hủy";
+    }
+    return "Không xác định";
   }
 
   public static String statusOfVoucher(Voucher voucher) {

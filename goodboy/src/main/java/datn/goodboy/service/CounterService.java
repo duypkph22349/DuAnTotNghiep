@@ -3,6 +3,7 @@ package datn.goodboy.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import datn.goodboy.model.request.OrderCounterRequest;
 import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.EmployeeRepository;
+import datn.goodboy.service.EmailService;
 import datn.goodboy.repository.PayDetailRepository;
 import jakarta.annotation.PostConstruct;
 
@@ -41,6 +43,9 @@ public class CounterService {
 
   @Autowired
   VoucherService voucherService;
+
+  @Autowired
+  EmailService emailService;
   public Pay cashpay;
   public Pay transderPay;
   public Pay counterPay;
@@ -124,7 +129,7 @@ public class CounterService {
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setCompletion_date(LocalDateTime.now());
       bill.setPay(counterPay);
-      bill.setStatus(6);
+      bill.setStatus(5);
       bill.setStatus_pay(1);
     } else if (request.getOrderTypes() == 1) {
       bill.setConfirmation_date(LocalDateTime.now());
@@ -138,7 +143,16 @@ public class CounterService {
     if (request.getVoucher() > 0) {
       voucherService.useVoucher(bill, request.getVoucher());
     }
-    return billRepository.save(bill);
+
+    Bill finalBill = billRepository.save(bill);
+    if (finalBill.getCustomer() != null) {
+      if (finalBill.getCustomer().getAccount() != null) {
+        CompletableFuture.runAsync(() -> {
+          emailService.sendEmailBill(finalBill, "Đơn hàng của bạn");
+        });
+      }
+    }
+    return finalBill;
   }
 
   public Bill saveWaitBill(OrderCounterRequest orderCounterRequest) {
