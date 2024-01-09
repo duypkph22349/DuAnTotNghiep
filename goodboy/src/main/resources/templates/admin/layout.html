@@ -77,21 +77,28 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" th:href="@{/updateprofile/employee}">
-                                <i class="bi bi-person"></i>
-                                <span>Tài khoản của bạn</span>
-                            </a>
+                            <form th:action="@{/admin/employee/detailAccount/{id}(id=${session.authenemployee.id})}">
+                                <button class="dropdown-item d-flex align-items-center" type="submit">
+                                    <i class="bi bi-person"></i>
+                                    <span>Tài khoản của bạn</span>
+                                </button>
+                            </form>
                         </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" th:href="@{/updateprofile/employee}">
+                            <form th:action="@{/admin/employee/detail-account/{id}(id=${session.authenemployee.id})}">
+                                <input type="hidden" name="_method" value="post">
+                                <button class="dropdown-item d-flex align-items-center" type="submit">
                                 <i class="bi bi-gear"></i>
                                 <span>Cập nhật thông tin</span>
-                            </a>
+                                </button>
+                            </form>
                         </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>

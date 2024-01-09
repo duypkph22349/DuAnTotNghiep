@@ -11,6 +11,9 @@
 <body>
     <section layout:fragment="content">
         <style type="text/css">
+            #myTable td {
+                vertical-align: middle;
+            }
             .input-group.mb-3 {
                 display: flex;
                 align-items: center;
@@ -43,10 +46,6 @@
             }
             .bold-label {
                 font-weight: bold;
-            }
-            .break-text {
-                width: 300px;
-                overflow-wrap: break-word;
             }
             .dropdown-menu li {
                 position: relative;
@@ -127,7 +126,7 @@
                     <div class="mt-3" style="text-align: center">
                         <label class="h3"><strong>EMPLOYEE</strong></label>
                     </div>
-                    <form th:object="${employee}" th:action="@{/admin/employee/add}" action="#" method="post">
+                    <form th:object="${employee}" enctype="multipart/form-data" th:action="@{/admin/employee/add}" action="#" method="post">
                         <div class="modal-body">
                             <div class="modal-content p-3">
                                 <div class="modal-body">
@@ -139,19 +138,14 @@
                                                         <label class="h3"><strong>Hình Ảnh</strong></label>
                                                     </div>
                                                     <div class="avatar-upload m-0 w-100" style="max-width: 100%;">
-                                                        <label for="imageUpload"
-                                                            class="rounded-0 w-100 d-flex justify-content-center">
-                                                            <div class="avatar-preview rounded-0"
-                                                                style="width: 250px; height: 280px">
-                                                                <img id="imagePreview" class="w-100 rounded-0"
-                                                                    src="/images/faces/no_image.jpg" width="250px"
-                                                                    height="280px"
-                                                                    style="border: 1px solid #0d3ddc; padding: 10px;border-radius: 50%;" />
+                                                        <label class="rounded-0 w-100 d-flex justify-content-center">
+                                                            <div class="avatar-preview rounded-0" style="width: 250px; height: 280px">
+                                                                <img id="imagePreview" class="w-100 rounded-0" src="/images/faces/no_image.jpg" width="250px" height="280px" style="border: 1px solid #0d3ddc; padding: 10px;border-radius: 50%;" />
                                                             </div>
                                                         </label>
-                                                        <input th:name="image" type="file" class="custom-file-input"
-                                                            id="imageUpload" name="avatar" accept=".jpg,.png,.jpeg"
-                                                            onchange="readURL(this)" style="display: none;">
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="file" id="formFile" name="imageFiles" multiple onchange="previewImage(event)">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -168,6 +162,7 @@
                                                             <label class="form-label font-weight-bold">Họ và tên</label>
                                                             <input th:name="name" type="text" class="form-control"
                                                                 placeholder="Hãy nhập họ và tên" />
+
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -309,7 +304,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="myTable">
+                <tbody id="myTable"  >
                     <tr th:each="employee, i : ${list}">
                         <td th:text="${i.index+1}"></td>
                         <td th:text="${employee.code}"></td>
@@ -318,13 +313,8 @@
                         <td th:text="${employee.birth_date}"></td>
                         <td th:text="${employee.phone}"></td>
                         <td th:text="${employee.email}"></td>
-<!--                        <td th:text="${employee.fulladdress}"></td>-->
                         <td th:text="${employee.roles.name}"></td>
 
-<!--                        <td class="text-center" >-->
-<!--                            <img th:src="${employee.image}" class="image-fluid"-->
-<!--                                  width="60px" height="50px" />-->
-<!--                        </td>-->
                         <td class="text-center"
                             th:if="${employee.image !=null}">
                             <img th:src="${employee.image}" class="image-fluid"
@@ -334,8 +324,6 @@
                             <img
                                 src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641" />
                         </td>
-<!--                            <img th:src="@{'/images/faces/' + ${employee.image}}" width="60px" height="50px">-->
-
                         <td th:unless="${employee.deleted}" th:text="${convert.convertTrangThai(employee.status)}"></td>
                         <td th:if="${employee.deleted}" class="text-decoration-line-through" th:text="${convert.convertTrangThaiEmployee(employee.status)}"></td>
 
@@ -354,9 +342,7 @@
                             <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${employee.deleted}"
                                th:href="@{/admin/employee/delete(id=${employee.id})}" class="btn btn-secondary"><i
                                     class="fas fa-undo-alt"></i></a>
-<!--                            <a sec:authorize="hasAnyAuthority('ADMIN')"-->
-<!--                               th:href="@{/admin/employee/detail(id=${employee.id})}" class="btn btn-success"><i-->
-<!--                                    class="fas fa-edit"></i></a>-->
+
 
                             <div class="modal fade" th:id="'staticBackdrop' + ${employee.id}"
                                  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -379,8 +365,7 @@
                                                                         <div class="avatar-upload m-0 w-100" style="max-width: 100%;">
                                                                                 <div class="avatar-preview rounded-0"
                                                                                      style="width: 250px; height: 280px">
-                                                                                    <img   th:src="${employee.image}" class="image-fluid" width="250px" height="280px"
-                                                                                           />
+                                                                                    <img   th:src="${employee.image}" class="image-fluid" width="250px" height="280px"/>
                                                                                 </div>
                                                                         </div>
                                                                     </div>
@@ -430,23 +415,6 @@
                                                                             </div>
                                                                         </div>
 
-<!--                                                                        <div class="row">-->
-<!--                                                                            <div class="col-md-4">-->
-<!--                                                                                <label class="form-label bold-label">Thành Phố:</label>-->
-<!--                                                                                <span  onchange="getDistricts()"></span>-->
-<!--                                                                            </div>-->
-<!--                                                                            <div class="col-md-4">-->
-<!--                                                                                <label class="form-label bold-label">Huyện:</label>-->
-
-<!--                                                                                <span th:text="${employee.city}" onchange="getWards()"></span>-->
-<!--                                                                            </div>-->
-<!--                                                                            <div class="col-md-4">-->
-<!--                                                                                <label class="form-label bold-label">Xã:</label>-->
-
-<!--                                                                                <span th:text="${employee.country}" onchange="setFullAdress()"></span>-->
-<!--                                                                            </div>-->
-<!--                                                                        </div>-->
-                                                                        <br>
                                                                         <div class="mb-3">
                                                                             <label class="form-label bold-label">Địa chỉ cụ thể:</label>
                                                                             <span th:text="${employee.fulladdress}"></span>
@@ -522,6 +490,18 @@
         <div id="pageNavPosition" class="text-right"></div>
 
         <script src="jquery.min.js"></script>
+        <script>
+            function previewImage(event) {
+                var input = event.target;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('imagePreview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
         <script type="text/javascript">
             // Tìm kiếm
             function myFunction() {

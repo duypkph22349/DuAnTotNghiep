@@ -13,25 +13,18 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <form th:object="${roles}" th:action="@{'/admin/roles/add'}" action="#" method="post">
+    <form th:object="${detail}" th:action="@{'/admin/roles/update'}" action="#" method="post">
+        <input type="hidden" th:field="*{id}">
         <div class="col-12 col-sm-6 col-lg-6 mb-3">
-            <label class="form-label font-weight-bold">Tên Chức Vụ</label>
-            <input th:name="name" th:value="${detail.name}" type="text" class="form-control" placeholder="Hãy nhập name" required/>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-6 mb-3">
-            <label class="form-label font-weight-bold">Role</label>
-
-            <select name="roles" class="form-control">
-                <option th:each="roles:${detail}" th:value="${detail.id}" th:text="${detail.role}"
-                        th:selected="${detail.id==detail.name}"></option>
-            </select>
+            <label class="form-label bold-label">Tên Chức Vụ</label>
+            <input th:name="role" th:value="${detail.role}"  placeholder="Nhập tên chức vụ" class="form-control">
         </div>
 
         <div class="col-12 col-sm-6 col-lg-6 mb-3">
             <label class="form-label font-weight-bold">Status</label>
             <select class="form-control" th:name="status">
-                <option th:value="0" th:selected="${detail.status == 0}">Hoạt Động</option>
-                <option th:value="1" th:selected="${detail.status == 1}">Không Hoạt Động</option>
+                <option th:value="1" th:selected="${detail.status == 1}">Hoạt Động</option>
+                <option th:value="0" th:selected="${detail.status == 0}">Không Hoạt Động</option>
             </select>
         </div>
 

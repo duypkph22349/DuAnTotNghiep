@@ -1,12 +1,16 @@
 package datn.goodboy.controller;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +23,7 @@ import datn.goodboy.model.response.EmployeeResponse;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.RolesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("admin/employee")
@@ -88,11 +93,50 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public String add(Model model, @ModelAttribute Employee employee) {
+    public String addEmployee(Model model, @Valid @ModelAttribute Employee employee, BindingResult bindingResult,
+                              @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
         model.addAttribute("roles", rolesService.getAllRoles());
+
+        try {
+            Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+            employee.setImage(savedEmployee.getImage());
+            employeeService.saveEmployee(employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "errorPage";
+        }
+
+        return "redirect:/admin/employee/hien-thi";
+    }
+
+
+    @PostMapping("/update")
+    public String update(Model model, @Valid @ModelAttribute("detail") Employee employee, BindingResult bindingResult,
+                                @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        if(bindingResult.hasErrors()){
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "admin/pages/employee/detail-employee";
+        }
+        employee.setUpdatedAt(LocalDateTime.now());
+
+        if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
+            try {
+                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                employee.setImage(savedEmployee.getImage());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "errorPage";
+            }
+        } else {
+            Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
+            employee.setImage(existingEmployee.get().getImage());
+        }
+
         employeeService.saveEmployee(employee);
         return "redirect:/admin/employee/hien-thi";
     }
+
+
 
     @GetMapping("/delete")
     public String delete(Model model, @RequestParam("id") UUID id) {
@@ -109,6 +153,57 @@ public class EmployeeController {
             model.addAttribute("detail", null);
         }
         return "admin/pages/employee/detail-employee";
+    }
+
+    @GetMapping("/detailAccount/{id}")
+    public String detailAcount2(Model model, @PathVariable("id") UUID id){
+        Optional<Employee> customer = employeeService.findByIdEmployee(id);
+        if (customer.isPresent()) {
+            model.addAttribute("detail", customer.get());
+            model.addAttribute("roles", rolesService.getAllRoles());
+        } else {
+            model.addAttribute("detail", null);
+        }
+        return "admin/pages/employee/detail-account";
+    }
+
+    @GetMapping("/detail-account/{id}")
+    public String detailAccount(Model model, @PathVariable("id") UUID id){
+        Optional<Employee> customer = employeeService.findByIdEmployee(id);
+        if (customer.isPresent()) {
+            model.addAttribute("detail", customer.get());
+            model.addAttribute("roles", rolesService.getAllRoles());
+        } else {
+            model.addAttribute("detail", null);
+        }
+        return "admin/pages/employee/update-account";
+    }
+
+    @PostMapping("/update-account")
+    public String updateAccount(Model model, @Valid @ModelAttribute("detail") Employee employee, BindingResult bindingResult,
+                         @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "admin/pages/employee/update-account";
+        }
+        employee.setUpdatedAt(LocalDateTime.now());
+
+        if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
+            try {
+                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                employee.setImage(savedEmployee.getImage());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "errorPage";
+            }
+        } else {
+            Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
+            employee.setImage(existingEmployee.get().getImage());
+        }
+
+        employeeService.saveEmployee(employee);
+        return "redirect:/admin/pages/dashboard";
     }
 
 
