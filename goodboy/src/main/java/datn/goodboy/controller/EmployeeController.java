@@ -67,7 +67,6 @@ public class EmployeeController {
         return "admin/pages/employee/table-employee";
     }
 
-
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {
         this.pageno = 1;
@@ -85,7 +84,6 @@ public class EmployeeController {
 
     }
 
-
     @GetMapping("/form-add")
     public String add(Model model) {
         model.addAttribute("roles", rolesService.getAllRoles());
@@ -98,65 +96,56 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public String addEmployee(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult,
-                              @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+    public String addEmployee(Model model, @Valid @ModelAttribute Employee employee, BindingResult bindingResult,
+            @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        model.addAttribute("roles", rolesService.getAllRoles());
 
-
-        if(bindingResult.hasErrors()){
-            model.addAttribute("roles", rolesService.getAllRoles());
-            return "admin/pages/employee/create-employee";
+        try {
+            Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+            employee.setImage(savedEmployee.getImage());
+            employeeService.saveEmployee(employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "errorPage";
         }
-        else {
+
+        return "redirect:/admin/employee/hien-thi";
+    }
+
+    @PostMapping("/update")
+    public String update(Model model, @Valid @ModelAttribute("detail") Employee employee, BindingResult bindingResult,
+            @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "admin/pages/employee/detail-employee";
+        }
+        employee.setUpdatedAt(LocalDateTime.now());
+
+        if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
             try {
                 Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
                 employee.setImage(savedEmployee.getImage());
-                employeeService.saveEmployee(employee);
             } catch (IOException e) {
                 e.printStackTrace();
                 return "errorPage";
             }
+        } else {
+            Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
+            employee.setImage(existingEmployee.get().getImage());
         }
-
-        return "redirect:/admin/employee/hien-thi";
-    }
-
-
-    @PostMapping("/update")
-    public String update(Model model, @Valid @ModelAttribute("detail") Employee employee, BindingResult bindingResult,
-                                @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
-        if(bindingResult.hasErrors()){
-            model.addAttribute("roles", rolesService.getAllRoles());
-            return "admin/pages/employee/detail-employee";
-        }
-        else {
-            if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
-                try {
-                    Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
-                    employee.setImage(savedEmployee.getImage());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return "errorPage";
-                }
-            } else {
-                Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
-                employee.setImage(existingEmployee.get().getImage());
-            }
-        }
-
 
         employeeService.saveEmployee(employee);
-        System.out.println(employee);
         return "redirect:/admin/employee/hien-thi";
     }
-
 
     @GetMapping("/delete")
     public String delete(Model model, @RequestParam("id") UUID id) {
         employeeService.deleteEmployee(id);
         return "redirect:/admin/employee/hien-thi";
     }
+
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") UUID id){
+    public String detail(Model model, @PathVariable("id") UUID id) {
         Optional<Employee> customer = employeeService.findByIdEmployee(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
@@ -168,7 +157,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/detailAccount/{id}")
-    public String detailAcount2(Model model, @PathVariable("id") UUID id){
+    public String detailAcount2(Model model, @PathVariable("id") UUID id) {
         Optional<Employee> customer = employeeService.findByIdEmployee(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
@@ -180,7 +169,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/detail-account/{id}")
-    public String detailAccount(Model model, @PathVariable("id") UUID id){
+    public String detailAccount(Model model, @PathVariable("id") UUID id) {
         Optional<Employee> customer = employeeService.findByIdEmployee(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
@@ -192,36 +181,36 @@ public class EmployeeController {
     }
 
     @PostMapping("/update-account")
-    public String updateAccount(Model model, @Valid @ModelAttribute("detail") Employee employee, BindingResult bindingResult,
-                         @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+    public String updateAccount(Model model, @Valid @ModelAttribute("detail") Employee employee,
+            BindingResult bindingResult,
+            @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("roles", rolesService.getAllRoles());
             return "admin/pages/employee/update-account";
         }
-        else {
-            if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
-                try {
-                    Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
-                    employee.setImage(savedEmployee.getImage());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return "errorPage";
-                }
-            } else {
-                Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
-                employee.setImage(existingEmployee.get().getImage());
+        employee.setUpdatedAt(LocalDateTime.now());
+
+        if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
+            try {
+                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                employee.setImage(savedEmployee.getImage());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "errorPage";
             }
+        } else {
+            Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
+            employee.setImage(existingEmployee.get().getImage());
         }
 
         employeeService.saveEmployee(employee);
         return "redirect:/admin/pages/dashboard";
     }
 
-
     @GetMapping("sort")
     public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
-                              @RequestParam("sortDir") boolean sordir) {
+            @RequestParam("sortDir") boolean sordir) {
         this.sortBy = sortby;
         this.sortDir = sordir;
         this.pageno = 1;
@@ -253,6 +242,5 @@ public class EmployeeController {
         model.addAttribute("rowcount", rowcount);
         return "/admin/pages/employee/table-employee.html";
     }
-
 
 }
