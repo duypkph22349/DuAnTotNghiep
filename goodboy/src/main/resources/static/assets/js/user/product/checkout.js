@@ -6,6 +6,8 @@ const shopWardCode = 11007;
 const selectCity = document.querySelector("#city");
 const districtSelect = document.querySelector("#district");
 const selectWardCode = document.querySelector("#ward");
+const ERROR_BORDER = '1px solid #dd3333'
+const SUCCESS_BORDER = '1px solid green'
 
 // FORMAT VND
 function formatToVND(amount) {
@@ -154,26 +156,8 @@ const getFeeShipping = async() => {
             document.querySelector("#ship_fee_value").value = res.data.data.total
         })
         .catch((error) => console.error("Error:", error));
-}
 
-function checkout(){
-    const city = selectCity.options[selectCity.selectedIndex].text;
-    const district = districtSelect.options[districtSelect.selectedIndex].text;
-    const ward = selectWardCode.options[selectWardCode.selectedIndex].text;
-    const name_house = document.querySelector("#name_house").value;
-    const name = document.querySelector("#name").value;
-    const email = document.querySelector("#email").value;
-    const phone_number = document.querySelector("#phone_number").value;
-
-    const text = "Name : " + name + "\n"
-                        + "Email : " + email + "\n"
-                        + "Phone number : " + phone_number + "\n"
-                        + "City : " + city + "\n"
-                        + "District : " + district + "\n"
-                        + "Ward : " + ward + "\n"
-                        + "Name house : " + name_house;
-
-    console.log(text)
+    checkButtonCheckout()
 }
 
 function getNote(number){
@@ -415,4 +399,170 @@ const deleteVoucher = () => {
             <div style="color:#dd3333; margin-bottom: 5px"> <i class="fa fa-times"></i> Mã ưu đãi đã được xóa. </div>
         `
     document.querySelector("#coupoun_value").value = 0
+}
+
+function checkout(){
+    const city = selectCity.options[selectCity.selectedIndex].text;
+    const district = districtSelect.options[districtSelect.selectedIndex].text;
+    const ward = selectWardCode.options[selectWardCode.selectedIndex].text;
+    const name_house = document.querySelector("#name_house").value;
+    const name = document.querySelector("#name").value;
+    const email = document.querySelector("#email").value;
+    const phone_number = document.querySelector("#phone_number").value;
+    const note = document.querySelector("#note").value;
+    const ship_fee = document.querySelector("#ship_fee_value").value;
+    const coupoun_value = document.querySelector("#coupoun_value").value;
+    const total_money = document.querySelector("#total_price_value").value;
+    var payment_method = 1;
+    var radios = document.getElementsByName('payment');
+
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            payment_method = parseInt(radios[i].value);
+            break;
+        }
+    }
+
+    if(checkButtonCheckout() === 0){
+        const text = "Name : " + name + "\n"
+            + "Email : " + email + "\n"
+            + "Phone number : " + phone_number + "\n"
+            + "City : " + city + "\n"
+            + "District : " + district + "\n"
+            + "Ward : " + ward + "\n"
+            + "Name house : " + name_house + "\n"
+            + "note : " + note + "\n"
+            + "Ship fee : " + ship_fee + "\n"
+            + "Coupoun : " + coupoun_value + "\n"
+            + "Total money : " + total_money + '\n'
+            + "Payment method : " + payment_method;
+
+    }
+
+}
+
+function checkButtonCheckout() {
+    // VALUE
+    const city = selectCity.options[selectCity.selectedIndex].text;
+    const district = districtSelect.options[districtSelect.selectedIndex].text;
+    const ward = selectWardCode.options[selectWardCode.selectedIndex].text;
+    const email = document.querySelector("#email").value;
+    const name_house = document.querySelector("#name_house").value;
+    const name = document.querySelector("#name").value;
+    const phone_number = document.querySelector("#phone_number").value;
+
+    // VIEW
+    const city_view = selectCity;
+    const district_view = districtSelect;
+    const ward_view = selectWardCode;
+    const email_view = document.querySelector("#email");
+    const name_house_view = document.querySelector("#name_house");
+    const name_view = document.querySelector("#name");
+    const phone_number_view = document.querySelector("#phone_number");
+
+    //ERROR
+    const city_error = document.querySelector("#city_error");
+    const district_error = document.querySelector("#district_error");
+    const ward_error = document.querySelector("#ward_error");
+    const email_error = document.querySelector("#email_error");
+    const name_house_error = document.querySelector("#name_house_error");
+    const name_error = document.querySelector("#name_error");
+    const phone_error = document.querySelector("#phone_error");
+
+    // REGEX
+    var phone_regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+    var email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    var flag = 0;
+
+    if(name !== "" && name !== null){
+        if(name.trim() === ""){
+            flag++;
+            name_view.style.border = ERROR_BORDER
+            name_error.style.display = 'block'
+        }else{
+            name_view.style.border = SUCCESS_BORDER
+            name_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        name_view.style.border = ERROR_BORDER
+        name_error.style.display = 'block'
+    }
+
+    if(email !== "" && email !== null){
+        if(!email_regex.test(email)){
+            flag++;
+            email_view.style.border = ERROR_BORDER
+            email_error.style.display = 'block'
+        }else{
+            email_view.style.border = SUCCESS_BORDER
+            email_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        email_view.style.border = ERROR_BORDER
+        email_error.style.display = 'block'
+    }
+
+    if(phone_number !== "" && phone_number !== null){
+        if(!phone_regex.test(phone_number)){
+            flag++;
+            phone_number_view.style.border = ERROR_BORDER
+            phone_error.style.display = 'block'
+        }else{
+            phone_number_view.style.border = SUCCESS_BORDER
+            phone_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        phone_number_view.style.border = ERROR_BORDER
+        phone_error.style.display = 'block'
+    }
+
+    if(city !== "" && city !== null && city !== undefined && city && city !== "Chọn Tỉnh" ){
+        city_view.style.border = SUCCESS_BORDER
+        city_error.style.display = 'none'
+    }else{
+        flag++;
+        city_view.style.border = ERROR_BORDER
+        city_error.style.display = 'block'
+    }
+
+    if(district !== "" && district !== null && district !== undefined && district !== "Chọn quận/huyện"){
+        district_view.style.border = SUCCESS_BORDER
+        district_error.style.display = 'none'
+    }else{
+        flag++;
+        district_view.style.border = ERROR_BORDER
+        district_error.style.display = 'block'
+    }
+
+    if(ward !== "" && ward !== null && ward !== undefined && ward !== "Chọn phường/xã"){
+        ward_view.style.border = SUCCESS_BORDER
+        ward_error.style.display = 'none'
+    }else{
+        flag++;
+        ward_view.style.border = ERROR_BORDER
+        ward_error.style.display = 'block'
+    }
+
+    if(name_house !== "" && name_house !== null){
+        if(name_house.trim() !== ""){
+            name_house_view.style.border = SUCCESS_BORDER
+            name_house_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        name_house_view.style.border = ERROR_BORDER
+        name_house_error.style.display = 'block'
+    }
+
+    if(flag === 0 ){
+        document.querySelector("#btn_checkout").disabled = false
+    }else{
+        document.querySelector("#btn_checkout").disabled = true
+    }
+
+    return flag;
 }
