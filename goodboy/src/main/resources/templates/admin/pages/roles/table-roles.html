@@ -88,6 +88,9 @@
         th {
             white-space: nowrap;
         }
+        .text-right{
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -102,8 +105,7 @@
         </nav>
     </div><!-- End Page Title -->
     <div class="input-group mb-3">
-        <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">Search
+        <button class="btn btn-info" type="button">Search
         </button>
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" id="searchInput"
             onkeyup="myFunction()" placeholder="Tìm kiếm....">
@@ -113,7 +115,6 @@
         Add Roles
     </button>
 
-    <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -127,25 +128,16 @@
                             <div class="modal-body">
                                 <div class="register-form">
                                     <div class="row">
-                                        <div class="row">
-
-                                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                                                <label class="form-label font-weight-bold">Role</label>
-                                                <select class="form-control" th:name="role" id="role">
-                                                    <option value="Quản Lý">Quản Lý</option>
-                                                    <option value="Nhân Viên">Nhân Viên</option>
-                                                    <option value="Khách Hàng">Khách Hàng</option>
-                                                    <option value="Admin">Admin</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                                                <label class="form-label font-weight-bold">Status</label>
-                                                <select class="form-control" th:name="status" id="satus">
-                                                    <option value="0">Hoạt Động</option>
-                                                    <option value="1">Không Hoạt Động</option>
-                                                </select>
-                                            </div>
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label class="form-label bold-label">Tên Chức Vụ</label>
+                                            <input th:name="role" placeholder="Nhập tên chức vụ" class="form-control">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                                            <label class="form-label font-weight-bold">Status</label>
+                                            <select class="form-control" th:name="status" id="satus">
+                                                <option value="1">Hoạt Động</option>
+                                                <option value="0">Không Hoạt Động</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -162,47 +154,49 @@
     </div>
     <a href="/admin/roles/hien-thi" class="btn btn-warning">Reload</a>
 
-    <div style="height: 500px; overflow: auto;">
+    <div style="height: 500px; overflow: auto; .disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}">
 
         <table class="table table-hover">
             <thead class="position-sticky top-0">
-                <tr class="ex">
-                    <th>#</th>
-                    <th scope="col">Tên Chức Vụ
-                        <a href="#" onclick="sortTableCode('asc', 1)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
-                        <a href="#" onclick="sortTableCode('desc', 1)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
-                    </th>
-                    <th>Roles</th>
-                    <th>Status
-                        <a href="#" onclick="sortTable('asc', 3)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
-                        <a href="#" onclick="sortTable('desc', 3)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
-                    </th>
-                    <th>Action</th>
-                </tr>
+            <tr class="ex">
+                <th>#</th>
+                <th>Tên Chức Vụ</th>
+                <th>Trạng Thái
+                    <a href="#" onclick="sortTable('asc', 3)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
+                    <a href="#" onclick="sortTable('desc', 3)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
+                </th>
+                <th>Chức Năng</th>
+            </tr>
             </thead>
             <tbody id="myTable">
-                <tr th:each="roles, i : ${list}">
-                    <td th:text="${i.index+1}"></td>
-                    <td th:text="${roles.name}"></td>
-                    <td th:text="${roles.role}"></td>
+            <tr th:each="roles, i : ${list}">
+                <td th:text="${i.index+1}"></td>
+                <td th:text="${roles.role}"></td>
 
                     <td th:unless="${roles.deleted}" th:text="${convert.convertTrangThai(roles.status)}"></td>
                     <td th:if="${roles.deleted}" class="text-decoration-line-through"
                         th:text="${convert.convertTrangThaiEmployee(roles.status)}"></td>
 
 
-                    <td>
-                        <a th:href="@{'/admin/roles/edit/' + ${roles.id}}" class="btn btn-info"><i
-                                class="fas fa-edit"></i></a>
+                <td>
+<!--                    <a th:href="@{'/admin/roles/edit/' + ${roles.id}}" class="btn btn-info"><i-->
+<!--                            class="fas fa-edit"></i></a>-->
 
-                        <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${roles.deleted}"
-                            th:href="@{/admin/roles/delete(id=${roles.id})}" class="btn btn-danger"><i
-                                class="fas fa-trash-alt"></i></a>
-                        <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${roles.deleted}"
-                            th:href="@{/admin/roles/delete(id=${roles.id})}" class="btn btn-secondary"><i
-                                class="fas fa-undo-alt"></i></a>
-                    </td>
-                </tr>
+                    <a sec:authorize="hasAnyAuthority('ADMIN', 'NHANVIEN')"
+                       th:unless="${roles.deleted}"
+                       th:href="@{/admin/roles/delete(id=${roles.id})}"
+                       class="btn btn-danger"
+                       th:classappend="${#strings.containsIgnoreCase(roles.role, 'ADMIN') || #strings.containsIgnoreCase(roles.role, 'Nhân Viên')} ? 'disabled' : ''">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${roles.deleted}"
+                       th:href="@{/admin/roles/delete(id=${roles.id})}" class="btn btn-secondary"><i
+                            class="fas fa-undo-alt"></i></a>
+                </td>
+            </tr>
             </tbody>
         </table>
         <!--  Page-->

@@ -2,6 +2,7 @@ package datn.goodboy.controller;
 
 import java.util.Optional;
 
+import datn.goodboy.model.entity.Roles;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,13 @@ public class RolesController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute datn.goodboy.model.entity.Roles roles) {
+    public String add(Model model, @ModelAttribute Roles roles) {
+        rolesService.saveRoles(roles);
+        return "redirect:/admin/roles/hien-thi";
+    }
+
+    @PostMapping("/update")
+    public String update(Model model, @ModelAttribute Roles roles) {
         rolesService.saveRoles(roles);
         return "redirect:/admin/roles/hien-thi";
     }
@@ -44,13 +51,14 @@ public class RolesController {
     }
     @GetMapping("edit/{id}")
     public String detail(Model model, @PathVariable("id") int id){
-        Optional<datn.goodboy.model.entity.Roles> roles = rolesService.findByIdRoles(id);
+        Optional<Roles> roles = rolesService.findByIdRoles(id);
         if (roles.isPresent()) {
             model.addAttribute("detail", roles.get());
+            model.addAttribute("roles", rolesService.getAllRoles());
         } else {
             model.addAttribute("detail", null);
         }
-        return "admin/pages/roles/create-roles";
+        return "admin/pages/roles/detail-roles";
     }
 
 

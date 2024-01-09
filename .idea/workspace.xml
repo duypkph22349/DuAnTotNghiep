@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="89c25bf0-44a9-4934-8f31-416038480c40" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,8 +30,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "duyhi22",
-    "last_opened_file_path": "D:/DATN/goodboy",
+    "git-widget-placeholder": "duypk2024",
+    "last_opened_file_path": "D:/DATN3/goodboy",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
