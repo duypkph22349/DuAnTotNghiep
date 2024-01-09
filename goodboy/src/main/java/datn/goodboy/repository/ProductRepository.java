@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import datn.goodboy.model.entity.Brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,8 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import datn.goodboy.model.entity.Product;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.request.ProductDetailFilter;
+import datn.goodboy.model.request.ProductFillterManager;
 import datn.goodboy.model.request.ProductFilter;
 
 @Repository
@@ -101,5 +99,20 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
                         @Param("dateFrom") LocalDateTime dateFrom,
                         @Param("dateTo") LocalDateTime dateTo,
                         Pageable pageable);
+
+        @Query("SELECT p FROM Product p " +
+                        "WHERE " +
+                        "  ( LOWER(p.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "   OR LOWER(p.idOrigin.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "   OR LOWER(p.idBrand.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "   OR LOWER(p.idMaterial.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "   OR LOWER(p.idStyles.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') " +
+                        "   OR LOWER(p.idCategory.name) LIKE CONCAT('%', LOWER(:#{#filter.txtSearch}), '%') )" +
+                        "AND (:#{#filter.idOrigin} = -1 OR p.idOrigin.id = :#{#filter.idOrigin})" +
+                        "AND (:#{#filter.idCategory} = -1 OR p.idCategory.id = :#{#filter.idCategory}) " +
+                        "AND (:#{#filter.idBrand} = -1 OR p.idBrand.id = :#{#filter.idBrand}) " +
+                        "AND (:#{#filter.idMaterial} = -1 OR p.idMaterial.id = :#{#filter.idMaterial}) " +
+                        "AND (:#{#filter.idStyles} = -1 OR p.idStyles.id = :#{#filter.idStyles})")
+        Page<Product> filter(@Param("filter") ProductFillterManager filter, Pageable pageable);
 
 }
