@@ -114,6 +114,7 @@ public class CounterController {
 
   @PostMapping("checkout")
   public ResponseEntity<Bill> checkOutBill(@RequestBody OrderCounterRequest orderCounterRequest) {
+    System.out.println(orderCounterRequest);
     if (!orderCounterRequest.hasValidationError()) {
       Bill bill = countService.saveBill(orderCounterRequest);
       return ResponseEntity.ok().body(bill);

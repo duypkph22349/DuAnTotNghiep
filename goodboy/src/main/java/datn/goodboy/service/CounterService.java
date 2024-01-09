@@ -84,7 +84,7 @@ public class CounterService {
     } else {
       bill.setPay(payService.getTransferMethod());
     }
-    bill = billRepository.save(bill);
+    // bill = billRepository.save(bill);
     Double total = 0d;
     // bill detail
     List<OrderCounterRequest.Product> products = request.getProducts();
@@ -115,7 +115,8 @@ public class CounterService {
         payDetail.setBill(bill);
         payDetail.setTotalMoney(request.getCashMoney());
         payDetail.setStatus(true);
-        paydetailepository.save(payDetail);
+        bill.getPayDetails().add(payDetail);
+        // paydetailepository.save(payDetail);
       }
       if (request.getTransferMoney() > 0) {
         PayDetail payDetail = new PayDetail();
@@ -124,7 +125,8 @@ public class CounterService {
         payDetail.setBill(bill);
         payDetail.setTotalMoney(request.getTransferMoney());
         payDetail.setStatus(true);
-        paydetailepository.save(payDetail);
+        bill.getPayDetails().add(payDetail);
+        // paydetailepository.save(payDetail);
       }
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setCompletion_date(LocalDateTime.now());
@@ -140,6 +142,8 @@ public class CounterService {
     }
     bill.setDeposit(bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
     bill.setNote(request.getNote());
+    bill = billRepository.save(bill);
+
     if (request.getVoucher() > 0) {
       voucherService.useVoucher(bill, request.getVoucher());
     }
