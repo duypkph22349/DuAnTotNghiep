@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Chức vụ:</label>
-                      <select th:field="*{roles}" class="form-control">
+                      <select name="roles" class="form-control">
                         <option th:each="roles:${roles}" th:value="${roles.id}" th:text="${roles.role}"
                                 th:selected="${roles.id==detail.roles.id}"></option>
                       </select>
@@ -95,7 +95,7 @@
                              placeholder="Hãy nhập họ và tên" />
                       <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></div>
 
-<!--                      <input type="hidden" th:name="password" th:value="${detail.password}" />-->
+                      <input type="hidden" th:name="password" th:value="${detail.password}" />
                     </div>
 
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
@@ -134,7 +134,6 @@
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Birth Date:</label>
                       <input type="date" th:field="*{birth_date}" th:value="${detail.birth_date}" class="form-control" style="width: 255px;">
-                      <div th:if="${#fields.hasErrors('birth_date')}" th:errors="*{birth_date}" class="text-danger"></div>
                     </div>
                   </div>
 
@@ -167,7 +166,7 @@
                     <div class="col-12 col-sm-6 col-lg-10 mb-3">
                       <label class="form-label bold-label">Địa chỉ cụ
                         thể:</label>
-                      <input  th:field="*{fulladdress}" th:value="${detail.fulladdress}"
+                      <input  th:name="fulladdress" th:value="${detail.fulladdress}"
                               placeholder="Địa chỉ cụ thể...." class="form-control">
                     </div>
 
@@ -177,7 +176,7 @@
             </div>
           </div>
       <div style="text-align: right">
-        <a type="button" class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
+        <button class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
           <i class="fas fa-arrow-left"></i> Close
         </a>
         <button type="submit" class="btn btn-primary">Lưu</button>
