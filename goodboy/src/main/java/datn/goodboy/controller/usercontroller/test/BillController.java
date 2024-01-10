@@ -40,7 +40,7 @@ public class BillController {
 
   @GetMapping("/checkout")
   public String viewCheckout(Model model, @RequestParam("carts") List<Integer> cartDetails) {
-    Bill bill = billService.getCheckOutPage(cartDetails);
+    Bill bill = billService.getProductDetailsByCartDetails(cartDetails);
     model.addAttribute("bill", bill);
     return "user2/checkout";
   }

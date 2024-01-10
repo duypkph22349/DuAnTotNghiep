@@ -8,6 +8,8 @@ const districtSelect = document.querySelector("#district");
 const selectWardCode = document.querySelector("#ward");
 const ERROR_BORDER = '1px solid #dd3333'
 const SUCCESS_BORDER = '1px solid green'
+const API_BASE_URL = "/test/api/cart";
+const API_BASE_COOKIE_URL = "/test/api/cart/cookie";
 
 // FORMAT VND
 function formatToVND(amount) {
@@ -50,6 +52,7 @@ function getAllprovide() {
         })
         .catch((error) => console.error("Error:", error));
 }
+
 function getAllDistrict() {
     const selectedOption = selectCity.options[selectCity.selectedIndex];
 
@@ -81,6 +84,7 @@ function getAllDistrict() {
         })
         .catch((error) => console.error("Error:", error));
 }
+
 function getFullWardCode() {
     const selectedOption = districtSelect.options[districtSelect.selectedIndex];
     const customAttribute = selectedOption.getAttribute("districtcode");
@@ -222,7 +226,6 @@ const findVoucherByCode = async () => {
     await axios.get(`
      /client/voucher/find-by-code?code=${voucher_code}
     `).then(res => {
-        console.log(res.data)
         var coupoun = res.data;
         var price_discount = 0;
         var total_price = parseInt(document.querySelector("#total_amount").value);
@@ -359,6 +362,7 @@ const findVoucherByCode = async () => {
             document.querySelector("#coupoun_value").value = price_discount
             document.querySelector("#total_price_value").value = total_price
             document.querySelector("#total_price").innerHTML = formatToVND(total_price)
+            document.querySelector("#coupoun_object").setAttribute("coupoun", JSON.stringify(coupoun))
         }
 
     }).catch((error) =>{
@@ -399,22 +403,25 @@ const deleteVoucher = () => {
             <div style="color:#dd3333; margin-bottom: 5px"> <i class="fa fa-times"></i> Mã ưu đãi đã được xóa. </div>
         `
     document.querySelector("#coupoun_value").value = 0
+    document.querySelector("#coupoun_object").setAttribute("coupoun", null)
 }
 
-function checkout(){
+async function checkout(){
     const city = selectCity.options[selectCity.selectedIndex].text;
     const district = districtSelect.options[districtSelect.selectedIndex].text;
     const ward = selectWardCode.options[selectWardCode.selectedIndex].text;
-    const name_house = document.querySelector("#name_house").value;
-    const name = document.querySelector("#name").value;
-    const email = document.querySelector("#email").value;
-    const phone_number = document.querySelector("#phone_number").value;
-    const note = document.querySelector("#note").value;
+    const name_house = document.querySelector("#name_house").value.trim();
+    const name = document.querySelector("#name").value.trim();
+    const email = document.querySelector("#email").value.trim();
+    const phone_number = document.querySelector("#phone_number").value.trim();
+    const note = document.querySelector("#note").value.trim();
     const ship_fee = document.querySelector("#ship_fee_value").value;
-    const coupoun_value = document.querySelector("#coupoun_value").value;
+    const coupoun_value = JSON.parse(document.querySelector("#coupoun_object").getAttribute("coupoun"));
     const total_money = document.querySelector("#total_price_value").value;
+    const id_bill = JSON.parse(localStorage.getItem("bill"));
     var payment_method = 1;
     var radios = document.getElementsByName('payment');
+    const address = name_house + ", " + ward + ", " + district + ", " + city;
 
     for (var i = 0, length = radios.length; i < length; i++) {
         if (radios[i].checked) {
@@ -423,19 +430,76 @@ function checkout(){
         }
     }
 
-    if(checkButtonCheckout() === 0){
-        const text = "Name : " + name + "\n"
-            + "Email : " + email + "\n"
-            + "Phone number : " + phone_number + "\n"
-            + "City : " + city + "\n"
-            + "District : " + district + "\n"
-            + "Ward : " + ward + "\n"
-            + "Name house : " + name_house + "\n"
-            + "note : " + note + "\n"
-            + "Ship fee : " + ship_fee + "\n"
-            + "Coupoun : " + coupoun_value + "\n"
-            + "Total money : " + total_money + '\n'
-            + "Payment method : " + payment_method;
+    console.log(id_bill)
+
+    if(String(checkButtonCheckout()) === String(0)){
+        if(id_bill !== null){
+            var billRequest = {
+                "name" : name,
+                "phone_number": phone_number,
+                "email": email,
+                "address": address,
+                "note": note,
+                "ship_fee": ship_fee,
+                "coupoun": coupoun_value,
+                "total_money": total_money,
+                "bill": id_bill,
+                "payment_method": payment_method
+            }
+            await axios.post(`/client/bill/add`, billRequest).then(
+                e => {
+                    console.log(JSON.parse(localStorage.getItem("cart_details")))
+                    if(localStorage.getItem("type_cart") === "login"){
+                        JSON.parse(localStorage.getItem("cart_details")).map((e) => {
+                            deleteCartDetail(e);
+                        })
+                    }else{
+                        deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
+                    }
+                    new Notify({
+                        status: "success",
+                        title: "Thành công",
+                        text: "Đơn hàng đã được tạo thành công.",
+                        effect: "fade",
+                        speed: 300,
+                        customClass: "",
+                        customIcon: "",
+                        showIcon: true,
+                        showCloseButton: false,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 20,
+                        distance: 20,
+                        type: 1,
+                        position: "right top",
+                        customWrapper: "",
+                    });
+                }
+            )
+            // setTimeout(() =>{
+            //     window.location.href = "/index"
+            // }, 400)
+
+        }else{
+            new Notify({
+                status: "error",
+                title: "Đã có lỗi xảy ra",
+                text: "Rất tiếc, đã có lỗi xảy ra.Vui lòng quay lại giỏ hàng để thanh toán lại.",
+                effect: "fade",
+                speed: 300,
+                customClass: "",
+                customIcon: "",
+                showIcon: true,
+                showCloseButton: false,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 20,
+                distance: 20,
+                type: 1,
+                position: "right top",
+                customWrapper: "",
+            });
+        }
 
     }
 
@@ -565,4 +629,43 @@ function checkButtonCheckout() {
     }
 
     return flag;
+}
+
+const deleteCartDetailCookie = async (cartDetailId) => {
+    console.log(cartDetailId)
+    try {
+        const response = await axios.put(
+            `${API_BASE_COOKIE_URL}/delete-carts`, cartDetailId
+
+        );
+        await get_quantity_of_cart()
+    } catch (error) {
+        console.log(error)
+    }
+};
+//done
+
+const deleteCartDetail = async (cartDetailId) => {
+    try {
+        const response = await axios.delete(
+            `${API_BASE_URL}/delete/${cartDetailId}`
+        );
+        await get_quantity_of_cart()
+        setTimeout(() =>{}, 400)
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+const get_quantity_of_cart = () => {
+    // UPDATE QUANTITY
+    var quantity = 0;
+    axios.get(
+        `/client/cart/quantity`
+    ).then((e) =>{
+        quantity = e.data
+    })
+    setTimeout(() => {
+        document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
+    }, 100)
 }

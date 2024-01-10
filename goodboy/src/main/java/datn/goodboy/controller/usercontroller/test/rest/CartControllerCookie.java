@@ -5,13 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import datn.goodboy.model.cookieentity.CartResponse;
 import datn.goodboy.service.test.CartCookieService;
@@ -41,7 +35,18 @@ public class CartControllerCookie {
       HttpServletResponse response) {
     try {
       cartCookieService.removeFromCart(cartDetailId, request, response);
-      return ResponseEntity.ok("Cart detail deleted");
+      return ResponseEntity.ok("Cart" + cartDetailId + " detail deleted ");
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+  }
+
+  @PutMapping("/delete-carts")
+  public ResponseEntity<String> deleteCartDetailSelected(@RequestBody List<String> cartDetails, HttpServletRequest request,
+                                                         HttpServletResponse response){
+    try {
+      cartCookieService.removeFromCarts(cartDetails, request, response);
+      return ResponseEntity.ok("Carts detail deleted ");
     } catch (RuntimeException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }

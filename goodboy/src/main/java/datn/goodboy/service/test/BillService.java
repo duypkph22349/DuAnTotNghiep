@@ -1,11 +1,14 @@
 package datn.goodboy.service.test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,10 +46,17 @@ public class BillService {
   CustomerRepository customerRepository;
   @Autowired
   EvaluateService evaluateService;
+
   @Autowired
   ProductDetailRepository productDetailRepository;
+
   @Autowired
   BillRepository billRepository;
+
+  @Autowired
+  private HttpServletRequest request;
+
+  private static final String CART_COOKIE_NAME = "userCart";
 
   public Bill getCheckOutPage(List<Integer> cartDetails) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -83,6 +93,77 @@ public class BillService {
       return bill;
     }
     return null;
+  }
+
+  public Bill getProductDetailsByCartDetails(List<Integer> cartDetails) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (!(authentication instanceof AnonymousAuthenticationToken)) {
+      String currentUserName = authentication.getName();
+      Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+      Bill bill = new Bill();
+      bill.setStatus(0);
+      bill.setLoaiDon(1);
+      bill.setStatus_pay(0);
+      List<BillDetail> billDetails = cartDetails.stream()
+              .map(idcartdetails -> cartDetailRepository.findById(idcartdetails))
+              .filter(Optional::isPresent)
+              .map(Optional::get)
+              .map(cartDetail -> {
+                BillDetail billDetail = new BillDetail();
+                billDetail.setIdBill(bill);
+                billDetail.setProductDetail(cartDetail.getProductDetail());
+                billDetail.setQuantity(cartDetail.getQuantity());
+                billDetail
+                        .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
+                return billDetail;
+              })
+              .collect(Collectors.toList());
+      bill.setBillDetail(billDetails);
+      double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
+      bill.setTotal_money(totalMoney);
+      bill.setDeposit(0d);
+      bill.setMoney_ship(0d);
+      return bill;
+    }else{
+      Bill bill = new Bill();
+      bill.setStatus(0);
+      bill.setLoaiDon(1);
+      bill.setStatus_pay(0);
+      List<BillDetail> billDetails = cartDetails.stream()
+              .map(idcartdetails -> productDetailRepository.findById(idcartdetails))
+              .filter(Optional::isPresent)
+              .map(Optional::get)
+              .map(cartDetail -> {
+                BillDetail billDetail = new BillDetail();
+                Cookie[] cookies = request.getCookies();
+                if (cookies != null) {
+                  for (Cookie cookie : cookies) {
+                    if (CART_COOKIE_NAME.equals(cookie.getName())) {
+                      if(cookie.getValue() != null){
+                        if(deserializeCart(cookie.getValue()) != null){
+                          Integer quantity = deserializeCart(cookie.getValue()).get(cartDetail.getId());
+                          billDetail.setQuantity(quantity);
+                          billDetail
+                                  .setTotalMoney(Double.valueOf(cartDetail.getPrice() * quantity));
+                          break;
+                         }
+                      }
+
+                    }
+                  }
+                }
+                billDetail.setIdBill(bill);
+                billDetail.setProductDetail(cartDetail);
+                return billDetail;
+              })
+              .collect(Collectors.toList());
+      bill.setBillDetail(billDetails);
+      double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
+      bill.setTotal_money(totalMoney);
+      bill.setDeposit(0d);
+      bill.setMoney_ship(0d);
+      return bill;
+    }
   }
 
   public Customer getCustomer() {
@@ -171,5 +252,17 @@ public class BillService {
         evaluateService.createEvaluate(evld);
       }
     });
+  }
+
+  private Map<Integer, Integer> deserializeCart(String cartValue) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      String decodedValue = URLDecoder.decode(cartValue, "UTF-8");
+      return objectMapper.readValue(decodedValue, new TypeReference<HashMap<Integer, Integer>>() {
+      });
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

@@ -265,7 +265,6 @@
                     <div class=" pt-3 pb-2">
                         <div class="border-bottom d-flex justify-content-between mb-3">
                             <h6 style="font-weight: bold!important;font-size: 14px;">Tạm tính</h6>
-
                             <input th:value="${bill.getTotalMoney()}" type="text" id="total_amount" hidden="">
                             <h6 style="font-weight: bold!important;font-size: 14px;"
                                 th:text="${#strings.replace(#numbers.formatDecimal(bill.getTotalMoney(), 0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
@@ -276,6 +275,7 @@
 
                         </div>
                         <input id="coupoun_value" type="text" hidden="" value="0">
+                        <input id="coupoun_object"  hidden="" >
                         <input id="ship_fee_value" type="text" hidden="" value="0">
                         <div id="ship_fee" >
                         </div>

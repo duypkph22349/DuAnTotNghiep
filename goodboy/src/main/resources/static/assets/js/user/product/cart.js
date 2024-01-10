@@ -24,33 +24,33 @@ function selectProductDetails() {
   }
   updateTotalMoney();
 }
-  function checkoutpage() {
-  const CartDetailIds = [];
-  document
-    .querySelectorAll("input[type=checkbox].pdselect:checked")
-    .forEach((element) => {
-      if(element.getAttribute("id-cart-detail") === null
-          || element.getAttribute("id-cart-detail") === undefined
-          || element.getAttribute("id-cart-detail") === ""
-      ){
-        CartDetailIds.push(element.getAttribute("id-product-detail"));
-      }else{
-        CartDetailIds.push(element.getAttribute("id-cart-detail"));
-      }
-    });
-    console.log(CartDetailIds)
-  // Check if any items are selected
-  if (CartDetailIds.length > 0) {
-    const queryParams = "carts=" + CartDetailIds.join("&carts=");
-    const checkoutUrl = `${billApi}/checkout?` + queryParams;
-
-    // Redirect to the checkout URL
-    window.location.href = checkoutUrl;
-  } else {
-    // Handle the case where no items are selected
-    alert("Vui lòng chọn một sản phẩm để tiếp tục thanh toán.");
-  }
-}
+//   function checkoutpage() {
+//   const CartDetailIds = [];
+//   document
+//     .querySelectorAll("input[type=checkbox].pdselect:checked")
+//     .forEach((element) => {
+//       if(element.getAttribute("id-cart-detail") === null
+//           || element.getAttribute("id-cart-detail") === undefined
+//           || element.getAttribute("id-cart-detail") === ""
+//       ){
+//         CartDetailIds.push(element.getAttribute("id-product-detail"));
+//       }else{
+//         CartDetailIds.push(element.getAttribute("id-cart-detail"));
+//       }
+//     });
+//     console.log(CartDetailIds)
+//   // Check if any items are selected
+//   if (CartDetailIds.length > 0) {
+//     const queryParams = "carts=" + CartDetailIds.join("&carts=");
+//     const checkoutUrl = `${billApi}/checkout?` + queryParams;
+//
+//     // Redirect to the checkout URL
+//     window.location.href = checkoutUrl;
+//   } else {
+//     // Handle the case where no items are selected
+//     alert("Vui lòng chọn một sản phẩm để tiếp tục thanh toán.");
+//   }
+// }
 async function updateQuantity(element) {
   const quantity = element.value;
   const idCartDetails = element.getAttribute("id-cartdetails");
@@ -212,6 +212,7 @@ const getCartDetail = async (cartDetailId) => {
   } catch (error) {}
 };
 const updateTotalMoney = async () => {
+  localStorage.setItem("type_cart", "login")
   const CartDetailIds = [];
   document
     .querySelectorAll("input[type=checkbox].pdselect:checked")
@@ -328,6 +329,7 @@ const updateCartDetailCookie = async (cartDetailId, newQuantity) => {
 
 const updateTotalCookieMoney = async () => {
   const CartDetailIds = [];
+  localStorage.setItem("type_cart", "no_login")
   document
       .querySelectorAll("input[type=checkbox].pdselect:checked")
       .forEach((element) => {
@@ -474,3 +476,41 @@ function deletedCartUICookie(idcartdetail) {
   }
 }
 //done
+
+function checkoutpage() {
+  const CartDetailIds = [];
+  document
+      .querySelectorAll("input[type=checkbox].pdselect:checked")
+      .forEach((element) => {
+        if(element.getAttribute("id-cart-detail") === null
+            || element.getAttribute("id-cart-detail") === undefined
+            || element.getAttribute("id-cart-detail") === ""
+        ){
+          CartDetailIds.push(element.getAttribute("id-product-detail"));
+        }else{
+          CartDetailIds.push(element.getAttribute("id-cart-detail"));
+        }
+      });
+  // Check if any items are selected
+  if (CartDetailIds.length > 0) {
+    const queryParams = "carts=" + CartDetailIds.join("&carts=");
+    const checkoutUrl = `${billApi}/checkout?` + queryParams;
+
+    // getBill
+    axios.get("/client/bill/checkout?" + queryParams).then(
+        e => {
+          localStorage.setItem("bill", JSON.stringify(e.data));
+          localStorage.setItem("cart_details", JSON.stringify(CartDetailIds));
+        }
+    )
+
+    // Redirect to the checkout URL
+    setTimeout(() => {
+      window.location.href = checkoutUrl;
+    }, 400)
+  } else {
+    // Handle the case where no items are selected
+    alert("Vui lòng chọn một sản phẩm để tiếp tục thanh toán.");
+  }
+}
+

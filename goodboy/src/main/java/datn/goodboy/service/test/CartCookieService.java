@@ -183,6 +183,15 @@ public class CartCookieService {
     saveCartToCookie(cartItems, request, response);
   }
 
+  public void removeFromCarts(List<String> productIds, HttpServletRequest request, HttpServletResponse response) {
+    Map<Integer, Integer> cartItems = getCartItems(request, response);
+    for (String productId : productIds){
+      cartItems.remove(Integer.parseInt(productId));
+    }
+    request.getSession().setAttribute(CART_COOKIE_NAME, cartItems);
+    saveCartToCookie(cartItems, request, response);
+  }
+
   public Double calculateTotalPrice(List<Integer> cartDetails, HttpServletRequest request,
       HttpServletResponse response) {
     return getCartResponses(request, response).stream()
