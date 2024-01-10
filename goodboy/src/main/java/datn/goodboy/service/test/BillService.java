@@ -112,6 +112,9 @@ public class BillService {
                 BillDetail billDetail = new BillDetail();
                 billDetail.setIdBill(bill);
                 billDetail.setProductDetail(cartDetail.getProductDetail());
+                if(cartDetail.getProductDetail().getQuantity() < cartDetail.getQuantity()){
+                      throw new RuntimeException("Hiện tại số lượng sản phẩm không đủ.");
+                }
                 billDetail.setQuantity(cartDetail.getQuantity());
                 billDetail
                         .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
@@ -142,6 +145,9 @@ public class BillService {
                       if(cookie.getValue() != null){
                         if(deserializeCart(cookie.getValue()) != null){
                           Integer quantity = deserializeCart(cookie.getValue()).get(cartDetail.getId());
+                          if(cartDetail.getQuantity() < quantity){
+                            throw new RuntimeException("Hiện tại số lượng sản phẩm không đủ.");
+                          }
                           billDetail.setQuantity(quantity);
                           billDetail
                                   .setTotalMoney(Double.valueOf(cartDetail.getPrice() * quantity));
@@ -166,7 +172,7 @@ public class BillService {
     }
   }
 
-  public Customer getCustomer() {
+  public Customer getCustomỏer() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();

@@ -47,8 +47,8 @@ public class BillController {
 
   @GetMapping("/history")
   public String viewHistoryBill(Model model) {
-    Customer customer = billService.getCustomer();
-    model.addAttribute("customer", customer);
+//    Customer customer = billService.getCustomer();
+//    model.addAttribute("customer", customer);
     return "user2/userbills";
   }
 
@@ -73,8 +73,8 @@ public class BillController {
 
   @GetMapping("/detail/{idbill}")
   public String detailBill(Model model, @PathVariable("idbill") int bill) {
-    Customer customer = billService.getCustomer();
-    model.addAttribute("customer", customer);
+//    Customer customer = billService.getCustomer();
+//    model.addAttribute("customer", customer);
     return "user2/userbills";
   }
 

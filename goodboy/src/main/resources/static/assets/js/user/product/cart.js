@@ -90,7 +90,7 @@ async function updateCartDetailUI(cartdetail) {
 // Import Axios (make sure to include Axios in your project)
 
 // Replace 'YOUR_API_BASE_URL' with the actual base URL of your Spring Boot application
-const API_BASE_URL = "/test/api/cart";
+var API_BASE_URL = "/test/api/cart";
 const API_BASE_COOKIE_URL = "/test/api/cart/cookie";
 // Function to add an item to the cart
 const addToCart = async (productId, quantity) => {
@@ -241,6 +241,7 @@ const get_quantity_of_cart = () => {
   axios.get(
       `/client/cart/quantity`
   ).then((e) =>{
+    console.log(e)
     quantity = e.data
   })
   setTimeout(() => {
@@ -501,13 +502,31 @@ function checkoutpage() {
         e => {
           localStorage.setItem("bill", JSON.stringify(e.data));
           localStorage.setItem("cart_details", JSON.stringify(CartDetailIds));
+          setTimeout(() => {
+            window.location.href = checkoutUrl;
+          }, 400)
         }
-    )
-
+    ).catch(error => {
+      new Notify({
+        status: "error",
+        title: "Thêm thất bại",
+        text: error.response ? error.response.data : error.message,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: false,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
+    })
     // Redirect to the checkout URL
-    setTimeout(() => {
-      window.location.href = checkoutUrl;
-    }, 400)
   } else {
     // Handle the case where no items are selected
     alert("Vui lòng chọn một sản phẩm để tiếp tục thanh toán.");

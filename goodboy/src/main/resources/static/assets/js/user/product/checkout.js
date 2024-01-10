@@ -8,8 +8,8 @@ const districtSelect = document.querySelector("#district");
 const selectWardCode = document.querySelector("#ward");
 const ERROR_BORDER = '1px solid #dd3333'
 const SUCCESS_BORDER = '1px solid green'
-const API_BASE_URL = "/test/api/cart";
-const API_BASE_COOKIE_URL = "/test/api/cart/cookie";
+var API_BASE_URL = "/test/api/cart";
+var API_BASE_COOKIE_URL = "/test/api/cart/cookie";
 
 // FORMAT VND
 function formatToVND(amount) {
@@ -474,11 +474,31 @@ async function checkout(){
                         position: "right top",
                         customWrapper: "",
                     });
+                    setTimeout(() =>{
+                        window.location.href = "/index"
+                    }, 500)
                 }
-            )
-            // setTimeout(() =>{
-            //     window.location.href = "/index"
-            // }, 400)
+            ).catch(error => {
+                new Notify({
+                    status: "error",
+                    title: "Thêm thất bại",
+                    text: error.response ? error.response.data : error.message,
+                    effect: "fade",
+                    speed: 300,
+                    customClass: "",
+                    customIcon: "",
+                    showIcon: true,
+                    showCloseButton: false,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 20,
+                    distance: 20,
+                    type: 1,
+                    position: "right top",
+                    customWrapper: "",
+                });
+            }, 400)
+
 
         }else{
             new Notify({

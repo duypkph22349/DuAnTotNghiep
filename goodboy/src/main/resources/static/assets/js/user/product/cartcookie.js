@@ -1,6 +1,6 @@
 const cartuser = document.getElementById("cartuser");
 const cartcookie = document.getElementById("cartcookie");
-const totalMoney = document.getElementById("TotalMoney");
+var totalMoney = document.getElementById("TotalMoney");
 const TotalCookieMoney = cartcookie.querySelector("#TotalCookieMoney");
 const cartcookietable = cartcookie.querySelector("#cartcookietable");
 const billApi = "/shop/order";
@@ -70,7 +70,7 @@ async function updateCartDetailUICookie(cartdetail) {
 }
 //done
 // Replace 'YOUR_API_BASE_COOKIE_URL' with the actual base URL of your Spring Boot application
-const API_BASE_COOKIE_URL = "/test/api/cart/cookie";
+var API_BASE_COOKIE_URL = "/test/api/cart/cookie";
 //done
 
 const updateCartDetailCookie = async (cartDetailId, newQuantity) => {

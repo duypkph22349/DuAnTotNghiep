@@ -234,13 +234,13 @@
       axios.get(
         `/client/cart/quantity`
       ).then((e) => {
+        console.log(e)
         quantity = e.data
       })
       setTimeout(() => {
         document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
       },100)
 
-      console.log("hehe")
     }
 
   </script>
