@@ -40,6 +40,7 @@ public class BillClientService {
         bill.setCustomer_name(req.getName());
         bill.setPhone(req.getPhone_number());
         bill.setDeposit(req.getTotal_money());
+        bill.setReduction_amount(bill.getTotal_money() - (bill.getDeposit() -  bill.getMoney_ship()));
         bill.setLoaiDon(1);
         bill.setStatus(1);
         if(req.getPayment_method() == 2){
@@ -48,17 +49,6 @@ public class BillClientService {
         }else{
             bill.setPay(payService.getCashOnDelivery());
             bill.setStatus_pay(0);
-        }
-
-        if(req.getCoupoun() != null){
-            VoucherDetail voucherDetail = new VoucherDetail();
-            voucherDetail.setBill(bill);
-            voucherDetail.setVoucher(req.getCoupoun());
-            voucherDetail.setMoney_before_reduction(bill.getTotal_money() + bill.getMoney_ship());
-            voucherDetail.setMoney_after_reduction(bill.getDeposit());
-            voucherDetail.setMoney_reduction(bill.getDeposit() - bill.getTotal_money() - bill.getMoney_ship());
-            voucherDetail.setStatus(0);
-            voucherDetailRepository.save(voucherDetail);
         }
 
         for(BillDetail billDetail: bill.getBillDetail()){
@@ -71,8 +61,20 @@ public class BillClientService {
             billDetail.setIdBill(bill);
         }
         billRepository.save(bill);
+
         for(BillDetail billDetail: bill.getBillDetail()){
             billDetailRepository.save(billDetail);
+        }
+
+        if(req.getCoupoun() != null){
+            VoucherDetail voucherDetail = new VoucherDetail();
+            voucherDetail.setBill(bill);
+            voucherDetail.setVoucher(req.getCoupoun());
+            voucherDetail.setMoney_before_reduction(bill.getTotal_money());
+            voucherDetail.setMoney_after_reduction(bill.getDeposit() -  bill.getMoney_ship());
+            voucherDetail.setMoney_reduction(bill.getTotal_money() - (bill.getDeposit() -  bill.getMoney_ship()));
+            voucherDetail.setStatus(0);
+            voucherDetailRepository.save(voucherDetail);
         }
         return bill;
     }
