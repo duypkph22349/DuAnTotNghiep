@@ -150,6 +150,10 @@ public class Bill {
   @JsonIgnore
   private VoucherDetail voucherDetail;
 
+  @OneToMany(mappedBy = "bill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  @JsonIgnore
+  private List<PayDetail> payDetails;
+
   public String getbillDetailString() {
     String result = "BillDetail = [ idproductdetail = {";
     for (BillDetail billDetail2 : billDetail) {

@@ -26,17 +26,20 @@ import datn.goodboy.model.request.ProductAddRequest;
 import datn.goodboy.model.request.ProductRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
+import datn.goodboy.model.request.ProductFillterManager;
 import datn.goodboy.repository.ImageProductRepository;
 import datn.goodboy.repository.ImageRepository;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
 import datn.goodboy.service.cloud.CloudinaryImageService;
+import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class ManagerProductService implements PanigationInterface<Product> {
+public class ManagerProductService
+    implements PanigationInterface<Product>, IPanigationWithFIllter<Product, ProductFillterManager> {
   @Autowired
   private ProductRepository productRepository;
   @Autowired
@@ -278,5 +281,41 @@ public class ManagerProductService implements PanigationInterface<Product> {
 
   public Product updateProduct(ProductRequest request) {
     return productService.updateProduct(request);
+  }
+
+  @Override
+  public List<Product> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
+      ProductFillterManager filter) {
+    if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
+      return null;
+    }
+    List<Product> products;
+    products = new ArrayList<>();
+    Sort sort;
+    if (sortDir) {
+      sort = Sort.by(sortBy).ascending();
+    } else {
+      sort = Sort.by(sortBy).descending();
+    }
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    Page<Product> page = productRepository.filter(filter, pageable);
+    products = page.getContent();
+    return products;
+  }
+
+  @Override
+  public int getPageNumber(int rowcount, ProductFillterManager filter) {
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<Product> page = productRepository.filter(filter, pageable);
+    int totalPage = page.getTotalPages();
+    return totalPage;
+  }
+
+  @Override
+  public int[] getPanigation(int rowcount, int pageno, ProductFillterManager filter) {
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<Product> page = productRepository.filter(filter, pageable);
+    int totalPage = page.getTotalPages();
+    return Panigation(pageno, totalPage);
   }
 }

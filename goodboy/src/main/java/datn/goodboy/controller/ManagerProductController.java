@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import datn.goodboy.model.entity.Product;
+import datn.goodboy.model.request.ProductFillterManager;
 import datn.goodboy.service.BrandService;
 import datn.goodboy.service.CategoryService;
 import datn.goodboy.service.ColorService;
@@ -69,6 +71,16 @@ public class ManagerProductController {
   // public ProductDetailFilter fillter() {
   // return filter;
   // }
+
+  @Autowired
+  @Qualifier("productfilltermanager")
+  private ProductFillterManager fillter;
+
+  @ModelAttribute("fillter")
+  public ProductFillterManager fillter() {
+    return fillter;
+  }
+
   @ModelAttribute("categoryCbb")
   public List<Map<Integer, String>> getComboboxCategory() {
     return categoryService.getCombobox();
@@ -132,8 +144,23 @@ public class ManagerProductController {
 
   // panigation and sort
   @GetMapping("/getcountrow")
-  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue) {
+  public String getCountRow(Model model, @RequestParam("selectedValue") String selectedValue,
+      @ModelAttribute("fillter") ProductFillterManager fillter) {
     rowcount = Integer.parseInt(selectedValue);
+
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/manager-product.html"; // Redirect back to the form page
+      }
+    }
     this.pageno = 1;
     List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
@@ -149,10 +176,24 @@ public class ManagerProductController {
 
   @GetMapping("sort")
   public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
-      @RequestParam("sortDir") boolean sordir) {
+      @RequestParam("sortDir") boolean sordir,
+      @ModelAttribute("fillter") ProductFillterManager fillter) {
     this.sortBy = sortby;
     this.sortDir = sordir;
     this.pageno = 1;
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/manager-product.html"; // Redirect back to the form page
+      }
+    }
     List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
@@ -165,12 +206,26 @@ public class ManagerProductController {
   }
 
   @GetMapping("/page")
-  public String getPageNo(Model model, @RequestParam("pageno") int pageno) {
+  public String getPageNo(Model model, @RequestParam("pageno") int pageno,
+      @ModelAttribute("fillter") ProductFillterManager fillter) {
     if (pageno <= 1) {
       this.pageno = 1;
       pageno = 1;
     }
     this.pageno = pageno;
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/manager-product.html"; // Redirect back to the form page
+      }
+    }
     List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
@@ -185,8 +240,25 @@ public class ManagerProductController {
 
   // end
   @GetMapping({ "index", "" })
-  public String getProductIndexpages(Model model) {
+  public String getProductIndexpages(Model model,
+      @ModelAttribute("fillter") ProductFillterManager fillter) {
     this.pageno = 1;
+    System.out.println(fillter);
+    if (fillter != null) {
+      if (fillter.filterAble()) {
+        System.out.println("get result of fillter ");
+
+        List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir, fillter);
+        pagenumbers = service.getPanigation(rowcount, pageno, fillter);
+        totalpage = service.getPageNumber(rowcount, fillter);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("list", list);
+        model.addAttribute("pagenumber", pagenumbers);
+        model.addAttribute("crpage", pageno);
+        model.addAttribute("rowcount", rowcount);
+        return "/admin/pages/productdetail/manager-product.html"; // Redirect back to the form page
+      }
+    }
     List<Product> list = service.getPageNo(this.pageno, rowcount, sortBy, sortDir);
     pagenumbers = service.getPanigation(rowcount, pageno);
     totalpage = service.getPageNumber(rowcount);
@@ -197,6 +269,18 @@ public class ManagerProductController {
     model.addAttribute("crpage", pageno);
     model.addAttribute("rowcount", rowcount);
     return "/admin/pages/productdetail/manager-product.html";
+  }
+
+  @GetMapping("filter")
+  public String storeProductDetail(Model model, @ModelAttribute("fillter") ProductFillterManager fillter) {
+    return "redirect:index";
+  }
+
+  @GetMapping("resetfilter")
+  public String resetFilter(Model model, @ModelAttribute("fillter") ProductFillterManager fillter) {
+    fillter.resetFilter();
+    model.addAttribute("fillter", fillter);
+    return "redirect:index";
   }
 
   @GetMapping("delete")

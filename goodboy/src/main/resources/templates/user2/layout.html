@@ -25,10 +25,12 @@
   <!-- Customized Bootstrap Stylesheet -->
   <link th:href="@{/assets/css/style3.css}" rel="stylesheet">
 
-<!--  FONT FAMILY-->
+  <!--  FONT FAMILY-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 </head>
 
 <body style="font-family: 'Exo', sans-serif;" onload="getCartQuantity()">
@@ -60,7 +62,7 @@
     </div>
     <!-- Topbar End -->
     <!-- Navbar Start -->
-    <div  class="container-fluid bg-dark mb-30">
+    <div class="container-fluid bg-dark mb-30">
       <div class="row px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
           <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
@@ -118,12 +120,12 @@
     </div>
     <!-- Navbar End -->
   </div>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
 
   <!-- Component Start -->
   <main layout:fragment="content">
@@ -213,6 +215,7 @@
   <!-- Template Javascript -->
   <script th:src="@{/assets/js/mainuser.js}"></script>
   <script th:src="@{/assets/dist/simple-notify.min.js}"></script>
+  <script th:src="@{/assets/js/user/product/cart.js}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.min.js"
     integrity="sha512-d5Jr3NflEZmFDdFHZtxeJtBzk0eB+kkRXWFQqEc1EKmolXjHm2IKCA7kTvXBNjIYzjXfD5XzIjaaErpkZHCkBg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -229,13 +232,15 @@
       // UPDATE QUANTITY
       var quantity = 0;
       axios.get(
-              `/client/cart/quantity`
-      ).then((e) =>{
+        `/client/cart/quantity`
+      ).then((e) => {
         quantity = e.data
       })
       setTimeout(() => {
         document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
-      }, 100)
+      },100)
+
+      console.log("hehe")
     }
 
   </script>
