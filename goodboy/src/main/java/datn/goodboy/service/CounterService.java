@@ -23,8 +23,10 @@ import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.service.EmailService;
 import datn.goodboy.repository.PayDetailRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class CounterService {
   @Autowired
   BillRepository billRepository;
@@ -105,7 +107,7 @@ public class CounterService {
       }
     }
     bill.setTotal_money(total);
-    // appy voucher
+    bill = billRepository.save(bill);
     // thanh toan
     if (request.getOrderTypes() == 0) {
       if (request.getCashMoney() > 0) {
@@ -115,8 +117,7 @@ public class CounterService {
         payDetail.setBill(bill);
         payDetail.setTotalMoney(request.getCashMoney());
         payDetail.setStatus(true);
-        bill.getPayDetails().add(payDetail);
-        // paydetailepository.save(payDetail);
+        paydetailepository.save(payDetail);
       }
       if (request.getTransferMoney() > 0) {
         PayDetail payDetail = new PayDetail();
@@ -125,8 +126,7 @@ public class CounterService {
         payDetail.setBill(bill);
         payDetail.setTotalMoney(request.getTransferMoney());
         payDetail.setStatus(true);
-        bill.getPayDetails().add(payDetail);
-        // paydetailepository.save(payDetail);
+        paydetailepository.save(payDetail);
       }
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setCompletion_date(LocalDateTime.now());
@@ -140,9 +140,12 @@ public class CounterService {
       bill.setStatus(2);
       bill.setPay(payService.getTransferMethod());
     }
-    bill.setDeposit(bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
+    bill.setDeposit((bill.getTotal_money() == null ? 0 : bill.getTotal_money())
+        + (bill.getMoney_ship() == null ? 0 : bill.getTotal_money())
+        - (bill.getReduction_amount() == null ? 0 : bill.getReduction_amount()));
     bill.setNote(request.getNote());
     bill = billRepository.save(bill);
+    // appy voucher
 
     if (request.getVoucher() > 0) {
       voucherService.useVoucher(bill, request.getVoucher());
