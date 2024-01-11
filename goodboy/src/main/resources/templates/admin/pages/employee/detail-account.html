@@ -107,9 +107,9 @@
               <div class="col-12 col-sm-6 col-lg-4 mb-3">
                 <label class="form-label bold-label">Giới tính:</label>
                 <select class="form-control" th:name="gender" id="gender" disabled>
-                  <option value="true" th:value="${detail.gender}"  th:selected="${detail.gender==true}">Nam
+                  <option value="true"   th:selected="${detail.gender==true}">Nam
                   </option>
-                  <option value="false" th:value="${detail.gender}" th:selected="${detail.gender==false}">Nữ
+                  <option value="false"  th:selected="${detail.gender==false}">Nữ
                   </option>
                 </select>
               </div>
@@ -124,9 +124,9 @@
               <div class="col-12 col-sm-6 col-lg-4 mb-3">
                 <label class="form-label bold-label">Trạng Thái:</label>
                 <select class="form-control" th:name="status" id="status" disabled>
-                  <option value="true" th:value="${detail.status}" th:selected="${detail.status==1}">Hoạt Động
+                  <option value="1"  th:selected="${detail.status==1}">Hoạt Động
                   </option>
-                  <option value="false" th:value="${detail.status}" th:selected="${detail.status==0}">Ngừng Hoạt Động
+                  <option value="0"  th:selected="${detail.status==0}">Ngừng Hoạt Động
                   </option>
                 </select>
               </div>
@@ -160,9 +160,9 @@
       </div>
     </div>
     <div style="text-align: right">
-      <button class="btn btn-danger" th:href="@{/admin/pages/dashboard}">
+      <a type="button" class="btn btn-danger" th:href="@{/admin/pages/dashboard}">
         <i class="fas fa-arrow-left"></i> Close
-      </button>
+      </a>
     </div>
   </form>
 

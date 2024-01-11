@@ -89,21 +89,32 @@ public class EmployeeController {
     @GetMapping("/form-add")
     public String add(Model model) {
         model.addAttribute("roles", rolesService.getAllRoles());
-        return "admin/pages/employee/table-employee";
+        return "admin/pages/employee/create-employee";
+    }
+
+    @ModelAttribute("employee")
+    public Employee getEmployee() {
+        return new Employee();
     }
 
     @PostMapping("/add")
-    public String addEmployee(Model model, @Valid @ModelAttribute Employee employee, BindingResult bindingResult,
+    public String addEmployee(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult,
                               @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
-        model.addAttribute("roles", rolesService.getAllRoles());
 
-        try {
-            Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
-            employee.setImage(savedEmployee.getImage());
-            employeeService.saveEmployee(employee);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "errorPage";
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "admin/pages/employee/create-employee";
+        }
+        else {
+            try {
+                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                employee.setImage(savedEmployee.getImage());
+                employeeService.saveEmployee(employee);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "errorPage";
+            }
         }
 
         return "redirect:/admin/employee/hien-thi";
@@ -117,25 +128,26 @@ public class EmployeeController {
             model.addAttribute("roles", rolesService.getAllRoles());
             return "admin/pages/employee/detail-employee";
         }
-        employee.setUpdatedAt(LocalDateTime.now());
-
-        if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
-            try {
-                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
-                employee.setImage(savedEmployee.getImage());
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "errorPage";
+        else {
+            if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
+                try {
+                    Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                    employee.setImage(savedEmployee.getImage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "errorPage";
+                }
+            } else {
+                Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
+                employee.setImage(existingEmployee.get().getImage());
             }
-        } else {
-            Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
-            employee.setImage(existingEmployee.get().getImage());
         }
 
+
         employeeService.saveEmployee(employee);
+        System.out.println(employee);
         return "redirect:/admin/employee/hien-thi";
     }
-
 
 
     @GetMapping("/delete")
@@ -187,26 +199,24 @@ public class EmployeeController {
             model.addAttribute("roles", rolesService.getAllRoles());
             return "admin/pages/employee/update-account";
         }
-        employee.setUpdatedAt(LocalDateTime.now());
-
-        if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
-            try {
-                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
-                employee.setImage(savedEmployee.getImage());
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "errorPage";
+        else {
+            if (imageFiles != null && !imageFiles.get(0).isEmpty()) {
+                try {
+                    Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                    employee.setImage(savedEmployee.getImage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "errorPage";
+                }
+            } else {
+                Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
+                employee.setImage(existingEmployee.get().getImage());
             }
-        } else {
-            Optional<Employee> existingEmployee = employeeService.findByIdEmployee(employee.getId());
-            employee.setImage(existingEmployee.get().getImage());
         }
 
         employeeService.saveEmployee(employee);
         return "redirect:/admin/pages/dashboard";
     }
-
-
 
 
     @GetMapping("sort")
