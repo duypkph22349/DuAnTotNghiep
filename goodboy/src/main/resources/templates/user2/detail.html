@@ -217,7 +217,7 @@
                                 th:if="${productrs != null and productrs.getAllImage().size() > 0}"
                                 th:src="${productrs.getAllImage().get(0)}" alt="">
                         </div>
-                        <div class="text-center py-4">
+                        <div class="text-center py-2">
                             <a class="h6 text-decoration-none text-truncate"
                                 th:href="@{'/product/detail/'+${productrs.id}}" th:text="${productrs.name}"></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">

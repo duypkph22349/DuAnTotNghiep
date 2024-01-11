@@ -32,6 +32,9 @@
             object-fit: cover;
         }
 
+        .product-item:hover{
+            box-shadow: 0 0 0px #DDDDDD!important;
+        }
     </style>
 </head>
 
@@ -166,203 +169,39 @@
         </div>
 
         <div class="swiper mySwiper container-fluid" style="width: 92%;" >
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
+            <div class="swiper-wrapper" >
+                <div class="swiper-slide" th:each="product : ${productDetails}">
+                    <a class="h6 text-decoration-none text-truncate" th:href="@{/product/detail/{id}(id = ${product.id})}">
                         <div class="product-item bg-light">
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
+                                <img class="img-fluid w-100"
+                                     th:src="${
+                                    product.imageProducts[0].img }"
+                                     style="max-width: 100%;">
                             </div>
                             <div class="text-center py-4"
-                                 style="color: #8a867d;"
+                                 style="color: #8a867d;
+                                        width: 78%;
+                                        text-wrap: wrap;
+                                        margin-left: auto;
+                                        margin-right: auto;"
+                                 th:text="${product.name}"
                             >
                                 Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h6 style="color:#dd3333; font-weight: bold!important;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(product.productDetails[0].price, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ '}">
+                                    6.000.000 đ
+                                </h6>
                             </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star-half text-primary mr-1"></small>
+                                (0)
                             </div>
                         </div>
                     </a>
@@ -387,202 +226,38 @@
 
         <div class="swiper mySwiper container-fluid" style="width: 92%;" >
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
+                <div class="swiper-slide" th:each="product : ${product}">
+                    <a class="h6 text-decoration-none text-truncate" th:href="@{/product/detail/{id}(id = ${product.id})}">
                         <div class="product-item bg-light">
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
+                                <img class="img-fluid w-100"
+                                     th:src="${
+                                    product.imageProducts[0].img }"
+                                     style="max-width: 100%;">
                             </div>
                             <div class="text-center py-4"
-                                 style="color: #8a867d;"
+                                 style="color: #8a867d;
+                                        width: 78%;
+                                        text-wrap: wrap;
+                                        margin-left: auto;
+                                        margin-right: auto;"
+                                 th:text="${product.name}"
                             >
                                 Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h6 style="color:#dd3333; font-weight: bold!important;"
+                                    th:text="${#strings.replace(#numbers.formatDecimal(product.productDetails[0].price, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ '}">
+                                    6.000.000 đ
+                                </h6>
                             </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="h6 text-decoration-none text-truncate" href="#">
-                        <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="https://product.hstatic.net/200000573089/product/z4777099422013_2dbe3cae295948cd8affc42d1abeb6da_587cf283e6704c37893f686b60f446ad.jpg" alt=""  style="max-width: 100%;">
-                            </div>
-                            <div class="text-center py-4"
-                                 style="color: #8a867d;"
-                            >
-                                Khăn choàng thời trang
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h6 style="color:#dd3333; font-weight: bold!important;">90000 đ - 25.000.000 đ</h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half text-primary mr-1"></small>
-                                    (0)
-                                </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star-half text-primary mr-1"></small>
+                                (0)
                             </div>
                         </div>
                     </a>
