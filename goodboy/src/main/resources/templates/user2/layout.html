@@ -35,6 +35,39 @@
   <link href="
 https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
 " rel="stylesheet">
+  <style>
+
+    .star {
+      position: absolute;
+      top: -20px;
+      color: #FFD333;
+      animation: animate 5s linear forwards;
+      z-index: 2000;
+    }
+
+    .star::before {
+      content: "\f005";
+      font-family: fontAwesome;
+      text-shadow: 0 0 5px #FFD333 , 0 0 30px #FFD333 , 0 0 50px #FFD333 ;
+    }
+
+    @keyframes animate {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+  </style>
 </head>
 
 <body style="font-family: 'Exo', sans-serif;" onload="getCartQuantity()">
@@ -161,11 +194,11 @@ https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
         <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
           <h6 class="text-uppercase font-weight-bold mb-4">Thành viên </h6>
           <ul class="list-unstyled mb-0">
-            <li class="mb-2"><a href="#" class="text-muted">Account 1</a></li>
-            <li class="mb-2"><a href="#" class="text-muted">Account 2</a></li>
-            <li class="mb-2"><a href="#" class="text-muted">Account 3</a></li>
-            <li class="mb-2"><a href="#" class="text-muted">Account 4</a></li>
-            <li class="mb-2"><a href="#" class="text-muted">Account 5</a></li>
+            <li class="mb-2"><a href="#" class="text-muted">Lê Thị Nga</a></li>
+            <li class="mb-2"><a href="#" class="text-muted">Vũ Văn Thật</a></li>
+            <li class="mb-2"><a href="#" class="text-muted">Vũ Minh Hà</a></li>
+            <li class="mb-2"><a href="#" class="text-muted">Phạm Khương Duy</a></li>
+            <li class="mb-2"><a href="#" class="text-muted">Nguyễn Xuân Thịnh</a></li>
           </ul>
         </div>
         <div class="col-lg-4 col-md-6 mb-lg-0">
@@ -232,6 +265,28 @@ https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
       },100)
 
     }
+
+  function stars() {
+    let e = document.createElement("div");
+    let size = Math.random() * 12;
+    let duration = Math.random() * 3;
+
+    e.setAttribute("class", "star");
+    document.body.appendChild(e);
+
+    e.style.left = Math.random() * +innerWidth + "px";
+    e.style.fontSize = 12 + size + "px";
+    e.style.animationDuration = 4 + duration + "s";
+
+    setTimeout(function () {
+      document.body.removeChild(e);
+    }, 5000);
+  }
+
+  setInterval(function () {
+    stars();
+  }, 100);
+
 
   </script>
 </body>

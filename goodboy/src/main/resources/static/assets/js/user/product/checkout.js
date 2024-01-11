@@ -689,3 +689,45 @@ const get_quantity_of_cart = () => {
         document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
     }, 100)
 }
+
+// ONLOAD
+function loadCustomer(){
+    get_quantity_of_cart()
+    var customer_view = document.querySelector("#infor_customer")
+
+    if(localStorage.getItem("type_cart") === "login"){
+        customer_view.innerHTML = `
+         <div class="row"
+                  style="
+                  padding: 12px 12px 12px 16px;
+                  border: 1px solid #e5e5e5;
+                  border-left: 6px solid #FFD333;"
+                >
+                    <div style="width: 87%;color:#000">
+                        <div >
+                            <span style="display: inline-block;font-weight: bold">Tám Hoàng</span> <span>0326235071</span>
+                            
+                            <span style="display: inline-block;color: #004aad;cursor: pointer;">Thay đổi</span>
+                        </div>
+                        <div>
+                            <div>
+                                Đường Trần Thánh Tông
+                            </div>
+                            <div>
+                                Xã Minh Tân, Huyện Kiến Xương, Tỉnh Thái Bình
+                            </div>
+                        </div>          
+                    </div>
+                    <button style="border-color: #000;background-color: #fff;   
+                            min-width: 80px;
+                            height: 28px;
+                            line-height: 26px;
+                            font-size: 12px; 
+                            font-weight: 600;
+                            margin-top: 25px;">
+                        sửa địa chỉ
+                    </button>
+                </div>
+        `
+    }
+}

@@ -7,7 +7,7 @@
 </head>
 
 
-<body layout:fragment="content">
+<body layout:fragment="content" onload="loadCustomer()">
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
@@ -76,7 +76,7 @@
             <h5 class="section-title position-relative text-uppercase mb-3">
                     <span class="bg-secondary pr-3"  style="font-size: 18px;font-weight: bold!important;color: #3D464D">
                         Thông tin thanh toán</span></h5>
-            <div class="bg-light p-30 mb-5">
+            <div class="bg-light p-30 mb-5" id="infor_customer">
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
@@ -161,6 +161,7 @@
                     </div> -->
 
                 </div>
+
             </div>
             <!-- <div class="collapse mb-5" id="new-account">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tạo
