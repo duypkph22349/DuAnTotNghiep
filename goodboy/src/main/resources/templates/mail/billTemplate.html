@@ -210,14 +210,14 @@
             500,000,000
           </td>
         </tr>
-        <tr>
+        <tr th:if="${bill.reduction_amount != null &&  bill.reduction_amount >= 0}">
           <td colspan="5" style="text-align: end; font-weight: bold;">Giảm giá:</td>
           <td colspan="2"
             th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount == 0 ? 0 : bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
             50,000
           </td>
         </tr>
-        <tr>
+        <tr th:if="${bill.money_ship != null && bill.money_ship >= 0}">
           <td colspan="5" style="text-align: end; font-weight: bold;">Phí vận chuyển:</td>
           <td colspan="2"
             th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship == 0 ? 0 : bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
