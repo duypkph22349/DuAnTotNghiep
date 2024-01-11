@@ -14,11 +14,11 @@
     <form method="post" th:object="${product}" action="/admin/product/dicription/update">
       <input type="hidden"  th:field="*{id}">
       <div class="form-group">
-        <label for="content">Dicription:</label>
+        <label for="content">Mô tả:</label>
         <textarea type="text" rows="20" id="summernote" placeholder="Content" class="form-control"
           th:field="*{description}" autocomplete="off"></textarea>
       </div>
-      <button class="btn btn-primary" type="submit">Submit form</button>
+      <button class="btn btn-primary" type="submit">Lưu</button>
     </form>
   </div>
   </div>
