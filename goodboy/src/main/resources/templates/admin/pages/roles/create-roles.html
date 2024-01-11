@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+    xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
 <body>
-<section layout:fragment="content">
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                <li class="breadcrumb-item active">Role</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-    <form th:object="${roles}" th:action="@{'/admin/roles/add'}" action="#" method="post">
-        <div class="col-12 col-sm-6 col-lg-6 mb-3">
-            <label class="form-label font-weight-bold">Tên Chức Vụ</label>
-            <input th:name="name" th:value="${detail.name}" type="text" class="form-control" placeholder="Hãy nhập name" required/>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-6 mb-3">
-            <label class="form-label font-weight-bold">Role</label>
+    <section layout:fragment="content">
 
-            <select name="roles" class="form-control">
-                <option th:each="roles:${detail}" th:value="${detail.id}" th:text="${detail.role}"
+        <div class="pagetitle">
+            <h1>Bảng điều kiển</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Chức vụ</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <form th:object="${roles}" th:action="@{'/admin/roles/add'}" action="#" method="post">
+            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label font-weight-bold">Tên Chức Vụ</label>
+                <input th:name="name" th:value="${detail.name}" type="text" class="form-control"
+                    placeholder="Hãy nhập name" required />
+            </div>
+            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label font-weight-bold">Role</label>
+
+                <select name="roles" class="form-control">
+                    <option th:each="roles:${detail}" th:value="${detail.id}" th:text="${detail.role}"
                         th:selected="${detail.id==detail.name}"></option>
-            </select>
-        </div>
+                </select>
+            </div>
 
-        <div class="col-12 col-sm-6 col-lg-6 mb-3">
-            <label class="form-label font-weight-bold">Status</label>
-            <select class="form-control" th:name="status">
-                <option th:value="0" th:selected="${detail.status == 0}">Hoạt Động</option>
-                <option th:value="1" th:selected="${detail.status == 1}">Không Hoạt Động</option>
-            </select>
-        </div>
+            <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label font-weight-bold">Status</label>
+                <select class="form-control" th:name="status">
+                    <option th:value="0" th:selected="${detail.status == 0}">Hoạt Động</option>
+                    <option th:value="1" th:selected="${detail.status == 1}">Không Hoạt Động</option>
+                </select>
+            </div>
 
-        <div class="submit-btn" style="text-align: right; bottom: 1px">
-            <button class="btn btn-danger" href="/admin/roles/hien-thi">
-                <i class="fas fa-arrow-left"></i> Close
-            </button>
-            <button class="btn btn-primary" type="submit">Lưu</button>
-        </div>
-    </form>
-</section>
+            <div class="submit-btn" style="text-align: right; bottom: 1px">
+                <button class="btn btn-danger" href="/admin/roles/hien-thi">
+                    <i class="fas fa-arrow-left"></i> Close
+                </button>
+                <button class="btn btn-primary" type="submit">Lưu</button>
+            </div>
+        </form>
+    </section>
 </body>
+
 </html>

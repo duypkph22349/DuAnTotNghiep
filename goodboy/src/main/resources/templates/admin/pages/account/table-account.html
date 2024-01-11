@@ -3,17 +3,17 @@
     xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Account</title>
+    <title>Tài khoản</title>
 </head>
 
 <body>
     <section layout:fragment="content">
         <div class="pagetitle">
-            <h1>Dashboard</h1>
+            <h1>Bảng điều kiển</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item active">Account</li>
+                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Tài khoản</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -29,7 +29,7 @@
                                 <a th:href="@{/admin/account/sort(sortBy=customer.name ,sortDir=false)}"><i
                                         class="fa-solid fa-sort-down fa-xs"></i></a>
                             </th>
-                            <th scope="col">Email
+                            <th scope="col">Địa chỉ Email
                                 <a th:href="@{/admin/account/sort(sortBy=email ,sortDir=true)}"><i
                                         class="fa-solid fa-sort-up fa-xs"></i></i></a>
                                 <a th:href="@{/admin/account/sort(sortBy=email ,sortDir=false)}"><i
@@ -47,7 +47,7 @@
                                 <a th:href="@{/admin/account/sort(sortBy=status ,sortDir=false)}"><i
                                         class="fa-solid fa-sort-down fa-xs"></i></a>
                             </th>
-                            <th scope="col">Action</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,19 +84,19 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div>
-                                                    <p><strong>Name</strong>: <span
+                                                    <p><strong>Tên</strong>: <span
                                                             th:text="${account.customer?.name}"></span>
                                                     </p>
-                                                    <p><strong>Phone</strong>: <span
+                                                    <p><strong>Số điện thoại</strong>: <span
                                                             th:text="${account.customer?.phone}"></span>
                                                     </p>
-                                                    <p><strong>Gender</strong>: <span
+                                                    <p><strong>Giới tính</strong>: <span
                                                             th:text="${account.customer?.gender ? 'Nam' : 'Nữ'}"></span>
                                                     </p>
-                                                    <p><strong>Address</strong>: <span
+                                                    <p><strong>Địa chỉ</strong>: <span
                                                             th:text="${account.customer?.address + ', ' +account.customer?.fulladdress}"></span>
                                                     </p>
-                                                    <p><strong>Birth date</strong>: <span
+                                                    <p><strong>Ngày sinh</strong>: <span
                                                             th:text="${#temporals.format(account.customer?.birth_date, 'dd-MM-yyyy')}"></span>
                                                     </p>
                                                     <p> <strong>Trạng Thái :</strong> <span
@@ -138,7 +138,7 @@
                 </table>
             </div>
             <div class="table-footer d-flex justify-content-between">
-                <div class="text-start">This page is <span th:text="${crpage}"></span> of <span
+                <div class="text-start">Trang <span th:text="${crpage}"></span> of <span
                         th:text="${totalpage}"></span> </div>
                 <div class="text-center">
                     <nav aria-label="Page navigation example">
@@ -146,13 +146,13 @@
                             <div th:if="${crpage-1 < 1}">
                                 <li class="page-item disabled">
                                     <a class="page-link" th:href="@{/admin/account/page(pageno=${crpage-1})}"
-                                        tabindex="-1" aria-disabled="true">Previous</a>
+                                        tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-left fa-sm"></i></a>
                                 </li>
                             </div>
                             <div th:unless="${crpage-1 < 1}">
                                 <li class="page-item">
                                     <a class="page-link"
-                                        th:href="@{/admin/account/page(pageno=${crpage-1})}">Previous</a>
+                                        th:href="@{/admin/account/page(pageno=${crpage-1})}"><i class="fas fa-chevron-left fa-sm"></i></a>
                                 </li>
                             </div>
                             <div th:each="page : ${pagenumber}">
@@ -171,27 +171,27 @@
                             <div th:if="${crpage == totalpage}">
                                 <li class="page-item disabled">
                                     <a class="page-link" th:href="@{/admin/account/page(pageno=${crpage+1})}"
-                                        tabindex="-1" aria-disabled="true">Next</a>
+                                        tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-right fa-sm"></i></a>
                                 </li>
                             </div>
                             <div th:unless="${crpage == totalpage}">
                                 <li class="page-item">
-                                    <a class="page-link" th:href="@{/admin/account/page(pageno=${crpage+1})}">Next</a>
+                                    <a class="page-link" th:href="@{/admin/account/page(pageno=${crpage+1})}"><i class="fas fa-chevron-right fa-sm"></i></a>
                                 </li>
                             </div>
                         </ul>
                     </nav><!-- End Centered Pagination -->
                 </div>
                 <form action="#" th:action="@{/admin/account/getcountrow}" method="get" id="rowCountForm">
-                    Number of rows
+                    Hiển thị
                     <select name="selectedValue" onchange="document.getElementById('rowCountForm').submit();">
-                        <option value="10" th:selected="${rowcount == 10}">10</option>
-                        <option value="20" th:selected="${rowcount == 20}">20</option>
-                        <option value="50" th:selected="${rowcount == 50}">50</option>
+                        <option value="10" th:selected="${rowcount == 10}">10 hàng</option>
+                        <option value="20" th:selected="${rowcount == 20}">20 hàng</option>
+                        <option value="50" th:selected="${rowcount == 50}">50 hàng</option>
                     </select>
                 </form>
             </div>
     </section>
-</body>
+</body>ư
 
 </html>

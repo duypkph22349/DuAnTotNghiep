@@ -8,7 +8,7 @@
 
 <body layout:fragment="content">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Bảng điều khiển</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
@@ -108,7 +108,7 @@
                 <input type="radio" th:name="status" id="r2" value="0" th:checked="${entity.status == 0}">
                 <label for="r2">Không hoạt động</label>
             </div>
-            <input type="submit" class="btn btn-success" value="Update" />
+            <input type="submit" class="btn btn-success" value="Cập Nhật" />
         </div>
     </form>
 </body>
