@@ -101,9 +101,9 @@ public class Employee {
     private boolean actived;
 
     @Column(name = "password")
-    @NotNull(message = "Hãy nhập Mật Khẩu")
-    @NotBlank(message = "Hãy nhập Mật Khẩu")
-    @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
+    // @NotNull(message = "Hãy nhập Mật Khẩu")
+    // @NotBlank(message = "Hãy nhập Mật Khẩu")
+    // @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
     String password;
     //
     // @NotBlank(message = "Vui lòng nhập trường này!")
