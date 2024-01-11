@@ -34,7 +34,7 @@
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-        <li class="breadcrumb-item active">Detail Employee</li>
+        <li class="breadcrumb-item active">Sửa Nhân Viên</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Chức vụ:</label>
-                      <select name="roles" class="form-control">
+                      <select th:field="*{roles}" class="form-control">
                         <option th:each="roles:${roles}" th:value="${roles.id}" th:text="${roles.role}"
                                 th:selected="${roles.id==detail.roles.id}"></option>
                       </select>
@@ -95,15 +95,15 @@
                              placeholder="Hãy nhập họ và tên" />
                       <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></div>
 
-                      <input type="hidden" th:name="password" th:value="${detail.password}" />
+<!--                      <input type="hidden" th:name="password" th:value="${detail.password}" />-->
                     </div>
 
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Giới tính:</label>
-                      <select class="form-control" th:name="gender" id="gender">
-                        <option value="true" th:value="${detail.gender}" th:selected="${detail.gender==true}">Nam
+                      <select class="form-control" th:field="*{gender}"  id="gender">
+                        <option value="true" th:selected="${detail.gender==true}">Nam
                         </option>
-                        <option value="false" th:value="${detail.gender}" th:selected="${detail.gender==false}">Nữ
+                        <option value="false"  th:selected="${detail.gender==false}">Nữ
                         </option>
                       </select>
                     </div>
@@ -115,10 +115,10 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Trạng Thái:</label>
-                      <select class="form-control" th:name="status" id="status">
-                        <option value="true" th:value="${detail.status}" th:selected="${detail.status==1}">Hoạt Động
+                      <select class="form-control" th:field="*{status}"  id="status">
+                        <option value="1"  th:selected="${detail.status==1}">Hoạt Động
                         </option>
-                        <option value="false" th:value="${detail.status}" th:selected="${detail.status==0}">Ngừng Hoạt Động
+                        <option value="0"  th:selected="${detail.status==0}">Ngừng Hoạt Động
                         </option>
                       </select>
                     </div>
@@ -134,6 +134,7 @@
                     <div class="col-12 col-sm-6 col-lg-4 mb-3">
                       <label class="form-label bold-label">Birth Date:</label>
                       <input type="date" th:field="*{birth_date}" th:value="${detail.birth_date}" class="form-control" style="width: 255px;">
+                      <div th:if="${#fields.hasErrors('birth_date')}" th:errors="*{birth_date}" class="text-danger"></div>
                     </div>
                   </div>
 
@@ -166,7 +167,7 @@
                     <div class="col-12 col-sm-6 col-lg-10 mb-3">
                       <label class="form-label bold-label">Địa chỉ cụ
                         thể:</label>
-                      <input  th:name="fulladdress" th:value="${detail.fulladdress}"
+                      <input  th:field="*{fulladdress}" th:value="${detail.fulladdress}"
                               placeholder="Địa chỉ cụ thể...." class="form-control">
                     </div>
 
@@ -176,9 +177,9 @@
             </div>
           </div>
       <div style="text-align: right">
-        <button class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
+        <a type="button" class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
           <i class="fas fa-arrow-left"></i> Close
-        </button>
+        </a>
         <button type="submit" class="btn btn-primary">Lưu</button>
       </div>
 

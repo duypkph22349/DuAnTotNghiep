@@ -53,7 +53,7 @@ public class Employee {
 
     @Column(name = "birth_date")
     @NotNull(message = "Trường này không thể để trống")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate birth_date;
 
     @Column(name = "address")
@@ -101,20 +101,9 @@ public class Employee {
     private boolean actived;
 
     @Column(name = "password")
-    @NotNull(message = "Hãy nhập Mật Khẩu")
-    @NotBlank(message = "Hãy nhập Mật Khẩu")
-    @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
+//    @NotNull(message = "Hãy nhập Mật Khẩu")
+//    @NotBlank(message = "Hãy nhập Mật Khẩu")
+//    @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
     String password;
-//
-//    @NotBlank(message = "Vui lòng nhập trường này!")
-//    @NotNull(message = "Vui lòng nhập trường này!")
-//    String passwordRepeat;
-//
-//    public String ValidateError() {
-//        String errors = "";
-//        if (!password.equals(passwordRepeat)) {
-//            errors += "Password not Match";
-//        }
-//        return errors;
-//    }
+
 }
