@@ -110,7 +110,7 @@
                 const options = data.data;
                 for (let i = 0; i < options.length; i++) {
                     const option = document.createElement("option");
-                    option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                    option.value = options[i].ProvinceID; // Set the value of the option (you cgit an change this to any value you want)
                     option.text = options[i].ProvinceName; // Set the text of the option
                     option.setAttribute("providecode", options[i].ProvinceID);
                     provinceSelect.appendChild(option); // Add the option to the select element
