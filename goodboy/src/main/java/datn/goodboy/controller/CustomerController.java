@@ -108,7 +108,7 @@ public class CustomerController {
         List<Address> addresses = addressService.getAllAddressByIdCustomer(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
-            model.addAttribute("address", addresses);
+            model.addAttribute("addresss", addresses);
         } else {
             model.addAttribute("detail", null);
         }
@@ -116,5 +116,16 @@ public class CustomerController {
         return "/admin/pages/customer/customer-detail";
     }
 
+    //    @PostMapping("detail/{id}/save_address")
+//    public String saveAddress(@ModelAttribute Address address, @PathVariable("id")UUID id){
+//        addressService.getSave(address);
+//        return "redirect:/admin/customer/detail/{id}";
+//    }
+    @PostMapping("detail/{id}/save_address")
+    public String saveAddress(@ModelAttribute("addresss") Address addresss) {
+        System.out.println(addresss.getId_customer().getId());
+        addressService.getSave(addresss);
 
+        return "redirect:/admin/customer/detail/" + addresss.getId_customer().getId();
+    }
 }

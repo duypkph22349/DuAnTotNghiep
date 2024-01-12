@@ -5,7 +5,6 @@ import datn.goodboy.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +19,8 @@ public class AddressService {
     }
 
     public Address getSave(Address address){
-        return  address;
+        return addressRepository.save(address);
+
     }
 
 

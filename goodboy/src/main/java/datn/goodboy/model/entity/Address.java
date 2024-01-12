@@ -21,7 +21,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "address")
+@Table(name = "addresss")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -55,6 +55,15 @@ public class Address {
 
     @Column(name = "thanh_pho")
     private String thanh_pho;
+
+    @Column(name = "ward_code")
+    private String wardCode;
+
+    @Column(name = "district_code")
+    private String districtCode;
+
+    @Column(name = "province_code")
+    private String provinceCode;
 
     @Column(name = "trang_thai")
     private Boolean trangThai;
