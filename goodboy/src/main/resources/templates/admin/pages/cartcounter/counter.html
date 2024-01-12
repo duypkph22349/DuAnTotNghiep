@@ -19,11 +19,11 @@
     <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
     <link rel="stylesheet" th:href="@{/assets/css/dropdownselect.css}">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Bảng điều kiển</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                <li class="breadcrumb-item active">Counter</li>
+                <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Bán Hàng</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -69,7 +69,7 @@
                         </div>
                         <center>
                             <p class="mb-0">Địa chỉ: <span class="ms-2">193/220 phú diễn, phường phú diễn, quận nam từ
-									liêm, hà nội</span></p>
+                                    liêm, hà nội</span></p>
                             <p class="mb-0">Điện thoại: <span class="ms-2">0335535229</span></p>
                             <br>
                             <h3 style="font-weight: 500;">HOÁ ĐƠN BÁN HÀNG</h3>
@@ -85,31 +85,31 @@
                         </div>
                         <table class="table table-striped">
                             <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Giá</th>
-                                <th scope="col">Thành tiền</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Thành tiền</th>
+                                </tr>
                             </thead>
                             <tbody id="sanphaminbill"></tbody>
                         </table>
-                        <div class="row justify-content-end"  >
-                            <ul class="list-unstyled" >
+                        <div class="row justify-content-end">
+                            <ul class="list-unstyled">
                                 <li class="text-muted ms-3"><span class="text-black me-4 mx-3">Tổng tiền sản
-										phẩm:
-									</span><span id="total-products"></span>
+                                        phẩm:
+                                    </span><span id="total-products"></span>
                                 </li>
                                 <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Giảm:</span><span
                                         id="discount"></span>
                                 </li>
                                 <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Tiền
-										ship:</span><span id="shipping-cost"></span>
+                                        ship:</span><span id="shipping-cost"></span>
                                 </li>
 
                                 <li class="text-black ms-3 mt-2 "><span class="text-black me-3 mx-3"> Tổng
-									giá</span><span style="font-size: 14px;"><span id="total-price"></span></span>
+                                        giá</span><span style="font-size: 14px;"><span id="total-price"></span></span>
                                 </li>
                             </ul>
                             <br>
@@ -181,7 +181,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success">Save</button>
+                        <button class="btn btn-success">Lưu</button>
                     </div>
                 </div>
             </div>

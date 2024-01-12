@@ -2020,7 +2020,9 @@ async function finalPrice(formId) {
   finalAmount.innerHTML = formatToVND(transferAmountvl + surchargeAmountvl);
   const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
   const calMoney =
-    transferAmountvl + surchargeAmountvl + discountValue - totalMoney;
+  (transferAmountvl +
+    surchargeAmountvl +
+    (isNaN(discountValue) ? 0 : discountValue)) - totalMoney;
   if (calMoney > 0) {
     remainPrice.innerHTML = formatToVND(calMoney);
     changeAmount.innerHTML = formatToVND(0);

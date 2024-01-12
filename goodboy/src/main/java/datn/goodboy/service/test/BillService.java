@@ -172,7 +172,7 @@ public class BillService {
     }
   }
 
-  public Customer getCustomỏer() {
+  public Customer getCustomer() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();

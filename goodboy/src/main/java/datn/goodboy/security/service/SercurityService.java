@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,8 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import datn.goodboy.exeption.AuthenticationException;
+import datn.goodboy.exeption.AuthenticationException.PasswordNotMatchException;
 import datn.goodboy.model.entity.Account;
+import datn.goodboy.model.entity.Customer;
 import datn.goodboy.model.entity.Employee;
+import datn.goodboy.model.request.EmployeeChangePassword;
+import datn.goodboy.model.request.UserChangePassword;
 import datn.goodboy.security.repo.AccountInforRepository;
 import datn.goodboy.security.repo.EmployeeInfoRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +36,8 @@ public class SercurityService {
   EmployeeInfoRepository employeInfoRepository;
   @Autowired
   AuthenticationManager authenticationManager;
+  @Autowired
+  PasswordEncoder passwordEncoder;
   @Autowired
   PasswordEncoder encoder;
   @Autowired
@@ -103,6 +111,49 @@ public class SercurityService {
       }
     } else {
       // throw exeption
+    }
+  }
+
+  public Account changePassword(UserChangePassword request) {
+    Optional<Account> accountOptional = accountInfoRepository.getuser(request.getUsername());
+
+    return accountOptional.map(account -> {
+      if (passwordEncoder.matches(request.getPassword(), account.getPassword())) {
+        account.setPassword(encoder.encode(request.getNewpassword()));
+        return accountInfoRepository.save(account);
+      } else {
+        throw new PasswordNotMatchException("Mật khẩu của bạn không đúng !!!");
+      }
+    }).orElseThrow(() -> new AuthenticationException("Đăng nhập để tiếp tục"));
+  }
+
+  public UserChangePassword getUserChangePassword() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (!(authentication instanceof AnonymousAuthenticationToken)) {
+      Optional<Account> account = accountInfoRepository.getuser(authentication.getName());
+      if (account.isPresent()) {
+        UserChangePassword user = new UserChangePassword();
+        user.setUsername(account.get().getEmail());
+        return user;
+      } else {
+        throw new AuthenticationException("Đăng nhập để tiếp tục ");
+      }
+    } else {
+      throw new AuthenticationException("Đăng nhập để tiếp tục ");
+    }
+  }
+
+  public Employee changePassword(EmployeeChangePassword request) {
+    Optional<Employee> employee = employeInfoRepository.getuser(request.getUsername());
+    if (employee.isPresent()) {
+      if (passwordEncoder.matches(request.getPasswordold(), employee.get().getPassword())) {
+        throw new PasswordNotMatchException("Mật khẩu của bạn không đúng !!!");
+      } else {
+        employee.get().setPassword(encoder.encode(request.getPassword()));
+        return employeInfoRepository.save(employee.get());
+      }
+    } else {
+      throw new AuthenticationException("Đăng nhập để tiếp tục ");
     }
   }
 }
