@@ -11,7 +11,7 @@ public class ConfigResouse implements WebMvcConfigurer {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/resources/static/**");
+    registry.addResourceHandler("/resources/static/**","reset-password-code.html","");
   }
 
 }
