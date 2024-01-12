@@ -10,6 +10,8 @@ import datn.goodboy.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class BillClientService {
 
@@ -79,5 +81,5 @@ public class BillClientService {
         return bill;
     }
 
-
+//    public ArrayList<Object> getAllAdress()
 }

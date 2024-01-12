@@ -696,6 +696,7 @@ function loadCustomer(){
     var customer_view = document.querySelector("#infor_customer")
 
     if(localStorage.getItem("type_cart") === "login"){
+
         customer_view.innerHTML = `
          <div class="row"
                   style="
@@ -707,7 +708,16 @@ function loadCustomer(){
                         <div >
                             <span style="display: inline-block;font-weight: bold">Tám Hoàng</span> <span>0326235071</span>
                             
-                            <span style="display: inline-block;color: #004aad;cursor: pointer;">Thay đổi</span>
+                            <button 
+                            data-toggle="modal" 
+                            data-target="#model_list_address" 
+                            style="
+                                display: inline-block;
+                                color: #004aad;
+                                cursor: pointer;
+                                border: 0;
+                                background: none;       
+                             ">Thay đổi</button>
                         </div>
                         <div>
                             <div>
@@ -724,10 +734,11 @@ function loadCustomer(){
                             line-height: 26px;
                             font-size: 12px; 
                             font-weight: 600;
-                            margin-top: 25px;">
+                            margin-top: 25px;" data-toggle="modal" data-target="#modelId" >
                         sửa địa chỉ
                     </button>
                 </div>
         `
     }
+
 }
