@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import datn.goodboy.model.entity.Address;
+import datn.goodboy.service.AddressService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +35,9 @@ public class CustomerController {
     @Autowired
     TrangThaiConvert convert;
 
+    @Autowired
+    private AddressService addressService;
+
     @ModelAttribute("convert")
     public TrangThaiConvert convert() {
         return convert;
@@ -48,24 +55,44 @@ public class CustomerController {
         model.addAttribute("list", page.getContent());
         return "/admin/pages/customer/form-customer";
     }
-// /admin/customer/add
+
+    // /admin/customer/add
     @GetMapping("/view-add")
-    public String viewAdd() {
+    public String viewAdd(Model model) {
+        model.addAttribute("customer", new Customer()); // Add an empty customer object to the model
         return "/admin/pages/customer/customer_modal";
 
     }
 
+    @ModelAttribute("customer")
+    public Customer getCustomer() {
+        return new Customer();
+    }
+
     @PostMapping("/add")
-    public String add(@ModelAttribute Customer customer) {
-        customer.setStatus(1);
-        customer.setCreatedAt(LocalDateTime.now());
-        customerService.saveCustomer(customer);
+    public String add(@Valid @ModelAttribute("customer") Customer customer, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+//           model.addAttribute("customer", customer); // Đưa đối tượng customer vào model để giữ giá trị đã nhập
+            System.out.println(bindingResult.hasErrors());
+            return "/admin/pages/customer/form-customer";
+        } else {
+            customer.setStatus(1);
+            customer.setCreatedAt(LocalDateTime.now());
+            customerService.saveCustomer(customer);
+        }
         return "redirect:/admin/customer/get-all";
     }
+
     @PostMapping("/update")
-    public String update(@ModelAttribute Customer customer) {
-        customer.setUpdatedAt(LocalDateTime.now());
-        customerService.saveCustomer(customer);
+    public String update(@Valid @ModelAttribute("detail") Customer customer, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/pages/customer/customer-detail";
+        } else {
+
+            customer.setUpdatedAt(LocalDateTime.now());
+            customerService.saveCustomer(customer);
+        }
+
         return "redirect:/admin/customer/get-all";
     }
 
@@ -78,11 +105,14 @@ public class CustomerController {
     @GetMapping("detail/{id}")
     public String detail(Model model, @PathVariable("id") UUID id) {
         Optional<Customer> customer = customerService.getCustomerById(id);
+        List<Address> addresses = addressService.getAllAddressByIdCustomer(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
+            model.addAttribute("address", addresses);
         } else {
             model.addAttribute("detail", null);
         }
+        System.out.println(addressService.getAllAddressByIdCustomer(id));
         return "/admin/pages/customer/customer-detail";
     }
 
