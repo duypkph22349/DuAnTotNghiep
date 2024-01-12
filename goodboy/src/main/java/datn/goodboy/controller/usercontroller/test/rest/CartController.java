@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import datn.goodboy.exeption.AuthenticationException;
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.Customer;
 import datn.goodboy.service.CustomerService;
+import datn.goodboy.service.test.CartCookieService;
 import datn.goodboy.service.test.CartService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController("testRestCartController")
 @RequestMapping("/test/api/cart")
@@ -25,17 +29,26 @@ public class CartController {
   @Autowired
   CartService cartService;
   @Autowired
+  CartCookieService cartCookieService;
+  @Autowired
   CustomerService customerService;
 
   @GetMapping("/add/{id}")
   public ResponseEntity<String> addToCart(
       @PathVariable("id") int productId,
-      @RequestParam("quantity") int quantity) {
+      @RequestParam("quantity") int quantity, HttpServletRequest request, HttpServletResponse response) {
     try {
+//      ADD TO CART LOGIN
       cartService.addToCart(productId, quantity);
       return ResponseEntity.ok("Thêm sản phẩm thành công");
-    } catch (RuntimeException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    } catch (AuthenticationException e) {
+      try {
+//        ADD TO CART LOGIN
+        cartCookieService.addToCart(productId, quantity, request, response);
+      } catch (Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+      }
+      return ResponseEntity.ok("Thêm sản phẩm thành công");
     }
   }
 

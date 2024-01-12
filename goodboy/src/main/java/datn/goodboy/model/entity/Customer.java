@@ -113,7 +113,7 @@ public class Customer {
     }
 
     return bills.stream()
-        .filter(bill -> bill.getStatus() == -1)
+        .filter(bill -> bill.getStatus() == 6)
         .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
         .collect(Collectors.toList());
   }
@@ -156,18 +156,6 @@ public class Customer {
 
   @JsonIgnore
   public List<Bill> getSuccessBills() {
-    if (bills == null) {
-      return Collections.emptyList();
-    }
-
-    return bills.stream()
-        .filter(bill -> bill.getStatus() == 6)
-        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
-        .collect(Collectors.toList());
-  }
-
-  @JsonIgnore
-  public List<Bill> getDeliveredBills() {
     if (bills == null) {
       return Collections.emptyList();
     }

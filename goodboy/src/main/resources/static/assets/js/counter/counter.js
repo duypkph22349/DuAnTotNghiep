@@ -255,6 +255,7 @@ function formInOrder(id) {
                                 </ul>
                               </div>
                             </div>
+
                               <div type="flex" class="ant-row ant-row-space-between box-row"
                                   style="margin-top: 12px;">
                                   <div class="row g-3">
@@ -270,7 +271,13 @@ function formInOrder(id) {
                                           <input type="text" class="form-control" placeholder="Số điện thoại"
                                               id="soDienThoai">
                                       </div>
-                                      <!-- Địa chỉ -->
+                                      <!-- Địa chỉ
+                                      <div  class="col-md-4 online-option d-none">
+                                          <label class="form-label">Chọn địa chỉ</label>
+                                      <select class="form-select" id="diachichoose" onchange="selectdiachikhachhang(${id})">
+                                      </select>
+                                      </div>
+                                      -->
                                       <div class="col-md-4 online-option d-none">
                                           <label class="form-label">Thành
                                               Phố</label>
@@ -529,18 +536,6 @@ function formInOrder(id) {
                           </style>
                           <div class="box-order-status">
                             <div style="display: flex;">
-                                  <span class="order-action-button" style="margin-right: 8px;">
-                                            <button type="button" class="ant-btn ant-btn-primary" onclick="showHoaDonChoSave('${id}')"
-                                                    style="font-size: 14px; height: 100%; background: rgb(250, 173, 20); border-color: rgb(250, 173, 20);"><span><span
-                                                                    role="img" aria-label="printer" class="anticon anticon-printer"><svg
-                                                                            viewBox="64 64 896 896" focusable="false" data-icon="printer"
-                                                                            width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                                                            <path
-                                                                                    d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
-                                                                            </path>
-                                                                    </svg></span> Lưu hóa đơn chờ</span>
-                                            </button>
-                                    </span>
                                     <span class="order-action-button" style="margin-right: 8px;">
                                             <button type="button" id="removebill" class="ant-btn ant-btn-primary" onclick="removeOrderPage(${id})"
                                                     style="font-size: 14px; height: 100%; background: rgb(248, 13, 13); border-color: rgb(250, 112, 20);"><span><span
@@ -576,9 +571,6 @@ function formInOrder(id) {
   </div>
 </div>
 <div id="overlay">
-      <button type="button" class="btn btn-primary mx-3" onclick="showHoaDonChoSave('${id}')">
-        Lưu hóa đơn chờ
-      </button>
       <button type="button" class="btn btn-danger px-5" onclick="removeOrderPage(${id})">
         Xóa (F5)
       </button>
@@ -985,6 +977,7 @@ function resetServiceShip(orderId) {
   }
   resetTotalShip(orderId);
 }
+
 // GHN API Service
 
 //load data
@@ -2027,7 +2020,9 @@ async function finalPrice(formId) {
   finalAmount.innerHTML = formatToVND(transferAmountvl + surchargeAmountvl);
   const discountValue = await checkVoucher(`hoaDon${formId}`, totalMoney);
   const calMoney =
-    transferAmountvl + surchargeAmountvl + discountValue - totalMoney;
+  (transferAmountvl +
+    surchargeAmountvl +
+    (isNaN(discountValue) ? 0 : discountValue)) - totalMoney;
   if (calMoney > 0) {
     remainPrice.innerHTML = formatToVND(calMoney);
     changeAmount.innerHTML = formatToVND(0);
@@ -2305,6 +2300,15 @@ async function updateName(formid, id) {
     if (getInputValue("#soDienThoai").trim().length == 0) {
       updateValue("#soDienThoai", customer.phone);
     }
+    if (customer.country != null) {
+      getAllCustomerprovide(formid, customer.country);
+      if (customer.city != null) {
+        getAllCustomerDistrict(formid, customer.city);
+        if (customer.wardcode != null) {
+          getFullCustomerWardCode(formid, customer.wardcode);
+        }
+      }
+    }
     updateHoaDon(formid);
   } catch (error) {
     console.error(error);
@@ -2353,7 +2357,6 @@ function addNewKhachHang(event) {
   if (errorcount > 0) {
     return false;
   }
-
   // Build customer object
   var customer = {
     name: formData.get("name"),
@@ -2417,3 +2420,110 @@ function addNewKhachHang(event) {
       });
     });
 }
+// get adddress of customer
+async function getAllCustomerprovide(citycode, orderId) {
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  const selectCity = thisOrder.querySelector("#city");
+  await fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      const defaultOption = document.createElement("option");
+      defaultOption.value = -1; // Set the value as needed
+      defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+      // Set the 'disabled' and 'selected' attributes to make it the default option
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectCity.appendChild(defaultOption);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].ProvinceName; // Set the text of the option
+        option.setAttribute("providecode", options[i].ProvinceID);
+        if (citycode == options[i].ProvinceName) {
+          option.selected = true;
+        }
+        selectCity.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+async function getAllCustomerDistrict(districtcode, orderId) {
+  const selectCity = document.querySelector(`#hoaDon${orderId} #city`);
+  const selectedOption = selectCity.options[selectCity.selectedIndex];
+  const customAttribute = selectedOption.getAttribute("providecode");
+  const provinceid = parseInt(customAttribute);
+  const selectDistrict = document.querySelector(`#hoaDon${orderId} #district`);
+  await fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+      body: JSON.stringify({ province_id: provinceid }),
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      resetDistrict(orderId);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].DistrictName; // Set the text of the option
+        option.setAttribute("districtcode", options[i].DistrictID);
+        if (districtcode == options[i].DistrictName) {
+          option.selected = true;
+        }
+        selectDistrict.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+async function getFullCustomerWardCode(wardcode, orderId) {
+  const thisOrder = document.getElementById(`hoaDon${orderId}`);
+  const selecteDistrict = thisOrder.querySelector("#district");
+  const selectWardCode = thisOrder.querySelector("#ward");
+  const selectedOption = selecteDistrict.options[selecteDistrict.selectedIndex];
+  const customAttribute = selectedOption.getAttribute("districtcode");
+  const districtid = parseInt(customAttribute);
+  await fetch(
+    "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+      body: JSON.stringify({ district_id: districtid }),
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      //remove all child
+      resetWard(orderId);
+      const options = data.data;
+      for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+        option.text = options[i].WardName; // Set the text of the option
+        if (wardcode == options[i].WardName) {
+          option.selected = true;
+        }
+        selectWardCode.appendChild(option); // Add the option to the select element
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+// end

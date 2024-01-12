@@ -386,7 +386,8 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     if (productDetail.isPresent()) {
       ProductDetail exitProductDetail = productDetail.get();
       if (exitProductDetail.getQuantity() < quantity) {
-        System.out.println(" Khong du so luong");
+        throw new ErrorCreateBill("Số lượng của sản phẩm: " + productDetail.get().getName() // throw another exeption
+            + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
       } else {
         exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
         productDetailRepository.save(exitProductDetail);

@@ -115,9 +115,9 @@ public class SpringSecurityConfig {
         .authorizeHttpRequests((authorize) -> {
           authorize.requestMatchers("/admin/**").hasAnyAuthority("STAFF", "ADMIN");
         })
-        .authorizeHttpRequests((authorize) -> {
-          authorize.requestMatchers("/shop/**").hasAnyAuthority("USER");
-        })
+        // .authorizeHttpRequests((authorize) -> {
+        // authorize.requestMatchers("/shop/**").hasAnyAuthority("USER");
+        // })
         .authorizeHttpRequests((authorize) -> {
           authorize.anyRequest().permitAll();
         })

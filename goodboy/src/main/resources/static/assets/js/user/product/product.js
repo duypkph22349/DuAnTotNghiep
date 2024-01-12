@@ -351,21 +351,31 @@ function generateProductDiv(product) {
   });
 
   divProduct.innerHTML = `
-    <div class="product-item bg-light mb-4">
+   <a class="h6 text-decoration-none text-truncate" href="/product/detail/${
+        product.id
+    }">
+     <div class="product-item bg-light mb-4">
       <div class="product-img position-relative overflow-hidden">
-          <img class="img-fluid w-100" src="${product.images[0]}" alt=""  style="max-width: 100%; max-height: 300px; min-width: 150px;">
+          <img class="img-fluid w-100" src="${
+            product.images[0]
+          }" alt=""  style="max-width: 100%; max-height: 300px; min-width: 150px;">
       </div>
       <div class="text-center py-4">
-          <a class="h6 text-decoration-none text-truncate" href="/product/detail/${
-            product.id
-          }">${product.name}</a>
+         ${product.name}
           <div class="d-flex align-items-center justify-content-center mt-2">
               <h5>${formatToVND(product.minprice)} - ${formatToVND(
     product.maxprice
   )}</h5>
           </div>
+          <div class="d-flex align-items-center justify-content-center mb-1">
+          <span>${renderStars(
+            product.averageRating,
+            product.evaluates.length
+          )}</span>
+      </div>
       </div>
     </div>
+    </a>
   `;
   return divProduct;
 }
@@ -584,4 +594,21 @@ function formatToVND(amount) {
 </div>
 </div>
  */
+}
+
+function renderStars(rating, totalRatings) {
+  let roundedRating = Math.round(rating);
+  let remainder = rating - roundedRating;
+  let result = "";
+  for (let i = 0; i < 5; i++) {
+    if (i < roundedRating) {
+      result += '<small class="fa fa-star text-primary mr-1"></small>';
+    } else if (i === roundedRating && remainder > 0) {
+      result += '<small class="fa fa-star-half text-primary mr-1"></small>';
+    } else {
+      result += '<small class="fa fa-star mr-1"></small>';
+    }
+  }
+  result += "<small>(" + totalRatings + ")</small>";
+  return result;
 }

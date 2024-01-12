@@ -1,6 +1,10 @@
 package datn.goodboy.model.entity;
 
+import java.text.NumberFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Currency;
+import java.util.Locale;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -72,4 +76,52 @@ public class Voucher {
     this.updated_at = LocalDateTime.now();
   }
 
+  public String getDiscountValue() {
+    String message = "";
+    if (types) {
+      message += "Giảm " + discount + " %";
+    } else {
+      NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+      format.setCurrency(Currency.getInstance("VND"));
+      String formattedPrice = format.format(discount);
+      message += "Giảm " + formattedPrice;
+    }
+    if (max_discount != null) {
+      NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+      format.setCurrency(Currency.getInstance("VND"));
+      String formattedPrice = format.format(max_discount);
+      message += " - Tối đa " + formattedPrice;
+    }
+    return message;
+  }
+
+  public String getConditionVoucher() {
+    String message = "";
+    if (min_order != null) {
+      NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+      format.setCurrency(Currency.getInstance("VND"));
+      String formattedPrice = format.format(min_order);
+      message += "Áp dụng với Hóa đơn có giá trị từ: " + formattedPrice;
+    }
+    return message;
+  }
+
+  public boolean sendMail() {
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    return !this.isDeleted()
+        && (this.getStart_time().isBefore(currentDateTime) || this.getStart_time().isAfter(currentDateTime))
+        && (this.getEnd_time() == null || this.getEnd_time().isAfter(currentDateTime))
+        && (this.getStart_time().isBefore(this.getEnd_time()))
+        && this.getStatus() == 1
+        && this.getQuantily() > 0;
+  }
+
+  public boolean checkVoucher() {
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    return !this.isDeleted()
+        && this.getStart_time().isBefore(currentDateTime)
+        && (this.getEnd_time() == null || this.getEnd_time().isAfter(currentDateTime))
+        && this.getStatus() == 1
+        && this.getQuantily() > 0;
+  }
 }

@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+    xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Bin-It">
-    <meta property="og:url"/>
+    <meta property="og:url" />
 
     <title>Roles</title>
     <script type="text/javascript" style="text-align: center">
-        function Pager(tableName, itemsPerPage) {
+        function Pager(tableName,itemsPerPage) {
             this.currentPage = 1;
             this.pages = 0;
             this.inited = false;
 
-            this.showRecords = function (from, to) {
+            this.showRecords = function (from,to) {
                 var rows = document.getElementById(tableName).rows;
                 for (var i = 1; i < rows.length; i++) {
                     if (i < from || i > to)
@@ -42,7 +42,7 @@
 
                 var from = (pageNumber - 1) * itemsPerPage + 1;
                 var to = from + itemsPerPage - 1;
-                this.showRecords(from, to);
+                this.showRecords(from,to);
             }
 
             this.prev = function () {
@@ -62,7 +62,7 @@
                 this.pages = Math.ceil(records / itemsPerPage);
                 this.inited = true;
             }
-            this.showPageNav = function (pagerName, positionId) {
+            this.showPageNav = function (pagerName,positionId) {
                 if (!this.inited) {
                     alert("not inited");
                     return;
@@ -96,19 +96,19 @@
 
 <section layout:fragment="content">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Bảng điều kiển</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                <li class="breadcrumb-item active">Roles </li>
+                <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Chức vụ</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
     <div class="input-group mb-3">
         <button class="btn btn-info" type="button">Search
         </button>
-        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-               id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm....">
+        <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" id="searchInput"
+            onkeyup="myFunction()" placeholder="Tìm kiếm....">
     </div>
 
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -116,7 +116,7 @@
     </button>
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="mt-3" style="text-align: center">
@@ -176,8 +176,9 @@
                 <td th:text="${i.index+1}"></td>
                 <td th:text="${roles.role}"></td>
 
-                <td th:unless="${roles.deleted}" th:text="${convert.convertTrangThai(roles.status)}"></td>
-                <td th:if="${roles.deleted}" class="text-decoration-line-through" th:text="${convert.convertTrangThaiEmployee(roles.status)}"></td>
+                    <td th:unless="${roles.deleted}" th:text="${convert.convertTrangThai(roles.status)}"></td>
+                    <td th:if="${roles.deleted}" class="text-decoration-line-through"
+                        th:text="${convert.convertTrangThaiEmployee(roles.status)}"></td>
 
 
                 <td>
@@ -202,9 +203,9 @@
     </div>
     <div id="pageNavPosition" class="text-right"></div>
     <script type="text/javascript">
-        var pager = new Pager('myTable', 5);
+        var pager = new Pager('myTable',5);
         pager.init();
-        pager.showPageNav('pager', 'pageNavPosition');
+        pager.showPageNav('pager','pageNavPosition');
         pager.showPage(1);
     </script>
     </div>
@@ -213,7 +214,7 @@
     <script type="text/javascript">
         //Tìm kiếm
         function myFunction() {
-            var input, filter, table, tr, td, i, j, txtValue;
+            var input,filter,table,tr,td,i,j,txtValue;
             input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
@@ -239,8 +240,8 @@
             }
         }
 
-        function sortTableCode(order, columnIndex) {
-            var table, rows, switching, i, x, y, shouldSwitch;
+        function sortTableCode(order,columnIndex) {
+            var table,rows,switching,i,x,y,shouldSwitch;
             table = document.getElementById("myTable");
             switching = true;
 
@@ -253,8 +254,8 @@
                     x = rows[i].getElementsByTagName("td")[columnIndex];
                     y = rows[i + 1].getElementsByTagName("td")[columnIndex];
 
-                    var xValue = parseInt(x.textContent.replace(/\D/g, ''));
-                    var yValue = parseInt(y.textContent.replace(/\D/g, ''));
+                    var xValue = parseInt(x.textContent.replace(/\D/g,''));
+                    var yValue = parseInt(y.textContent.replace(/\D/g,''));
 
                     if (order === "asc") {
                         if (xValue > yValue) {
@@ -270,7 +271,7 @@
                 }
 
                 if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    rows[i].parentNode.insertBefore(rows[i + 1],rows[i]);
                     switching = true;
                 }
             }
@@ -278,4 +279,5 @@
 
     </script>
 </section>
+
 </html>

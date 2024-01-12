@@ -154,8 +154,8 @@
                         <span style="background-color:gold" th:if="${bill.status == 2}">Chờ lấy hàng</span>
                         <span style="background-color:gold" th:if="${bill.status == 3}">Chờ giao hàng</span>
                         <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
-                        <span style="background-color:gold" th:if="${bill.status == 5}">Đã giao hàng</span>
-                        <span style="background-color:gold" th:if="${bill.status == 6}">Thành công</span>
+                        <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                        <span style="background-color:gold" th:if="${bill.status == 6}">Hủy hàng</span>
                     </div>
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>
@@ -178,8 +178,7 @@
                     </div>
                     <div class="item phone">
                         <label>Số Điện Thoại</label>
-                        <input id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
-
+                        <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }" id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
 
                         <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
                     </div>
@@ -253,10 +252,9 @@
 
     function update(){
         let phoneNumber =document.querySelector('#phoneNumber');
-        let address = document.querySelector('#address');
         let code=   document.querySelector('#code');
         if(!phoneNumber.value && !address.value){
-            alert('Vui lòng nhập đầy đủ thông tin địa chỉ hoặc số điện thoại!')
+            alert('Vui lòng nhập đầy đủ số điện thoại!')
             return;
         }
 

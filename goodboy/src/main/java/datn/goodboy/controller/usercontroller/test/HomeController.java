@@ -1,6 +1,5 @@
 package datn.goodboy.controller.usercontroller.test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import datn.goodboy.model.entity.Cart;
@@ -90,15 +88,15 @@ public class HomeController {
     return "user/home";
   }
 
-  @Autowired
-  private CartService cartService;
+  // @Autowired
+  // private CartService cartService;
 
-  @GetMapping("/shop/cart")
-  public String viewCart(Model model) {
-    Cart cart = cartService.getCart();
-    model.addAttribute("cart", cart);
-    return "user2/cart";
-  }
+  // @GetMapping("/shop/cart")
+  // public String viewCart(Model model) {
+  //   Cart cart = cartService.getCart();
+  //   model.addAttribute("cart", cart);
+  //   return "user2/cart";
+  // }
 
   @GetMapping("/shop/checkout")
   public String viewCheckOut(Model model) {
