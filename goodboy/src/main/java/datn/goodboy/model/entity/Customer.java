@@ -13,15 +13,10 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -42,22 +37,38 @@ public class Customer {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   UUID id;
+
   @Column(name = "code", insertable = false, updatable = false)
   String code;
+
+  @NotNull(message = "Tên không được để trống")
+  @NotBlank(message = "Tên không được để trống")
   @Column(name = "name")
   String name;
+
   @Column(name = "gender")
   boolean gender;
+
+  @NotBlank(message = "Số điện thoại không được để trống")
+  @Pattern(regexp = "\\d{10}", message = "Đủ 10 số")
   @Column(name = "phone")
   String phone;
+
   @Column(name = "birth_date")
   LocalDate birth_date;
+
+  @NotBlank(message = "Thành phố không được để trống")
   @Column(name = "thanh_pho")
   String address;
+
+  @NotBlank(message = "Huyện không được để trống")
   @Column(name = "new_huyen")
   String city;
+
+  @NotBlank(message = "Xã không được để trống")
   @Column(name = "xa")
   String country;
+
   @Column(name = "fulladdress")
   String fulladdress;
   @Column(name = "status")
@@ -82,6 +93,7 @@ public class Customer {
   // @JsonProperty("bills")
   @JsonIgnore
   private List<Bill> bills;
+
 
   @JsonIgnore
   public List<Bill> getAllBills() {
