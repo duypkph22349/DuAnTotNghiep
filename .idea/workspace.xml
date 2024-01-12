@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="89c25bf0-44a9-4934-8f31-416038480c40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/controller/BillController.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/controller/BillController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/repository/BillDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/repository/BillDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/repository/ProductDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/repository/ProductDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillService.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/bill/bill-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/bill/bill-detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/bill/bill.html" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/templates/admin/pages/bill/bill.html" afterDir="false" />
@@ -25,7 +20,7 @@
     <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master1.1" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,23 +41,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "duyhi22",
-    "last_opened_file_path": "C:/Users/SweeeTJ/Downloads/goodboy",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "spring.configuration.checksum": "57e7f266bb0dc62f2cb0f25976c14e93",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;duyhi22&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/SweeeTJ/Downloads/DuAnTotNghiep-thinh3011&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;57e7f266bb0dc62f2cb0f25976c14e93&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="GoodboyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="goodboy" />
@@ -115,6 +110,8 @@
       <workItem from="1704476591614" duration="2535000" />
       <workItem from="1704543929343" duration="628000" />
       <workItem from="1704554615498" duration="627000" />
+      <workItem from="1705042173413" duration="876000" />
+      <workItem from="1705047056272" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="update thinh 22/11">
       <created>1700668832113</created>

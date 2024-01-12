@@ -78,4 +78,17 @@ public class BillController {
         return "redirect:/admin/bill/bill-detail?id=" + id;
     }
 
+    @GetMapping("/bill-detail-deposit")
+    public String updatedeposit(@RequestParam("id") Integer id,
+                                @RequestParam("deposit") float deposit, @RequestParam("idBill") Integer ibBill){
+        try {
+            billService.updatedeposit(id, deposit);
+
+            //
+            billService.cancelBill(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/bill/bill-detail?id=" + id;
+    }
 }

@@ -136,6 +136,9 @@ public class BillService {
         Bill bill = billRepository.findStatusById(idBill);
         Optional<ProductDetail> productdetail = productDetailService.getProductDetailById(productId);
         bill.setTotal_money(bill.getTotal_money() + (productdetail.get().getPrice() * quantity));
+        // code tui
+        float depositValue = (float) (bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
+        bill.setDeposit(depositValue);
         billRepository.save(bill);
 
         BillDetail billDetail = billDetailRepository.findByIdBillAndIdProduct(idBill, productId);
@@ -160,6 +163,7 @@ public class BillService {
         }
 
     }
+
 
     public Page<Bill> searchBillByCode(Integer numberSize, String code) {
         Pageable pageable = PageRequest.of(numberSize, 5);
@@ -189,6 +193,12 @@ public class BillService {
         Bill bill = getBillById(id);
         bill.setNote(note);
         bill.setStatus(status);
+        billRepository.save(bill);
+    }
+
+    public void updatedeposit(Integer id, Float deposit) throws NotFoundException {
+        Bill bill = getBillById(id);
+        bill.setDeposit(deposit);
         billRepository.save(bill);
     }
 

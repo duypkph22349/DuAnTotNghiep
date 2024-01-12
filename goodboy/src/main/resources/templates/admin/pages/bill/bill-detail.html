@@ -160,7 +160,8 @@
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>
 
-                        <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}" style="background-color: rgb(206, 240, 240);"></span>
+                        <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}"
+                              style="background-color: rgb(206, 240, 240);"></span>
                     </div>
 
                     <div class="item statusPay">
@@ -174,17 +175,23 @@
                 <div class="col-6">
                     <div class="item customerName">
                         <label>Tên Khách Hàng</label>
-                        <span th:text="${bill.customer_name}"  style="background-color: rgb(206, 240, 240);" >+00000</span>
+                        <span th:text="${bill.customer_name}"
+                              style="background-color: rgb(206, 240, 240);">+00000</span>
                     </div>
                     <div class="item phone">
                         <label>Số Điện Thoại</label>
-                        <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }" id="phoneNumber" style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.phone}" />
+                        <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }"
+                               id="phoneNumber"
+                               style="border: 2px solid transparent; padding-left: 3px; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);"
+                               th:value="${bill.phone}" />
 
                         <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
                     </div>
                     <div class="item address">
                         <label>Địa Chỉ</label>
-                        <input id="address" style="border:  2px solid transparent; padding-left: 3vpx; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);" th:value="${bill.address}" />
+                        <input id="address"
+                               style="border:  2px solid transparent; padding-left: 3vpx; outline: none; color: red; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);"
+                               th:value="${bill.address}" />
 
                     </div>
                     <div class="item note">
@@ -213,7 +220,7 @@
         tab.onclick = function () {
             let status = this.getAttribute("data-value");
             let id = document.getElementById("id").getAttribute("data-value");
-            location.href=`/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
+            location.href = `/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
         };
     });
 
@@ -250,10 +257,10 @@
     line.style.left = tabSelector.offsetLeft + "px";
     line.style.width = tabSelector.offsetWidth + "px";
 
-    function update(){
-        let phoneNumber =document.querySelector('#phoneNumber');
-        let code=   document.querySelector('#code');
-        if(!phoneNumber.value && !address.value){
+    function update() {
+        let phoneNumber = document.querySelector('#phoneNumber');
+        let code = document.querySelector('#code');
+        if (!phoneNumber.value && !address.value) {
             alert('Vui lòng nhập đầy đủ số điện thoại!')
             return;
         }
@@ -263,10 +270,10 @@
             alert("Số điện thoại không hợp lệ!");
             return;
         }
-        let dataForm ={
-            phone : phoneNumber.value,
-            address : address.value,
-            code : code.innerText,
+        let dataForm = {
+            phone: phoneNumber.value,
+            address: address.value,
+            code: code.innerText,
         }
         console.log(dataForm);
 
@@ -292,4 +299,5 @@
             });
     }
 </script>
+
 </html>

@@ -250,7 +250,7 @@
                         <div class="item statusPay">
                             <label>Trạng thái thanh toán</label>
                             <span style="background-color:gold" th:if="${bill.status_pay == 0}">Chưa thanh
-									toán</span>
+                                    toán</span>
                             <span style="background-color:gold" th:if="${bill.status_pay == 1}">Đã thanh toán</span>
 
                         </div>
@@ -263,7 +263,7 @@
                         </div>
                         <div class="item code">
                             <label>Tên nhân viên</label>
-                            <span id="employee" th:text="${bill.employee.name}"></span>
+                            <span id="employee" th:text="${bill.employee?.name}"></span>
                         </div>
                         <div class="item phone">
                             <label>Số Điện Thoại</label>
@@ -286,7 +286,7 @@
                             <label>Tổng tiền</label>
                             <!--                                <span th:text="${bill.total_money}" >+00000</span>-->
                             <span
-                                    th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
+                                    th:text="${#strings.replace(#numbers.formatDecimal(bill?.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
 
 
                         </div>
@@ -320,6 +320,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Kích cỡ</th>
                                 <th>Kiểu mẫu</th>
+                                <th>Đơn giá</th>
                                 <th>Số lượng</th>
                                 <th>Tổng giá tiền</th>
                                 <!--                        <th>Trạng thái</th>-->
@@ -344,9 +345,12 @@
                                          style="height: 60px; width: 60px; object-fit: cover;" />
                                 </td>
 
-                                <td th:text="${billDetail.productDetail.name}"></td>
-                                <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                                <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                                <td th:text="${billDetail.productDetail?.name}"></td>
+                                <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                                <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
+
+                                <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.productDetail?.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                    }></td>
                                 <td th:text="${billDetail.quantity}"></td>
                                 <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
                                     }></td>
@@ -359,7 +363,8 @@
                             </tbody>
 
                         </table>
-                        <th:block th:with="totalAmountWithShipping=${bill.total_money + bill.money_ship}">
+                        <th:block
+                                th:with="totalAmountWithShipping=${bill.total_money + bill.money_ship - bill.reduction_amount}">
 
                             <table>
                                 <tr>
@@ -370,8 +375,8 @@
                                     </td>
                                     <td
                                             style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-											<span style="font-weight: bold;"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                            <span style="font-weight: bold;"
+                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                                     </td>
                                 </tr>
                             </table>
@@ -385,13 +390,13 @@
                                     </td>
                                     <td
                                             style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-											<span style="font-weight: bold;"
-                                                  th:if="${bill?.money_ship != null and bill.money_ship != 0}"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                            <span style="font-weight: bold;"
+                                                  th:if="${bill?.money_ship != null and bill?.money_ship != 0}"
+                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill?.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                                         <span style="font-weight: bold;"
-                                              th:if="${bill?.money_ship == null or bill.money_ship == 0}">
-												<th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
-											</span>
+                                              th:if="${bill?.money_ship == null or bill?.money_ship == 0}">
+                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                                            </span>
                                     </td>
                                 </tr>
                             </table>
@@ -406,13 +411,13 @@
                                     </td>
                                     <td
                                             style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-											<span style="font-weight: bold;"
-                                                  th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                            <span style="font-weight: bold;"
+                                                  th:if="${bill?.reduction_amount != null and bill?.reduction_amount != 0}"
+                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill?.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                                         <span style="font-weight: bold;"
-                                              th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
-												<th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
-											</span>
+                                              th:if="${bill?.reduction_amount == null or bill?.reduction_amount == 0}">
+                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                                            </span>
                                     </td>
                                 </tr>
 
@@ -430,13 +435,13 @@
                                     </td>
                                     <td
                                             style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-											<span style="font-weight: bold;"
-                                                  th:if="${bill?.total_money != null and bill.total_money != 0}"
+                                            <span style="font-weight: bold;"
+                                                  th:if="${bill?.deposit != null and bill?.deposit != 0}"
                                                   th:text="${#strings.replace(#numbers.formatDecimal(totalAmountWithShipping, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                                         <span style="font-weight: bold;"
-                                              th:if="${bill?.total_money == null or bill.total_money == 0}">
-												<th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
-											</span>
+                                              th:if="${bill?.deposit == null or bill?.deposit == 0}">
+                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                                            </span>
                                     </td>
 
 
@@ -484,7 +489,7 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
                                         <th>Giá</th>
-                                        <th>Tổng số lượng sản phẩm</th>
+                                        <th>Tồn kho</th>
                                         <th>Hoa văn</th>
                                         <th>Kích thước</th>
                                         <th>Hành động</th>
@@ -642,10 +647,10 @@
                             ${product.quantity}
                         </td>
                         <td>
-                            ${product.idPattern.name}
+                            ${product.idPattern?.name}
                         </td>
                         <td>
-                            ${product.idSize.name}
+                            ${product.idSize?.name}
                         </td>
                         <td>
                             <button type="button" class="btn btn-success  mx-1" onclick="addProduct(${product.id})">Confirm</button>
