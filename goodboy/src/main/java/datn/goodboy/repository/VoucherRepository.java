@@ -36,4 +36,9 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
                      "))")
        Page<Voucher> searchStatus(Pageable pageable, @Param("search") String search, @Param("status") int status);
 
+       @Query("SELECT voucher FROM Voucher voucher " +
+               "WHERE voucher.code = :code ")
+       List<Voucher> findVoucherByCode(@Param("code") String code);
+
+       Optional<Voucher> findByCode(String code);
 }

@@ -104,7 +104,7 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
 
       if (savevoucher.sendMail()) {
         CompletableFuture.runAsync(() -> {
-          emailService.sendVoucherMail(savevoucher, "Thông báo Voucher mới");
+          emailService.sendVoucherMail(savevoucher, "Thông báo cập nhật Voucher ");
         });
       }
       return savevoucher;

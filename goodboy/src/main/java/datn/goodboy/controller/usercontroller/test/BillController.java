@@ -40,15 +40,15 @@ public class BillController {
 
   @GetMapping("/checkout")
   public String viewCheckout(Model model, @RequestParam("carts") List<Integer> cartDetails) {
-    Bill bill = billService.getCheckOutPage(cartDetails);
+    Bill bill = billService.getProductDetailsByCartDetails(cartDetails);
     model.addAttribute("bill", bill);
     return "user2/checkout";
   }
 
   @GetMapping("/history")
   public String viewHistoryBill(Model model) {
-    Customer customer = billService.getCustomer();
-    model.addAttribute("customer", customer);
+//    Customer customer = billService.getCustomer();
+//    model.addAttribute("customer", customer);
     return "user2/userbills";
   }
 
@@ -73,8 +73,8 @@ public class BillController {
 
   @GetMapping("/detail/{idbill}")
   public String detailBill(Model model, @PathVariable("idbill") int bill) {
-    Customer customer = billService.getCustomer();
-    model.addAttribute("customer", customer);
+//    Customer customer = billService.getCustomer();
+//    model.addAttribute("customer", customer);
     return "user2/userbills";
   }
 

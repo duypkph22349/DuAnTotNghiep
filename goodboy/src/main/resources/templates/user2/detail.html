@@ -98,8 +98,8 @@
                             </div>
                         </div>
                         <button class="btn btn-primary px-3" onclick="addToCart()"><i
-                                class="fa fa-shopping-cart mr-1"></i> Add To
-                            Cart</button>
+                                class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng
+                        </button>
                     </div>
                     <!-- <div class="d-flex pt-2">
                         <strong class="text-dark mr-2">Share on:</strong>
@@ -217,7 +217,7 @@
                                 th:if="${productrs != null and productrs.getAllImage().size() > 0}"
                                 th:src="${productrs.getAllImage().get(0)}" alt="">
                         </div>
-                        <div class="text-center py-4">
+                        <div class="text-center py-2">
                             <a class="h6 text-decoration-none text-truncate"
                                 th:href="@{'/product/detail/'+${productrs.id}}" th:text="${productrs.name}"></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">

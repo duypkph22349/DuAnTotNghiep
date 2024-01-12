@@ -143,7 +143,7 @@ public class CartCookieService {
     ProductDetail productDetail = productRepository.findById(productId).orElse(null);
     if (productDetail != null) {
       if (productDetail.getQuantity() < cartItems.getOrDefault(productId, 0) + quantity) {
-        throw new RuntimeException("Sản phảm không chỉ còn: " + productDetail.getQuantity());
+        throw new RuntimeException("Sản phẩm chỉ còn: " + productDetail.getQuantity());
       }
       cartItems.put(productId, cartItems.getOrDefault(productId, 0) + quantity);
       // request.getSession().setAttribute(CART_COOKIE_NAME, cartItems);
@@ -179,6 +179,15 @@ public class CartCookieService {
     System.out.println("delete data from cart" + productId);
     cartItems.remove(productId);
     System.out.println(cartItems);
+    request.getSession().setAttribute(CART_COOKIE_NAME, cartItems);
+    saveCartToCookie(cartItems, request, response);
+  }
+
+  public void removeFromCarts(List<String> productIds, HttpServletRequest request, HttpServletResponse response) {
+    Map<Integer, Integer> cartItems = getCartItems(request, response);
+    for (String productId : productIds){
+      cartItems.remove(Integer.parseInt(productId));
+    }
     request.getSession().setAttribute(CART_COOKIE_NAME, cartItems);
     saveCartToCookie(cartItems, request, response);
   }

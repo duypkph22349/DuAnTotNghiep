@@ -1,5 +1,6 @@
 const cartuser = document.getElementById("cartuser");
 const cartcookie = document.getElementById("cartcookie");
+var totalMoney = document.getElementById("TotalMoney");
 const TotalCookieMoney = cartcookie.querySelector("#TotalCookieMoney");
 const cartcookietable = cartcookie.querySelector("#cartcookietable");
 const billApi = "/shop/order";
@@ -30,25 +31,13 @@ function selectProductDetailsCookie() {
   }
 }
 //done
-async function updateQuantityCookie(element) {
-  const quantity = element.value;
-  const idProductdetails = element.getAttribute("id-productdetails");
-  console.log("id-productdetails: " + idProductdetails);
-  console.log("quantity: " + quantity);
-  if (quantity <= 0) {
-    deletedCartCookie(idProductdetails);
-  }else{
-    await updateCartDetailCookie(idProductdetails, quantity);
-    await updateCartDetailUICookie(await getCartDetailCookie(idProductdetails));
-  }
-  updateTotalCookieMoney();
-}
-//done
+
 
 async function deletedCartCookie(idcartdetail) {
   if (confirm("Bạn chắc chắn có muốn xóa không ?")) {
     await deleteCartDetailCookie(idcartdetail);
     updateTotalCookieMoney();
+    get_quantity_of_cart()
   }
 }
 //done
@@ -59,6 +48,7 @@ function deletedCartUICookie(idcartdetail) {
   );
   if (cartdetailDiv) {
     cartdetailDiv.remove();
+    get_quantity_of_cart()
   }
 }
 //done
@@ -72,6 +62,7 @@ async function updateCartDetailUICookie(cartdetail) {
     const totalMoney = cartdetailDiv.querySelector(".totalMoney");
     const quantityinput = cartdetailDiv.querySelector(".quantityinput");
     quantityinput.value = cartdetail.quantity;
+    get_quantity_of_cart()
     totalMoney.innerHTML = formatToVND(
       cartdetail.quantity * cartdetail.productDetaill.price
     );
@@ -79,7 +70,7 @@ async function updateCartDetailUICookie(cartdetail) {
 }
 //done
 // Replace 'YOUR_API_BASE_COOKIE_URL' with the actual base URL of your Spring Boot application
-const API_BASE_COOKIE_URL = "/test/api/cart/cookie";
+var API_BASE_COOKIE_URL = "/test/api/cart/cookie";
 //done
 
 const updateCartDetailCookie = async (cartDetailId, newQuantity) => {
@@ -87,6 +78,7 @@ const updateCartDetailCookie = async (cartDetailId, newQuantity) => {
     const response = await axios.patch(
       `${API_BASE_COOKIE_URL}/update/${cartDetailId}/quantity/${newQuantity}`
     );
+    await get_quantity_of_cart()
     new Notify({
       status: "success",
       title: "Thành công",
@@ -136,6 +128,7 @@ const deleteCartDetailCookie = async (cartDetailId) => {
       `${API_BASE_COOKIE_URL}/delete/${cartDetailId}`
     );
     deletedCartUICookie(cartDetailId);
+    await get_quantity_of_cart()
     new Notify({
       status: "success",
       title: "Thành công",
@@ -203,6 +196,7 @@ const updateTotalCookieMoney = async () => {
       const response = await axios.get(
         `${API_BASE_COOKIE_URL}/${totalMoneyurl}`
       );
+      await get_quantity_of_cart()
       TotalCookieMoney.innerHTML = formatToVND(response.data);
     } catch (error) {}
   } else {
@@ -229,4 +223,17 @@ function checkoutpagecookie() {
     // Handle the case where no items are selected
     alert("Please select items for checkout.");
   }
+}
+
+const get_quantity_of_cart = () => {
+  // UPDATE QUANTITY
+  var quantity = 0;
+  axios.get(
+      `/client/cart/quantity`
+  ).then((e) =>{
+    quantity = e.data
+  })
+  setTimeout(() => {
+    document.querySelector("#quantity").innerHTML = "(" + quantity + " sản phẩm)"
+  }, 100)
 }

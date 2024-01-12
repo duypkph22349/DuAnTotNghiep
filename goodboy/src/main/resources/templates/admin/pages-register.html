@@ -34,41 +34,41 @@
         class="container section rounded-3 register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container  rounded-3 " style="background-color: aliceblue;">
           <div class="pt-4 pb-2">
-            <h5 class=" text-center pb-0 fs-4">Create an Account</h5>
-            <p class="text-center small">Enter your personal details to create account</p>
+            <h5 class=" text-center pb-0 fs-4">Tạo tài khoản mới</h5>
+            <p class="text-center small">Nhập thông tin của bạn để tạo tài khoản</p>
           </div>
-          <form class="row g-3" enctype="multipart/form-data" th:action="@{/employee/signup}" th:object="${signUpRequest}"
-            method="post">
+          <form class="row g-3" enctype="multipart/form-data" th:action="@{/employee/signup}"
+            th:object="${signUpRequest}" method="post">
             <div class="form-floating mb-3 col-6 px-2">
               <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com"
                 th:field="*{name}">
-              <label for="floatingInput">Name</label>
+              <label for="floatingInput">Tên</label>
               <div th:if="${#fields.hasErrors('name')}" class="errors text-danger form-text" th:errors="*{name}">
               </div>
             </div>
             <div class="form-floating mb-3  col-6 px-2">
               <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com"
                 th:field="*{phone}">
-              <label for="floatingInput">Phone</label>
+              <label for="floatingInput">Số điện thoại</label>
               <div th:if="${#fields.hasErrors('phone')}" class="errors text-danger form-text" th:errors="*{phone}">
               </div>
             </div>
             <div class="form-floating mb-3">
               <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
                 th:field="*{email}">
-              <label for="floatingInput">Email address</label>
+              <label for="floatingInput">Địa chỉ Email: </label>
               <div th:if="${#fields.hasErrors('email')}" class="errors text-danger form-text" th:errors="*{email}">
               </div>
             </div>
             <div class="mb-3 col-6 px-2">
-              <label for="floatingPassword">birth_date</label>
+              <label for="floatingPassword">Ngày sinh</label>
               <input type="date" class="form-control" id="floatingPassword" placeholder="Password"
                 th:field="*{birthDay}">
             </div>
             <div th:if="${#fields.hasErrors('birthDay')}" class="errors text-danger form-text" th:errors="*{birthDay}">
             </div>
             <div class="col-5 px-2 mb-3">
-              <label for="floatingPassword">Sex</label>
+              <label for="floatingPassword">Giới tính</label>
               <div class="d-flex justify-content-start">
                 <div class="mx-3">
                   <input type="radio" name="gender" id="male" th:value="${true}" th:field="*{sex}">
@@ -85,7 +85,7 @@
             <div class="form-floating mb-3">
               <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
                 th:field="*{password}">
-              <label for="floatingPassword">Password</label>
+              <label for="floatingPassword">Mật khẩu</label>
               <div th:if="${#fields.hasErrors('password')}" class="errors text-danger form-text"
                 th:errors="*{password}">
               </div>
@@ -93,7 +93,7 @@
             <div class="form-floating mb-3">
               <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
                 th:field="*{passwordRepeat}">
-              <label for="floatingPassword">Password Repeat</label>
+              <label for="floatingPassword">Nhập lại mật</label>
               <div th:if="${#fields.hasErrors('passwordRepeat')}" class="errors text-danger form-text"
                 th:errors="*{passwordRepeat}">
               </div>
@@ -107,7 +107,7 @@
               </div>
             </div>
             <div th:if="${message}" class="">
-              <p class="text-danger" th:text="${message}"></p>
+              <p th:class="${'text-' + typeMessage}" th:text="${message}"></p>
             </div>
             <div class="col-12">
               <button class="btn btn-primary w-100" type="submit">Create Account</button>

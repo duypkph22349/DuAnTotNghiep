@@ -81,7 +81,7 @@
                                                     th:value="${cartDetail.quantity}" onchange="updateQuantity(this)"
                                                     pattern="[0-9]+"
                                                     title="Please enter a valid quantity (only digits)">
-                                                <div class="input-group-btn">
+                                                <div class="input-group-btn" >
                                                     <button class="btn btn-sm btn-primary btn-plus">
                                                         <i class="fa fa-plus"></i>
                                                     </button>
@@ -241,7 +241,7 @@
                         <div class="border-bottom pb-2">
                             <div class="d-flex justify-content-between mb-3">
                                 <h6>Tổng giá sản phẩm</h6>
-                                <h6 id="TotalCookieMoney"></h6>
+                                <h6 id="TotalCookieMoney"  th:text="${#strings.replace(#numbers.formatDecimal(0, 0, 'COMMA', 2, 'POINT'), '.00', '')} + '0 ₫'"></h6>
                             </div>
                         </div>
                         <div class="pt-2">
@@ -257,6 +257,7 @@
     <!-- Cart End -->
     <script th:src="@{/assets/js/user/product/cart.js}"></script>
     <script th:src="@{/assets/js/user/product/cartcookie.js}"></script>
+    <script th:src="@{/assets/js/user/product/checkout.js}"></script>
 </body>
 
 </html>
