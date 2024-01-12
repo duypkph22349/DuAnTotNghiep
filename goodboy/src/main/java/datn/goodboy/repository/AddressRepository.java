@@ -16,4 +16,9 @@ public interface AddressRepository extends JpaRepository<Address, UUID> {
             select a from Address a where a.id_customer.id = :id_customer""")
     List<Address> findById_customer(@Param("id_customer") UUID id);
 
+    @Query(value = """
+            select * from addresss a where a.id_customer = :id_customer
+            """,nativeQuery = true )
+    List<Address> findAddressByIDCustomer(@Param("id_customer") UUID id);
+
 }

@@ -3,9 +3,15 @@ const token = "2b4b5f3e-ac78-11ee-a6e6-e60958111f48";
 const serviceID = 53320;
 const shopDistrictId = 1482;
 const shopWardCode = 11007;
+
 const selectCity = document.querySelector("#city");
 const districtSelect = document.querySelector("#district");
 const selectWardCode = document.querySelector("#ward");
+
+const selectCityCustomer = document.querySelector("#city_customer");
+const districtSelectCustomer = document.querySelector("#district_customer");
+const selectWardCodeCustomer = document.querySelector("#ward_customer");
+
 const ERROR_BORDER = '1px solid #dd3333'
 const SUCCESS_BORDER = '1px solid green'
 var API_BASE_URL = "/test/api/cart";
@@ -698,54 +704,433 @@ const get_quantity_of_cart = () => {
 }
 
 // ONLOAD
-function loadCustomer(){
+async function loadCustomer(){
     get_quantity_of_cart()
+    getAllprovideCustomer()
     var customer_view = document.querySelector("#infor_customer")
 
     if(localStorage.getItem("type_cart") === "login"){
-
-        customer_view.innerHTML = `
-         <div class="row"
-                  style="
-                  padding: 12px 12px 12px 16px;
-                  border: 1px solid #e5e5e5;
-                  border-left: 6px solid #FFD333;"
-                >
-                    <div style="width: 87%;color:#000">
-                        <div >
-                            <span style="display: inline-block;font-weight: bold">Tám Hoàng</span> <span>0326235071</span>
-                            
-                            <button 
-                            data-toggle="modal" 
-                            data-target="#model_list_address" 
+        await axios.get("/client/address/find-all").then((e) => {
+            console.log(e.data)
+            if(e.data.length === 0){
+                customer_view.innerHTML =
+             `
+                 <div class="row"
+                    > Bạn chưa có địa chỉ
+                         <button 
+                            data-toggle="modal"
+                            data-target="#modelId" 
                             style="
                                 display: inline-block;
                                 color: #004aad;
                                 cursor: pointer;
-                                border: 0;
+                                border: none;
                                 background: none;       
-                             ">Thay đổi</button>
-                        </div>
-                        <div>
-                            <div>
-                                Đường Trần Thánh Tông
-                            </div>
-                            <div>
-                                Xã Minh Tân, Huyện Kiến Xương, Tỉnh Thái Bình
-                            </div>
-                        </div>          
+                             ">Thêm địa chỉ mới</button>
                     </div>
-                    <button style="border-color: #000;background-color: #fff;   
+             `
+            }else{
+                var text = ""
+               e.data.map((e) => {
+                   if(e.trangThai === true){
+                       customer_view.innerHTML = `
+                       <div class="row"
+                      style="
+                      padding: 12px 12px 12px 16px;
+                      border: 1px solid #e5e5e5;
+                      border-left: 6px solid #FFD333;"
+                    >
+                        <div style="width: 87%;color:#000">
+                            <div >
+                                <span style="display: inline-block;font-weight: bold">${e.tenNguoiNhan}</span> <span>${e.sdt_nguoi_nhan}</span>
+                                
+                                <button 
+                                data-toggle="modal" 
+                                data-target="#model_list_address" 
+                                onclick="showListAddress()"
+                                style="
+                                    display: inline-block;
+                                    color: #004aad;
+                                    cursor: pointer;
+                                    border: 0;
+                                    background: none;       
+                                 ">Thay đổi</button>
+                            </div>
+                            <div>
+                                <div>
+                                    ${e.tenDiaChi}
+                                </div>
+                                <div>
+                                    ${e.xa},${e.huyen},${e.thanh_pho}
+                                </div>
+                            </div>          
+                        </div>
+                        <button style="border-color: #000;background-color: #fff;   
+                                min-width: 80px;
+                                height: 28px;
+                                line-height: 26px;
+                                font-size: 12px; 
+                                font-weight: 600;
+                                margin-top: 25px;" data-toggle="modal" data-target="#modelId" >
+                            sửa địa chỉ
+                        </button>
+                    </div>
+        `
+                       return;
+                   }
+               })
+
+
+                document.querySelector("#modal_checkout").innerHTML = text
+            }
+        }).catch((e) => {
+            console.log(e)
+        })
+    }
+}
+
+async function showListAddress () {
+    await axios.get("/client/address/find-all").then((e) => {
+        if(e.data.length === 0){
+            customer_view.innerHTML =
+                `
+                 <div class="row"
+                    > Bạn chưa có địa chỉ
+                         <button 
+                            data-toggle="modal"
+                            data-target="#modelId" 
+                            style="
+                                display: inline-block;
+                                color: #004aad;
+                                cursor: pointer;
+                                border: none;
+                                background: none;       
+                             ">Thêm địa chỉ mới</button>
+                    </div>
+             `
+        }else{
+            var text = ""
+            e.data.map((e) =>{
+                text += `
+                    <div class="row"
+                         style="
+                          padding: 12px 12px 12px 16px;
+                          border: 1px solid #e5e5e5;
+                          border-left: 6px solid #FFD333;
+                          width: 40%;
+                          font-size: 13px;
+                          margin-left: 15px;
+                          cursor: pointer;
+                          margin-top: 20px;
+                          margin-left: 50px;
+                    "
+                    onclick="changeStatus(${String(e.id)})"
+                    >
+                        <div style="width: 87%;color:#000;" >
+                            <div >
+                                <span style="display: inline-block;font-weight: bold">${e.tenNguoiNhan}</span> <span>${e.sdt_nguoi_nhan}</span>
+                                  <button 
+                                style="
+                                    display: inline-block;
+                                    color: #004aad;
+                                    cursor: pointer;
+                                    border: 1px solid #004aad;
+                                 ">${e.trangThai === true ? "Mặc định" : ""}</button>
+                            </div>
+                            <div>
+                                <div>
+                                   ${e.tenDiaChi}
+                                </div>
+                                <div>
+                                    ${e.xa},${e.huyen},${e.thanh_pho}
+                                </div>
+                            </div>
+                        </div>
+                        <button style="border-color: #000;background-color: #fff;
                             min-width: 80px;
                             height: 28px;
                             line-height: 26px;
-                            font-size: 12px; 
+                            font-size: 12px;
                             font-weight: 600;
-                            margin-top: 25px;" data-toggle="modal" data-target="#modelId" >
-                        sửa địa chỉ
-                    </button>
-                </div>
-        `
+                            margin-top: 25px;" data-toggle="modal" data-target="#modelId" data-dismiss="modal"  aria-hidden="true" >
+                            sửa địa chỉ
+                        </button>
+                    </div>
+                    `
+            })
+            document.querySelector("#modal_checkout").innerHTML = text
+        }
+    }).catch((e) => {
+        console.log(e)
+    })
+}
+
+// function
+function getAllprovideCustomer() {
+    // const thisOrder = document.getElementById(`hoaDon${orderId}`);
+    fetch( `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            token: token,
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            const defaultOption = document.createElement("option");
+            defaultOption.value = -1; // Set the value as needed
+            defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            selectCityCustomer.appendChild(defaultOption);
+            const options = data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                // option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].ProvinceName; // Set the text of the option
+                option.setAttribute("providecode", options[i].ProvinceID);
+                selectCityCustomer.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function getAllDistrictCustomer() {
+    const selectedOption = selectCityCustomer.options[selectCityCustomer.selectedIndex];
+
+    const customAttribute = selectedOption.getAttribute("providecode");
+    const provinceid = parseInt(customAttribute);
+    document.querySelector("#cityCode").value = provinceid
+    const selectDistrict = document.querySelector(` #district_customer`);
+
+    axios
+        .get(`https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district`, {
+            params: {
+                province_id: provinceid,
+            },
+            headers: {
+                Accept:  "application/json",
+                token: token,
+            },
+
+        })
+        .then((res) => {
+            const options = res.data.data;
+
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].DistrictName; // Set the text of the option
+                option.setAttribute("districtcode", options[i].DistrictID);
+                selectDistrict.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function getFullWardCodeCustomer() {
+    const selectedOption = districtSelectCustomer.options[districtSelectCustomer.selectedIndex];
+    const customAttribute = selectedOption.getAttribute("districtcode");
+    const districtid = parseInt(customAttribute);
+    document.querySelector("#districtCode").value = districtid
+    axios.get( `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward`, {
+        headers: {
+            Accept: "application/json",
+            token: token,
+        },
+        params: {
+            district_id: districtid,
+        }
+    })
+        .then((res) => {
+            //remove all child
+            const options = res.data.data;
+            for (let i = 0; i < options.length; i++) {
+                const option = document.createElement("option");
+                option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+                option.text = options[i].WardName; // Set the text of the option
+                option.setAttribute("WardCode", options[i].WardCode);
+                selectWardCodeCustomer.appendChild(option); // Add the option to the select element
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function validateAddress() {
+    // VALUE
+    const city = selectCityCustomer.options[selectCityCustomer.selectedIndex].text;
+    const district = districtSelectCustomer.options[districtSelectCustomer.selectedIndex].text;
+    const ward = selectWardCodeCustomer.options[selectWardCodeCustomer.selectedIndex].text;
+    const email = document.querySelector("#email_customer").value;
+    const name_house = document.querySelector("#address_customer").value;
+    const name = document.querySelector("#name_customer").value;
+    const phone_number = document.querySelector("#phone_number_customer").value;
+
+    // VIEW
+    const city_view = selectCityCustomer;
+    const district_view = districtSelectCustomer;
+    const ward_view = selectWardCodeCustomer;
+    const email_view = document.querySelector("#email_customer");
+    const name_house_view = document.querySelector("#address_customer");
+    const name_view = document.querySelector("#name_customer");
+    const phone_number_view = document.querySelector("#phone_number_customer");
+
+    //ERROR
+    const city_error = document.querySelector("#city_customer_error");
+    const district_error = document.querySelector("#district_customer_error");
+    const ward_error = document.querySelector("#ward_customer_error");
+    const email_error = document.querySelector("#email_customer_error");
+    const name_house_error = document.querySelector("#address_customer_error");
+    const name_error = document.querySelector("#name_customer_error");
+    const phone_error = document.querySelector("#phone_number_customer_error");
+
+    // REGEX
+    var phone_regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+    var email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    var flag = 0;
+
+    if(name !== "" && name !== null){
+        if(name.trim() === ""){
+            flag++;
+            name_view.style.border = ERROR_BORDER
+            name_error.style.display = 'block'
+        }else{
+            name_view.style.border = SUCCESS_BORDER
+            name_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        name_view.style.border = ERROR_BORDER
+        name_error.style.display = 'block'
     }
 
+    if(email !== "" && email !== null){
+        if(!email_regex.test(email)){
+            flag++;
+            email_view.style.border = ERROR_BORDER
+            email_error.style.display = 'block'
+        }else{
+            email_view.style.border = SUCCESS_BORDER
+            email_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        email_view.style.border = ERROR_BORDER
+        email_error.style.display = 'block'
+    }
+
+    if(phone_number !== "" && phone_number !== null){
+        if(!phone_regex.test(phone_number)){
+            flag++;
+            phone_number_view.style.border = ERROR_BORDER
+            phone_error.style.display = 'block'
+        }else{
+            phone_number_view.style.border = SUCCESS_BORDER
+            phone_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        phone_number_view.style.border = ERROR_BORDER
+        phone_error.style.display = 'block'
+    }
+
+    if(city !== "" && city !== null && city !== undefined && city && city !== "Chọn Tỉnh" ){
+        city_view.style.border = SUCCESS_BORDER
+        city_error.style.display = 'none'
+    }else{
+        flag++;
+        city_view.style.border = ERROR_BORDER
+        city_error.style.display = 'block'
+    }
+
+    if(district !== "" && district !== null && district !== undefined && district !== "Chọn quận/huyện"){
+        district_view.style.border = SUCCESS_BORDER
+        district_error.style.display = 'none'
+    }else{
+        flag++;
+        district_view.style.border = ERROR_BORDER
+        district_error.style.display = 'block'
+    }
+
+    if(ward !== "" && ward !== null && ward !== undefined && ward !== "Chọn phường/xã"){
+        ward_view.style.border = SUCCESS_BORDER
+        ward_error.style.display = 'none'
+    }else{
+        flag++;
+        ward_view.style.border = ERROR_BORDER
+        ward_error.style.display = 'block'
+    }
+
+    if(name_house !== "" && name_house !== null){
+        if(name_house.trim() !== ""){
+            name_house_view.style.border = SUCCESS_BORDER
+            name_house_error.style.display = 'none'
+        }
+    }else{
+        flag++;
+        name_house_view.style.border = ERROR_BORDER
+        name_house_error.style.display = 'block'
+    }
+
+    if(flag === 0 ){
+        const ward_selected = selectWardCodeCustomer.options[selectWardCodeCustomer.selectedIndex];
+        const ward_attribute = ward_selected.getAttribute("WardCode");
+        const code_ward = parseInt(ward_attribute);
+
+        document.querySelector("#wardCode").value = code_ward
+        document.querySelector("#btn_add_address").disabled = false
+    }else{
+        document.querySelector("#btn_add_address").disabled = true
+    }
+
+    return flag;
+}
+
+const addAddress = async() => {
+    // VALUE
+    const city = selectCityCustomer.options[selectCityCustomer.selectedIndex].text;
+    const district = districtSelectCustomer.options[districtSelectCustomer.selectedIndex].text;
+    const ward = selectWardCodeCustomer.options[selectWardCodeCustomer.selectedIndex].text;
+    const email = document.querySelector("#email_customer").value;
+    const name_house = document.querySelector("#address_customer").value;
+    const name = document.querySelector("#name_customer").value;
+    const phone_number = document.querySelector("#phone_number_customer").value;
+    const code_ward = document.querySelector("#wardCode").value;
+    const code_district = document.querySelector("#districtCode").value;
+    const code_city = document.querySelector("#cityCode").value;
+    const is_default = document.querySelector("#default_customer").checked
+    console.log(is_default)
+
+    var address = {
+        "name" : name,
+        "email" : email,
+        "phone_number" : phone_number,
+        "code_city" : code_city,
+        "code_district" : code_district,
+        "code_ward" : code_ward,
+        "city" : city,
+        "ward" : ward,
+        "district" : district,
+        "address" : name_house,
+        "is_default": is_default
+    }
+
+    await axios.post("/client/address/add", address).then(res => {
+        console.log(res.data)
+    }).catch(err => {
+        console.log(err)
+    })
+
+    location.reload()
+}
+
+const changeStatus = async (id) => {
+    console.log(id)
+     await axios.put(`/client/address/change-status/${id}`).then(res => {
+         location.reload()
+     }).catch(err => {
+         console.log(err)
+     })
 }
