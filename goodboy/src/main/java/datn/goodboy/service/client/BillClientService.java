@@ -48,6 +48,7 @@ public class BillClientService {
         if(req.getPayment_method() == 2){
             bill.setPay(payService.getVNPay());
             bill.setStatus_pay(1);
+            bill.setStatus(2);
         }else{
             bill.setPay(payService.getCashOnDelivery());
             bill.setStatus_pay(0);

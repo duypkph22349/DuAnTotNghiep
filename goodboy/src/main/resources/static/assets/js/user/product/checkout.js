@@ -419,6 +419,7 @@ async function checkout(){
     const coupoun_value = JSON.parse(document.querySelector("#coupoun_object").getAttribute("coupoun"));
     const total_money = document.querySelector("#total_price_value").value;
     const id_bill = JSON.parse(localStorage.getItem("bill"));
+    const code_bill = JSON.parse(localStorage.getItem("bill_code"));
     var payment_method = 1;
     var radios = document.getElementsByName('payment');
     const address = name_house + ", " + ward + ", " + district + ", " + city;
@@ -446,20 +447,45 @@ async function checkout(){
                 "bill": id_bill,
                 "payment_method": payment_method
             }
-            await axios.post(`/client/bill/add`, billRequest).then(
-                e => {
-                    console.log(JSON.parse(localStorage.getItem("cart_details")))
-                    if(localStorage.getItem("type_cart") === "login"){
-                        JSON.parse(localStorage.getItem("cart_details")).map((e) => {
-                            deleteCartDetail(e);
-                        })
-                    }else{
-                        deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
+
+            if(payment_method === "1"){
+                await axios.post(`/client/bill/add`, billRequest).then(
+                    e => {
+                        console.log(JSON.parse(localStorage.getItem("cart_details")))
+                        if(localStorage.getItem("type_cart") === "login"){
+                            JSON.parse(localStorage.getItem("cart_details")).map((e) => {
+                                deleteCartDetail(e);
+                            })
+                        }else{
+                            deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
+                        }
+                        new Notify({
+                            status: "success",
+                            title: "Thành công",
+                            text: "Đơn hàng đã được tạo thành công.",
+                            effect: "fade",
+                            speed: 300,
+                            customClass: "",
+                            customIcon: "",
+                            showIcon: true,
+                            showCloseButton: false,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            gap: 20,
+                            distance: 20,
+                            type: 1,
+                            position: "right top",
+                            customWrapper: "",
+                        });
+                        setTimeout(() =>{
+                            window.location.href = "/index"
+                        }, 500)
                     }
+                ).catch(error => {
                     new Notify({
-                        status: "success",
-                        title: "Thành công",
-                        text: "Đơn hàng đã được tạo thành công.",
+                        status: "error",
+                        title: "Thêm thất bại",
+                        text: error.response ? error.response.data : error.message,
                         effect: "fade",
                         speed: 300,
                         customClass: "",
@@ -474,32 +500,13 @@ async function checkout(){
                         position: "right top",
                         customWrapper: "",
                     });
-                    setTimeout(() =>{
-                        window.location.href = "/index"
-                    }, 500)
-                }
-            ).catch(error => {
-                new Notify({
-                    status: "error",
-                    title: "Thêm thất bại",
-                    text: error.response ? error.response.data : error.message,
-                    effect: "fade",
-                    speed: 300,
-                    customClass: "",
-                    customIcon: "",
-                    showIcon: true,
-                    showCloseButton: false,
-                    autoclose: true,
-                    autotimeout: 3000,
-                    gap: 20,
-                    distance: 20,
-                    type: 1,
-                    position: "right top",
-                    customWrapper: "",
-                });
-            }, 400)
-
-
+                }, 400)
+            }else{
+                await axios.post(`/api/vnpay/payment?total=${total_money}&orderInfor=${code_bill}&orderCode=${code_bill}`,).then(e => {
+                    localStorage.setItem("bill_success", JSON.stringify(billRequest))
+                    window.location.href = e.data
+                })
+            }
         }else{
             new Notify({
                 status: "error",

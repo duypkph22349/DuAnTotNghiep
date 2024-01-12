@@ -145,6 +145,9 @@ public class CartCookieService {
       if (productDetail.getQuantity() < cartItems.getOrDefault(productId, 0) + quantity) {
         throw new RuntimeException("Sản phẩm chỉ còn: " + productDetail.getQuantity());
       }
+      if(cartItems.getOrDefault(productId, 0) + quantity > 5){
+        throw new RuntimeException(("Bạn chỉ có thể 5 sản phẩm.Vui lòng chọn sản phẩm khác"));
+      }
       cartItems.put(productId, cartItems.getOrDefault(productId, 0) + quantity);
       // request.getSession().setAttribute(CART_COOKIE_NAME, cartItems);
       saveCartToCookie(cartItems, request, response);
