@@ -52,6 +52,9 @@ public class AddressClientService {
         }
 
         Address address = new Address();
+        if(req.getId() != ""){
+            address.setId(UUID.fromString(req.getId()));
+        }
         address.setDistrictCode(req.getCode_district());
         address.setProvinceCode(req.getCode_city());
         address.setWardCode(req.getCode_ward());
@@ -63,6 +66,7 @@ public class AddressClientService {
         address.setTenNguoiNhan(req.getName());
         address.setId_customer(customer);
         address.setTrangThai(req.getIs_default());
+        address.setEmail(req.getEmail());
         return addressRepository.save(address);
     }
 
@@ -70,10 +74,10 @@ public class AddressClientService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account user = userService.getAccountByEmail(authentication.getName());
         Customer customer = customerRepository.findById(user.getCustomer().getId()).orElse(null);
-        ArrayList<Address> list = (ArrayList<Address>) addressRepository.findAddressByIDCustomer(user.getCustomer().getId());
+        ArrayList<Address> listAddress = (ArrayList<Address>) addressRepository.findAddressByIDCustomer(user.getCustomer().getId());
         Address address = addressRepository.findById(id).get();
 
-        for (Address e : list) {
+        for (Address e : listAddress) {
             e.setTrangThai(false);
             addressRepository.save(address);
         }
@@ -84,5 +88,23 @@ public class AddressClientService {
             return "success";
         }
         return "not found";
+    }
+
+    public String deleteAddress(UUID id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account user = userService.getAccountByEmail(authentication.getName());
+        Customer customer = customerRepository.findById(user.getCustomer().getId()).orElse(null);
+        ArrayList<Address> listAddress = (ArrayList<Address>) addressRepository.findAddressByIDCustomer(user.getCustomer().getId());
+
+        Address address = addressRepository.findById(id).get();
+        if(address.getTrangThai() == true){
+            for (Address e : listAddress) {
+                e.setTrangThai(true);
+                addressRepository.save(address);
+                break;
+            }
+        }
+        addressRepository.delete(address);
+        return "success";
     }
 }

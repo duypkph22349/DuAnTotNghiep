@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class AddressRequest {
 
+    String id;
+
     String name;
 
     String email;

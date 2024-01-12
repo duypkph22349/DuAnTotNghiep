@@ -33,12 +33,22 @@ public class AddressClientRestController {
         }
     }
 
-    @PutMapping("/change-status")
-    public ResponseEntity<?> changeStatus(@RequestParam("id") UUID id){
+    @PutMapping("/change-status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable("id") UUID id){
         try{
             return ResponseEntity.ok(addressClientService.changeStatus(id));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteAddress(@PathVariable("id") UUID id){
+        try{
+            return ResponseEntity.ok(addressClientService.deleteAddress(id));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 }

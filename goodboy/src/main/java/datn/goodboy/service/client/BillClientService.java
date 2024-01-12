@@ -1,13 +1,14 @@
 package datn.goodboy.service.client;
 
-import datn.goodboy.model.entity.Bill;
-import datn.goodboy.model.entity.BillDetail;
-import datn.goodboy.model.entity.ProductDetail;
-import datn.goodboy.model.entity.VoucherDetail;
+import datn.goodboy.model.entity.*;
 import datn.goodboy.model.request.BillClientRequest;
 import datn.goodboy.repository.*;
+import datn.goodboy.security.service.AccountInfoService;
 import datn.goodboy.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,6 +34,12 @@ public class BillClientService {
     @Autowired
     private BillDetailRepository billDetailRepository;
 
+    @Autowired
+    private AccountInfoService userService;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
     public Bill addBill(BillClientRequest req) {
         Bill bill = req.getBill();
 
@@ -52,6 +59,12 @@ public class BillClientService {
         }else{
             bill.setPay(payService.getCashOnDelivery());
             bill.setStatus_pay(0);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            Account user = userService.getAccountByEmail(authentication.getName());
+            bill.setCustomer(user.getCustomer());
         }
 
         for(BillDetail billDetail: bill.getBillDetail()){
