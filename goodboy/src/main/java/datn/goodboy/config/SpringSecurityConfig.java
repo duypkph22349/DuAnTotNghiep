@@ -110,6 +110,9 @@ public class SpringSecurityConfig {
           authorize.requestMatchers("/sendvertifyemail", "/vertifyemail").authenticated();
         })
         .authorizeHttpRequests(authorize -> {
+          authorize.requestMatchers("/user/passwordchange", "/user/change_password").hasAnyAuthority("USER");
+        })
+        .authorizeHttpRequests(authorize -> {
           authorize.requestMatchers("/admin/*/delete/**").hasAnyAuthority("ADMIN");
         })
         .authorizeHttpRequests((authorize) -> {

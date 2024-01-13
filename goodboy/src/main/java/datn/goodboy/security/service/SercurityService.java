@@ -80,14 +80,22 @@ public class SercurityService {
     try {
       Optional<Employee> employee = employeInfoRepository.getuser(username);
       Optional<Account> account = accountInfoRepository.getuser(username);
+
       if (employee.isPresent()) {
-        employee.get().setPassword(encoder.encode(password));
+        String encodedPassword = encoder.encode(password);
+        employee.get().setPassword(encodedPassword);
         employeInfoRepository.save(employee.get());
+        System.out.println("Password updated for Employee: " + username);
       } else if (account.isPresent()) {
-        account.get().setPassword(encoder.encode(password));
+        String encodedPassword = encoder.encode(password);
+        account.get().setPassword(encodedPassword);
         accountInfoRepository.save(account.get());
+        System.out.println("Password updated for Account: " + username);
+      } else {
+        System.out.println("User not found: " + username);
       }
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

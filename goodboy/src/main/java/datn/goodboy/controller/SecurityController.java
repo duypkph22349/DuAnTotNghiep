@@ -315,22 +315,14 @@ public class SecurityController {
     } catch (PasswordNotMatchException e) {
       model.addAttribute("message", e.getMessage());
       return "/user2/change_password.html";
-    } catch (AuthenticationException e) {
-      thRedirectAttributes.addFlashAttribute("message", "Đăng nhập để tiếp tục");
-      return "redirect:/login";
     }
   }
 
   @GetMapping("/user/change_password")
   public String changePassword(Model model, RedirectAttributes thRedirectAttributes) {
-    try {
-      userPasswordRequest = securityService.getUserChangePassword();
-      model.addAttribute("userchangepassword", securityService.getUserChangePassword());
-      return "/user2/change_password.html";
-    } catch (AuthenticationException e) {
-      thRedirectAttributes.addFlashAttribute("message", "Đăng nhập để tiếp tục");
-      return "redirect:/login";
-    }
+    userPasswordRequest = securityService.getUserChangePassword();
+    model.addAttribute("userchangepassword", securityService.getUserChangePassword());
+    return "/user2/change_password.html";
   }
 
 }
