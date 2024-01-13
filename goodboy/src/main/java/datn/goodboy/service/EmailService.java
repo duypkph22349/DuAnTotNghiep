@@ -11,9 +11,12 @@ import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.repository.AccountRepository;
+import datn.goodboy.repository.BillRepository;
+import datn.goodboy.repository.VoucherRepository;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
 
 @Component
 public class EmailService {
@@ -65,8 +68,10 @@ public class EmailService {
     }
   }
 
-  public void sendVoucherMail(Voucher voucher, String title) {
+  @Transactional
+  public void sendVoucherMail(Integer idvoucher, String title) {
     MimeMessage message = emailSender.createMimeMessage();
+    Voucher voucher = vouhcerRepository.findById(idvoucher).orElse(null);
     accountRepository.findAll().stream().forEach(
         cutomer -> {
           try {
