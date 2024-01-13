@@ -50,7 +50,29 @@ async function addToCart() {
               customWrapper: "",
             });
             return;
-          } else {
+          }
+          else if(quantityValue > 5){
+            new Notify({
+              status: "warning",
+              title: "Đã có lỗi khi thêm sản phẩm",
+              text: `Bạn chỉ có thể thêm 5 sản phẩm`,
+              effect: "fade",
+              speed: 300,
+              customClass: "",
+              customIcon: "",
+              showIcon: true,
+              showCloseButton: false,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: "right top",
+              customWrapper: "",
+            });
+            return;
+          }
+          else {
              await axios
               .get(
                 `${API_BASE_URL}/add/${idproductselect}?quantity=${quantityValue}`
