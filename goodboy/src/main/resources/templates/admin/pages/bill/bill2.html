@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+    xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Bin-It">
@@ -16,11 +16,11 @@
     <title>Bill</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -30,13 +30,13 @@
 
     <!-- Bootstrap 5 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
     <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
 
     <!-- Bootstrap SweetAlert -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
@@ -47,585 +47,585 @@
 
 
 <body>
-<section layout:fragment="content">
-    <div class="pagetitle">
-        <h1>Chi Tiết Hóa Đơn </h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="http://localhost:8080/admin/bill/dsBill">Hóa Đơn</a></li>
-                <li class="breadcrumb-item active">Chi Tiết Hóa Đơn</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
+    <section layout:fragment="content">
+        <div class="pagetitle">
+            <h1>Chi Tiết Hóa Đơn </h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="http://localhost:8080/admin/bill/dsBill">Hóa Đơn</a></li>
+                    <li class="breadcrumb-item active">Chi Tiết Hóa Đơn</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
 
-        .item label {
-            display: inline-block;
-            min-width: 300px;
-            padding: 12px 0;
-            font-size: 16px;
-        }
+            .item label {
+                display: inline-block;
+                min-width: 300px;
+                padding: 12px 0;
+                font-size: 16px;
+            }
 
-        .lf .item span {
-            padding: 4px 8px;
-            border-radius: 12px;
-            text-align: center;
-        }
+            .lf .item span {
+                padding: 4px 8px;
+                border-radius: 12px;
+                text-align: center;
+            }
 
-        .item span,
-        .item input {
-            font-size: 16px;
-        }
+            .item span,
+            .item input {
+                font-size: 16px;
+            }
 
-        .tabs {
-            display: flex;
-            position: relative;
-        }
+            .tabs {
+                display: flex;
+                position: relative;
+            }
 
-        .tabs .line {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 0;
-            height: 6px;
-            border-radius: 15px;
-            background-color: #36d88d;
-            transition: all 0.2s ease;
-        }
+            .tabs .line {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 6px;
+                border-radius: 15px;
+                background-color: #36d88d;
+                transition: all 0.2s ease;
+            }
 
-        .tab-item {
-            min-width: 80px;
-            padding: 16px 20px 11px 20px;
-            font-size: 20px;
-            text-align: center;
-            color: #146c43;
-            background-color: #fff;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            border-bottom: 5px solid transparent;
-            opacity: 0.6;
-            cursor: pointer;
-            transition: all 0.5s ease;
-        }
+            .tab-item {
+                min-width: 80px;
+                padding: 16px 20px 11px 20px;
+                font-size: 20px;
+                text-align: center;
+                color: #146c43;
+                background-color: #fff;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                border-bottom: 5px solid transparent;
+                opacity: 0.6;
+                cursor: pointer;
+                transition: all 0.5s ease;
+            }
 
-        .tab-icon {
-            font-size: 24px;
-            width: 32px;
-            position: relative;
-            top: 2px;
-        }
+            .tab-icon {
+                font-size: 24px;
+                width: 32px;
+                position: relative;
+                top: 2px;
+            }
 
-        .tab-item:hover {
-            opacity: 1;
-            background-color: rgba(194, 53, 100, 0.05);
-            border-color: rgba(194, 53, 100, 0.1);
-        }
+            .tab-item:hover {
+                opacity: 1;
+                background-color: rgba(194, 53, 100, 0.05);
+                border-color: rgba(194, 53, 100, 0.1);
+            }
 
-        .tab-item.active {
-            opacity: 1;
-            font-weight: 600;
-        }
+            .tab-item.active {
+                opacity: 1;
+                font-weight: 600;
+            }
 
-        .scrollable-table {
-            max-height: 520px;
-            /* Đặt chiều cao tối đa của bảng */
-            overflow-y: auto;
-            /* Tạo thanh cuộn dọc khi vượt quá chiều cao */
-        }
-    </style>
+            .scrollable-table {
+                max-height: 520px;
+                /* Đặt chiều cao tối đa của bảng */
+                overflow-y: auto;
+                /* Tạo thanh cuộn dọc khi vượt quá chiều cao */
+            }
+        </style>
 
-    <span id="status" th:data-value="${bill.status}"></span>
-    <span id="id" th:data-value="${bill.id}"></span>
-    <div class="container-md">
-        <div class="status  mt-2 p-4 " style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-            <div class="top d-flex justify-content-center align-items-center">
-                <div class="tabs">
-                    <div data-value="6" id="tab_6" class="tab-item">
-                        <i class="tab-icon bi bi-cart"></i>
-                        Hủy Hàng
+        <span id="status" th:data-value="${bill.status}"></span>
+        <span id="id" th:data-value="${bill.id}"></span>
+        <div class="container-md">
+            <div class="status  mt-2 p-4 " style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                <div class="top d-flex justify-content-center align-items-center">
+                    <div class="tabs">
+                        <div data-value="6" id="tab_6" class="tab-item">
+                            <i class="tab-icon bi bi-cart"></i>
+                            Hủy Hàng
+                        </div>
+                        <div data-value="1" id="tab_1" class="tab-item">
+                            <i class="tab-icon bi bi-cart"></i>
+                            Chờ xác nhận
+                        </div>
+
+                        <div data-value="2" id="tab_2" class="tab-item">
+                            <i class="tab-icon bi bi-cart"></i>
+                            Chờ lấy hàng
+                        </div>
+                        <div data-value="3" id="tab_3" class="tab-item">
+                            <i class="tab-icon bi bi-cart-check"></i>
+                            Chờ giao hàng
+                        </div>
+                        <div data-value="4" id="tab_4" class="tab-item">
+                            <i class="tab-icon bi bi-car-front-fill"></i>
+                            Đang giao hàng
+                        </div>
+                        <div data-value="5" id="tab_5" class="tab-item">
+                            <i class="tab-icon bi bi-check-lg"></i>
+                            Thành công
+                        </div>
+                        <div class="line"></div>
                     </div>
-                    <div data-value="1" id="tab_1" class="tab-item">
-                        <i class="tab-icon bi bi-cart"></i>
-                        Chờ xác nhận
+                </div>
+                <hr>
+                <div style="display: none" class="bottom justify-content-between">
+                    <div class="lf">
+                        <a href="">
+                            <button class="btn btn-primary">Hủy Hàng</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-primary">Chờ xác nhận</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-primary">Chờ lấy hàng</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-primary">Chờ giao hàng</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-primary">Đang giao hàng</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-danger">Đã giao hàng</button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-danger">Thành công</button>
+                        </a>
                     </div>
-
-                    <div data-value="2" id="tab_2" class="tab-item">
-                        <i class="tab-icon bi bi-cart"></i>
-                        Chờ lấy hàng
+                    <div class="rg">
+                        <a href="">
+                            <button class="btn btn-info">Chi Tiết</button>
+                        </a>
                     </div>
-                    <div data-value="3" id="tab_3" class="tab-item">
-                        <i class="tab-icon bi bi-cart-check"></i>
-                        Chờ giao hàng
-                    </div>
-                    <div data-value="4" id="tab_4" class="tab-item">
-                        <i class="tab-icon bi bi-car-front-fill"></i>
-                        Đang giao hàng
-                    </div>
-                    <div data-value="5" id="tab_5" class="tab-item">
-                        <i class="tab-icon bi bi-check-lg"></i>
-                        Thành công
-                    </div>
-                    <div class="line"></div>
                 </div>
             </div>
-            <hr>
-            <div style="display: none" class="bottom justify-content-between">
-                <div class="lf">
-                    <a href="">
-                        <button class="btn btn-primary">Hủy Hàng</button>
-                    </a>
-                    <a href="">
-                        <button class="btn btn-primary">Chờ xác nhận</button>
-                    </a>
-                    <a href="">
-                        <button class="btn btn-primary">Chờ lấy hàng</button>
-                    </a>
-                    <a href="">
-                        <button class="btn btn-primary">Chờ giao hàng</button>
-                    </a>
-                    <a href="">
-                        <button class="btn btn-primary">Đang giao hàng</button>
-                    </a>
-                    <a href="">
-                        <button class="btn btn-danger">Đã giao hàng</button>
-                    </a>
-                    <a href="">
-                        <button class="btn btn-danger">Thành công</button>
-                    </a>
-                </div>
-                <div class="rg">
-                    <a href="">
-                        <button class="btn btn-info">Chi Tiết</button>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-            <div class="top d-flex justify-content-between">
-                <h2>THÔNG TIN ĐƠN HÀNG</h2>
-                <button onclick="update()" class="btn btn-primary"
+            <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                <div class="top d-flex justify-content-between">
+                    <h2>THÔNG TIN ĐƠN HÀNG</h2>
+                    <button onclick="update()" class="btn btn-primary"
                         th:if="${bill.status != 4 and bill.status != 5 and bill.status != 6}"
                         style="font-size: 16px">Update</button>
 
-            </div>
-            <hr>
-            <div class="info-order">
-                <div class="row">
-                    <div class="col-6 lf">
+                </div>
+                <hr>
+                <div class="info-order">
+                    <div class="row">
+                        <div class="col-6 lf">
 
-                        <div class="item code">
-                            <label>Mã Đơn Hàng</label>
-                            <input hidden id="billId" type="text" th:value="${bill.id}">
-                            <span id="code" th:text="${bill.code}"
-                                  style="background-color: rgb(206, 240, 240);"></span>
-                        </div>
-                        <div class="item type">
-                            <label>Loại Đơn Hàng</label>
-                            <span th:text="${bill.loaiDon eq 0 ? 'Tại quầy' : bill.loaiDon eq 1 ? 'Online' : ''}"
-                                  style="background-color: rgb(206, 240, 240);"></span>
-                        </div>
-                        <div class="item status">
-                            <label>Trạng Thái</label>
-                            <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
-                            <span style="background-color:gold" th:if="${bill.status == 2}">Chờ lấy hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 3}">Chờ giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
-                            <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
-                            <span style="background-color:gold" th:if="${bill.status == 6}">Hủy hàng</span>
+                            <div class="item code">
+                                <label>Mã Đơn Hàng</label>
+                                <input hidden id="billId" type="text" th:value="${bill.id}">
+                                <span id="code" th:text="${bill.code}"
+                                    style="background-color: rgb(206, 240, 240);"></span>
+                            </div>
+                            <div class="item type">
+                                <label>Loại Đơn Hàng</label>
+                                <span th:text="${bill.loaiDon eq 0 ? 'Tại quầy' : bill.loaiDon eq 1 ? 'Online' : ''}"
+                                    style="background-color: rgb(206, 240, 240);"></span>
+                            </div>
+                            <div class="item status">
+                                <label>Trạng Thái</label>
+                                <span style="background-color:gold" th:if="${bill.status == 1}">Chờ xác nhận</span>
+                                <span style="background-color:gold" th:if="${bill.status == 2}">Chờ lấy hàng</span>
+                                <span style="background-color:gold" th:if="${bill.status == 3}">Chờ giao hàng</span>
+                                <span style="background-color:gold" th:if="${bill.status == 4}">Đang giao hàng</span>
+                                <span style="background-color:gold" th:if="${bill.status == 5}">Thành công</span>
+                                <span style="background-color:gold" th:if="${bill.status == 6}">Hủy hàng</span>
 
-                        </div>
-                        <div class="item dateOrder">
-                            <label>Ngày Đặt Hàng</label>
+                            </div>
+                            <div class="item dateOrder">
+                                <label>Ngày Đặt Hàng</label>
 
-                            <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}"
-                                  style="background-color: rgb(206, 240, 240);"></span>
-                        </div>
+                                <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}"
+                                    style="background-color: rgb(206, 240, 240);"></span>
+                            </div>
 
-                        <div class="item statusPay">
-                            <label>Trạng thái thanh toán</label>
-                            <span style="background-color:gold" th:if="${bill.status_pay == 0}">Chưa thanh
+                            <div class="item statusPay">
+                                <label>Trạng thái thanh toán</label>
+                                <span style="background-color:gold" th:if="${bill.status_pay == 0}">Chưa thanh
                                     toán</span>
-                            <span style="background-color:gold" th:if="${bill.status_pay == 1}">Đã thanh toán</span>
+                                <span style="background-color:gold" th:if="${bill.status_pay == 1}">Đã thanh toán</span>
+
+                            </div>
 
                         </div>
+                        <div class="col-6">
+                            <div class="item customerName">
+                                <label>Tên Khách Hàng</label>
+                                <span th:text="${bill.customer_name}">+00000</span>
+                            </div>
+                            <div class="item code">
+                                <label>Tên nhân viên</label>
+                                <span id="employee" th:text="${bill.employee?.name}"></span>
+                            </div>
+                            <div class="item phone">
+                                <label>Số Điện Thoại</label>
+                                <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }"
+                                    id="phoneNumber"
+                                    style="border: 2px solid transparent; padding-left: 3px; outline: none; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);"
+                                    th:value="${bill.phone}" />
 
-                    </div>
-                    <div class="col-6">
-                        <div class="item customerName">
-                            <label>Tên Khách Hàng</label>
-                            <span th:text="${bill.customer_name}">+00000</span>
-                        </div>
-                        <div class="item code">
-                            <label>Tên nhân viên</label>
-                            <span id="employee" th:text="${bill.employee?.name}"></span>
-                        </div>
-                        <div class="item phone">
-                            <label>Số Điện Thoại</label>
-                            <input th:disabled="${ bill.status == 4 or bill.status == 5 or bill.status == 6 }"
-                                   id="phoneNumber"
-                                   style="border: 2px solid transparent; padding-left: 3px; outline: none; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);"
-                                   th:value="${bill.phone}" />
+                                <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
+                            </div>
 
-                            <!--                            <span th:text="${bill.customer.phone}" >+00000</span>-->
-                        </div>
+                            <div class="item address">
+                                <label>Địa Chỉ</label>
+                                <span id="address" style="text-overflow: ellipsis;max-width: 10px; "
+                                    th:text="${bill.address}"></span>
 
-                        <div class="item address">
-                            <label>Địa Chỉ</label>
-                            <span id="address" style="text-overflow: ellipsis;max-width: 10px; "
-                                  th:text="${bill.address}"></span>
+                            </div>
 
-                        </div>
-
-                        <div class="item totalMoney">
-                            <label>Tổng tiền</label>
-                            <!--                                <span th:text="${bill.total_money}" >+00000</span>-->
-                            <span
+                            <div class="item totalMoney">
+                                <label>Tổng tiền</label>
+                                <!--                                <span th:text="${bill.total_money}" >+00000</span>-->
+                                <span
                                     th:text="${#strings.replace(#numbers.formatDecimal(bill?.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
 
 
+                            </div>
+
+                            <script>
+                                function goBack() {
+                                    window.location.href = 'http://localhost:8080/admin/bill/dsBill'
+                                }
+                            </script>
                         </div>
 
-                        <script>
-                            function goBack() {
-                                window.location.href = 'http://localhost:8080/admin/bill/dsBill'
-                            }
-                        </script>
+
                     </div>
+                    <button onclick="goBack()" class="btn btn-primary" style="font-size: 16px  ;">Back</button>
 
 
-                </div>
-                <button onclick="goBack()" class="btn btn-primary" style="font-size: 16px  ;">Back</button>
-
-
-                <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                    <div class="top d-flex justify-content-between">
-                        <h2> Thông tin giỏ hàng </h2>
-                        <button data-bs-toggle="modal" data-bs-target="#modalProduct" class="btn btn-success"
+                    <div class="info mt-2 p-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                        <div class="top d-flex justify-content-between">
+                            <h2> Thông tin giỏ hàng </h2>
+                            <button data-bs-toggle="modal" data-bs-target="#modalProduct" class="btn btn-success"
                                 th:if="${bill.status == 1}" onclick="loadProduct()">Thêm sản phẩm</button>
-                    </div>
-                    <hr>
-                    <div class="info-order">
-                        <table class="table table-hover" id="myTable" style="font-size: 14px">
-                            <thead class="position-sticky top-0">
+                        </div>
+                        <hr>
+                        <div class="info-order">
+                            <table class="table table-hover" id="myTable" style="font-size: 14px">
+                                <thead class="position-sticky top-0">
 
-                            <tr class="ex">
-                                <!--                            <th>#</th>-->
-                                <th>Image</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Kích cỡ</th>
-                                <th>Kiểu mẫu</th>
-                                <th>Đơn giá</th>
-                                <th>Số lượng</th>
-                                <th>Tổng giá tiền</th>
-                                <!--                        <th>Trạng thái</th>-->
+                                    <tr class="ex">
+                                        <!--                            <th>#</th>-->
+                                        <th>Image</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Kích cỡ</th>
+                                        <th>Kiểu mẫu</th>
+                                        <th>Đơn giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng giá tiền</th>
+                                        <!--                        <th>Trạng thái</th>-->
 
-                            </tr>
+                                    </tr>
 
-                            </thead>
+                                </thead>
 
 
-                            <tbody>
-                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                                <tbody>
+                                    <tr th:each="billDetail, i : ${bill.billDetail}">
 
-                                <td
-                                        th:if="${billDetail.productDetail.imageProducts != null && billDetail.productDetail.imageProducts.size() > 0}">
-                                    <img th:src="${billDetail.productDetail?.imageProducts[0]?.img}"
-                                         class="image-fluid"
-                                         style="height: 60px; width: 60px; object-fit: cover;" />
-                                </td>
-                                <td
-                                        th:unless="${billDetail.productDetail?.imageProducts != null && billDetail.productDetail.imageProducts.size() > 0}">
-                                    <img src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641"
-                                         style="height: 60px; width: 60px; object-fit: cover;" />
-                                </td>
+                                        <td
+                                            th:if="${billDetail.productDetail.imageProducts != null && billDetail.productDetail.imageProducts.size() > 0}">
+                                            <img th:src="${billDetail.productDetail?.imageProducts[0]?.img}"
+                                                class="image-fluid"
+                                                style="height: 60px; width: 60px; object-fit: cover;" />
+                                        </td>
+                                        <td
+                                            th:unless="${billDetail.productDetail?.imageProducts != null && billDetail.productDetail.imageProducts.size() > 0}">
+                                            <img src="https://imgclothing.com.co/cdn/shop/files/Logo_IMG_invertido-02_85x.png?v=1668785641"
+                                                style="height: 60px; width: 60px; object-fit: cover;" />
+                                        </td>
 
-                                <td th:text="${billDetail.productDetail?.name}"></td>
-                                <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
-                                <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
+                                        <td th:text="${billDetail.productDetail?.name}"></td>
+                                        <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                                        <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
 
-                                <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.productDetail?.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
-                                    }></td>
-                                <td th:text="${billDetail.quantity}"></td>
-                                <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
-                                    }></td>
-                                <!--                        <td>-->
-                                <!--                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>-->
-                                <!--                            <span th:if="${billDetail.status == 1}">Xác nhận</span>-->
+                                        <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.productDetail?.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                            }></td>
+                                        <td th:text="${billDetail.quantity}"></td>
+                                        <td th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"
+                                            }></td>
+                                        <!--                        <td>-->
+                                        <!--                            <span th:if="${billDetail.status == 0}">Không xác nhận</span>-->
+                                        <!--                            <span th:if="${billDetail.status == 1}">Xác nhận</span>-->
 
-                            </tr>
+                                    </tr>
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
-                        <th:block
+                            </table>
+                            <th:block
                                 th:with="totalAmountWithShipping=${bill.total_money + bill.money_ship - bill.reduction_amount}">
 
-                            <table>
-                                <tr>
-                                    <td style="width: 1020px; text-align: right; font-size: 14px;">
-                                        <label>
-                                            Tổng tiền:
-                                        </label>
-                                    </td>
-                                    <td
-                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                                            <span style="font-weight: bold;"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table>
-                                <tr>
-                                    <td style="width: 1020px; text-align: right; font-size: 14px;">
-                                        <label>
-                                            Phí ship:
-                                        </label>
-                                    </td>
-                                    <td
-                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                                            <span style="font-weight: bold;"
-                                                  th:if="${bill?.money_ship != null and bill?.money_ship != 0}"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill?.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                                        <span style="font-weight: bold;"
-                                              th:if="${bill?.money_ship == null or bill?.money_ship == 0}">
-                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
-                                            </span>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--                <br>-->
-                            <!--                <br>-->
-                            <table>
-                                <tr>
-                                    <td style="width: 1020px; text-align: right; font-size: 14px;">
-                                        <label>
-                                            Giảm giá:
-                                        </label>
-                                    </td>
-                                    <td
-                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                                            <span style="font-weight: bold;"
-                                                  th:if="${bill?.reduction_amount != null and bill?.reduction_amount != 0}"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(bill?.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                                        <span style="font-weight: bold;"
-                                              th:if="${bill?.reduction_amount == null or bill?.reduction_amount == 0}">
-                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
-                                            </span>
-                                    </td>
-                                </tr>
-
-                            </table>
-
-                            <!--                <br>-->
-                            <!--                <br>-->
-                            <table>
-
-                                <tr>
-                                    <td style="width: 1020px; text-align: right; font-size: 14px;">
-                                        <label>
-                                            Thanh toán:
-                                        </label>
-                                    </td>
-                                    <td
-                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
-                                            <span style="font-weight: bold;"
-                                                  th:if="${bill?.deposit != null and bill?.deposit != 0}"
-                                                  th:text="${#strings.replace(#numbers.formatDecimal(totalAmountWithShipping, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
-                                        <span style="font-weight: bold;"
-                                              th:if="${bill?.deposit == null or bill?.deposit == 0}">
-                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
-                                            </span>
-                                    </td>
-
-
-                                </tr>
-                            </table>
-                        </th:block>
-
-
-                    </div>
-
-
-                    <hr>
-
-
-
-
-                </div>
-
-
-            </div>
-            <!-- Modal -->
-            <div class="modal fade" id="modalProduct" tabindex="-1" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Search -->
-                            <div class="input-group mb-3">
-                                <input aria-label="Text input with segmented dropdown button" class="form-control"
-                                       id="searchInput" onkeyup="filterTable()"
-                                       placeholder="Tìm kiếm theo mã sản phẩm, tên sản phẩm, giá bán...." type="text">
-                            </div>
-
-                            <div class="scrollable-table">
-                                <table class="table table-hover" id="cartTableProduct"
-                                       style="width: 100%; border-collapse: collapse;">
-                                    <thead style="position: sticky; top: 0;">
+                                <table>
                                     <tr>
-                                        <th>Hình ảnh</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Số lượng</th>
-                                        <th>Giá</th>
-                                        <th>Tồn kho</th>
-                                        <th>Hoa văn</th>
-                                        <th>Kích thước</th>
-                                        <th>Hành động</th>
+                                        <td style="width: 1020px; text-align: right; font-size: 14px;">
+                                            <label>
+                                                Tổng tiền:
+                                            </label>
+                                        </td>
+                                        <td
+                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                                            <span style="font-weight: bold;"
+                                                th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody id="bodyProduct">
-
-                                    </tbody>
                                 </table>
-                            </div>
+
+                                <table>
+                                    <tr>
+                                        <td style="width: 1020px; text-align: right; font-size: 14px;">
+                                            <label>
+                                                Phí ship:
+                                            </label>
+                                        </td>
+                                        <td
+                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                                            <span style="font-weight: bold;"
+                                                th:if="${bill?.money_ship != null and bill?.money_ship != 0}"
+                                                th:text="${#strings.replace(#numbers.formatDecimal(bill?.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                            <span style="font-weight: bold;"
+                                                th:if="${bill?.money_ship == null or bill?.money_ship == 0}">
+                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!--                <br>-->
+                                <!--                <br>-->
+                                <table>
+                                    <tr>
+                                        <td style="width: 1020px; text-align: right; font-size: 14px;">
+                                            <label>
+                                                Giảm giá:
+                                            </label>
+                                        </td>
+                                        <td
+                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                                            <span style="font-weight: bold;"
+                                                th:if="${bill?.reduction_amount != null and bill?.reduction_amount != 0}"
+                                                th:text="${#strings.replace(#numbers.formatDecimal(bill?.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                            <span style="font-weight: bold;"
+                                                th:if="${bill?.reduction_amount == null or bill?.reduction_amount == 0}">
+                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                                <!--                <br>-->
+                                <!--                <br>-->
+                                <table>
+
+                                    <tr>
+                                        <td style="width: 1020px; text-align: right; font-size: 14px;">
+                                            <label>
+                                                Thanh toán:
+                                            </label>
+                                        </td>
+                                        <td
+                                            style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                                            <span style="font-weight: bold;"
+                                                th:if="${bill?.deposit != null and bill?.deposit != 0}"
+                                                th:text="${#strings.replace(#numbers.formatDecimal(totalAmountWithShipping, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                                            <span style="font-weight: bold;"
+                                                th:if="${bill?.deposit == null or bill?.deposit == 0}">
+                                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                                            </span>
+                                        </td>
+
+
+                                    </tr>
+                                </table>
+                            </th:block>
+
+
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+                        <hr>
+
+
+
+
+                    </div>
+
+
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="modalProduct" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Search -->
+                                <div class="input-group mb-3">
+                                    <input aria-label="Text input with segmented dropdown button" class="form-control"
+                                        id="searchInput" onkeyup="filterTable()"
+                                        placeholder="Tìm kiếm theo mã sản phẩm, tên sản phẩm, giá bán...." type="text">
+                                </div>
+
+                                <div class="scrollable-table">
+                                    <table class="table table-hover" id="cartTableProduct"
+                                        style="width: 100%; border-collapse: collapse;">
+                                        <thead style="position: sticky; top: 0;">
+                                            <tr>
+                                                <th>Hình ảnh</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá</th>
+                                                <th>Tổng số lượng sản phẩm</th>
+                                                <th>Hoa văn</th>
+                                                <th>Kích thước</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyProduct">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                     crossorigin="anonymous"></script>
-            <script>
-                const $ = document.querySelector.bind(document);
-                const $$ = document.querySelectorAll.bind(document);
+                <script>
+                    const $ = document.querySelector.bind(document);
+                    const $$ = document.querySelectorAll.bind(document);
 
-                const tabs = $$(".tab-item");
-                console.log(tabs)
+                    const tabs = $$(".tab-item");
+                    console.log(tabs)
 
-                const tabActive = $(".tab-item.active");
-                const line = $(".tabs .line");
+                    const tabActive = $(".tab-item.active");
+                    const line = $(".tabs .line");
 
-                tabs.forEach((tab, index) => {
-                    tab.onclick = function () {
-                        let status = this.getAttribute("data-value");
-                        let currentStatus = document.getElementById("status").getAttribute("data-value");
-                        if (currentStatus >= status) {
+                    tabs.forEach((tab,index) => {
+                        tab.onclick = function () {
+                            let status = this.getAttribute("data-value");
+                            let currentStatus = document.getElementById("status").getAttribute("data-value");
+                            if (currentStatus >= status) {
+                                return;
+                            }
+                            let id = document.getElementById("id").getAttribute("data-value");
+                            var idBill = document.getElementById('billId').value;
+                            var result = confirm("Bạn có chắc chắn muốn chuyển trạng thái không?");
+                            if (result) {
+                                if (status == 6) {
+                                    var note = prompt("Nhập lí do hủy hàng: ");
+                                    if (note !== null) {
+                                        location.href = `/admin/bill/bill-detail-cancel?idBill=${idBill}&id=${id}&status=${status}&note=${note}`;
+                                    }
+                                } else {
+                                    location.href = `/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
+                                }
+                            }
+                        };
+                    });
+
+                    let statusTpye = {
+                        TD: "Tạo Đơn Hàng",
+                        DG: "Đang Giao Hàng",
+                        GX: "Đã Giao"
+                    }
+
+                    let typeOrder = {
+                        store: "Lấy Tại Cửa Hàng",
+                        ship: "Giao Hàng"
+                    }
+
+                    let statusElement = document.getElementById("status");
+                    let status = Number(statusElement.getAttribute("data-value"));
+
+                    for (let i = 1; i <= status; i++) {
+                        let tabSelector = document.querySelector(`#tab_${i}`);
+                        tabSelector.classList.add("active");
+                        line.style.left = tabSelector.offsetLeft + "px";
+                        line.style.width = tabSelector.offsetWidth + "px";
+                    }
+
+                    function update() {
+                        let phoneNumber = document.querySelector('#phoneNumber');
+                        let code = document.querySelector('#code');
+                        if (!phoneNumber.value) {
+                            alert('Vui lòng nhập đầy đủ thông tin số điện thoại!')
                             return;
                         }
-                        let id = document.getElementById("id").getAttribute("data-value");
-                        var idBill = document.getElementById('billId').value;
-                        var result = confirm("Bạn có chắc chắn muốn chuyển trạng thái không?");
-                        if (result) {
-                            if (status == 6) {
-                                var note = prompt("Nhập lí do hủy hàng: ");
-                                if (note !== null) {
-                                    location.href = `/admin/bill/bill-detail-cancel?idBill=${idBill}&id=${id}&status=${status}&note=${note}`;
-                                }
-                            } else {
-                                location.href = `/admin/bill/bill-detail-update-status?id=${id}&status=${status}`;
-                            }
+
+                        var phoneRegex = /^0[0-9]{9}$/;
+                        if (!phoneRegex.test(phoneNumber.value)) {
+                            alert("Số điện thoại không hợp lệ!");
+                            return;
                         }
-                    };
-                });
+                        let dataForm = {
+                            phone: phoneNumber.value,
+                            //address: address.value,
+                            code: code.innerText,
+                        }
+                        console.log(dataForm);
 
-                let statusTpye = {
-                    TD: "Tạo Đơn Hàng",
-                    DG: "Đang Giao Hàng",
-                    GX: "Đã Giao"
-                }
-
-                let typeOrder = {
-                    store: "Lấy Tại Cửa Hàng",
-                    ship: "Giao Hàng"
-                }
-
-                let statusElement = document.getElementById("status");
-                let status = Number(statusElement.getAttribute("data-value"));
-
-                for (let i = 1; i <= status; i++) {
-                    let tabSelector = document.querySelector(`#tab_${i}`);
-                    tabSelector.classList.add("active");
-                    line.style.left = tabSelector.offsetLeft + "px";
-                    line.style.width = tabSelector.offsetWidth + "px";
-                }
-
-                function update() {
-                    let phoneNumber = document.querySelector('#phoneNumber');
-                    let code = document.querySelector('#code');
-                    if (!phoneNumber.value) {
-                        alert('Vui lòng nhập đầy đủ thông tin số điện thoại!')
-                        return;
-                    }
-
-                    var phoneRegex = /^0[0-9]{9}$/;
-                    if (!phoneRegex.test(phoneNumber.value)) {
-                        alert("Số điện thoại không hợp lệ!");
-                        return;
-                    }
-                    let dataForm = {
-                        phone: phoneNumber.value,
-                        //address: address.value,
-                        code: code.innerText,
-                    }
-                    console.log(dataForm);
-
-                    fetch("/admin/bill/update", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(dataForm)
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                alert("Cập nhật thành công!");
-                            } else {
-                                throw new Error("Cập nhật thất bại!");
-                                location.reload();
-                            }
+                        fetch("/admin/bill/update",{
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(dataForm)
                         })
-                        .catch(error => {
-                            console.log(error);
-                            alert("Cập nhật thất bại!");
-                            location.reload();
-                        });
-                }
+                            .then(response => {
+                                if (response.ok) {
+                                    alert("Cập nhật thành công!");
+                                } else {
+                                    throw new Error("Cập nhật thất bại!");
+                                    location.reload();
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                alert("Cập nhật thất bại!");
+                                location.reload();
+                            });
+                    }
 
-                const defaultImage =
-                    "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
-                function loadProduct() {
-                    fetch("/rest/data/counter/productDetails", {
-                        method: "GET",
-                    })
-                        .then((res) => res.json())
-                        .then((data) => {
-                            data.forEach(function (product) {
-                                // Định dạng số tiền
-                                let formatterMoney = new Intl.NumberFormat('vi-VN', {
-                                    style: 'decimal',
-                                    minimumFractionDigits: 0, // Số chữ số thập phân tối thiểu
-                                    maximumFractionDigits: 0, // Số chữ số thập phân tối đa
-                                });
-                                let modifiedQuantity = 1;
+                    const defaultImage =
+                        "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
+                    function loadProduct() {
+                        fetch("/rest/data/counter/productDetails",{
+                            method: "GET",
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                data.forEach(function (product) {
+                                    // Định dạng số tiền
+                                    let formatterMoney = new Intl.NumberFormat('vi-VN',{
+                                        style: 'decimal',
+                                        minimumFractionDigits: 0, // Số chữ số thập phân tối thiểu
+                                        maximumFractionDigits: 0, // Số chữ số thập phân tối đa
+                                    });
+                                    let modifiedQuantity = 1;
 
-                                let formattedTotalMoney = formatterMoney.format(product.price);
-                                var bodyTable = document.getElementById('bodyProduct');
-                                bodyTable.innerHTML += `<tr>
+                                    let formattedTotalMoney = formatterMoney.format(product.price);
+                                    var bodyTable = document.getElementById('bodyProduct');
+                                    bodyTable.innerHTML += `<tr>
                         <td>
                             <img src="${product.imageUrl || defaultImage}" class="image-fluid" style="height: 60px;">
                         </td>
@@ -656,81 +656,81 @@
                             <button type="button" class="btn btn-success  mx-1" onclick="addProduct(${product.id})">Confirm</button>
                         </td>
                     </tr>`
+                                });
                             });
-                        });
-                }
-                function filterTable() {
-                    var input, filter, table, tbody, tr, td, i, j, txtValue;
-                    var tbody = document.querySelector("#cartTableProduct tbody");
-                    input = document.querySelector("#searchInput");
+                    }
+                    function filterTable() {
+                        var input,filter,table,tbody,tr,td,i,j,txtValue;
+                        var tbody = document.querySelector("#cartTableProduct tbody");
+                        input = document.querySelector("#searchInput");
 
-                    filter = input.value.toUpperCase();
-                    table = document.getElementById("cartTableProduct");
-                    // tbody = table.getElementsByTagName("tbody")[0];
-                    tr = tbody.getElementsByTagName("tr");
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById("cartTableProduct");
+                        // tbody = table.getElementsByTagName("tbody")[0];
+                        tr = tbody.getElementsByTagName("tr");
 
-                    for (i = 0; i < tr.length; i++) {
-                        // Tìm kiếm trong tất cả các cột (loại bỏ cột thứ 1, tức là stt)
-                        for (j = 1; j < tr[i].cells.length; j++) {
-                            td = tr[i].getElementsByTagName("td")[j];
-                            if (td) {
-                                txtValue = td.textContent || td.innerText;
-                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                    tr[i].style.display = "";
-                                    break; // Nếu tìm thấy, thoát khỏi vòng lặp để hiển thị hàng
-                                } else {
-                                    tr[i].style.display = "none";
+                        for (i = 0; i < tr.length; i++) {
+                            // Tìm kiếm trong tất cả các cột (loại bỏ cột thứ 1, tức là stt)
+                            for (j = 1; j < tr[i].cells.length; j++) {
+                                td = tr[i].getElementsByTagName("td")[j];
+                                if (td) {
+                                    txtValue = td.textContent || td.innerText;
+                                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                        tr[i].style.display = "";
+                                        break; // Nếu tìm thấy, thoát khỏi vòng lặp để hiển thị hàng
+                                    } else {
+                                        tr[i].style.display = "none";
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                function addProduct(productId) {
-                    var quantityElement = document.getElementById(`quantity_${productId}`);
-                    let quantity = parseInt(quantityElement.innerText);
-                    if (quantity !== null) {
-                        var idBill = document.getElementById('billId').value;
-                        var formData = new FormData();
-                        formData.append('idBill', idBill);
-                        formData.append('quantity', quantity);
-                        formData.append('productId', productId);
+                    function addProduct(productId) {
+                        var quantityElement = document.getElementById(`quantity_${productId}`);
+                        let quantity = parseInt(quantityElement.innerText);
+                        if (quantity !== null) {
+                            var idBill = document.getElementById('billId').value;
+                            var formData = new FormData();
+                            formData.append('idBill',idBill);
+                            formData.append('quantity',quantity);
+                            formData.append('productId',productId);
 
-                        fetch("/rest/data/counter/addProduct", {
-                            method: "POST",
-                            body: formData
-                        })
-                            .then(response => {
-                                location.reload();
+                            fetch("/rest/data/counter/addProduct",{
+                                method: "POST",
+                                body: formData
                             })
-                            .catch(error => {
-                                console.error('There was a problem with the fetch operation:', error);
-                            });
+                                .then(response => {
+                                    location.reload();
+                                })
+                                .catch(error => {
+                                    console.error('There was a problem with the fetch operation:',error);
+                                });
 
+                        }
                     }
-                }
-                document.addEventListener("DOMContentLoaded", function () {
-                    var addressSpan = document.getElementById("address");
-                    var maxCharacters = 20;
+                    document.addEventListener("DOMContentLoaded",function () {
+                        var addressSpan = document.getElementById("address");
+                        var maxCharacters = 20;
 
-                    if (addressSpan.innerText.length > maxCharacters) {
-                        addressSpan.innerText = addressSpan.innerText.substring(0, maxCharacters) + "...";
+                        if (addressSpan.innerText.length > maxCharacters) {
+                            addressSpan.innerText = addressSpan.innerText.substring(0,maxCharacters) + "...";
+                        }
+                    });
+                    function updateQuantity(productId,action) {
+                        var quantityElement = document.getElementById(`quantity_${productId}`);
+                        let modifiedQuantity = parseInt(quantityElement.innerText);
+
+                        if (action === 'increase') {
+                            modifiedQuantity += 1;
+                        } else if (action === 'decrease' && modifiedQuantity > 1) {
+                            modifiedQuantity -= 1;
+                        }
+
+                        quantityElement.innerText = modifiedQuantity;
                     }
-                });
-                function updateQuantity(productId, action) {
-                    var quantityElement = document.getElementById(`quantity_${productId}`);
-                    let modifiedQuantity = parseInt(quantityElement.innerText);
-
-                    if (action === 'increase') {
-                        modifiedQuantity += 1;
-                    } else if (action === 'decrease' && modifiedQuantity > 1) {
-                        modifiedQuantity -= 1;
-                    }
-
-                    quantityElement.innerText = modifiedQuantity;
-                }
-            </script>
-</section>
+                </script>
+    </section>
 </body>
 
 </html>

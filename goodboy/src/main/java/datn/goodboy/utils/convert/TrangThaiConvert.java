@@ -1,5 +1,6 @@
 package datn.goodboy.utils.convert;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,12 @@ public class TrangThaiConvert {
     if (status == 2) {
     }
     return "Error";
+  }
+
+  public static BigDecimal convertNumber(Double yourNumber) {
+    BigDecimal bd = new BigDecimal(yourNumber);
+    // String result = bd.toPlainString();
+    return bd;
   }
 
   public static String convertTrangThaiEmployee(int status) {
@@ -47,20 +54,23 @@ public class TrangThaiConvert {
   }
 
   public static String statusOfBill(int status) {
+    if (status == 6) {
+      return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
+    }
     if (status == 5) {
-      return "<span class=\"badge bg-success\">Thành Công</span>";
+      return "<span class=\"badge text-bg-success\">Thành công</span>";
     }
     if (status == 1) {
       return "<span class=\"badge text-bg-warning\">Chờ xác nhận</span>";
     }
     if (status == 2) {
-      return "<span class=\"badge text-bg-secondary\">Chờ giao hàng</span>";
+      return "<span class=\"badge text-bg-secondary\">Chờ lấy hàng</span>";
     }
     if (status == 3) {
-      return "<span class=\"badge text-bg-info\">Đang giao hàng</span>";
+      return "<span class=\"badge text-bg-info\">Chờ giao hàng</span>";
     }
     if (status == 4) {
-      return "<span class=\"badge badge text-bg-light\">Đã giao hàng</span>";
+      return "<span class=\"badge badge text-bg-light\">Đang giao hàng</span>";
     }
     if (status == -1) {
       return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
@@ -69,6 +79,34 @@ public class TrangThaiConvert {
       return "<span class=\"badge text-bg-danger\">Đã Hủy</span>";
     }
     return "<span class=\"badge text-bg-dark\">Không xác định</span>";
+  }
+
+  public static String statusOfBillText(int status) {
+    if (status == 6) {
+      return "Đã Hủy";
+    }
+    if (status == 5) {
+      return "Thành công";
+    }
+    if (status == 1) {
+      return "Chờ xác nhận";
+    }
+    if (status == 2) {
+      return "Chờ lấy hàng";
+    }
+    if (status == 3) {
+      return "Chờ giao hàng";
+    }
+    if (status == 4) {
+      return "Đang giao hàng";
+    }
+    if (status == -1) {
+      return "Đã Hủy";
+    }
+    if (status == -2) {
+      return "Đã Hủy";
+    }
+    return "Không xác định";
   }
 
   public static String statusOfVoucher(Voucher voucher) {
@@ -104,5 +142,52 @@ public class TrangThaiConvert {
       }
     }
     return "<span class=\"badge text-bg-dark\">Không xác định</span>";
+  }
+
+  public static String ratingAvager(Double rating, int totalRatings) {
+    if (totalRatings == 0) {
+      return """
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small class=\"fa fa-star mr-1\"></small>
+          <small>(0)</small>
+          """;
+    }
+    int roundedRating = (int) Math.round(rating);
+    double remainder = rating - roundedRating;
+
+    StringBuilder result = new StringBuilder();
+
+    for (int i = 0; i < 5; i++) {
+      if (i < roundedRating) {
+        result.append("<small class=\"fa fa-star text-primary mr-1\"></small>");
+      } else if (i == roundedRating && remainder > 0) {
+        result.append("<small class=\"fa fa-star-half text-primary mr-1\"></small>");
+      } else {
+        result.append("<small class=\"fa fa-star mr-1\"></small>");
+      }
+    }
+    result.append("<small>(").append(totalRatings).append(")</small>");
+    return result.toString();
+  }
+
+  public static String rating(Double rating) {
+    int roundedRating = (int) Math.round(rating);
+    double remainder = rating - roundedRating;
+
+    StringBuilder result = new StringBuilder();
+
+    for (int i = 0; i < 5; i++) {
+      if (i < roundedRating) {
+        result.append("<small class=\"fa fa-star text-primary mr-1\"></small>");
+      } else if (i == roundedRating && remainder > 0) {
+        result.append("<small class=\"fa fa-star-half text-primary mr-1\"></small>");
+      } else {
+        result.append("<small class=\"fa fa-star mr-1\"></small>");
+      }
+    }
+    return result.toString();
   }
 }

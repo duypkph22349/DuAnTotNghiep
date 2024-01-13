@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,11 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import datn.goodboy.exeption.rest.ErrorCreateBill;
-// import datn.goodboy.model.entity.Brand;
-// import datn.goodboy.model.entity.Color;
-// import datn.goodboy.model.entity.Material;
-// import datn.goodboy.model.entity.Origin;
-// import datn.goodboy.model.entity.Styles;
+
 import datn.goodboy.model.entity.PatternType;
 import datn.goodboy.model.entity.Product;
 import datn.goodboy.model.entity.ProductDetail;
@@ -36,20 +33,6 @@ import datn.goodboy.service.serviceinterface.PanigationWithSearch;
 public class ProductDetailService implements PanigationInterface<ProductDetail>,
     IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
 
-  // @Autowired
-  // private BrandService brandService;
-
-  // @Autowired
-  // private ColorService colorService;
-
-  // @Autowired
-  // private MaterialService materialService;
-
-  // @Autowired
-  // private OriginService originService;
-
-  // @Autowired
-  // private StylesService stylesService;
   @Autowired
   private PatternTypeService patternTypeService;
 
@@ -88,14 +71,22 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     ProductDetail productDetail = new ProductDetail();
     mapRequestToEntity(request, productDetail);
     productDetail.setCreatedAt(LocalDateTime.now());
+    productDetail.setId(null);
     ProductDetail savDetail = productDetailRepository.save(productDetail);
     int idProduct = savDetail.getId();
-    List<String> listURL = new ArrayList<>();
-    for (MultipartFile multipartFile : listImage) {
-      String url = cloudService.saveImage(multipartFile);
-      listURL.add(url);
-    }
-    imageService.saveImageForNewProductDetail(listURL, idProduct);
+    CompletableFuture.runAsync(() -> {
+      List<String> listURL = new ArrayList<>();
+      if (!listImage.isEmpty()) {
+        for (MultipartFile multipartFile : listImage) {
+          try {
+            listURL.add(cloudService.saveImage(multipartFile));
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        imageService.saveImageForNewProductDetail(listURL, idProduct);
+      }
+    });
     return savDetail;
   }
 
@@ -108,23 +99,49 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       exitproductDetail.setUpdatedAt(LocalDateTime.now());
       ProductDetail savDetail = productDetailRepository.save(exitproductDetail);
       int idProduct = savDetail.getId();
-      List<String> listURL = new ArrayList<>();
-      if (listImage.isEmpty() | listImage == null) {
-      } else {
-        for (MultipartFile multipartFile : listImage) {
-          if (!multipartFile.isEmpty()) {
-            String url = cloudService.saveImage(multipartFile);
-            listURL.add(url);
-          } else {
-            // thows exeption
+      CompletableFuture.runAsync(() -> {
+        List<String> listURL = new ArrayList<>();
+        if (!listImage.isEmpty()) {
+          for (MultipartFile multipartFile : listImage) {
+            try {
+              listURL.add(cloudService.saveImage(multipartFile));
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
+          imageService.saveImageForNewProductDetail(listURL, idProduct);
         }
-        imageService.saveImageForNewProductDetail(listURL, idProduct);
-      }
+      });
       return savDetail;
     } else {
       // throws exeption
       return null;
+    }
+  }
+
+  public ProductDetail saveProductDetail(ProductDetailRequest request) {
+    ProductDetail productDetail = new ProductDetail();
+    mapRequestToEntity(request, productDetail);
+    productDetail.setCreatedAt(LocalDateTime.now());
+    productDetail.setId(null);
+    if (productDetail.getIdProduct().exitSizes(productDetail.getIdSize().getId(),
+        productDetail.getIdPattern().getId())) {
+      throw new RuntimeException("Kích thước này đã tồn tại");
+    }
+    return productDetailRepository.save(productDetail);
+  }
+
+  public void saveImage(int idProduct, List<MultipartFile> listImage) {
+    List<String> listURL = new ArrayList<>();
+    if (!listImage.isEmpty()) {
+      for (MultipartFile multipartFile : listImage) {
+        try {
+          listURL.add(cloudService.saveImage(multipartFile));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      imageService.saveImageForNewProductDetail(listURL, idProduct);
     }
   }
 
@@ -143,41 +160,37 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetailRequest.setId(productDetail.getId());
     productDetailRequest.setDescription(productDetail.getDescription());
     productDetailRequest.setDeleted(productDetail.isDeleted());
-    // productDetailRequest.setIdBrand(productDetail.getIdBrand().getId());
-    // productDetailRequest.setIdMaterial(productDetail.getIdMaterial().getId());
-    // productDetailRequest.setIdColor(productDetail.getIdColor().getId());
-    // productDetailRequest.setIdOrigin(productDetail.getIdOrigin().getId());
-    productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
-    productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
+    if (productDetail.getIdPattern() != null) {
+      productDetailRequest.setIdPattern(productDetail.getIdPattern().getId());
+    }
+    if (productDetail.getIdProduct() != null) {
+      productDetailRequest.setIdProduct(productDetail.getIdProduct().getId());
+    }
+    if (productDetail.getIdSize() != null) {
+      productDetailRequest.setIdSize(productDetail.getIdSize().getId());
+    }
     productDetailRequest.setQuantity(productDetail.getQuantity());
     productDetailRequest.setPrice(productDetail.getPrice());
-    productDetailRequest.setStatus(productDetail.getQuantity());
+    productDetailRequest.setStatus(productDetail.getStatus());
     productDetailRequest.setName(productDetail.getName());
     productDetailRequest.setImage(productDetail.getImageProducts());
   }
 
   public void mapRequestToEntity(ProductDetailRequest request, ProductDetail entity) {
-    // Color color = colorService.getById(request.getIdColor());
-    // Brand brand = brandService.getById(request.getIdBrand());
-    // Material material = materialService.getById(request.getIdMaterial());
-    // Origin origin = originService.getById(request.getIdOrigin());
-    // Styles styles = stylesService.getById(request.getIdStyles());
     PatternType pattern = patternTypeService.getById(request.getIdPattern());
     Product product = productService.getById(request.getIdProduct());
     Size size = sizeService.getById(request.getIdSize());
-    // entity.setIdBrand(brand);
-    // entity.setIdColor(color);
-    // entity.setIdMaterial(material);
-    // entity.setIdOrigin(origin);
-    // entity.setIdStyles(styles);
     entity.setIdPattern(pattern);
     entity.setIdProduct(product);
     entity.setIdSize(size);
-    entity.setDeleted(request.isDeleted());
+    // entity.setDeleted(request.isDeleted());
+    entity.setQuantity(request.getQuantity());
     entity.setName(request.getName());
+    entity.setDescription(request.getDescription());
     entity.setPrice(request.getPrice());
     entity.setStatus(request.getStatus());
     entity.setId(request.getId());
+    System.out.println(request);
   }
 
   public Page<ProductDetail> findAllProductDetail(Pageable pageable) {
@@ -192,23 +205,18 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     return null;
   }
 
-  public ProductDetail update(Integer id, ProductDetail color) {
-    ProductDetail color1 = productDetailRepository.findById(id).get();
-    color1.setName(color.getName());
-    color1.setPrice(color.getPrice());
-    color1.setQuantity(color.getQuantity());
-    color1.setDescription(color.getDescription());
-    color1.setIdProduct(color.getIdProduct());
-    color1.setIdPattern(color.getIdPattern());
-    // color1.setIdColor(color.getIdColor());
-    // color1.setIdOrigin(color.getIdOrigin());
-    // color1.setIdBrand(color.getIdBrand());
-    // color1.setIdMaterial(color.getIdMaterial());
-    // color1.setIdStyles(color.getIdStyles());
-    color1.setIdSize(color.getIdSize());
-    color1.setStatus(color.getStatus());
-    color1.setUpdatedAt(color.getUpdatedAt());
-    return productDetailRepository.save(color1);
+  public ProductDetail update(Integer id, ProductDetail request) {
+    ProductDetail productdetail = productDetailRepository.findById(id).get();
+    productdetail.setName(request.getName());
+    productdetail.setPrice(request.getPrice());
+    productdetail.setQuantity(request.getQuantity());
+    productdetail.setDescription(request.getDescription());
+    productdetail.setIdProduct(request.getIdProduct());
+    productdetail.setIdPattern(request.getIdPattern());
+    productdetail.setIdSize(request.getIdSize());
+    productdetail.setStatus(request.getStatus());
+    productdetail.setUpdatedAt(request.getUpdatedAt());
+    return productDetailRepository.save(productdetail);
   }
 
   // panigation no fillter
@@ -244,40 +252,12 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     Pageable pageable = PageRequest.of(0, rowcount);
     Page<ProductDetail> page = productDetailRepository.findAll(pageable); // findAll()
     int totalPage = page.getTotalPages();
-    int[] rs;
-    if (totalPage <= 1) {
-      int[] rs1 = { 1 };
-      return rs1;
-    } else if (totalPage <= 3) {
-      rs = new int[totalPage];
-      for (int i = 1; i <= totalPage; i++) {
-        rs[i - 1] = i;
-      }
-      return rs;
-    } else {
-      rs = new int[3];
-      if (pageno <= 2) {
-        int[] rs1 = { 1, 2, 3 };
-        rs = rs1;
-      }
-      if (pageno > 2) {
-        if (pageno < totalPage - 1) {
-          int[] rs1 = { pageno - 1, pageno, pageno + 1 };
-          rs = rs1;
-        }
-        if (pageno >= totalPage - 1) {
-          int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
-          rs = rs1;
-        }
-      }
-      return rs;
-    }
+    return Panigation(pageno, totalPage);
   }
 
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
       ProductDetailFilter filter) {
-    // TODO Auto-generated method stub
     if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
       return null;
     }
@@ -290,7 +270,6 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       sort = Sort.by(sortBy).descending();
     }
     Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-    // findAll method and pass pageable instance
     Page<ProductDetail> page = productDetailRepository.filter(filter, pageable);
     ChiTietSanPhams = page.getContent();
     return ChiTietSanPhams;
@@ -309,34 +288,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     Pageable pageable = PageRequest.of(0, rowcount);
     Page<ProductDetail> page = productDetailRepository.filter(filter, pageable); // findAll()
     int totalPage = page.getTotalPages();
-    int[] rs;
-    if (totalPage <= 1) {
-      int[] rs1 = { 1 };
-      return rs1;
-    } else if (totalPage <= 3) {
-      rs = new int[totalPage];
-      for (int i = 1; i <= totalPage; i++) {
-        rs[i - 1] = i;
-      }
-      return rs;
-    } else {
-      rs = new int[3];
-      if (pageno <= 2) {
-        int[] rs1 = { 1, 2, 3 };
-        rs = rs1;
-      }
-      if (pageno > 2) {
-        if (pageno < totalPage - 1) {
-          int[] rs1 = { pageno - 1, pageno, pageno + 1 };
-          rs = rs1;
-        }
-        if (pageno >= totalPage - 1) {
-          int[] rs1 = { totalPage - 2, totalPage - 1, totalPage };
-          rs = rs1;
-        }
-      }
-      return rs;
-    }
+    return Panigation(pageno, totalPage);
   }
   // panigation no with fillter end
 
@@ -434,7 +386,8 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     if (productDetail.isPresent()) {
       ProductDetail exitProductDetail = productDetail.get();
       if (exitProductDetail.getQuantity() < quantity) {
-        System.out.println(" Khong du so luong");
+        throw new ErrorCreateBill("Số lượng của sản phẩm: " + productDetail.get().getName() // throw another exeption
+            + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
       } else {
         exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
         productDetailRepository.save(exitProductDetail);
@@ -455,4 +408,22 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       }
     }
   }
+  // public void updateProductQuantities(List<BillDetail> billDetails) {
+  // for (BillDetail billDetail : billDetails) {
+  // ProductDetail productDetail = billDetail.getProductDetail();
+  // int quantitySold = billDetail.getQuantity();
+  //
+  // // Truy xuất số lượng hiện tại của sản phẩm
+  // int currentQuantity = productDetail.getQuantity();
+  //
+  // // Giảm đi số lượng đã bán
+  // int updatedQuantity = currentQuantity - quantitySold;
+  //
+  // // Cập nhật số lượng sản phẩm
+  // productDetail.setQuantity(updatedQuantity);
+  //
+  // // Lưu thông tin sản phẩm đã cập nhật vào cơ sở dữ liệu
+  // productDetailRepository.save(productDetail);
+  // }
+  // }
 }

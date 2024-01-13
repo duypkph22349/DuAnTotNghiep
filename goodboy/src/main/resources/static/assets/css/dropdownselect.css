@@ -1,0 +1,73 @@
+.drownsearch li::selection {
+  color: #fff;
+  background: #4285f4;
+}
+
+.drownsearch {
+  position: relative;
+}
+
+.options li {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.drownsearch.active .select-btn i {
+  transform: rotate(-180deg);
+}
+
+.dropdrownselect-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  padding: 5px;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.drownsearch.active .dropdrownselect-content {
+  display: block;
+}
+
+.drownsearch {
+  position: relative;
+}
+
+.drownsearch .search-form {
+  width: 100%;
+}
+
+.drownsearch .search-form input,
+.drownsearch .search-form span {
+  border: 0;
+  font-size: 14px;
+  color: #012970;
+  border: 1px solid rgba(1, 41, 112, 0.2);
+  padding: 7px 38px 7px 8px;
+  border-radius: 3px;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.drownsearch .search-form button {
+  border: 0;
+  padding: 0;
+  margin-left: -30px;
+  background: none;
+}
+
+.dropdrownselect-content .options {
+  margin-top: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.dropdrownselect-content .options .list-group-item:hover {
+  background-color: #f8f9fa;
+  /* Change this to your preferred color */
+}

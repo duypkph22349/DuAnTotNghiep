@@ -9,7 +9,6 @@ import datn.goodboy.model.entity.Account;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,15 +28,15 @@ public class AccountRequest {
   @NotNull(message = "Hãy nhập Email")
   @NotBlank(message = "Hãy nhập Email")
   @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-      + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message="Email Định dạng không đúng")
+      + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Email Định dạng không đúng")
   String email;
   @NotNull(message = "Hãy nhập Mật Khẩu")
   @NotBlank(message = "Hãy nhập Mật Khẩu")
-  @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
+  @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z]).{6,8}$", message = "Mật khẩu từ 6 - 8 kí tự và phải chứa 1 kí tự số và 1 ký tự viết hoa")
   String password;
   @NotNull(message = "Hãy nhập Lại Mật khẩu")
   @NotBlank(message = "Hãy nhập Lại Mật khẩu")
-  @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
+  @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z]).{6,8}$", message = "Mật khẩu từ 6 - 8 kí tự và phải chứa 1 kí tự số và 1 ký tự viết hoa")
   String passwordRepeat;
   @Range(min = -1, max = 1)
   int status;

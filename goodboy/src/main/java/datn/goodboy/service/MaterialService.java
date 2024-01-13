@@ -1,9 +1,11 @@
 package datn.goodboy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import datn.goodboy.model.entity.Origin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,10 @@ import datn.goodboy.repository.MaterialRepository;
 public class MaterialService {
     @Autowired
     private MaterialRepository materialRepository;
+
+    public ArrayList<Material> getAllMaterial() {
+        return (ArrayList<Material>) materialRepository.findAll();
+    }
 
     public Page<Material> findAllMaterial(Pageable pageable) {
         return materialRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -55,5 +61,9 @@ public class MaterialService {
             }
             materialRepository.save(material.get());
         }
+    }
+
+    public List<Material> getMaterialList() {
+        return materialRepository.getMaterialList();
     }
 }

@@ -7,7 +7,514 @@
 </head>
 
 <body layout:fragment="content">
-
+  <section>
+    <div class="pagetitle">
+      <h1>Bảng điều khiển</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Quản lý sản phẩm</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="container-fluid">
+      <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')">
+        <a href="/admin/managerproduct/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
+        <div>
+        </div>
+      </div>
+      <form th:action="@{/admin/managerproduct/filter}" th:object="${fillter}" method="get">
+        <div class="d-flex mt-3 mb-4">
+          <h2 class="mx-3">Lọc</h2>
+          <div>
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+              aria-describedby="search-addon" th:field="*{txtSearch}" />
+          </div>
+          <button type="submit" class="btn "><i class="fas fa-filter fa-lg"></i></button>
+          <a href="/admin/managerproduct/resetfilter" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></a>
+        </div>
+        <div class="row">
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="idOrigin" class="m-auto fw-bold">Nguồn gốc:</label>
+            <select class="form-control   form-group-0 text-center" id="idOrigin" name="idOrigin"
+              th:field="*{idOrigin}">
+              <option value="-1"> Chọn Nguồn gốc </option>
+              <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="idCategory" class="m-auto fw-bold">Loại khăn</label>
+            <select class="form-control form-group-0 text-center" id="idCategory" name="idCategory"
+              th:field="*{idCategory}">
+              <option value="-1"> Chọn Loại khăn </option>
+              <!-- Add options for pattern selection -->
+              <option th:each="option : ${categoryCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="" class="m-auto fw-bold">Thương hiệu</label>
+            <select class="form-control form-group-0 text-center" id="idBrand" name="idBrand" th:field="*{idBrand}">
+              <option value="-1"> Chọn Thương hiệu </option>
+              <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="" class="m-auto fw-bold">Chất liệu</label>
+            <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
+              th:field="*{idMaterial}">
+              <option value="-1"> Chọn Chất liệu </option>
+              <option th:each="option : ${materialCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="" class="m-auto fw-bold">Kiểu dáng</label>
+            <select class="form-control   form-group-0 text-center" id="idStyles" name="idStyles"
+              th:field="*{idStyles}">
+              <option value="-1"> Chọn Kiểu dáng </option>
+              <option th:each="option : ${stylesCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+              <!-- Add options for stylesCbb selection -->
+            </select>
+          </div>
+        </div>
+        <!-- Add similar form elements for other filter fields -->
+      </form>
+    </div>
+    <div style="overflow: auto" class="mt-4">
+      <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
+        <thead class="position-sticky top-0">
+          <tr>
+            <th class="fw-bold">STT</th>
+            <th scope="col">Tên sản phẩm
+            </th>
+            <th scope="col">Xuất sứ
+            </th>
+            <th scope="col">Thương hiệu
+            </th>
+            <th scope="col">Chất liệu
+            </th>
+            <th scope="col">Kiểu dáng
+            </th>
+            <th scope="col">Loại khăn
+            </th>
+            <th scope="col" class="text-center">Trạng thái
+            </th>
+            <th scope="col">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="product, index  : ${list}">
+            <td class="fw-bold" th:text="${index.index + 1}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.idOrigin?.name}"></td>
+            <td th:text="${product.idBrand?.name}"></td>
+            <td th:text="${product.idMaterial?.name}"></td>
+            <td th:text="${product.idStyles?.name}"></td>
+            <td th:text="${product.idCategory?.name}"></td>
+            <td th:unless="${product.deleted}" th:utext="${convert.convertTrangThai(product.status)}">>
+            </td>
+            <td th:if="${product.deleted}" class="text-decoration-line-through"
+              th:utext="${convert.convertTrangThai(product.status)}">
+            </td>
+            <td>
+              <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${product.deleted}"
+                th:href="@{/admin/managerproduct/delete(id=${product.id})}" class="btn btn-danger"><i
+                  class="fas fa-trash-alt"></i></a>
+              <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${product.deleted}"
+                th:href="@{/admin/managerproduct/delete(id=${product.id})}" class="btn btn-secondary"><i
+                  class="fas fa-undo-alt"></i></a>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                th:attr="data-bs-target='#viewdetail'+ ${product.id}"><i class="fas fa-eye"></i></i>
+              </button>
+              <button sec:authorize="hasAnyAuthority('ADMIN')" type="button" class="btn btn-success"
+                th:onclick="'generateEditForm('+ ${product.id}+')'"><i class="far fa-edit"></i></button>
+              <div class="modal fade" th:id="'viewdetail' + ${product.id}" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewdetailLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="viewdetailLabel" th:text="${product.name}"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-6">
+                          <p><strong>Tên :</strong>
+                            <span th:text="${product.name}"></span>
+                          </p>
+                          <p><strong>Xuất sứ :</strong>
+                            <span th:text="${product.idOrigin?.name}"></span>
+                          </p>
+                          <p><strong>Trạng thái :</strong>
+                            <span th:unless="${product.deleted}"
+                              th:utext="${convert.convertTrangThai(product.status)}">>
+                            </span>
+                            <span th:if="${product.deleted}" class="text-decoration-line-through"
+                              th:utext="${convert.convertTrangThai(product.status)}">
+                            </span>
+                          </p>
+                        </div>
+                        <div class="col-6">
+                          <p><strong>Loại khăn :</strong>
+                            <span th:text="${product.idCategory?.name}"></span>
+                          </p>
+                          <p><strong>Thương hiệu :</strong>
+                            <span th:text="${product.idBrand?.name}"></span>
+                          </p>
+                          <p><strong>Chất liệu :</strong>
+                            <span th:text="${product.idMaterial?.name}"></span>
+                          </p>
+                        </div>
+                        <div class="col-12">
+                          <div th:if="${product.productDetails.size() == 0}">
+                            Không có chi tiết sản phẩm
+                          </div>
+                          <div th:unless="${product.productDetails.size() == 0}">
+                            <div th:each=" listPettern : ${product.getListOptionProduct}">
+                              <hr>
+                              <div class="fw-bolder" th:text="${listPettern.get(0).idPattern.name}">
+                              </div>
+                              <div th:each="pddt : ${listPettern}">
+                                <div>
+                                  <span class="fw-bold" th:text="'Mã: '+${pddt.code}"></span>
+                                  <span class="fw-bold" th:text="'- Kích thước: '+ ${pddt.idSize?.name}"></span>
+                                  <div class="row">
+                                    <div class="col-3 mb-3">
+                                      <span>Số lượng :</span>
+                                      <span class="fw-bold" th:text="${pddt.quantity}"></span>
+                                    </div>
+                                    <div class="col-3 mb-3">
+                                      <span>Giá :</span>
+                                      <span class="fw-bold"
+                                        th:text="${#strings.replace(#numbers.formatDecimal(pddt.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'"></span>
+                                    </div>
+                                    <div class="col-6 mb-3" th:if="${pddt.imageProducts.size() == 0}">
+                                      <span>Không có ảnh nào</span>
+                                    </div>
+                                    <div class="col-6 mb-3 d-flex d-flex justify-content-around"
+                                      th:unless="${pddt.imageProducts.size() == 0}">
+                                      <div th:each="image : ${pddt.imageProducts}">
+                                        <a th:href="${image.img}" target="_blank"
+                                          class="border border-2 p-2 d-inline-block">
+                                          <img th:src="${image.img}" alt="Ảnh sản phẩm" class="img-fluid"
+                                            style="height: 30px;">
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="form-floating mb-3 col-12">
+                                    <textarea class="form-control" placeholder="Mô tả" id="floatingTextarea"
+                                      style="height: 18px;" th:text="${pddt.description}" disabled></textarea>
+                                    <label for="floatingTextarea">Mô tả</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer d-flex justify-content-between mt-3">
+      <div class="text-start">This page is <span th:text="${crpage}"></span> of <span th:text="${totalpage}"></span>
+      </div>
+      <div class="text-center">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled" th:if="${crpage-1 < 1}">
+              <a class="page-link" th:href="@{/admin/managerproduct/page(pageno=${crpage-1})}" tabindex="-1"
+                aria-disabled="true"><i class="fas fa-chevron-left fa-sm"></i></a>
+            </li>
+            <li class="page-item" th:unless="${crpage-1 < 1}">
+              <a class="page-link" th:href="@{/admin/managerproduct/page(pageno=${crpage-1})}"><i
+                  class="fas fa-chevron-left fa-sm"></i></a>
+            </li>
+            <th:block th:each="page : ${pagenumber}">
+              <li class="page-item" th:class="${crpage == page} ? 'page-item active' : 'page-item'">
+                <a class="page-link" th:href="@{/admin/managerproduct/page(pageno=${page})}" th:text="${page}"></a>
+              </li>
+            </th:block>
+            <li class="page-item disabled" th:if="${crpage == totalpage}">
+              <a class="page-link" th:href="@{/admin/managerproduct/page(pageno=${crpage+1})}" tabindex="-1"
+                aria-disabled="true"><i class="fas fa-chevron-right fa-sm"></i></a>
+            </li>
+            <li class="page-item" th:unless="${crpage == totalpage}">
+              <a class="page-link" th:href="@{/admin/managerproduct/page(pageno=${crpage+1})}"><i
+                  class="fas fa-chevron-right fa-sm"></i></a>
+            </li>
+          </ul>
+        </nav><!-- End Centered Pagination -->
+      </div>
+      <form action="#" class="mx-2" th:action="@{/admin/managerproduct/getcountrow}" method="get" id="rowCountForm">
+        <select name="selectedValue" class="border-0 px-2" onchange="document.getElementById('rowCountForm').submit();">
+          <option value="10" th:selected="${rowcount == 10}">10 / page</option>
+          <option value="20" th:selected="${rowcount == 20}">20 / page</option>
+          <option value="50" th:selected="${rowcount == 50}">50 / page</option>
+        </select>
+      </form>
+    </div>
+  </section>
+  <div class="modal fade" id="modelAddProductDetail" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm sản phẩm chi tiết</h5>
+          <button type="button" class="btn-close" onclick="closeModalAddProduct()"></button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" onsubmit="addProductDetail(event)" method="get"
+            class="form container-fluid">
+            <div class="row">
+              <div class="text-center col-1 col-md-4 col-sm-12">
+                <img
+                  src="http://res.cloudinary.com/da30qcqmf/image/upload/v1697981307/DUANTOTNGHIEP/d8157802-eeb2-417c-9dfe-9ba64f6bbd44.jpg"
+                  alt="" class="image-fluid mb-3" style="max-width: 400px;">
+                <div class="form-group">
+                  <input class="form-control" type="file" id="formFile" name="listimage" multiple="">
+                </div>
+              </div>
+              <div class="col-11  col-md-8 col-sm-12">
+                <div class="row">
+                  <input type="hidden" id="idProduct" name="idProduct" value="23">
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="idPattern" class="m-auto fw-bold">Hoa Văn:</label>
+                    <select class="form-control   form-group-0 text-center" id="idPattern" name="idPattern">
+                      <option value="-1"> Chọn Hoa Văn </option>
+                      <option th:each="option : ${pattenCbb}" th:value="${option.key}" th:text="${option.value}">
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="" class="m-auto fw-bold">Kích thước</label>
+                    <select class="form-control form-group-0 text-center" id="idSize" name="idSize">
+                      <option value="-1" selected="selected"> Chọn Kích thước </option>
+                      <option th:each="option : ${sizeCbb}" th:value="${option.key}" th:text="${option.value}">
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="" class="m-auto fw-bold">Số lượng</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control " value="0">
+                  </div>
+                  <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                    <label for="" class="m-auto fw-bold">Giá</label>
+                    <input type="number" name="price" id="price" class="form-control " value="0.0">
+                  </div>
+                  <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
+                    <label for="" class="m-auto fw-bold">Trạng thái: </label>
+                    <input type="radio" name="status" id="statusactive" class="" value="0" checked="checked"> <label
+                      for="statusactive">Kích hoạt</label>
+                    <input type="radio" name="status" id="statusdisable" class="" value="1"> <label
+                      for="statusdisable">Không sử dụng</label>
+                  </div>
+                  <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
+                    <label for="description" class="m-auto fw-bold">Mô tả</label>
+                    <textarea class="form-control form-group-0" id="description" name="description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary px-4">Lưu</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modelEditProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modelEditProductLabel" aria-modal="true" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
+  <script th:src="@{/assets/js/product/managerproduct.js}"></script>
 </body>
-
 </html>
+<!-- <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                th:attr="data-bs-target='#modelEditProduct'+ ${product.id}">
+                <i class="far fa-edit"></i>
+              </button>
+              <div class="modal fade" th:id="'modelEditProduct' + ${product.id}" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="modelEditProductLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modelEditProductLabel" th:text="${product.name}"></h5>
+                      <a target="_blank" class="btn btn-success mx-3"
+                        th:href="@{'/admin/product/view-update/'+${product.id}}"><i class="far fa-edit"></i></a>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <form enctype="multipart/form-data" class="row form container-fluid"
+                          onsubmit="submitForm(event)">
+                          <input type="hidden" name="id" id="id" th:value="${product.id}">
+                          <div class="text-center col-1 col-md-4 col-sm-12">
+                            <div th:if="${product?.imageProducts.size != 0}">
+                              <div class="row">
+                                <div class="position-relative col-3" th:each="image : ${product.imageProducts}"
+                                  th:if="${image.deleted == false}">
+                                  <img class="p-1 image-fluid w-100" th:src="${image?.img}" alt="ảnh sản phẩm">
+                                  <a th:href="@{'/admin/product/remove/'+ ${product.id} +'/image/'+${image.id}}"
+                                    class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
+                                    <i class="fas fa-times fa-xs"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <input class="form-control" type="file" id="formFile" name="listimage" multiple>
+                            </div>
+                          </div>
+                          <div class="row  col-11 col-md-8 col-sm-12">
+                            <div class="form-group">
+                              <label>Name:</label>
+                              <input type="text" name="name" class="form-control" th:value="${product.name}">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3 ">
+                              <label for="idOrigin" class="m-auto fw-bold">Nguồn Gốc:</label>
+                              <select class="form-control form-group-0 text-center  form-group-0 text-center"
+                                id="idOrigin" name="idOrigin">
+                                <option selected disabled> Chọn Nguồn Gốc</option>
+                                <option th:each="option : ${materialCbb}" th:value="${option.key}"
+                                  th:text="${option.value}" th:selected="${product.idStyles?.id == option.key}">
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                              <label for="idBrand" class="m-auto fw-bold">Thương hiệu:</label>
+                              <select class="form-control   form-group-0 text-center" id="idBrand" name="idBrand">
+                                <option selected disabled> Chọn Thương hiệu</option>
+                                <option th:each="option : ${brandCbb}" th:value="${option.key}"
+                                  th:text="${option.value}" th:selected="${product.idBrand?.id == option.key}">
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                              <label for="idMaterial" class="m-auto fw-bold">Chất Liệu</label>
+                              <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial">
+                                <option selected disabled> Chọn Chất Liệu</option>
+                                <option th:each="option : ${materialCbb}" th:value="${option.key}"
+                                  th:text="${option.value}" th:selected="${product.idOrigin?.id == option.key}">
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                              <label for="idCategory" class="m-auto fw-bold">Loại hàng</label>
+                              <select class="form-control form-group-0 text-center" id="idCategory" name="idCategory">
+                                <option selected disabled> Chọn Loại hàng</option>
+                                <option th:each="option : ${categoryCbb}" th:value="${option.key}"
+                                  th:text="${option.value}" th:selected="${product.idCategory?.id == option.key}">
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                              <label for="idStyles" class="m-auto fw-bold">Phong cách</label>
+                              <select class="form-control form-group-0 text-center" id="idStyles" name="idStyles">
+                                <option selected disabled> Chọn Phong cách</option>
+                                <option th:each="option : ${stylesCbb}" th:value="${option.key}"
+                                  th:text="${option.value}" th:selected="${product.idStyles?.id == option.key}">
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <label>Trạng Thái: </label>
+                              <input type="radio" name="status" id="r1" value="1" th:checked="${product.status==1}">
+                              <label for="r1">Hoạt động</label>
+                              <input type="radio" name="status" id="r2" value="0" th:checked="${product.status ==0}">
+                              <label for="r2">Không hoạt động</label>
+                            </div>
+                            <input type="submit" class="btn btn-success" value="Update">
+                          </div>
+                        </form>
+                        <div class="col-12">
+                          <hr>
+                          <button type="button" th:onclick="'openModalAddProduct(' + ${product.id} + ')'"
+                            class="btn btn-success">Thêm sản phẩm chi tiết</button>
+                          <div th:if="${product.productDetails.size() == 0}">
+                            Không có chi tiết sản phẩm
+                          </div>
+                          <div th:unless="${product.productDetails.size() == 0}">
+                            <div th:each=" listPettern : ${product.getListOptionProduct}">
+                              <div class="fw-bolder" th:text="${listPettern.get(0).idPattern?.name}">
+                              </div>
+                              <div th:each="pddt : ${listPettern}">
+                                <div>
+                                  <span class="fw-bold" th:text="'Mã: '+${pddt.code}"></span>
+                                  <span class="fw-bold" th:text="'- Kích thước: '+ ${pddt.idSize?.name}"></span>
+                                  <a target="_blank" class="btn btn-success mx-3"
+                                    th:href="@{'/admin/productdetail/edit/'+${pddt.id}}"><i class="far fa-edit"></i></a>
+                                  <form onsubmit="updateProductDetail(event)" method="get">
+                                    <input type="hidden" name="id" th:value="${pddt.id}">
+                                    <div class="row">
+                                      <div class="col-4 row mb-3">
+                                        <div class="mb-3">
+                                          <input class="form-control" type="file" multiple id="formFile"
+                                            name="imageproduct">
+                                        </div>
+                                      </div>
+                                      <div class="col-8 mb-3 image-div" th:if="${pddt.imageProducts.size() == 0}">
+                                        <span>Không có ảnh nào</span>
+                                      </div>
+                                      <div class="col-8 mb-3 image-div d-flex d-flex justify-content-around"
+                                        th:unless="${pddt.imageProducts.size() == 0}">
+                                        <div th:each="image : ${pddt.imageProducts}">
+                                          <a th:href="${image.img}" target="_blank"
+                                            class="border border-2 p-2 d-inline-block">
+                                            <img th:src="${image.img}" alt="Ảnh sản phẩm" class="img-fluid"
+                                              style="height: 30px;">
+                                          </a>
+                                        </div>
+                                      </div>
+                                      <div class="col-6 row mb-3">
+                                        <label for="inputNumber" class="col-sm-6 col-form-label">Số lượng</label>
+                                        <div class="col-sm-6">
+                                          <input type="number" class="form-control" name="quantity"
+                                            th:value="${pddt.quantity}">
+                                        </div>
+                                      </div>
+                                      <div class="col-6 row mb-3">
+                                        <label for="inputNumber" class="col-sm-4 col-form-label">Giá</label>
+                                        <div class="col-sm-8">
+                                          <input type="number" class="form-control" name="price"
+                                            th:value="${convert.convertNumber(pddt.price)}">
+                                        </div>
+                                      </div>
+                                      <div class="form-floating mb-3 col-9">
+                                        <textarea class="form-control" placeholder="Leave a comment here"
+                                          id="floatingTextarea" style="height: 18px;" name="discription"
+                                          th:text="${pddt.description}"></textarea>
+                                        <label for="floatingTextarea">Mô tả</label>
+                                      </div>
+                                      <div class="col-3">
+                                        <button type="submit" class="savebtn btn btn-success">Lưu</button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div> -->

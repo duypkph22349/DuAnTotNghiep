@@ -22,16 +22,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
   @Query(value = "SELECT cus FROM Customer cus WHERE cus.name= :name")
   public Optional<Customer> getCounterCustomer(@Param("name") String name);
+
+  @Query(value = "SELECT cus FROM Customer cus WHERE LOWER(cus.name) LIKE CONCAT('%', :searchText, '%') OR LOWER(cus.phone) LIKE CONCAT('%', :searchText, '%')")
+  public List<Customer> searchByText(@Param("searchText") String searchText);
 }
-// UUID id;
-// String code;
-// String name;
-// boolean gender;
-// LocalDateTime birth_date;
-// String phone;
-// String address;
-// String city;
-// String country;
-// int status;
-// (id,code,name,gender,birth_date,phone,address,city,country,status) FROM
-// customer

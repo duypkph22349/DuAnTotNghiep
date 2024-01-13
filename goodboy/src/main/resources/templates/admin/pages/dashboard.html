@@ -59,6 +59,7 @@
               <div class="ps-3">
                 <h6 id="totalSalesIncome">
                 </h6>
+                <span class="text-success small pt-1 fw-bold" id="incomegrow"></span>
               </div>
             </div>
           </div>
@@ -123,6 +124,44 @@
           </div>
         </div>
       </div><!-- End Sản Phẩm Bán Chạy -->
+      <!-- Char  -->
+      <div class="col-12 bg-light">
+        <div class="card top-selling overflow-auto">
+          <h5 class="card-title mx-3">Doanh thu <span id="fillterforchar">| Hôm nay</span></h5>
+          <div>
+            <ul class="nav nav-tabs" id="navtab-char">
+              <li class="nav-item">
+                <button class="nav-link char-cate active" onclick="selectChar(this, 1)">Theo giờ</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link char-cate" onclick="selectChar(this ,2)">Theo Thứ</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link char-cate" onclick="selectChar(this,3)">Theo ngày</button>
+              </li>
+            </ul>
+          </div>
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,1)">Hôm nay</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,2)">Hôm qua</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,3)">Tuần này</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,4)">Tuần trước</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,5)">Tháng nay</a></li>
+              <li><a class="dropdown-item" onclick="updatetimetype(this,6)">Tháng trước</a></li>
+              <!-- <li><a class="dropdown-item" onclick="getFiveYearLastIncomeChart()">5 năm</a></li> -->
+            </ul>
+          </div>
+          <div class="card-body pb-0" style="min-height: 200px;">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <!-- Char  end -->
       <!-- Hóa Đơn Mới -->
       <div class="col-12">
         <div class="card recent-sales overflow-auto">
@@ -142,10 +181,10 @@
                 <tr th:each="bill : ${resentBill}">
                   <th scope="row"><a th:href="@{${'/admin/bill/bill-detail?id=' + bill.id}}" th:text="${bill.code}"></a>
                   </th>
-                  <td th:text="${bill.employee?.name}"></td>
+                  <td th:text="${bill.customer?.name}"></td>
                   <td th:text="${bill.code}"></td>
                   <td
-                    th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                    th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
                   </td>
                   <td th:utext="${convert.statusOfBill(bill.status)}"></td>
                 </tr>
@@ -154,10 +193,9 @@
           </div>
         </div>
       </div><!-- End Hóa Đơn Mới -->
-
     </div>
   </div>
-  <script th:src="@{/assets/js/thongke/dashboarhthongke2.js}"></script>
+  <script th:src="@{/assets/js/thongke/dashboarhthongke.js}"></script>
 </body>
 
 </html>

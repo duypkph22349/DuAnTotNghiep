@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Account Form</title>
+</head>
+
+<body layout:fragment="content">
+  <div class="pagetitle">
+    <h1>Bảng điều khiển</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật giảm giá</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  <!-- Form to store new cuahang -->
+  <form enctype="multipart/form-data" th:action="@{/admin/promotion/update}" th:object="${promotionRequest}"
+    method="post" class="form container">
+    <input type="hidden" id="id" th:field="*{id}" />
+    <div class="form-group">
+      <label for="startTime">Ngày bắt đầu:</label>
+      <input type="datetime-local" class="form-control" id="startTime" th:field="*{startTime}" />
+      <div th:if="${#fields.hasErrors('startTime')}" class="text-danger form-text" th:errors="*{startTime}"></div>
+    </div>
+    <div class="form-group">
+      <label for="endTime">Ngày kết thúc:</label>
+      <input type="datetime-local" class="form-control" id="endTime" th:field="*{endTime}" />
+      <div th:if="${#fields.hasErrors('endTime')}" class="text-danger form-text" th:errors="*{endTime}"></div>
+    </div>
+    <div class="form-group">
+      <label for="value">Giá trị giảm:</label>
+      <input type="number" class="form-control" id="value" th:field="*{value}" />
+      <div th:if="${#fields.hasErrors('value')}" class="text-danger form-text" th:errors="*{value}"></div>
+    </div>
+    <div class="form-group">
+      <label for="status">Trạng thái:</label>
+      <input type="radio" id="active" th:field="*{status}" value="0" name="type" class="mx-1" />
+      <label for="active" class="mx-1">Không hoạt động</label>
+      <input type="radio" id="disable" th:field="*{status}" value="1" name="type" class="mx-1" />
+      <label for="disable" class="mx-1">Hoạt Động</label>
+      <div th:if="${#fields.hasErrors('status')}" class="text-danger form-text" th:errors="*{status}"></div>
+      <div th:if="${validateerrors}" class="alert alert-danger" role="alert" th:text="${validateerrors}">
+      </div>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Lưu</button>
+    </div>
+  </form>
+</body>
+
+</html>

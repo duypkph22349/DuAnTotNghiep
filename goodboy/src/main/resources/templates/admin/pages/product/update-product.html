@@ -1,47 +1,116 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Mamercy</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Cập nhật sản phẩm</title>
 </head>
-<body>
-<section layout:fragment="content">
+
+<body layout:fragment="content">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Bảng điều khiển</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                <li class="breadcrumb-item active">Update Product</li>
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Cập nhật sản phẩm</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
     <h1 style="text-align: center">Cập nhật </h1>
-    <form th:object="${brand}" th:action="@{'/admin/product/update/' + ${brand.id}}" method="post">
+    <form enctype="multipart/form-data" th:object="${entity}" class="row form container-fluid"
+        th:action="@{/admin/product/update}" method="post">
+        <input type="hidden" name="" th:field="${entity.id}">
+        <div class="text-center col-1 col-md-4 col-sm-12">
+            <div th:if="${entity?.images.size != 0}">
+                <div class="row">
+                    <div class="position-relative col-3" th:each="image : ${entity.images}"
+                        th:if="${image.deleted == false}">
+                        <img class="p-1 image-fluid w-100" th:src="${image?.img}" alt="ảnh sản phẩm">
+                        <a th:href="@{'/admin/product/remove/'+ ${entity.id} +'/image/'+${image.id}}"
+                            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle text-white">
+                            <i class="fas fa-times fa-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${entity?.images.size != 0}">
+                <img th:src="${entity.noImage}" alt="" class="image-fluid mb-3" style="max-width: 400px;">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="file" id="formFile" name="listimage" multiple>
+            </div>
+        </div>
+        <div class="row  col-11 col-md-8 col-sm-12">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" th:name="name" class="form-control" th:value="${entity.name}">
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3 ">
+                <label for="idOrigin" class="m-auto fw-bold">Nguồn Gốc:</label>
+                <select class="form-control form-group-0 text-center  form-group-0 text-center" id="idOrigin"
+                    th:field="*{idOrigin}" name="idOrigin">
+                    <option value="-1"> Chọn Nguồn Gốc</option>
+                    <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('idOrigin')}" class="text-danger form-text" th:errors="*{idOrigin}">
+                </div>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                <label for="idBrand" class="m-auto fw-bold">Thương hiệu:</label>
+                <select class="form-control   form-group-0 text-center" id="idBrand" name="idBrand"
+                    th:field="*{idBrand}">
+                    <option value="-1"> Chọn Thương hiệu </option>
+                    <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('idBrand')}" class="text-danger form-text" th:errors="*{idBrand}">
+                </div>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                <label for="idMaterial" class="m-auto fw-bold">Chất Liệu</label>
+                <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
+                    th:field="*{idMaterial}">
+                    <option value="-1"> Chọn Chất Liệu </option>
+                    <option th:each="option : ${materialCbb}" th:value="${option.key}" th:text="${option.value}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('idMaterial')}" class="text-danger form-text" th:errors="*{idMaterial}">
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label>Name:</label>
-            <input type="text" th:name="name" class="form-control" th:value="${brand.name}">
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                <label for="idCategory" class="m-auto fw-bold">Loại hàng</label>
+                <select class="form-control   form-group-0 text-center" id="idCategory" name="idCategory"
+                    th:field="*{idCategory}">
+                    <option value="-1"> Chọn Loại hàng </option>
+                    <option th:each="option : ${categoryCbb}" th:value="${option.key}" th:text="${option.value}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('idCategory')}" class="text-danger form-text" th:errors="*{idCategory}">
+                </div>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                <label for="idStyles" class="m-auto fw-bold">Phong cách</label>
+                <select class="form-control   form-group-0 text-center" id="idStyles" name="idStyles"
+                    th:field="*{idStyles}">
+                    <option value="-1"> Chọn Phong cách </option>
+                    <option th:each="option : ${stylesCbb}" th:value="${option.key}" th:text="${option.value}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('idStyles')}" class="text-danger form-text" th:errors="*{idStyles}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Trạng Thái: </label>
+                <input type="radio" th:name="status" id="r1" value="1" th:checked="${entity.status == 1}">
+                <label for="r1">Hoạt động</label>
+                <input type="radio" th:name="status" id="r2" value="0" th:checked="${entity.status == 0}">
+                <label for="r2">Không hoạt động</label>
+            </div>
+            <input type="submit" class="btn btn-success" value="Cập Nhật" />
         </div>
-        <div class="form-group">
-            <label>Status:</label>
-            <input type="radio" th:name="status" id="r1" value="1" th:checked="${brand.status == 1}">
-            <label for="r1">Activity</label>
-            <input type="radio" th:name="status" id="r2" value="0" th:checked="${brand.status == 0}">
-            <label for="r2">Unactivity</label>
-        </div>
-        <input type="submit" class="btn btn-success" value="Update"/>
     </form>
-</section>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
-        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 </body>
+
 </html>

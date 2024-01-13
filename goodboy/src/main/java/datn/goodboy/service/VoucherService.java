@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
+import datn.goodboy.model.entity.BillDetail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.entity.VoucherDetail;
 import datn.goodboy.model.request.VoucherRequest;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class VoucherService implements PanigationInterface<Voucher>, PanigationWithSearchStatus<Voucher> {
@@ -32,6 +34,8 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
   VoucherRepository voucherRepository;
   @Autowired
   VoucherDetailRepository voucherdetailRepository;
+  @Autowired
+  EmailService emailService;
 
   public List<Voucher> getAllVouchers() {
     return voucherRepository.findAll();
@@ -61,7 +65,13 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setMax_discount(voucher.getMaxDiscount());
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setDeleted(false);
-    return voucherRepository.save(voucher1);
+    Voucher savevoucher = voucherRepository.save(voucher1);
+    if (savevoucher.sendMail()) {
+      CompletableFuture.runAsync(() -> {
+        emailService.sendVoucherMail(savevoucher, "Thông báo cập nhật Voucher mới");
+      });
+    }
+    return savevoucher;
   }
 
   public void deleteVoucher(int id) {
@@ -90,7 +100,14 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucher1.setTypes(request.isTypes());
       voucher1.setMax_discount(request.getMaxDiscount());
       voucher1.setMin_order(request.getMinOrder());
-      return voucherRepository.save(voucher1);
+      Voucher savevoucher = voucherRepository.save(voucher1);
+
+      if (savevoucher.sendMail()) {
+        CompletableFuture.runAsync(() -> {
+          emailService.sendVoucherMail(savevoucher, "Thông báo cập nhật Voucher ");
+        });
+      }
+      return savevoucher;
     } else {
       return null;
     }
@@ -114,6 +131,10 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucherDetail.setVoucher(voucher.get());
       voucherRepository.save(voucher.get());
       bill.setReduction_amount(voucherdetailRepository.save(voucherDetail).getMoney_reduction());
+      for (BillDetail billDetail : bill.getBillDetail()) {
+        billDetail
+            .setTotalMoney(billDetail.getTotalMoney() * (1 - (bill.getReduction_amount() / bill.getTotal_money())));
+      }
     }
   }
 

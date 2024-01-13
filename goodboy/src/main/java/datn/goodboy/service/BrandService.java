@@ -1,9 +1,9 @@
 package datn.goodboy.service;
 
 import datn.goodboy.model.entity.Brand;
-import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.repository.BrandRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 public class BrandService {
     @Autowired
     private BrandRepository brandRepository;
+
+    public ArrayList<Brand> getAllBrands() {
+        return (ArrayList<Brand>) brandRepository.findAll();
+    }
 
     public Page<Brand> findAllBrand(Pageable pageable) {
         return brandRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -69,5 +73,9 @@ public class BrandService {
             }
             brandRepository.save(brand.get());
         }
+    }
+
+    public List<Brand> getBrandList() {
+        return brandRepository.getBrandAble();
     }
 }

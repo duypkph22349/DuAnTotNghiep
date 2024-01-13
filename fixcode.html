@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Email Template</title>
+</head>
+
+<body>
+  <div class='send-main' style="width: 100%">
+    <!-- Header Section -->
+    <div style="text-align: center; margin-left: 3px">
+      <span style="font-weight: bold; font-size: 25px; color: #2f80ed">Cảm ơn quý khách đã đặt hàng!</span>
+    </div>
+
+    <!-- Customer Information Section -->
+    <div style="margin-top: 10px; margin: 0 auto; width: 86%">
+      <span style="font-size: 20px">
+        Xin chào
+        <span style="font-weight: bold" th:text="${bill.customer_name}">Thúy Hằng</span>
+      </span>
+    </div>
+
+    <!-- Order Details Section -->
+    <div style="margin-top: 5px">
+      <div style="width: 86%; margin: 0 auto">
+        <span>
+          Chúng tôi đã nhận được yêu cầu đặt hàng của bạn và đang trong quá trình xử lý. Bạn sẽ nhận được
+          thông báo tiếp theo khi đơn hàng đã sẵn sàng được giao. Bạn có thể xem tình trạng đơn hàng
+          <a href="#" style="cursor: pointer">
+            <span style="text-decoration: underline; color: #2f80ed">
+              tại đây.
+            </span>
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <!-- Order Information Section -->
+    <div style="margin-top: 20px; margin: 0 auto">
+      <table style="border-spacing: 0; border-collapse: collapse; margin: 0 auto; width: 86%; margin-top: 15px;"
+        border="1" cellpadding="5" cellspacing="10">
+        <!-- Order Header -->
+        <thead>
+          <tr>
+            <th colspan="2"
+              style="border: 1px solid #d1d1d1; text-align: start; background-color: #e1e1e1; color: black">
+              Thông tin đơn hàng
+            </th>
+          </tr>
+        </thead>
+        <!-- Order Details -->
+        <tbody>
+          <tr>
+            <td style="width: 50%; border: 1px solid #d1d1d1; vertical-align: top; padding: 5px">
+              <!-- Add order details here -->
+            </td>
+            <td style="width: 50%; border: 1px solid #d1d1d1; vertical-align: top">
+              <!-- Add order details here -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Shipping Address Section -->
+    <div style="margin: 0 auto">
+      <table style="border-spacing: 0; border-collapse: collapse; margin: 0 auto; width: 86%; margin-top: 15px;"
+        border="1" cellpadding="5" cellspacing="10">
+        <!-- Shipping Address Header -->
+        <thead>
+          <tr>
+            <th
+              style="border: 1px solid #d1d1d1; vertical-align: top; text-align: start; background-color: #e1e1e1; color: black"
+              colspan="2">Địa chỉ nhận hàng
+            </th>
+          </tr>
+        </thead>
+        <!-- Shipping Address Details -->
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #d1d1d1; vertical-align: top">
+              <!-- Add shipping address details here -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Product Details Section -->
+    <div style="margin: 0 auto">
+      <table style="border-spacing: 0; border-collapse: collapse; margin: 0 auto; width: 86%; margin-top: 15px;"
+        border="1" cellpadding="5" cellspacing="10">
+        <!-- Product Details Header -->
+        <thead>
+          <tr>
+            <th
+              style="border: 1px solid #d1d1d1; vertical-align: top; background-color: #e1e1e1; color: black; text-align: center"
+              colspan="4">Sản phẩm
+            </th>
+          </tr>
+          <!-- Product Details Columns -->
+          <tr>
+            <th style="border: 1px solid #d1d1d1; vertical-align: top; text-align: center">Sản phẩm</th>
+            <th style="border: 1px solid #d1d1d1; vertical-align: top; text-align: center">Số lượng</th>
+            <th style="border: 1px solid #d1d1d1; vertical-align: top; text-align: center">Đơn giá</th>
+            <th style="border: 1px solid #d1d1d1; vertical-align: top; text-align: center">Thành tiền</th>
+          </tr>
+        </thead>
+        <!-- Product Details Body -->
+        <tbody>
+          <!-- Iterate through billDetail items -->
+          <tr th:each="product : ${bill.billDetail}">
+            <td style="text-align: center; border: 1px solid #d1d1d1; vertical-align: top; padding: 10px">
+              <!-- Add product details here -->
+            </td>
+            <td style="text-align: center; border: 1px solid #d1d1d1; vertical-align: top; width: 15%; padding: 10px">
+              <!-- Add product details here -->
+            </td>
+            <td style="text-align: center; border: 1px solid #d1d1d1; vertical-align: top; padding: 10px">
+              <!-- Add product details here -->
+            </td>
+            <td style="text-align: center; border: 1px solid #d1d1d1; vertical-align: top; padding: 10px">
+              <!-- Add product details here -->
+            </td>
+          </tr>
+          <!-- End iteration -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary Section -->
+    <div style="width: 86%; margin: 0 auto; margin-top: 20px">
+      <span>
+        <!-- Add summary details here -->
+      </span>
+    </div>
+  </div>
+</body>
+
+</html>

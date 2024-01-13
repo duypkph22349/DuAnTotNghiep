@@ -3,10 +3,11 @@ package datn.goodboy.model.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import groovy.transform.ToString;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,14 +20,17 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Table(name = "product_detail")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "product_detail")
 @ToString
 public class ProductDetail {
     @Id
@@ -50,7 +54,9 @@ public class ProductDetail {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_product")
+    @ToString.Exclude
     private Product idProduct;
 
     @ManyToOne
@@ -73,9 +79,15 @@ public class ProductDetail {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @OneToMany(mappedBy = "idProductDetail") // Define the relationship with Images
-    @JsonIgnore
+    @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonProperty("imageProducts")
     private List<Images> imageProducts;
+
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonProperty("evaluates")
+    private List<Evaluate> evaluates;
 
     @PrePersist
     protected void onCreate() {
@@ -101,6 +113,40 @@ public class ProductDetail {
         return true;
     }
 
+    @JsonProperty("firstImage")
+    public String getFirstImage() {
+        if (imageProducts != null && !imageProducts.isEmpty()) {
+            return imageProducts.get(0).getImg();
+        } else if (idProduct != null && idProduct.getImageProducts() != null
+                && !idProduct.getImageProducts().isEmpty()) {
+            return idProduct.getImageProducts().get(0).getImg();
+        } else {
+            return null;
+        }
+    }
+
+    @JsonProperty("nameProduct")
+    public String getNameProduct() {
+        if (this.name == null) {
+            return idProduct.getName();
+        }
+        if (this.name.equals("")) {
+            return idProduct.getName();
+        } else {
+            return this.name;
+        }
+    }
+    @JsonProperty("fullnameProduct")
+    public String getFullNameProduct() {
+        if (this.name == null) {
+            return idProduct.getName() + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        }
+        if (this.name.equals("")) {
+            return idProduct.getName() + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        } else {
+            return this.name + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        }
+    }
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -110,4 +156,5 @@ public class ProductDetail {
             return "{}";
         }
     }
+
 }

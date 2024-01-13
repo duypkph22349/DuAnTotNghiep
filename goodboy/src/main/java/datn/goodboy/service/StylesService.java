@@ -1,9 +1,11 @@
 package datn.goodboy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import datn.goodboy.model.entity.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,10 @@ import datn.goodboy.repository.StylesRepository;
 public class StylesService {
     @Autowired
     private StylesRepository stylesRepository;
+
+    public ArrayList<Styles> getAllStyles() {
+        return (ArrayList<Styles>) stylesRepository.findAll();
+    }
 
     public Page<Styles> findAll(Pageable pageable) {
         return stylesRepository.findAllByOrderByCreatedAtDesc(pageable);
@@ -54,5 +60,9 @@ public class StylesService {
             }
             stylesRepository.save(styles.get());
         }
+    }
+
+    public List<Styles> getStylesList() {
+      return stylesRepository.getStylesList();
     }
 }

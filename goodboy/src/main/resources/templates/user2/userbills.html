@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html layout:decorate="~{user2/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Shope</title>
+</head>
+
+<body layout:fragment="content">
+  <style>
+    /* Add custom styles here if needed */
+
+    /* Override Bootstrap's default styles for the tab */
+    .tab {
+      border: none;
+    }
+
+    /* Override Bootstrap's default styles for the buttons inside the tab */
+    .tab button {
+      background-color: #f1f1f1;
+      color: #333;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    /* Override Bootstrap's default styles for the active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+  </style>
+  <div th:unless="${customer}">
+    <p class="text-center">Đăng nhập để xem lịch sử</p>
+  </div>
+  <div class="container-fluid mt-5" th:if="${customer}">
+    <ul class="nav nav-tabs tab nav-fill" id="myTabs">
+      <li class="nav-item">
+        <a class="nav-link active" id="allbill-tab" data-toggle="tab" href="#allbill" role="tab" aria-controls="allbill"
+          aria-selected="true">Tất cả</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="confirmwait-tab" data-toggle="tab" href="#confirmwait" role="tab"
+          aria-controls="confirmwait" aria-selected="false">Chờ xác nhận </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="chogiaohang-tab" data-toggle="tab" href="#chogiaohang" role="tab"
+          aria-controls="chogiaohang" aria-selected="false">Chờ giao hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="cholayhang-tab" data-toggle="tab" href="#cholayhang" role="tab"
+          aria-controls="cholayhang" aria-selected="false">Chờ lấy hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="danggiaohang-tab" data-toggle="tab" href="#danggiaohang" role="tab"
+          aria-controls="danggiaohang" aria-selected="false">Đang giao hàng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="thanhcong-tab" data-toggle="tab" href="#thanhcong" role="tab" aria-controls="thanhcong"
+          aria-selected="false">Thành Công</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="huy-tab" data-toggle="tab" href="#huy" role="tab" aria-controls="huy"
+          aria-selected="false">Đã hủy</a>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="myTabsContent">
+      <div class="tab-pane fade show active" id="allbill" role="tabpanel" aria-labelledby="allbill-tab">
+        <div th:each="bill : ${customer.getAllBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <p class="card-text"
+                    th:text="'Ngày đặt : ' + ${#temporals.format(bill.completion_date, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:if="${bill.status == 6 || bill.status == 5 }" th:href="${'/shop/order/reorder/'+bill.id}"
+                          class="btn btn-primary mx-3">Mua lại</a>
+                        <a th:if="${bill.status == 5 && bill.evaluates.size() == 0}"
+                          th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
+                        <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
+                          class="btn btn-danger mx-3"
+                          onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="confirmwait" role="tabpanel" aria-labelledby="confirmwait-tab">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getConFirmBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <p class="card-text" th:text="'Ngày Đặt Hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
+                          class="btn btn-danger mx-3"
+                          onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="cholayhang" role="tabpanel" aria-labelledby="cholayhang-tab">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getWaitingForGetBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <p class="card-text" th:text="'Ngày Đặt Hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="chogiaohang" role="tabpanel" aria-labelledby="chogiaohang-tab">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getDeliveringBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+                  <p class="card-text" th:text="'Ngày Đặt Hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="danggiaohang" role="tabpanel" aria-labelledby="danggiaohang-tab">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getDeliveringBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+                  <p class="card-text"
+                    th:text="'Ngày Giao Hàng: ' + ${#temporals.format(bill.delivery_date, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="thanhcong" role="tabpanel" aria-labelledby="thanhcong-tab">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getSuccessBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <p class="card-text"
+                    th:text="'Thành công ngày : ' + ${#temporals.format(bill.completion_date, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/shop/order/reorder/'+bill.id}" class="btn btn-primary mx-3">Mua lại</a>
+                        <a th:if="${bill.evaluates.size() == 0}" th:href="${'/shop/order/evaluate/'+bill.id}"
+                          class="btn btn-warning mx-3">Đánh giá</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="huy" role="tabpanel" aria-labelledby="huy-tab">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getCancelBills()}">
+          <div class="container-fluid mt-5">
+            <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
+            <div class="card cart-history">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <p class="card-text" th:text="'Ngày Hủy: ' + ${#temporals.format(bill.updatedAt, 'dd/MM/yyyy')}">
+                  </p>
+                  <p th:utext="${convert.statusOfBill(bill.status)}"></p>
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="info mt-2 p-4">
+                      <div class="info-order">
+                        <table class="table table-hover" id="myTable" style="font-size: 14px">
+                          <thead class="position-sticky top-0">
+                            <tr class="ex">
+                              <th>Image</th>
+                              <th>Tên sản phẩm</th>
+                              <th>Kích cỡ</th>
+                              <th>Kiểu mẫu</th>
+                              <th>Số lượng</th>
+                              <th>Tổng giá tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="billDetail, i : ${bill.billDetail}">
+                              <td>
+                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                  style="height: 40px; max-width: 60px;" />
+                              </td>
+                              <td th:text="${billDetail.productDetail.name}"></td>
+                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
+                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.quantity}"></td>
+                              <td
+                                th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Tổng tiền:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Phí ship:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship != null and bill.money_ship != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.money_ship, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.money_ship == null or bill.money_ship == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Giảm giá:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount != null and bill.reduction_amount != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.reduction_amount, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;"
+                                th:if="${bill?.reduction_amount == null or bill.reduction_amount == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 1020px; text-align: right; font-size: 14px;">
+                              <label>
+                                Thanh toán:
+                              </label>
+                            </td>
+                            <td style="width: 120px; text-align: right; font-weight: bold; font-size: 14px;">
+                              <span style="font-weight: bold;" th:if="${bill?.deposit != null and bill.deposit != 0}"
+                                th:text="${#strings.replace(#numbers.formatDecimal(bill.deposit, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
+                              <span style="font-weight: bold;" th:if="${bill?.deposit == null or bill.deposit == 0}">
+                                <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-end">
+                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem chi tiết</a>
+                        <a th:href="${'/shop/order/reorder/'+bill.id}" class="btn btn-primary mx-3">Mua lại</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function openCity(evt,cityName) {
+      var i,tabcontent,tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active","");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
+  <script th:src="@{/assets/js/user/product/bill.js}"></script>
+</body>
+
+</html>

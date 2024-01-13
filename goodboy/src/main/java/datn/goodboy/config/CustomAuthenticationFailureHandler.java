@@ -25,6 +25,5 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
         SavedRequest savedRequest = this.requestCache.getRequest(request, response);
-
     }
 }

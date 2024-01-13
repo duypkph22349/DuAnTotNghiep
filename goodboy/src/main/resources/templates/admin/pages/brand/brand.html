@@ -17,15 +17,7 @@
 <body>
 <section layout:fragment="content">
     <div>
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                    <li class="breadcrumb-item active">Branch</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
+
         <h1 style="text-align: center">DANH SÁCH THƯƠNG HIỆU</h1>
 
         <form class="search-form d-flex align-items-center" method="get" th:action="@{'/admin/brand/search'}">
@@ -40,10 +32,10 @@
             <thead class="table-primary text-center m-5">
             <tr>
                 <th>#</th>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
             </tr>
             </thead>
             <tbody class="text-center">
@@ -55,12 +47,6 @@
                 <td th:unless="${b.deleted}" th:text="${convert.convertTrangThai(b.status)}"></td>
                 <td th:if="${b.deleted}" class="text-decoration-line-through" th:text="${convert.convertTrangThaiEmployee(b.status)}"></td>
                 <td>
-                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${b.deleted}"
-                       th:href="@{/admin/brand/delete(id=${b.id})}" class="btn btn-danger"><i
-                            class="fas fa-trash-alt"></i></a>
-                    <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${b.deleted}"
-                       th:href="@{/admin/brand/delete(id=${b.id})}" class="btn btn-secondary"><i
-                            class="fas fa-undo-alt"></i></a>
                     <a sec:authorize="hasAnyAuthority('ADMIN')"
                        th:href="@{'/admin/brand/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>

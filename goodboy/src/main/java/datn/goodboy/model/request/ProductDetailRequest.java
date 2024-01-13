@@ -37,21 +37,14 @@ public class ProductDetailRequest {
   }
 
   List<Images> image = new ArrayList<>();
-  int id;
+  Integer id;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idProduct;
+  Integer idProduct;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idPattern;
+  Integer idPattern;
   @Min(value = 0, message = "Vui lòng chọn")
-  int idOrigin;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idBrand;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idMaterial;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idSize;
-  @Min(value = 0, message = "Vui lòng chọn")
-  int idStyles;
+  Integer idSize;
+
   String description;
   @NotNull(message = "Trường này không thể bỏ qua")
   boolean deleted;
@@ -59,9 +52,9 @@ public class ProductDetailRequest {
   int quantity;
   @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
   Float price;
-  @NotNull
-  @NotBlank
-  @Length(min = 5, message = "Tên không thể quá ngắn")
+  // @NotNull
+  // @NotBlank
+  // @Length(min = 5, message = "Tên không thể quá ngắn")
   String name;
   @NotNull
   int status;
@@ -73,11 +66,7 @@ public class ProductDetailRequest {
     }
     this.idProduct = -1;
     this.idPattern = -1;
-    this.idOrigin = -1;
-    this.idBrand = -1;
-    this.idMaterial = -1;
     this.idSize = -1;
-    this.idStyles = -1;
     this.quantity = 0;
     this.price = 0f;
     this.name = "";

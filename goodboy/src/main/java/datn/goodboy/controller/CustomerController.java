@@ -48,7 +48,7 @@ public class CustomerController {
         model.addAttribute("list", page.getContent());
         return "/admin/pages/customer/form-customer";
     }
-
+// /admin/customer/add
     @GetMapping("/view-add")
     public String viewAdd() {
         return "/admin/pages/customer/customer_modal";

@@ -16,10 +16,13 @@ import org.springframework.stereotype.Repository;
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
 
     @Query("SELECT b FROM Brand b WHERE b.code LIKE %:keyword% OR b.name LIKE %:keyword%")
-    Page<Brand> searchByKeyword(@Param("keyword") String keyword,Pageable pageable);
+    Page<Brand> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Brand> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Query("SELECT new map(e.id as key, e.name as value) FROM Brand e")
     List<Map<Integer, String>> getComboBoxMap();
+
+    @Query("SELECT b FROM Brand b WHERE b.status = 1 AND b.deleted = false")
+    List<Brand> getBrandAble();
 }

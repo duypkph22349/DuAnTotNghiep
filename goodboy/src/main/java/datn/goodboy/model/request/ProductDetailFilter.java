@@ -20,7 +20,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class ProductDetailFilter {
   @Bean("filternew")
-  public ProductDetailFilter getProductDetailNew() {
+  ProductDetailFilter getProductDetailNew() {
     ProductDetailFilter filter = new ProductDetailFilter();
     filter.resetFilter();
     return filter;

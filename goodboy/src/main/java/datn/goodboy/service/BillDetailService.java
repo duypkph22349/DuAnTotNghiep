@@ -1,6 +1,14 @@
 package datn.goodboy.service;
 
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.repository.BillDetailRepository;
+import datn.goodboy.repository.BillRepository;
+import org.apache.commons.math3.stat.descriptive.summary.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BillDetailService {

@@ -1231,3 +1231,36 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+#overlay {
+  display: none;
+  z-index: 3;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transition: opacity 0.5s ease;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay::before {
+  content: "";
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  opacity: 0.9;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+#overlay>* {
+  z-index: 3;
+}

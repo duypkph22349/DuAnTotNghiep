@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Khuyến mại</title>
+</head>
+
+<body layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Bảng điều khiển</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Khuyến mại</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div class="container-fluid">
+        <div sec:authorize="hasAnyAuthority('ADMIN')" class="py-3">
+            <a href="/admin/promotion/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
+        </div>
+    </div>
+    <div style="overflow: auto" class="mt-4">
+        <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
+            <thead class="position-sticky top-0">
+                <tr>
+                    <th scope="col">Ngày bắt đầu
+                        <a th:href="@{/admin/promotion/sort(sortBy=startTime ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/promotion/sort(sortBy=startTime ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Ngày kết thúc
+                        <a th:href="@{/admin/promotion/sort(sortBy=endTime ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/promotion/sort(sortBy=endTime ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Giảm
+                        <a th:href="@{/admin/promotion/sort(sortBy=value ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/promotion/sort(sortBy=value ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Trạng thái
+                        <a th:href="@{/admin/promotion/sort(sortBy=status ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/promotion/sort(sortBy=status ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="promotion : ${list}">
+                    <td th:text="${#temporals.format(promotion?.startTime, 'HH:mm dd-MM-yyyy')}"></td>
+                    <td th:text="${#temporals.format(promotion?.endTime, 'HH:mm dd-MM-yyyy')}"></td>
+                    <td
+                        th:text="${#strings.replace(#numbers.formatDecimal(promotion?.value, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                    </td>
+                    <td th:unless="${promotion.deleted}" th:utext="${convert.convertTrangThai(promotion.status)}">>
+                    </td>
+                    <td th:if="${promotion.deleted}" class="text-decoration-line-through"
+                        th:utext="${convert.convertTrangThai(promotion.status)}">
+                    </td>
+                    <td>
+                        <a sec:authorize="hasAnyAuthority('ADMIN')" th:unless="${promotion.deleted}"
+                            th:href="@{/admin/promotion/delete(id=${promotion.id})}" class="btn btn-danger"><i
+                                class="fas fa-trash-alt"></i></a>
+                        <a sec:authorize="hasAnyAuthority('ADMIN')" th:if="${promotion.deleted}"
+                            th:href="@{/admin/promotion/delete(id=${promotion.id})}" class="btn btn-secondary"><i
+                                class="fas fa-undo-alt"></i></a>
+                        <a sec:authorize="hasAnyAuthority('ADMIN')"
+                            th:href="@{/admin/promotion/edit(id=${promotion.id})}" class="btn btn-success"><i
+                                class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-footer d-flex justify-content-between mt-3">
+        <div class="text-start">Trang <span th:text="${crpage}"></span> / <span th:text="${totalpage}"></span>
+        </div>
+        <div class="text-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled" th:if="${crpage-1 < 1}">
+                        <a class="page-link" th:href="@{/admin/promotion/page(pageno=${crpage-1})}" tabindex="-1"
+                            aria-disabled="true"><i class="fas fa-chevron-left fa-sm"></i></a>
+                    </li>
+                    <li class="page-item" th:unless="${crpage-1 < 1}">
+                        <a class="page-link" th:href="@{/admin/promotion/page(pageno=${crpage-1})}"><i
+                                class="fas fa-chevron-left fa-sm"></i></a>
+                    </li>
+                    <th:block th:each="page : ${pagenumber}">
+                        <li class="page-item" th:class="${crpage == page} ? 'page-item active' : 'page-item'">
+                            <a class="page-link" th:href="@{/admin/promotion/page(pageno=${page})}"
+                                th:text="${page}"></a>
+                        </li>
+                    </th:block>
+                    <li class="page-item disabled" th:if="${crpage == totalpage}">
+                        <a class="page-link" th:href="@{/admin/promotion/page(pageno=${crpage+1})}" tabindex="-1"
+                            aria-disabled="true"><i class="fas fa-chevron-right fa-sm"></i></a>
+                    </li>
+                    <li class="page-item" th:unless="${crpage == totalpage}">
+                        <a class="page-link" th:href="@{/admin/promotion/page(pageno=${crpage+1})}"><i
+                                class="fas fa-chevron-right fa-sm"></i></a>
+                    </li>
+                </ul>
+            </nav><!-- End Centered Pagination -->
+        </div>
+        <form action="#" class="mx-2" th:action="@{/admin/promotion/getcountrow}" method="get" id="rowCountForm">
+            Hiển thị
+            <select name="selectedValue" class="border-0 px-2"
+                onchange="document.getElementById('rowCountForm').submit();">
+                <option value="10" th:selected="${rowcount == 10}">10 hàng</option>
+                <option value="20" th:selected="${rowcount == 20}">20 hàng</option>
+                <option value="50" th:selected="${rowcount == 50}">50 hàng</option>
+            </select>
+        </form>
+    </div>
+</body>
+
+</html>

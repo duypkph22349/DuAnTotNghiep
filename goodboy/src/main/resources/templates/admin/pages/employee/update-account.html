@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <style>
+    .bold-label {
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"] {
+      width: 300px;
+      padding: 5px;
+    }
+
+    select {
+      width: 315px;
+      padding: 5px;
+    }
+  </style>
+</head>
+<!--Image-->
+
+<body>
+<section layout:fragment="content">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+        <li class="breadcrumb-item active">Cập nhật tài khoản</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  <script>
+    function previewImage(event) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var output = document.getElementById('preview');
+        output.src = e.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+  <form th:object="${detail}" th:action="@{/admin/employee/update-account}" action="#" method="post" enctype="multipart/form-data">
+    <div class="register-form">
+      <div class="row">
+        <div class="col-md-4 border-right">
+          <div class="d-flex flex-column align-items-center text-center px-3">
+            <input type="hidden" th:field="*{id}">
+            <div class="mt-3">
+              <label class="h3"><strong>Hình Ảnh</strong></label>
+            </div>
+            <div class="avatar-upload m-0 w-100" style="max-width: 100%;">
+              <label class="rounded-0 w-100 d-flex justify-content-center">
+                <div class="avatar-preview rounded-0" style="width: 250px; height: 280px">
+                  <img id="imagePreview" class="w-100 rounded-0"  th:src="${detail.image != null ? detail.image : '/images/faces/no_image.jpg'}" src="/images/faces/no_image.jpg" width="250px" height="280px" style="border: 1px solid #0d3ddc; padding: 10px;border-radius: 50%;" />
+                </div>
+              </label>
+              <div class="form-group">
+                <input class="form-control" th:value="${detail.image != null ? detail.image : null}" type="file" id="formFile" name="imageFiles" multiple onchange="previewImage(event)">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8 border-right">
+          <div class="p-3">
+
+            <div class="row">
+              <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label bold-label"  >Email:</label>
+                <input   th:field="*{email}" type="email" th:value="${detail.email}" class="form-control" placeholder="Hãy nhập email" />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                <label class="form-label bold-label">Chức vụ:</label>
+                <select th:field="*{roles}" class="form-control">
+                  <option th:each="roles:${roles}" th:value="${roles.id}" th:text="${roles.role}"
+                          th:selected="${roles.id==detail.roles.id}"></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label bold-label">Họ và tên:</label>
+                <input th:field="*{name}" th:value="${detail.name}"  class="form-control"
+                       placeholder="Hãy nhập họ và tên" />
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></div>
+
+                <!--                      <input type="hidden" th:name="password" th:value="${detail.password}" />-->
+              </div>
+
+              <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                <label class="form-label bold-label">Giới tính:</label>
+                <select class="form-control" th:field="*{gender}"  id="gender">
+                  <option value="true" th:selected="${detail.gender==true}">Nam
+                  </option>
+                  <option value="false"  th:selected="${detail.gender==false}">Nữ
+                  </option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label bold-label">Điện thoại:</label>
+                <input th:field="*{phone}" th:value="${detail.phone}"  class="form-control"
+                       placeholder="Hãy nhập số điện thoại" />
+                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                <label class="form-label bold-label">Trạng Thái:</label>
+                <select class="form-control" th:field="*{status}"  id="status">
+                  <option value="1"  th:selected="${detail.status==1}">Hoạt Động
+                  </option>
+                  <option value="0"  th:selected="${detail.status==0}">Ngừng Hoạt Động
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-6 col-lg-6 mb-3">
+                <label class="form-label bold-label">Số Căn Cước:</label>
+                <input th:field="*{cccd}" th:value="${detail.cccd}"  class="form-control"
+                       placeholder="Hãy nhập số Căn cước" />
+                <div th:if="${#fields.hasErrors('cccd')}" th:errors="*{cccd}" class="text-danger"></div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                <label class="form-label bold-label">Birth Date:</label>
+                <input type="date" th:field="*{birth_date}" th:value="${detail.birth_date}" class="form-control" style="width: 255px;">
+                <div th:if="${#fields.hasErrors('birth_date')}" th:errors="*{birth_date}" class="text-danger"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-6 col-lg-10">
+                <div class="row">
+
+                  <div class="col-12 col-lg-4 mb-3">
+                    <label class="form-label bold-label">Thành Phố:</label>
+                    <select class="form-control" id="Provinces" onchange="getDistricts()"></select>
+                  </div>
+
+                  <div class="col-12 col-lg-4 mb-3">
+                    <label class="form-label bold-label">Huyện:</label>
+                    <select class="form-control" id="Districts" th:name="city" onchange="getWards()"></select>
+                  </div>
+
+                  <div class="col-12 col-lg-4 mb-3">
+                    <label class="form-label bold-label">Xã:</label>
+                    <select class="form-control" th:name="country" onchange="setFullAdress()" id="Wards"></select>
+                    <input type="hidden" id="FullAddress" th:name="fulladdress">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+
+              <div class="col-12 col-sm-6 col-lg-10 mb-3">
+                <label class="form-label bold-label">Địa chỉ cụ
+                  thể:</label>
+                <input  th:field="*{fulladdress}" th:value="${detail.fulladdress}"
+                        placeholder="Địa chỉ cụ thể...." class="form-control">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: right">
+      <a type="button" class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
+        <i class="fas fa-arrow-left"></i> Close
+      </a>
+      <button type="submit" class="btn btn-primary">Lưu</button>
+    </div>
+
+  </form>
+
+  <script>
+    function previewImage(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagePreview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
+
+  <script>
+    const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
+    const shop_id = 4676018;
+    const districtform = 3440; // quận nam từ liêm
+    const districtto = 3308; // huyện trực ninh
+    const WardCodeninhcuong = "800083";
+    const provinceSelect = document.getElementById("Provinces");
+    const districtSelect = document.getElementById("Districts");
+    const wardSelect = document.getElementById("Wards");
+    const shipServiceSelect = document.getElementById("shipService");
+    const giaship = document.getElementById("giaship");
+
+    function getProvinces() {
+      fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province",{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      })
+              .then((res) => res.json())
+              .then((data) => {
+                const defaultOption = document.createElement("option");
+                defaultOption.value = ""; // Set the value as needed
+                defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+                // Set the 'disabled' and 'selected' attributes to make it the default option
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                provinceSelect.appendChild(defaultOption);
+                const options = data.data;
+                for (let i = 0; i < options.length; i++) {
+                  const option = document.createElement("option");
+                  option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                  option.text = options[i].ProvinceName; // Set the text of the option
+                  option.setAttribute("providecode",options[i].ProvinceID);
+                  provinceSelect.appendChild(option); // Add the option to the select element
+                }
+              })
+              .catch((error) => console.error("Error:",error));
+    }
+
+    function getDistricts() {
+      const selectedOption = provinceSelect.options[provinceSelect.selectedIndex];
+      const customAttribute = selectedOption.getAttribute("providecode");
+      const provinceid = parseInt(customAttribute);
+      fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify({ province_id: provinceid }),
+      })
+              .then((res) => res.json())
+              .then((data) => {
+                //remove all child
+                resetDistrict();
+                const options = data.data;
+                for (let i = 0; i < options.length; i++) {
+                  const option = document.createElement("option");
+                  option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+                  option.text = options[i].DistrictName; // Set the text of the option
+                  option.setAttribute("districtcode",options[i].DistrictID);
+                  districtSelect.appendChild(option); // Add the option to the select element
+                }
+              })
+              .catch((error) => console.error("Error:",error));
+    }
+
+    function getWards() {
+      const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+      const customAttribute = selectedOption.getAttribute("districtcode");
+      const districtid = parseInt(customAttribute);
+      fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+        body: JSON.stringify({ district_id: districtid }),
+      })
+              .then((res) => res.json())
+              .then((data) => {
+                //remove all child
+                resetWard();
+                const options = data.data;
+                for (let i = 0; i < options.length; i++) {
+                  const option = document.createElement("option");
+                  option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+                  option.text = options[i].WardName;
+                  // Set the text of the option
+                  wardSelect.appendChild(option); // Add the option to the select element
+                }
+              })
+              .catch((error) => console.error("Error:",error));
+    }
+
+    function setFullAdress() {
+      const proselect = provinceSelect.options[provinceSelect.selectedIndex];
+      const proname = proselect.text;
+      const districselect = districtSelect.options[districtSelect.selectedIndex];
+      const distname = districselect.text;
+      const wardName = wardSelect.options[wardSelect.selectedIndex];
+      const wardname = wardName.text;
+      const fullAdress = wardname + ", " + distname + " ," + proname;
+      document.getElementById("FullAddress").value = String(fullAdress);
+      console.log(fullAdress)
+    }
+
+    function resetDistrict() {
+      while (districtSelect.firstChild) {
+        districtSelect.removeChild(districtSelect.firstChild);
+      }
+      const defaultOption = document.createElement("option");
+      defaultOption.value = ""; // Set the value as needed
+      defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
+
+      // Set the 'disabled' and 'selected' attributes to make it the default option
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+
+      districtSelect.appendChild(defaultOption);
+      resetWard();
+    }
+
+    function resetWard() {
+      while (wardSelect.firstChild) {
+        wardSelect.removeChild(wardSelect.firstChild);
+      }
+      const defaultOption = document.createElement("option");
+      defaultOption.value = ""; // Set the value as needed
+      defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
+
+      // Set the 'disabled' and 'selected' attributes to make it the default option
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+
+      wardSelect.appendChild(defaultOption);
+    }
+
+    getProvinces();
+  </script>
+
+  <script>
+    function readURL(input) {
+      var imagePreview = document.getElementById('imagePreview');
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        imagePreview.src = '/images/faces/no_image.jpg';
+      }
+    }
+  </script>
+
+</section>
+</body>
+
+</html>

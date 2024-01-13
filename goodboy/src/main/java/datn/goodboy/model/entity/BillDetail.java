@@ -1,17 +1,20 @@
 package datn.goodboy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Getter
 @Setter
 @Table(name = "bill_detail")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class BillDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,7 @@ public class BillDetail {
 
     @ManyToOne
     @JoinColumn(name = "id_bill")
+    @JsonIgnore
     private Bill idBill;
 
     @Column(name = "total_money")
@@ -43,4 +47,17 @@ public class BillDetail {
 
     @Column(name = "deleted")
     boolean deleted;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.status = 1;
+        this.deleted = false;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

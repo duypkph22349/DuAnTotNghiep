@@ -3,6 +3,7 @@ package datn.goodboy.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import datn.goodboy.service.serviceinterface.PayMentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import datn.goodboy.model.entity.Pay;
 import datn.goodboy.repository.PayRepository;
 
 @Service
-public class PayService {
+public class PayService  {
     @Autowired
     PayRepository payRepository;
 
@@ -63,6 +64,34 @@ public class PayService {
         }
         Pay paymethod = new Pay();
         paymethod.setPayment_method("COUNTER");
+        paymethod.setDeleted(0);
+        paymethod.setStatus(1);
+        paymethod.setCreated_at(LocalDateTime.now());
+        return payRepository.save(paymethod);
+    }
+
+    public Pay getVNPay() {
+        Optional<Pay> optionalPay = payRepository.getByNameMethod("VNPAY");
+        if (optionalPay.isPresent()) {
+            Pay pay = optionalPay.get();
+            return optionalPay.get();
+        }
+        Pay paymethod = new Pay();
+        paymethod.setPayment_method("VNPAY");
+        paymethod.setDeleted(0);
+        paymethod.setStatus(1);
+        paymethod.setCreated_at(LocalDateTime.now());
+        return payRepository.save(paymethod);
+    }
+
+    public Pay getCashOnDelivery() {
+        Optional<Pay> optionalPay = payRepository.getByNameMethod("Thanh toán khi nhận hàng");
+        if (optionalPay.isPresent()) {
+            Pay pay = optionalPay.get();
+            return optionalPay.get();
+        }
+        Pay paymethod = new Pay();
+        paymethod.setPayment_method("CASH ON DELIVERY");
         paymethod.setDeleted(0);
         paymethod.setStatus(1);
         paymethod.setCreated_at(LocalDateTime.now());

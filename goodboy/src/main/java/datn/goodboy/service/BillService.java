@@ -1,15 +1,19 @@
 package datn.goodboy.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import datn.goodboy.model.entity.*;
+import datn.goodboy.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
@@ -36,6 +40,9 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     ProductDetailService productDetailService;
@@ -91,6 +98,18 @@ public class BillService {
     public Bill saveBill(Bill bill) {
 
         return billRepository.save(bill);
+    }
+
+    public void saveBillAndDetails(Bill bill) {
+        // Lưu Bill
+
+        // Lưu BillDetail
+        List<BillDetail> billDetails = bill.getBillDetail();
+        for (BillDetail billDetail : billDetails) {
+            billDetail.setIdBill(bill);
+        }
+        bill.setBillDetail(billDetails);
+        Bill savedBill = billRepository.save(bill);
     }
 
     public void deleteBill(int id) {
@@ -164,7 +183,6 @@ public class BillService {
 
     }
 
-
     public Page<Bill> searchBillByCode(Integer numberSize, String code) {
         Pageable pageable = PageRequest.of(numberSize, 5);
         return billRepository.searchBillByCodeAndDeletedFalse(pageable, code);
@@ -223,4 +241,23 @@ public class BillService {
         bill.setStatus_pay(status_pay);
         billRepository.save(bill);
     }
+
+    public UUID getCustomerId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+            return account.getCustomer().getId();
+        }
+        return null;
+    }
+
+    public List<Bill> findBillsByCustomerId(UUID customerId) {
+        return billRepository.findByCustomer_Id(customerId);
+    }
+
+    public int getBillCountByStatus(int status) {
+        return billRepository.countByStatus(status);
+    }
+
 }

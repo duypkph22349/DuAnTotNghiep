@@ -9,24 +9,16 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}"></li>
-                <li class="breadcrumb-item active">Update Origin</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-    <h1 style="text-align: center">Cập nhật </h1>
+
+    <h1 style="text-align: center">Cập nhật xuất xứ</h1>
     <form th:object="${brand}" th:action="@{'/admin/origin/update/' + ${brand.id}}" method="post">
 
         <div class="form-group">
-            <label>Name:</label>
+            <label>Tên:</label>
             <input type="text" th:name="name" class="form-control" th:value="${brand.name}">
         </div>
         <div class="form-group">
-            <label>Status:</label>
+            <label>Trạng thái:</label>
             <input type="radio" th:name="status" id="r1" value="1" th:checked="${brand.status == 1}">
             <label for="r1">Activity</label>
             <input type="radio" th:name="status" id="r2" value="0" th:checked="${brand.status == 0}">

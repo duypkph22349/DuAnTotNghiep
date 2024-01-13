@@ -16,25 +16,25 @@
 </head>
 
 <body layout:fragment="content">
+    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/dropdownselect.css}">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Bảng điều kiển</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                <li class="breadcrumb-item active">Counter</li>
+                <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Bán Hàng</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <link rel="stylesheet" th:href="@{/assets/css/thatcc.css}">
     <div>
         <section class="section dashboard">
             <section class="content-wrapper">
                 <div class="list-counter-cart">
                     <div class="item-counter-cart">
-
                         <div id="taborders" class="tab">
                             <button onclick="addnewOrderPage()">
-                                Thêm Hóa Đơn
+                                Thêm Hóa Đơn (F1)
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-plus-circle" viewBox="0 0 16 16" onclick="addInvoices()">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z">
@@ -52,8 +52,334 @@
             </section>
         </section>
     </div>
-    <script th:src="@{/assets/js/counter.js}"></script>
-    <script th:src="@{/assets/js/pdfbill.js}"></script>
+    <div class="modal fade" id="billPrint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hóa Đơn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="bill">
+                        <div class="logo d-flex align-items-center justify-content-center m-auto mb-2">
+                            <p class="d-none d-lg-block">
+                            <h3 style="font-weight: 500;">Wamercy</h3>
+                            </p>
+                        </div>
+                        <center>
+                            <p class="mb-0">Địa chỉ: <span class="ms-2">193/220 phú diễn, phường phú diễn, quận nam từ
+                                    liêm, hà nội</span></p>
+                            <p class="mb-0">Điện thoại: <span class="ms-2">0335535229</span></p>
+                            <br>
+                            <h3 style="font-weight: 500;">HOÁ ĐƠN BÁN HÀNG</h3>
+                            <p class="mb-0">Số hóa đơn: <span class="ms-2" id="hoadoncode">09ku2</span></p>
+                            <p>Loại hóa đơn: <span class="ms-2" id="ordertype">09ku2</span></p>
+                        </center>
+                        <div>
+                            <p class="mb-0">Nhân viên: <span class="ms-2" id="employename">09ku2</span></p>
+                            <p class="mb-0">Khách hàng: <span class="ms-2" id="customername">09ku2</span></p>
+                            <p class="mb-0">Số điện thoại: <span class="ms-2" id="phonenumber">09ku2</span></p>
+                            <p class="mb-0">Địa chỉ: <span class="ms-2" id="fulladdress">09ku2</span></p>
+
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sanphaminbill"></tbody>
+                        </table>
+                        <div class="row justify-content-end">
+                            <ul class="list-unstyled">
+                                <li class="text-muted ms-3"><span class="text-black me-4 mx-3">Tổng tiền sản
+                                        phẩm:
+                                    </span><span id="total-products"></span>
+                                </li>
+                                <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Giảm:</span><span
+                                        id="discount"></span>
+                                </li>
+                                <li class="text-muted ms-3 mt-2"><span class="text-black me-4 mx-3">Tiền
+                                        ship:</span><span id="shipping-cost"></span>
+                                </li>
+
+                                <li class="text-black ms-3 mt-2 "><span class="text-black me-3 mx-3"> Tổng
+                                        giá</span><span style="font-size: 14px;"><span id="total-price"></span></span>
+                                </li>
+                            </ul>
+                            <br>
+                            <center>
+                                <p class="text-black mx-auto">
+                                    Cảm ơn và hẹn gặp lại
+                                </p>
+                            </center>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" onclick="$('#bill').printThis();">Print</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="hoadoncho" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hóa Đơn Chờ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="billwait" style="font-size: 10px;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Thanh tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sanphaminbill"></tbody>
+                        </table>
+                        <ul class="list-unstyled">
+                            <li class="text-muted ms-3">
+                                <span class="text-black me-4 mx-3">Tổng tiền sản phẩm:</span>
+                                <span id="total-products"></span>
+                            </li>
+                        </ul>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 col-12 fw-bold">Trạng thái hóa đơn:</div>
+                            <div class="col-md-8 col-12" id="order-status"></div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="customer-name">Tên khách hàng:</label>
+                                <input type="text" class="form-control" id="customer-name">
+                            </div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="phone-number">Số điện thoại:</label>
+                                <input type="text" class="form-control" id="phone-number">
+                            </div>
+
+                            <div class="col-md-4 col-12 fw-bold form-group">
+                                <label for="order-note">Note:</label>
+                                <input type="text" class="form-control" id="order-note">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modelAddKhachHang" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel"><strong>Thêm khách hàng mới</strong></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="addNewKhachHang(event)" class="row g-3">
+                        <div>
+                            <label><b>Tên:</b></label>
+                            <input type="text" name="name" class="form-control">
+                        </div>
+                        <div>
+                            <label><b>Số điện thoại:</b></label>
+                            <input type="text" name="phone" class="form-control">
+                        </div>
+                        <div>
+                            <label><b>Địa Chỉ:</b></label>
+                            <input type="text" name="address" class="form-control">
+                        </div>
+                        <div>
+                            <label><b>Giới tính:</b></label>
+                            <input type="radio" name="gender" value="false" checked="true">Nam
+                            <input type="radio" name="gender" value="true">Nữ
+                        </div>
+                        <div>
+                            <label><b>Ngày sinh:</b></label>
+                            <input type="date" name="birth_date" class="form-control">
+                        </div>
+                        <div class="container">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <label><b>Thành phố</b></label>
+                                    <select class="form-select" id="Provinces" onchange="getDistricts()">
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label><b>Huyện</b></label>
+                                    <select class="form-select" id="Districts" name="city" onchange="getWards()">
+
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label><b>Xã</b></label>
+                                    <select class="form-select" name="country" onchange="setFullAdress()" id="Wards">
+                                        Chọn
+                                        Thị trấn/ Xã/ Phường
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="FullAddress" name="fulladdress">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><b>Đóng</b>
+                            </button>
+                            <button type="submit" class="btn btn-success"><b>Thêm</b></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/assets/js/counter/counter.js}"></script>
+    <script th:src="@{/assets/js/counter/localStore.js}"></script>
+    <script>
+        const modaladdKhachHang = document.getElementById("modelAddKhachHang");
+        const provinceSelect = modaladdKhachHang.querySelector("#Provinces");
+        const districtSelect = modaladdKhachHang.querySelector("#Districts");
+        const wardSelect = modaladdKhachHang.querySelector("#Wards");
+        function getProvinces() {
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province",{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    const defaultOption = document.createElement("option");
+                    defaultOption.value = ""; // Set the value as needed
+                    defaultOption.textContent = "Chọn Tỉnh"; // Set the text content
+                    // Set the 'disabled' and 'selected' attributes to make it the default option
+                    defaultOption.disabled = true;
+                    defaultOption.selected = true;
+                    provinceSelect.appendChild(defaultOption);
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].ProvinceID; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].ProvinceName; // Set the text of the option
+                        option.setAttribute("providecode",options[i].ProvinceID);
+                        provinceSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:",error));
+        }
+        function getDistricts() {
+            const selectedOption = provinceSelect.options[provinceSelect.selectedIndex];
+            const customAttribute = selectedOption.getAttribute("providecode");
+            const provinceid = parseInt(customAttribute);
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/district",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({ province_id: provinceid }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    //remove all child
+                    resetDistrict();
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].DistrictID; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].DistrictName; // Set the text of the option
+                        option.setAttribute("districtcode",options[i].DistrictID);
+                        districtSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:",error));
+        }
+        function getWards() {
+            const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+            const customAttribute = selectedOption.getAttribute("districtcode");
+            const districtid = parseInt(customAttribute);
+            fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token,
+                },
+                body: JSON.stringify({ district_id: districtid }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    //remove all child
+                    resetWard();
+                    const options = data.data;
+                    for (let i = 0; i < options.length; i++) {
+                        const option = document.createElement("option");
+                        option.value = options[i].WardCode; // Set the value of the option (you can change this to any value you want)
+                        option.text = options[i].WardName;
+                        // Set the text of the option
+                        wardSelect.appendChild(option); // Add the option to the select element
+                    }
+                })
+                .catch((error) => console.error("Error:",error));
+        }
+        function setFullAdress() {
+            const proselect = provinceSelect.options[provinceSelect.selectedIndex];
+            const proname = proselect.text;
+            const districselect = districtSelect.options[districtSelect.selectedIndex];
+            const distname = districselect.text;
+            const wardName = wardSelect.options[wardSelect.selectedIndex];
+            const wardname = wardName.text;
+            const fullAdress = wardname + ", " + distname + " ," + proname;
+            modaladdKhachHang.querySelector("#FullAddress").value = String(fullAdress);
+            console.log(fullAdress)
+        }
+        function resetDistrict() {
+            while (districtSelect.firstChild) {
+                districtSelect.removeChild(districtSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Quận/ Huyện"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+
+            districtSelect.appendChild(defaultOption);
+            resetWard();
+        }
+        function resetWard() {
+            while (wardSelect.firstChild) {
+                wardSelect.removeChild(wardSelect.firstChild);
+            }
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Set the value as needed
+            defaultOption.textContent = "Chọn Thị Trấn/ Xã/ Phường"; // Set the text content
+            // Set the 'disabled' and 'selected' attributes to make it the default option
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            wardSelect.appendChild(defaultOption);
+        }
+        getProvinces();
+    </script>
+    <!-- <script th:src="@{/assets/js/counter/dropdownselect.js}"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 </body>
 

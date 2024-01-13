@@ -27,6 +27,9 @@ public class OrderCounterRequest {
 
   @JsonProperty("employeeID")
   private UUID employeeID;
+
+  @JsonProperty("customerID")
+  private UUID customerID;
   // o is tai quay 1 is online
   @JsonProperty("orderTypes")
   private int orderTypes;
@@ -94,6 +97,7 @@ public class OrderCounterRequest {
       @JsonProperty("products") List<Product> products,
       @JsonProperty("customerName") String customerName,
       @JsonProperty("employeeID") UUID employeeID,
+      @JsonProperty("customerID") UUID customerID,
       @JsonProperty("orderTypes") int orderTypes,
       @JsonProperty("phoneNumber") String phoneNumber,
       @JsonProperty("city") String city,
@@ -113,6 +117,7 @@ public class OrderCounterRequest {
     this.products = products;
     this.customerName = customerName;
     this.employeeID = employeeID;
+    this.customerID = customerID;
     this.orderTypes = orderTypes;
     this.phoneNumber = phoneNumber;
     this.city = city;

@@ -33,7 +33,7 @@ public class BillRequest {
   @NotNull
   String address;
   @NotNull
-  float money_ship;
+  Double money_ship;
   @NotNull
   float total_money;
   @NotNull

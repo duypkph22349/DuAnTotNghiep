@@ -1,10 +1,13 @@
 package datn.goodboy.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
+import datn.goodboy.service.cloud.CloudinaryImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,11 +19,15 @@ import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.response.EmployeeResponse;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EmployeeService implements PanigationInterface<Employee> {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    CloudinaryImageService cloudService;
 
     public Page<Employee> getPage(Pageable pageable) {
         return employeeRepository.findAll(pageable);
@@ -35,10 +42,34 @@ public class EmployeeService implements PanigationInterface<Employee> {
         return employeeRepository.save(employee);
     }
 
-//    public void deleteEmployee(UUID id) {
-//
-//        employeeRepository.deleteById(id);
-//    }
+
+    public Employee saveEmployeeImage(Employee employee, List<MultipartFile> listImage) throws IOException {
+        Employee savedEmployee = employeeRepository.save(employee);
+        List<String> listURL = new ArrayList<>();
+        boolean hasNewImage = false;
+
+        if (!listImage.isEmpty()) {
+            for (MultipartFile multipartFile : listImage) {
+                if (!multipartFile.isEmpty()) {
+                    try {
+                        String imageUrl = cloudService.saveImage(multipartFile);
+                        listURL.add(imageUrl);
+                        hasNewImage = true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if (hasNewImage) {
+                savedEmployee.setImage(listURL.get(0));
+                employeeRepository.save(savedEmployee);
+            }
+        }
+
+        return savedEmployee;
+    }
+
 
     public void deleteEmployee(UUID id) {
         Optional<Employee> employee = employeeRepository.findById(id);
