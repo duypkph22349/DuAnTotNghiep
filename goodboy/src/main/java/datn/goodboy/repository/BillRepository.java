@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +34,7 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
   @Query("SELECT b FROM Bill b WHERE b.id =:id")
   Bill findStatusById(int id);
 
-  @Query("SELECT b FROM Bill b WHERE LOWER(b.code) LIKE CONCAT(LOWER(:code), '%') or  LOWER(b.customer.name) LIKE CONCAT(LOWER(:code), '%')  AND b.deleted = false")
+  @Query("SELECT b FROM Bill b WHERE LOWER(b.code) LIKE CONCAT(LOWER(:code), '%') or  LOWER(b.customer_name) LIKE CONCAT(LOWER(:code), '%')  AND b.deleted = false")
   Page<Bill> searchBillByCodeAndDeletedFalse(Pageable pageable, @Param("code") String code);
 
   @Query("SELECT b FROM Bill b WHERE MONTH(b.createdAt) = :month and b.deleted=false ORDER BY YEAR(b.createdAt) DESC, b.createdAt DESC")
@@ -49,12 +48,4 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
   @Query("SELECT b FROM Bill b WHERE b.status = 1")
   List<Bill> findBillByStatus1();
-
-
-  @Query("SELECT b FROM Bill b WHERE b.id = :id AND b.status = :status")
-  Optional<Bill> findBillByIdAndStatus(@Param("id") Integer id, @Param("status") Integer status);
-
-  int countByStatus(int status);
-
-  List<Bill> findByCustomer_Id(UUID customerId);
 }

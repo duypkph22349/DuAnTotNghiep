@@ -460,7 +460,7 @@
                             maximumFractionDigits: 0, // Số chữ số thập phân tối đa
                         });
 
-                        let formattedTotalMoney = formatterMoney.format(item.total_money);
+                        let formattedTotalMoney = formatterMoney.format(item.deposit);
 
 
                         let html =
@@ -847,12 +847,8 @@
                                             </button>
                                     </a>
 
-                                            // <button onclick="payment_VNPay(${item.total_money},${item.id})"
-                                            //     type="button" class="btn btn-success"  style="font-size: 16px""
-                                            // >
-                                            //     Thanh toán
-                                            // </button>
-                                            ${item.status === 1 ? '<button class="btn btn-primary me-2" onclick="confirmStatus(' + item.id + ')" style="font-size: 16px">Xác nhận</button>' : ''}
+
+
                                     </th>
                                 </tr>
                             `

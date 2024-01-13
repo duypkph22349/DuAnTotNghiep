@@ -1,19 +1,15 @@
 package datn.goodboy.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import datn.goodboy.model.entity.*;
-import datn.goodboy.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import datn.goodboy.model.entity.Bill;
@@ -40,9 +36,6 @@ public class BillService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private PayRepository payRepository;
-
-    @Autowired
-    private AccountRepository accountRepository;
 
     @Autowired
     ProductDetailService productDetailService;
@@ -100,18 +93,6 @@ public class BillService {
         return billRepository.save(bill);
     }
 
-    public void saveBillAndDetails(Bill bill) {
-        // Lưu Bill
-
-        // Lưu BillDetail
-        List<BillDetail> billDetails = bill.getBillDetail();
-        for (BillDetail billDetail : billDetails) {
-            billDetail.setIdBill(bill);
-        }
-        bill.setBillDetail(billDetails);
-        Bill savedBill = billRepository.save(bill);
-    }
-
     public void deleteBill(int id) {
 
         billRepository.deleteById(id);
@@ -155,6 +136,9 @@ public class BillService {
         Bill bill = billRepository.findStatusById(idBill);
         Optional<ProductDetail> productdetail = productDetailService.getProductDetailById(productId);
         bill.setTotal_money(bill.getTotal_money() + (productdetail.get().getPrice() * quantity));
+        // code tui
+        float depositValue = (float) (bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
+        bill.setDeposit(Double.valueOf(depositValue));
         billRepository.save(bill);
 
         BillDetail billDetail = billDetailRepository.findByIdBillAndIdProduct(idBill, productId);
@@ -179,6 +163,7 @@ public class BillService {
         }
 
     }
+
 
     public Page<Bill> searchBillByCode(Integer numberSize, String code) {
         Pageable pageable = PageRequest.of(numberSize, 5);
@@ -211,6 +196,12 @@ public class BillService {
         billRepository.save(bill);
     }
 
+    public void updatedeposit(Integer id, Float deposit) throws NotFoundException {
+        Bill bill = getBillById(id);
+        bill.setDeposit(Double.valueOf(deposit));
+        billRepository.save(bill);
+    }
+
     public void cancelBill(Integer id) {
         List<BillDetail> bdt = billDetailRepository.findByIdListBill(id);
         for (int i = 0; i < bdt.size(); i++) {
@@ -232,23 +223,4 @@ public class BillService {
         bill.setStatus_pay(status_pay);
         billRepository.save(bill);
     }
-
-    public UUID getCustomerId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
-            return account.getCustomer().getId();
-        }
-        return null;
-    }
-
-    public List<Bill> findBillsByCustomerId(UUID customerId) {
-        return billRepository.findByCustomer_Id(customerId);
-    }
-
-    public int getBillCountByStatus(int status) {
-        return billRepository.countByStatus(status);
-    }
-
 }

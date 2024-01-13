@@ -112,7 +112,7 @@ public class AdminBill {
     public ResponseEntity<?> search(@RequestParam(name = "code", defaultValue = "null") String code,
                                     @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
         try {
-            return ResponseEntity.ok(billService.searchBillByCode(pageNumber, code));
+            return ResponseEntity.ok(billService.searchBillByCode(0, code));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.toString());
         }
