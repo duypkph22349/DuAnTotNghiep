@@ -2,12 +2,9 @@ package datn.goodboy.model.entity;
 
 import java.text.NumberFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Currency;
 import java.util.Locale;
-import java.util.Random;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -41,7 +38,7 @@ public class Voucher {
   private int id;
   @Column(name = "status")
   private int status;
-  @Column(name = "code", updatable = false)
+  @Column(name = "code", insertable = false, updatable = false)
   private String code;
   @Column(name = "name")
   private String name;
@@ -68,24 +65,10 @@ public class Voucher {
   @Column(name = "min_order")
   Double min_order;
 
-  private String generateRandomDigits(int length) {
-    Random random = new Random();
-    StringBuilder sb = new StringBuilder();
-
-    for (int i = 0; i < length; i++) {
-      sb.append(random.nextInt(10));
-    }
-
-    return sb.toString();
-  }
-
   @PrePersist
   protected void onCreate() {
     this.created_at = LocalDateTime.now();
     this.updated_at = LocalDateTime.now();
-    String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    String randomDigits = generateRandomDigits(4);
-    this.code = "VOUCHER" + currentDate + randomDigits;
   }
 
   @PreUpdate

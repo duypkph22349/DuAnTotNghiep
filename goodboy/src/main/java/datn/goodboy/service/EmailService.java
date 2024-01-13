@@ -11,11 +11,9 @@ import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.repository.AccountRepository;
-import datn.goodboy.repository.BillRepository;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
 
 @Component
 public class EmailService {
@@ -25,8 +23,6 @@ public class EmailService {
   private JavaMailSender emailSender;
   @Autowired
   private AccountRepository accountRepository;
-  @Autowired
-  private BillRepository billRepository;
 
   public void activeEmailMessage(VertifyEmail request) {
     MimeMessage message = emailSender.createMimeMessage();
@@ -69,7 +65,6 @@ public class EmailService {
     }
   }
 
-  @Transactional
   public void sendVoucherMail(Voucher voucher, String title) {
     MimeMessage message = emailSender.createMimeMessage();
     accountRepository.findAll().stream().forEach(
@@ -97,36 +92,22 @@ public class EmailService {
         });
   }
 
-  @Transactional
-  public void sendEmailBill(int idbill, String title) {
+  public void sendEmailBill(Bill bill, String title) {
     MimeMessage message = emailSender.createMimeMessage();
     try {
-      Bill bill = billRepository.findById(idbill).orElse(null);
-
-      if (bill != null) {
-        // Eagerly fetch associated entities
-        bill.getCustomer().getAccount();
-        bill.getCode();
-
-        System.out.println("Start sending bill mail for customer: " +
-            bill.getCustomer().getAccount().getEmail());
-
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setFrom("thatdeptraivjpro@26kleft.com");
-        helper.setTo(bill.getCustomer().getAccount().getEmail());
-        helper.setSubject(title);
-
-        Context context = new Context();
-        context.setVariable("bill", bill);
-        context.setVariable("convert", new TrangThaiConvert());
-        String htmlCode = templateEngine.process("mail/billTemplate", context);
-        helper.setText(htmlCode, true);
-
-        emailSender.send(message);
-      }
+      System.out.println(
+          "Start sending bill mail for custmoer: " + bill.getCustomer().getAccount().getEmail());
+      MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+      helper.setFrom("thatdeptraivjpro@26kleft.com");
+      helper.setTo(bill.getCustomer().getAccount().getEmail());
+      helper.setSubject(title);
+      Context context = new Context();
+      context.setVariable("bill", bill);
+      context.setVariable("convert", new TrangThaiConvert());
+      String htmlCode = templateEngine.process("mail/billTemplate", context);
+      helper.setText(htmlCode, true);
+      emailSender.send(message);
     } catch (MessagingException e) {
-      // Handle the exception as needed
-      System.out.println("Error sending bill mail for customer: " + e);
     }
   }
 }
