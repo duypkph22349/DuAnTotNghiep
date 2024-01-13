@@ -26,6 +26,10 @@ public class EmailService {
   private JavaMailSender emailSender;
   @Autowired
   private AccountRepository accountRepository;
+  @Autowired
+  private VoucherRepository vouhcerRepository;
+  @Autowired
+  private BillRepository billRepository;
 
   public void activeEmailMessage(VertifyEmail request) {
     MimeMessage message = emailSender.createMimeMessage();
