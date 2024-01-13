@@ -116,16 +116,23 @@ public class CustomerController {
         return "/admin/pages/customer/customer-detail";
     }
 
-    //    @PostMapping("detail/{id}/save_address")
-//    public String saveAddress(@ModelAttribute Address address, @PathVariable("id")UUID id){
-//        addressService.getSave(address);
-//        return "redirect:/admin/customer/detail/{id}";
-//    }
+
     @PostMapping("detail/{id}/save_address")
     public String saveAddress(@ModelAttribute("addresss") Address addresss) {
         System.out.println(addresss.getId_customer().getId());
         addressService.getSave(addresss);
-
         return "redirect:/admin/customer/detail/" + addresss.getId_customer().getId();
+    }
+
+
+    @GetMapping("detail/{id}/edit_address/{id_address}")
+    public String editAddress(@PathVariable("id") UUID id, @PathVariable("id_address") UUID id_address, Model model){
+        model.addAttribute("detail_address", addressService.findById(id_address));
+        return "/admin/pages/customer/customer-detail";
+    }
+    @GetMapping("detail/{id}/delete_address/{id_address}")
+    public String deleteAddress(@PathVariable("id") UUID id, @PathVariable("id_address") UUID id_address){
+        addressService.deleteById(id_address);
+        return "redirect:/admin/customer/detail/" + id;
     }
 }
