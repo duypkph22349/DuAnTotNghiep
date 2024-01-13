@@ -459,61 +459,97 @@ async function checkout(){
         }
     }
 
-
-    if(localStorage.getItem("type_cart") === "login"){
-        if(String(checkButtonCheckoutCustomer()) === String(0)){
-            if(id_bill !== null){
-                var billRequest = {
-                    "name" : name,
-                    "phone_number": phone_number,
-                    "email": email,
-                    "address": address,
-                    "note": note,
-                    "ship_fee": ship_fee,
-                    "coupoun": coupoun_value,
-                    "total_money": total_money,
-                    "bill": id_bill,
-                    "payment_method": payment_method
-                }
-
-                if(String(payment_method) === "1"){
-                    await axios.post(`/client/bill/add`, billRequest).then(
-                        e => {
-                            console.log(JSON.parse(localStorage.getItem("cart_details")))
-                            if(localStorage.getItem("type_cart") === "login"){
-                                JSON.parse(localStorage.getItem("cart_details")).map((e) => {
-                                    deleteCartDetail(e);
-                                })
-                            }else{
-                                deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
-                            }
-                            new Notify({
-                                status: "success",
-                                title: "Thành công",
-                                text: "Đơn hàng đã được tạo thành công.",
-                                effect: "fade",
-                                speed: 300,
-                                customClass: "",
-                                customIcon: "",
-                                showIcon: true,
-                                showCloseButton: false,
-                                autoclose: true,
-                                autotimeout: 3000,
-                                gap: 20,
-                                distance: 20,
-                                type: 1,
-                                position: "right top",
-                                customWrapper: "",
-                            });
-                            setTimeout(() =>{
-                                window.location.href = "/index"
-                            }, 500)
+    Swal.fire({
+        title: "Xác nhận đơn hàng",
+        text: "Bạn đồng ý với các thông tin và xác nhận đặt hàng",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        ncelButtonText: "Hủy bỏ",
+        confirmButtonText: "Xác nhận"
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            if(localStorage.getItem("type_cart") === "login"){
+                if(String(checkButtonCheckoutCustomer()) === String(0)){
+                    if(id_bill !== null){
+                        var billRequest = {
+                            "name" : name,
+                            "phone_number": phone_number,
+                            "email": email,
+                            "address": address,
+                            "note": note,
+                            "ship_fee": ship_fee,
+                            "coupoun": coupoun_value,
+                            "total_money": total_money,
+                            "bill": id_bill,
+                            "payment_method": payment_method
                         }
-                    ).catch(error => {
+
+                        if(String(payment_method) === "1"){
+                            await axios.post(`/client/bill/add`, billRequest).then(
+                                e => {
+                                    console.log(JSON.parse(localStorage.getItem("cart_details")))
+                                    if(localStorage.getItem("type_cart") === "login"){
+                                        JSON.parse(localStorage.getItem("cart_details")).map((e) => {
+                                            deleteCartDetail(e);
+                                        })
+                                    }else{
+                                        deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
+                                    }
+                                    new Notify({
+                                        status: "success",
+                                        title: "Thành công",
+                                        text: "Đơn hàng đã được tạo thành công.",
+                                        effect: "fade",
+                                        speed: 300,
+                                        customClass: "",
+                                        customIcon: "",
+                                        showIcon: true,
+                                        showCloseButton: false,
+                                        autoclose: true,
+                                        autotimeout: 3000,
+                                        gap: 20,
+                                        distance: 20,
+                                        type: 1,
+                                        position: "right top",
+                                        customWrapper: "",
+                                    });
+                                    setTimeout(() =>{
+                                        window.location.href = "/index"
+                                    }, 500)
+                                }
+                            ).catch(error => {
+                                new Notify({
+                                    status: "error",
+                                    title: "Thêm thất bại",
+                                    text: error.response ? error.response.data : error.message,
+                                    effect: "fade",
+                                    speed: 300,
+                                    customClass: "",
+                                    customIcon: "",
+                                    showIcon: true,
+                                    showCloseButton: false,
+                                    autoclose: true,
+                                    autotimeout: 3000,
+                                    gap: 20,
+                                    distance: 20,
+                                    type: 1,
+                                    position: "right top",
+                                    customWrapper: "",
+                                });
+                            }, 400)
+                        }else{
+                            await axios.post(`/api/vnpay/payment?total=${total_money}&orderInfor=${code_bill}&orderCode=${code_bill}`,).then(e => {
+                                localStorage.setItem("bill_success", JSON.stringify(billRequest))
+                                window.location.href = e.data
+                            })
+                        }
+                    }else{
                         new Notify({
                             status: "error",
-                            title: "Thêm thất bại",
-                            text: error.response ? error.response.data : error.message,
+                            title: "Đã có lỗi xảy ra",
+                            text: "Rất tiếc, đã có lỗi xảy ra.Vui lòng quay lại giỏ hàng để thanh toán lại.",
                             effect: "fade",
                             speed: 300,
                             customClass: "",
@@ -528,89 +564,89 @@ async function checkout(){
                             position: "right top",
                             customWrapper: "",
                         });
-                    }, 400)
-                }else{
-                    await axios.post(`/api/vnpay/payment?total=${total_money}&orderInfor=${code_bill}&orderCode=${code_bill}`,).then(e => {
-                        localStorage.setItem("bill_success", JSON.stringify(billRequest))
-                        window.location.href = e.data
-                    })
+                    }
+
                 }
             }else{
-                new Notify({
-                    status: "error",
-                    title: "Đã có lỗi xảy ra",
-                    text: "Rất tiếc, đã có lỗi xảy ra.Vui lòng quay lại giỏ hàng để thanh toán lại.",
-                    effect: "fade",
-                    speed: 300,
-                    customClass: "",
-                    customIcon: "",
-                    showIcon: true,
-                    showCloseButton: false,
-                    autoclose: true,
-                    autotimeout: 3000,
-                    gap: 20,
-                    distance: 20,
-                    type: 1,
-                    position: "right top",
-                    customWrapper: "",
-                });
-            }
-
-        }
-    }else{
-        if(String(checkButtonCheckout()) === String(0)){
-            if(id_bill !== null){
-                var billRequest = {
-                    "name" : name,
-                    "phone_number": phone_number,
-                    "email": email,
-                    "address": address,
-                    "note": note,
-                    "ship_fee": ship_fee,
-                    "coupoun": coupoun_value,
-                    "total_money": total_money,
-                    "bill": id_bill,
-                    "payment_method": payment_method
-                }
-
-                if(String(payment_method) === "1"){
-                    await axios.post(`/client/bill/add`, billRequest).then(
-                        e => {
-                            console.log(JSON.parse(localStorage.getItem("cart_details")))
-                            if(localStorage.getItem("type_cart") === "login"){
-                                JSON.parse(localStorage.getItem("cart_details")).map((e) => {
-                                    deleteCartDetail(e);
-                                })
-                            }else{
-                                deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
-                            }
-                            new Notify({
-                                status: "success",
-                                title: "Thành công",
-                                text: "Đơn hàng đã được tạo thành công.",
-                                effect: "fade",
-                                speed: 300,
-                                customClass: "",
-                                customIcon: "",
-                                showIcon: true,
-                                showCloseButton: false,
-                                autoclose: true,
-                                autotimeout: 3000,
-                                gap: 20,
-                                distance: 20,
-                                type: 1,
-                                position: "right top",
-                                customWrapper: "",
-                            });
-                            setTimeout(() =>{
-                                window.location.href = "/index"
-                            }, 500)
+                if(String(checkButtonCheckout()) === String(0)){
+                    if(id_bill !== null){
+                        var billRequest = {
+                            "name" : name,
+                            "phone_number": phone_number,
+                            "email": email,
+                            "address": address,
+                            "note": note,
+                            "ship_fee": ship_fee,
+                            "coupoun": coupoun_value,
+                            "total_money": total_money,
+                            "bill": id_bill,
+                            "payment_method": payment_method
                         }
-                    ).catch(error => {
+
+                        if(String(payment_method) === "1"){
+                            await axios.post(`/client/bill/add`, billRequest).then(
+                                e => {
+                                    console.log(JSON.parse(localStorage.getItem("cart_details")))
+                                    if(localStorage.getItem("type_cart") === "login"){
+                                        JSON.parse(localStorage.getItem("cart_details")).map((e) => {
+                                            deleteCartDetail(e);
+                                        })
+                                    }else{
+                                        deleteCartDetailCookie(JSON.parse(localStorage.getItem("cart_details")));
+                                    }
+                                    new Notify({
+                                        status: "success",
+                                        title: "Thành công",
+                                        text: "Đơn hàng đã được tạo thành công.",
+                                        effect: "fade",
+                                        speed: 300,
+                                        customClass: "",
+                                        customIcon: "",
+                                        showIcon: true,
+                                        showCloseButton: false,
+                                        autoclose: true,
+                                        autotimeout: 3000,
+                                        gap: 20,
+                                        distance: 20,
+                                        type: 1,
+                                        position: "right top",
+                                        customWrapper: "",
+                                    });
+                                    setTimeout(() =>{
+                                        window.location.href = "/index"
+                                    }, 500)
+                                }
+                            ).catch(error => {
+                                new Notify({
+                                    status: "error",
+                                    title: "Thêm thất bại",
+                                    text: error.response ? error.response.data : error.message,
+                                    effect: "fade",
+                                    speed: 300,
+                                    customClass: "",
+                                    customIcon: "",
+                                    showIcon: true,
+                                    showCloseButton: false,
+                                    autoclose: true,
+                                    autotimeout: 3000,
+                                    gap: 20,
+                                    distance: 20,
+                                    type: 1,
+                                    position: "right top",
+                                    customWrapper: "",
+                                });
+                            }, 400)
+                        }else{
+                            await axios.post(`/api/vnpay/payment?total=${total_money}&orderInfor=${code_bill}&orderCode=${code_bill}`,).then(e => {
+                                localStorage.setItem("bill_success", JSON.stringify(billRequest))
+                                window.location.href = e.data
+                            })
+                        }
+                    }else{
                         new Notify({
                             status: "error",
-                            title: "Thêm thất bại",
-                            text: error.response ? error.response.data : error.message,
+                            title: "Đã có lỗi xảy ra",
+                            text: "Rất tiếc, đã có lỗi xảy ra.Vui lòng quay lại giỏ hàng để thanh toán lại.",
                             effect: "fade",
                             speed: 300,
                             customClass: "",
@@ -625,36 +661,15 @@ async function checkout(){
                             position: "right top",
                             customWrapper: "",
                         });
-                    }, 400)
-                }else{
-                    await axios.post(`/api/vnpay/payment?total=${total_money}&orderInfor=${code_bill}&orderCode=${code_bill}`,).then(e => {
-                        localStorage.setItem("bill_success", JSON.stringify(billRequest))
-                        window.location.href = e.data
-                    })
+                    }
+
                 }
-            }else{
-                new Notify({
-                    status: "error",
-                    title: "Đã có lỗi xảy ra",
-                    text: "Rất tiếc, đã có lỗi xảy ra.Vui lòng quay lại giỏ hàng để thanh toán lại.",
-                    effect: "fade",
-                    speed: 300,
-                    customClass: "",
-                    customIcon: "",
-                    showIcon: true,
-                    showCloseButton: false,
-                    autoclose: true,
-                    autotimeout: 3000,
-                    gap: 20,
-                    distance: 20,
-                    type: 1,
-                    position: "right top",
-                    customWrapper: "",
-                });
             }
+        }else{
 
         }
-    }
+    });
+
 
 }
 
@@ -1288,13 +1303,26 @@ const addAddress = async() => {
         "is_default": is_default
     }
 
-    await axios.post("/client/address/add", address).then(res => {
-        console.log(res.data)
-    }).catch(err => {
-        console.log(err)
-    })
+    Swal.fire({
+        title: "Xác nhận thêm địa chỉ",
+        text: "Bạn đồng ý với các thông tin trên và xác nhận thêm địa chỉ mới",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Thêm mới"
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            await axios.post("/client/address/add", address).then(res => {
+                console.log(res.data)
+            }).catch(err => {
+                console.log(err)
+            })
 
-    location.reload()
+            location.reload()
+        }
+    });
+
 }
 
 const changeStatus = async (id) => {
