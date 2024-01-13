@@ -150,12 +150,12 @@ public class CounterService {
     if (request.getVoucher() > 0) {
       voucherService.useVoucher(bill, request.getVoucher());
     }
-
     Bill finalBill = billRepository.save(bill);
+    finalBill.getCode();
     if (finalBill.getCustomer() != null) {
       if (finalBill.getCustomer().getAccount() != null) {
         CompletableFuture.runAsync(() -> {
-          emailService.sendEmailBill(finalBill, "Đơn hàng của bạn");
+          emailService.sendEmailBill(finalBill.getId(), "Đơn hàng của bạn");
         });
       }
     }
