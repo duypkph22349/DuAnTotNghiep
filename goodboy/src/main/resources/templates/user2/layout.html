@@ -146,13 +146,20 @@ https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
   <footer class="bg-white" style="margin-top: 30px">
     <div class="container py-5">
       <div class="row py-4">
-        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img src="https://i.pinimg.com/originals/33/b8/69/33b869f90619e81763dbf1fccc896d8d.jpg" alt="" width="180" class="mb-3">
-          <p class="font-italic text-muted">Khăn là một trong những phụ kiện quen thuộc của mọi phái đẹp, dù theo đuổi phong cách nào cũng có thể sử dụng để tạo điểm nhấn cho bộ trang phục.</p>
+        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img
+            src="https://i.pinimg.com/originals/33/b8/69/33b869f90619e81763dbf1fccc896d8d.jpg" alt="" width="180"
+            class="mb-3">
+          <p class="font-italic text-muted">Khăn là một trong những phụ kiện quen thuộc của mọi phái đẹp, dù theo đuổi
+            phong cách nào cũng có thể sử dụng để tạo điểm nhấn cho bộ trang phục.</p>
           <ul class="list-inline mt-4">
-            <li class="list-inline-item"><a href="#" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="instagram"><i class="fa fa-instagram"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="pinterest"><i class="fa fa-pinterest"></i></a></li>
+            <li class="list-inline-item"><a href="#" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a>
+            </li>
+            <li class="list-inline-item"><a href="#" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a>
+            </li>
+            <li class="list-inline-item"><a href="#" target="_blank" title="instagram"><i
+                  class="fa fa-instagram"></i></a></li>
+            <li class="list-inline-item"><a href="#" target="_blank" title="pinterest"><i
+                  class="fa fa-pinterest"></i></a></li>
             <li class="list-inline-item"><a href="#" target="_blank" title="vimeo"><i class="fa fa-vimeo"></i></a></li>
           </ul>
         </div>
@@ -178,7 +185,8 @@ https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
           <p class="text-muted mb-4">Để lại email để nhận những thông tin mới nhất của chúng tôi.</p>
           <div class="p-1 rounded border">
             <div class="input-group">
-              <input type="email" placeholder="Nhập địa chỉ email của bạn" aria-describedby="button-addon1" class="form-control border-0 shadow-0">
+              <input type="email" placeholder="Nhập địa chỉ email của bạn" aria-describedby="button-addon1"
+                class="form-control border-0 shadow-0">
               <div class="input-group-append">
                 <button id="button-addon1" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
               </div>
@@ -219,9 +227,9 @@ https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
     integrity="sha512-Fd3EQng6gZYBGzHbKd52pV76dXZZravPY7lxfg01nPx5mdekqS8kX4o1NfTtWiHqQyKhEGaReSf4BrtfKc+D5w=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
-  function submitSearchForm() {
-  var searchText = $('#searchInput').val();
-  window.location.href = 'product?textSearch=' + encodeURIComponent(searchText);
+    function submitSearchForm() {
+      var searchText = $('#searchInput').val();
+      window.location.href = 'product?textSearch=' + encodeURIComponent(searchText);
     }
 
     function getCartQuantity() {
@@ -239,26 +247,26 @@ https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
 
     }
 
-  function stars() {
-    let e = document.createElement("div");
-    let size = Math.random() * 12;
-    let duration = Math.random() * 3;
+    function stars() {
+      let e = document.createElement("div");
+      let size = Math.random() * 12;
+      let duration = Math.random() * 3;
 
-    e.setAttribute("class", "star");
-    document.body.appendChild(e);
+      e.setAttribute("class","star");
+      document.body.appendChild(e);
 
-    e.style.left = Math.random() * +innerWidth + "px";
-    e.style.fontSize = 12 + size + "px";
-    e.style.animationDuration = 4 + duration + "s";
+      e.style.left = Math.random() * +innerWidth + "px";
+      e.style.fontSize = 12 + size + "px";
+      e.style.animationDuration = 4 + duration + "s";
 
-    setTimeout(function () {
-      document.body.removeChild(e);
-    }, 5000);
-  }
+      setTimeout(function () {
+        document.body.removeChild(e);
+      },5000);
+    }
 
-  setInterval(function () {
-    stars();
-  }, 100);
+    setInterval(function () {
+      stars();
+    },100);
 
 
   </script>
