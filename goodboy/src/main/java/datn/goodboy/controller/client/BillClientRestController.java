@@ -43,4 +43,16 @@ public class BillClientRestController {
         }
 
     }
+
+    @GetMapping("/find-by-code/{code}")
+    public ResponseEntity<?> addBill(@PathVariable("code")String code) {
+        try{
+            Bill bill = billClientService.getBillByCode(code);
+            return new ResponseEntity<>(bill, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
 }

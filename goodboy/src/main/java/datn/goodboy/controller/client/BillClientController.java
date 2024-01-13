@@ -20,4 +20,9 @@ public class BillClientController {
         model.addAttribute("bill", billClientService.getBillById(id));
         return "user2/bill_detail";
     }
+
+    @GetMapping("/find-bill")
+    public String findBill(Model model) {
+        return "user2/find_bill";
+    }
 }
