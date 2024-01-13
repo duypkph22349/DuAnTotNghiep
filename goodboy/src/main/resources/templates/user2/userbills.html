@@ -75,7 +75,7 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between">
                   <p class="card-text"
-                    th:text="'Ngày đặt : ' + ${#temporals.format(bill.completion_date, 'dd/MM/yyyy')}">
+                    th:text="'Ngày đặt : ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
                   </p>
                   <p th:utext="${convert.statusOfBill(bill.status)}"></p>
                 </div>
@@ -172,7 +172,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:if="${bill.status == 6 || bill.status == 5 }" th:href="${'/shop/order/reorder/'+bill.id}"
                           class="btn btn-primary mx-3">Mua lại</a>
                         <a th:if="${bill.status == 5 && bill.evaluates.size() == 0}"
@@ -293,7 +293,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
                           class="btn btn-danger mx-3"
                           onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
@@ -410,7 +410,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                       </div>
                     </div>
                   </li>
@@ -525,7 +525,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                       </div>
                     </div>
                   </li>
@@ -641,7 +641,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
 
                       </div>
                     </div>
@@ -758,7 +758,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:href="${'/shop/order/reorder/'+bill.id}" class="btn btn-primary mx-3">Mua lại</a>
                         <a th:if="${bill.evaluates.size() == 0}" th:href="${'/shop/order/evaluate/'+bill.id}"
                           class="btn btn-warning mx-3">Đánh giá</a>
@@ -875,7 +875,7 @@
                       </div>
                       <hr>
                       <div class="d-flex justify-content-end">
-                        <a th:href="${'/shop/order/cancel/'+bill.id}" class="btn btn-success mx-3">Xem chi tiết</a>
+                        <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem chi tiết</a>
                         <a th:href="${'/shop/order/reorder/'+bill.id}" class="btn btn-primary mx-3">Mua lại</a>
                       </div>
                     </div>

@@ -95,5 +95,20 @@ public class BillClientService {
         return bill;
     }
 
-//    public ArrayList<Object> getAllAdress()
+    public Bill getBillById(String id){
+        Bill bill =  billRepository.findById(Integer.parseInt(id)).get();
+
+        if(bill == null){
+            throw new RuntimeException("Không tìm thấy hóa đơn.");
+        }
+        return bill;
+    }
+
+    public Bill getBillByCode(String code){
+        Bill bill = billRepository.findByCode(code).get();
+        if(bill == null){
+            throw new RuntimeException("Không tìm thể hóa đơn.");
+        }
+        return bill;
+    }
 }

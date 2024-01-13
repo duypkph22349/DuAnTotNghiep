@@ -12,7 +12,6 @@ public class VnpayController {
 
     @GetMapping("/payment-success")
     public String paymentSuccess(@RequestParam("vnp_TransactionStatus") String status) {
-        System.out.println(status);
         if(status.equals("00")){
             return "user2/payment_success";
         }else{
