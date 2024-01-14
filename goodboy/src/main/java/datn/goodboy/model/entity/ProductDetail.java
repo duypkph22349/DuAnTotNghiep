@@ -1,6 +1,7 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -82,12 +83,12 @@ public class ProductDetail {
     @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonProperty("imageProducts")
-    private List<Images> imageProducts;
+    private List<Images> imageProducts = new ArrayList<>();
 
     @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonProperty("evaluates")
-    private List<Evaluate> evaluates;
+    private List<Evaluate> evaluates = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
@@ -136,6 +137,7 @@ public class ProductDetail {
             return this.name;
         }
     }
+
     @JsonProperty("fullnameProduct")
     public String getFullNameProduct() {
         if (this.name == null) {
@@ -147,6 +149,7 @@ public class ProductDetail {
             return this.name + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
         }
     }
+
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

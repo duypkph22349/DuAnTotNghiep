@@ -250,9 +250,11 @@
                     <div class="item dateOrder">
                         <label>Ngày Đặt Hàng</label>
 
+
                         <span th:text="${#temporals.format(bill?.createdAt, 'dd-MM-yyyy HH:mm')}"
                               style="background-color: rgb(206, 240, 240);"></span>
                     </div>
+
 
                     <div class="item statusPay">
                         <label>Trạng thái thanh toán</label>
@@ -261,6 +263,8 @@
                         <span style="background-color:gold" th:if="${bill.status_pay == 1}">Đã thanh toán</span>
 
                     </div>
+
+
 
                 </div>
                 <div class="col-6">
@@ -287,7 +291,9 @@
                         <span id="address" style="text-overflow: ellipsis;max-width: 10px; "
                               th:text="${bill.address}"></span>
 
+
                     </div>
+
 
                     <div class="item totalMoney">
                         <label>Tổng tiền</label>
@@ -330,7 +336,9 @@
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
 
+
                             <!--                        <th>Trạng thái</th>-->
+
 
                         </tr>
 
@@ -385,6 +393,8 @@
                                             <span style="font-weight: bold;"
                                                   th:text="${#strings.replace(#numbers.formatDecimal(bill?.total_money, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}"></span>
                                 </td>
+
+
                             </tr>
                         </table>
 
@@ -430,6 +440,7 @@
 
                         </table>
 
+
                         <!--                <br>-->
                         <!--                <br>-->
                         <table>
@@ -450,6 +461,7 @@
                                                 <th:block style="font-weight: bold;" th:text="'0 VNĐ'"></th:block>
                                             </span>
                                 </td>
+
 
 
                             </tr>
@@ -524,6 +536,7 @@
                                         <th>Đơn giá</th>
 
                                         <!--                        <th>Trạng thái</th>-->
+
                                     </tr>
 
                                     </thead>

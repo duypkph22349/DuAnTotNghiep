@@ -91,7 +91,7 @@ public class PayService  {
             return optionalPay.get();
         }
         Pay paymethod = new Pay();
-        paymethod.setPayment_method("CASH ON DELIVERY");
+        paymethod.setPayment_method("Thanh toán khi nhận hàng");
         paymethod.setDeleted(0);
         paymethod.setStatus(1);
         paymethod.setCreated_at(LocalDateTime.now());

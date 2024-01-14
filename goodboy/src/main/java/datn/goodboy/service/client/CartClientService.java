@@ -2,9 +2,15 @@ package datn.goodboy.service.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import datn.goodboy.exeption.AuthenticationException;
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Cart;
+import datn.goodboy.model.entity.CartDetail;
+import datn.goodboy.model.entity.ProductDetail;
+import datn.goodboy.repository.AccountRepository;
+import datn.goodboy.repository.CartDetailRepository;
 import datn.goodboy.repository.CartRepository;
+import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.security.service.AccountInfoService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +24,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CartClientService {
@@ -30,6 +37,12 @@ public class CartClientService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     private static final String CART_COOKIE_NAME = "userCart";
 
@@ -78,4 +91,47 @@ public class CartClientService {
             return null;
         }
     }
+
+    public CartDetail findCartDetailById(Integer idProduct){
+        Cart cart = getCart();
+        Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(idProduct);
+
+        if (productDetailOptional.isPresent()) {
+            ProductDetail productDetail = productDetailOptional.get();
+            Optional<CartDetail> existingCartDetailOptional = cart.getCartDetails()
+                    .stream()
+                    .filter(cd -> cd.getProductDetail().equals(productDetail))
+                    .findFirst();
+
+            if (existingCartDetailOptional.isPresent()) {
+                CartDetail existingCartDetail = existingCartDetailOptional.get();
+               return existingCartDetail;
+            }else{
+                return null;
+            }
+        }
+        return null;
+
+    }
+
+    public Cart getCart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+            if (account == null) {
+                throw new AuthenticationException(null);
+            }
+            Cart cart = null;
+            if (account.getCustomer().getCart() == null) {
+                cart = new Cart();
+                cart.setCustomer(account.getCustomer());
+                return cartRepository.save(cart);
+            } else {
+                return account.getCustomer().getCart();
+            }
+        } else {
+            throw new AuthenticationException(null);
+        }
+    };
 }
