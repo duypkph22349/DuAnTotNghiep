@@ -10,13 +10,6 @@
   <section>
     <div class="pagetitle">
       <h1>Quản lý sản phẩm</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
-          <li class="breadcrumb-item"><a th:href="@{/admin/managerproduct}">Quản lý sản phẩm</a></li>
-          <li class="breadcrumb-item active">Quản lý sản phẩm</li>
-        </ol>
-      </nav>
     </div>
     <div class="container-fluid">
       <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')">
@@ -231,7 +224,7 @@
       </table>
     </div>
     <div class="table-footer d-flex justify-content-between mt-3">
-      <div class="text-start">This page is <span th:text="${crpage}"></span> of <span th:text="${totalpage}"></span>
+      <div class="text-start">Trang  <span th:text="${crpage}"></span> / <span th:text="${totalpage}"></span>
       </div>
       <div class="text-center">
         <nav aria-label="Page navigation example">
@@ -262,9 +255,9 @@
       </div>
       <form action="#" class="mx-2" th:action="@{/admin/managerproduct/getcountrow}" method="get" id="rowCountForm">
         <select name="selectedValue" class="border-0 px-2" onchange="document.getElementById('rowCountForm').submit();">
-          <option value="10" th:selected="${rowcount == 10}">10 / page</option>
-          <option value="20" th:selected="${rowcount == 20}">20 / page</option>
-          <option value="50" th:selected="${rowcount == 50}">50 / page</option>
+          <option value="10" th:selected="${rowcount == 10}">10 / Trang</option>
+          <option value="20" th:selected="${rowcount == 20}">20 / Trang</option>
+          <option value="50" th:selected="${rowcount == 50}">50 / Trang</option>
         </select>
       </form>
     </div>

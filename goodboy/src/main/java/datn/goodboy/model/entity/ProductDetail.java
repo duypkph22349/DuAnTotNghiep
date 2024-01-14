@@ -129,9 +129,15 @@ public class ProductDetail {
     @JsonProperty("nameProduct")
     public String getNameProduct() {
         if (this.name == null) {
+            if(idProduct == null) {
+                return "Không xác định";
+            }
             return idProduct.getName();
         }
         if (this.name.equals("")) {
+            if(idProduct == null) {
+                return "Không xác định";
+            }
             return idProduct.getName();
         } else {
             return this.name;

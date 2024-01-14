@@ -177,20 +177,38 @@
                             </div>
                         </div>
                     </div>
-        <div style="text-align: right">
-            <a type="button" class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
-                <i class="fas fa-arrow-left"></i> Close
-            </a>
-            <button type="submit" class="btn btn-primary">Lưu</button>
-        </div>
-        <div th:if="${param.success}">
-            <div class="alert alert-success">
-                Nhân viên đã được thêm thành công!
-            </div>
-        </div>
+                    <div style="text-align: right">
+                        <a type="button" class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
+                            <i class="fas fa-arrow-left"></i> Thoát
+                        </a>
+                        <button id="btn" type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
     </form>
 
 
+    <script>
+        const btn = document.querySelector('#btn')
+        btn.addEventListener('click', () => {
+            new Notify ({
+                status: 'success',
+                title: 'Thêm thành công',
+                text: '',
+                effect: 'slide',
+                speed: 300,
+                customClass: '',
+                customIcon: '',
+                showIcon: true,
+                showCloseButton: false,
+                autoclose: true,
+                autotimeout: 2000,
+                gap: 20,
+                distance: 20,
+                type: 1,
+                position: 'right bottom',
+                customWrapper: '',
+            })
+        })
+    </script>
 
     <script>
     const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
