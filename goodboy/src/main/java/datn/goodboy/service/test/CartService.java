@@ -93,6 +93,14 @@ public class CartService {
 
       if (existingCartDetailOptional.isPresent()) {
         CartDetail existingCartDetail = existingCartDetailOptional.get();
+
+        if (existingCartDetail.getProductDetail().getQuantity() < quantity) {
+          throw new RuntimeException("Sản phẩm không chỉ còn: " + existingCartDetail.getProductDetail().getQuantity());
+        }
+        if(quantity > 5){
+          throw new RuntimeException("Bạn chỉ có thể thêm 5 sản phẩm.Vui lòng chọn sản phẩm khác");
+        }
+
         if (existingCartDetail.getQuantity() + quantity < existingCartDetail.getProductDetail().getQuantity()) {
           existingCartDetail.setQuantity(existingCartDetail.getQuantity() + quantity);
         } else {
@@ -116,7 +124,10 @@ public class CartService {
       CartDetail cartDetail = cartDetailOptional.get();
       cartDetail.setQuantity(quantity);
       if (cartDetail.getProductDetail().getQuantity() < quantity) {
-        throw new RuntimeException("Sản phảm không chỉ còn: " + cartDetail.getProductDetail().getQuantity());
+        throw new RuntimeException("Sản phẩm không chỉ còn: " + cartDetail.getProductDetail().getQuantity());
+      }
+      if(quantity > 5){
+        throw new RuntimeException("Bạn chỉ có thể thêm 5 sản phẩm.Vui lòng chọn sản phẩm khác");
       }
       return cartDetailRepository.save(cartDetail);
     } else {

@@ -44,16 +44,12 @@ public class Employee {
     String code;
 
     @Column(name = "name")
-    @NotNull(message = "Trường này không thể để trống")
-    @NotBlank(message = "Hãy nhập họ và tên")
     String name;
 
     @Column(name = "gender")
     boolean gender;
 
     @Column(name = "birth_date")
-    @NotNull(message = "Trường này không thể để trống")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate birth_date;
 
     @Column(name = "address")
@@ -66,21 +62,12 @@ public class Employee {
     String fulladdress;
 
     @Column(name = "phone")
-    @NotNull(message = "Trường này không thể để trống")
-    @NotBlank(message = "Hãy nhập số điện thoại")
-    @Pattern(regexp = "0\\d{9}", message = "Số điện thoại phải bắt đầu bằng số 0 và phải đủ 10 số")
     String phone;
 
     @Column(name = "email")
-    @NotNull(message = "Trường này không thể để trống")
-    @NotBlank(message = "Hãy nhập Email")
-    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Email Định dạng không đúng")
     String email;
 
     @Column(name = "cccd")
-    @NotNull(message = "Trường này không thể để trống")
-    @Pattern(regexp = "\\d{12}", message = "Căn cước công dân phải có 12 số")
     String cccd;
 
     @Column(name = "image")
@@ -101,9 +88,6 @@ public class Employee {
     private boolean actived;
 
     @Column(name = "password")
-    // @NotNull(message = "Hãy nhập Mật Khẩu")
-    // @NotBlank(message = "Hãy nhập Mật Khẩu")
-    // @Size(min = 8, max = 25, message = "Mật khẩu từ 8 đến 25 ký tự ")
     String password;
     //
     // @NotBlank(message = "Vui lòng nhập trường này!")

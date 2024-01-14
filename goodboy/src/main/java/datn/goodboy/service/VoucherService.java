@@ -68,7 +68,7 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     Voucher savevoucher = voucherRepository.save(voucher1);
     if (savevoucher.sendMail()) {
       CompletableFuture.runAsync(() -> {
-        emailService.sendVoucherMail(savevoucher, "Thông báo cập nhật Voucher mới");
+        emailService.sendVoucherMail(savevoucher.getId(), "Thông báo cập nhật Voucher mới");
       });
     }
     return savevoucher;
@@ -104,7 +104,7 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
 
       if (savevoucher.sendMail()) {
         CompletableFuture.runAsync(() -> {
-          emailService.sendVoucherMail(savevoucher, "Thông báo cập nhật Voucher ");
+          emailService.sendVoucherMail(savevoucher.getId(), "Thông báo cập nhật Voucher ");
         });
       }
       return savevoucher;

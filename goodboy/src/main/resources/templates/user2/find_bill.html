@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html layout:decorate="~{user2/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Shope</title>
+    <style>
+        .add-dup-parent-fields{
+            margin-left: 203px;
+        }
+        .__remove-field{
+            position: relative;
+            top: -110px;
+            right: -80px;
+        }
+        #add-dup{
+            display: none;
+        }
+        .upload-area{
+            border-radius:3px;
+            margin: 0 auto;
+            text-align: center;
+            overflow: auto;
+        }
+        .upload-area:hover{
+            cursor: pointer;
+        }
+        .upload-area h4{
+            text-align: center;
+            font-weight: normal;
+            font-family: sans-serif;
+            color: darkslategray;
+        }
+        .user-file{
+            display: none;
+        }
+
+    </style>
+</head>
+
+
+<body layout:fragment="content" onload="loadCustomer()">
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Checkout</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5"
+         style="
+         width: 100%;
+         margin-left: 3px;
+                "
+    >
+
+        <div class="bg-light col-lg-12" style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        font-size: 17px;
+                                        padding: 20px;">
+            <a href="/index"><i class="fa fa-chevron-left"></i> Trở lại</a>
+            <div style="display: flex;">
+                <div >Tra cứu đơn hàng</div>
+            </div>
+
+        </div>
+        <hr/>
+        <div class="bg-light mb-5" style="width: 100%;">
+            <h4 style="text-align: center">
+                Tra cứu đơn hàng
+            </h4>
+
+            <div>
+                <div class="bg-light p-30"
+                     style="
+                    width: 28%;
+                    display: flex;
+                    justify-content: space-between;
+                    margin-left: auto;
+                    margin-right: auto;"
+                >
+                    <input class="form-control"
+                           type="text"
+                           placeholder="Nhập mã hóa đơn"
+                           id="bill_code"
+                           value=""
+                           style="box-shadow: inset 0 1px 2px rgba(0,0,0,.1);"
+                    >
+                    <button class="btn btn-block btn-primary font-weight-bold py-3"
+                            style="
+                                   height: calc(1.5em + 0.75rem + 9px);
+                                    align-items: center;
+                                    display: flex;
+                                    width: 41%;
+                                    transform: translate(-3px, -4px);
+                                    font-size: 16px;
+
+                            "
+                            onclick="findBillByCode()"
+                    >Tìm kiếm</button>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Checkout End -->
+<!--JS-->
+<script th:src="@{/assets/js/user/product/bill.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

@@ -4,18 +4,49 @@
 
 <head>
     <title>Shope</title>
+    <style>
+        .add-dup-parent-fields{
+            margin-left: 203px;
+        }
+        .__remove-field{
+            position: relative;
+            top: -110px;
+            right: -80px;
+        }
+        #add-dup{
+            display: none;
+        }
+        .upload-area{
+            border-radius:3px;
+            margin: 0 auto;
+            text-align: center;
+            overflow: auto;
+        }
+        .upload-area:hover{
+            cursor: pointer;
+        }
+        .upload-area h4{
+            text-align: center;
+            font-weight: normal;
+            font-family: sans-serif;
+            color: darkslategray;
+        }
+        .user-file{
+            display: none;
+        }
+
+    </style>
 </head>
 
 
-<body layout:fragment="content">
+<body layout:fragment="content" onload="loadCustomer()">
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
         <div class="col-12">
             <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Home</a>
-                <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                <span class="breadcrumb-item active">Checkout</span>
+                <a class="breadcrumb-item text-dark" href="/index">Trang chủ</a>
+                <span class="breadcrumb-item active">Thanh toán</span>
             </nav>
         </div>
     </div>
@@ -76,7 +107,7 @@
             <h5 class="section-title position-relative text-uppercase mb-3">
                     <span class="bg-secondary pr-3"  style="font-size: 18px;font-weight: bold!important;color: #3D464D">
                         Thông tin thanh toán</span></h5>
-            <div class="bg-light p-30 mb-5">
+            <div class="bg-light p-30 mb-5" id="infor_customer">
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
@@ -161,6 +192,7 @@
                     </div> -->
 
                 </div>
+
             </div>
             <!-- <div class="collapse mb-5" id="new-account">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tạo
@@ -277,6 +309,7 @@
                     <input id="coupoun_value" type="text" hidden="" value="0">
                     <input id="coupoun_object"  hidden="" >
                     <input id="ship_fee_value" type="text" hidden="" value="0">
+                    <input id="bill_code" type="text" hidden="" th:value="${bill.getCode()}">
                     <div id="ship_fee" >
                     </div>
                 </div>
@@ -322,8 +355,149 @@
 </div>
 <!-- Checkout End -->
 
+<!-- MODAL ADD ADDRESSS -->
+<div class="modal fade" id="modelId" tabindex="5" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 750px;;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Địa chỉ giao hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input hidden="" id="id_customer" value=""/>
+                    <div class="col-md-12 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Họ và tên
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="Nguyễn" id="name_customer" value="" oninput="validateAddress()"
+                        >
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="name_customer_error">Bạn phải nhập tên</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Số điện thoại
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="099999999"  value="" oninput="validateAddress()"
+                               id="phone_number_customer">
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="phone_number_customer_error">Bạn phải nhập số điện thoại</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Email<span style="display: inline-block;">*</span></label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="example@email.com"  value=""  oninput="validateAddress()"
+                               id="email_customer">
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="email_customer_error">Bạn phải nhập email</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" id="cityCode" value="0" hidden=""/>
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Tỉnh/Thành phố
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select"  id="city_customer" onchange="getAllDistrictCustomer()">
+
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="city_customer_error">Bạn phải chọn thành phố</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" id="districtCode" value="0" hidden=""/>
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Quận/huyện
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select" id="district_customer" onchange="getFullWardCodeCustomer()">
+                            <option value="" selected>Chọn quận/huyện</option>
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="district_customer_error">Bạn phải chọn quận huyện</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" id="wardCode" value="0" hidden=""/>
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Phường/Xã
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select" id="ward_customer" onchange="validateAddress()">
+                            <option value="" selected>Chọn phường/xã</option>
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="ward_customer_error">Bạn phải chọn phường/xã</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Địa chỉ
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333"
+                               value=""
+                               class="form-control" type="text"
+                               placeholder="Đường Cầu Diễn" id="address_customer"
+                               oninput="validateAddress()"
+                        >
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="address_customer_error">Bạn phải nhập địa chỉ</span>
+                    </div>
+                    <div style="margin-left: 16px;
+                                margin-top: -16px;
+                                margin-bottom: 14px;">
+                        <input type="checkbox" value="0" id="default_customer"/>
+                        Đặt làm mặc định
+                    </div>
+                    <button class="btn btn-block btn-primary font-weight-bold py-3 "
+                            onclick="addAddress()"
+                            style="     width: 96%;
+                                        margin-left: auto;
+                                        margin-right: auto;"
+                            id="btn_add_address"
+                    >LƯU</button>
+                    <!-- <div class="col-md-12 form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="newaccount">
+                            <label class="custom-control-label" for="newaccount" data-toggle="collapse"
+                                data-target="#new-account">Tạo tài khoản</label>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--MODAL LIST ADDRESS-->
+<!-- Modal -->
+<div class="modal fade" id="model_list_address" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 750px;;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Địa chỉ giao hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"  >
+                <button data-toggle="modal" data-target="#modelId"
+                        data-dismiss="modal"  aria-hidden="true"
+                        style="font-weight: bold;
+                        color: #004aad;
+                        border: 0;
+                        background: none;
+                        margin-left: 15px;
+                        margin-bottom: 7px;"
+                >
+                    <i class="fa fa-plus"></i> Thêm khách hàng
+                </button>
+                <div style="display: flex;box-sizing: border-box;
+                              flex-wrap: wrap;" id="modal_checkout"> </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <!--JS-->
 <script th:src="@{/assets/js/user/product/checkout.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

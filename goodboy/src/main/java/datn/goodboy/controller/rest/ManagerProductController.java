@@ -200,7 +200,7 @@ public class ManagerProductController {
 
   @PostMapping("/productdetail/save")
   public ProductDetail createProductDetail(@Valid @RequestBody ProductDetailRequest request) throws IOException {
-    System.out.println(request);
+    // System.out.println(request);
     return service2.saveProductDetail(request);
   }
 

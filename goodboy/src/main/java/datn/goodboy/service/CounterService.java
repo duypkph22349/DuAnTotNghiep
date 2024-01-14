@@ -155,7 +155,7 @@ public class CounterService {
     if (finalBill.getCustomer() != null) {
       if (finalBill.getCustomer().getAccount() != null) {
         CompletableFuture.runAsync(() -> {
-          emailService.sendEmailBill(finalBill, "Đơn hàng của bạn");
+          emailService.sendEmailBill(finalBill.getId(), "Đơn hàng của bạn");
         });
       }
     }
