@@ -33,6 +33,28 @@ async function addToCart() {
                 const quantityValue = parseInt(quantityinput.value, 10);
 
                 if (quantityValue) {
+                  if(quantityValue > 5){
+                    new Notify({
+                      status: "warning",
+                      title: "Đã có lỗi khi thêm sản phẩm",
+                      text: `Bạn chỉ thêm được 5 sản phẩm này vào giỏ hàng`,
+                      effect: "fade",
+                      speed: 300,
+                      customClass: "",
+                      customIcon: "",
+                      showIcon: true,
+                      showCloseButton: false,
+                      autoclose: true,
+                      autotimeout: 3000,
+                      gap: 20,
+                      distance: 20,
+                      type: 1,
+                      position: "right top",
+                      customWrapper: "",
+                    });
+                    return;
+                  }
+
                   if(cartDetail !== '' || cartDetail !== null){
                     if(Number(cartDetail.quantity) + (quantityValue) > 5){
                       new Notify({
