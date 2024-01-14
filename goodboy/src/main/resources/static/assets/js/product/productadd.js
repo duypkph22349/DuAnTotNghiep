@@ -767,7 +767,7 @@ async function addNewFormProductDetail(idhoavan) {
                     <div class="col-6 row mb-3">
                       <label for="inputNumber" class="col-sm-4 col-form-label">Số lượng</label>
                       <div class="col-sm-6">
-                        <input type="number" class="form-control" value=0 min=0 name="soluong">
+                        <input type="number" class="form-control" value=10 min=0 name="soluong">
                       </div>
                     </div>
                     <div class="col-6 row mb-3">
@@ -775,7 +775,7 @@ async function addNewFormProductDetail(idhoavan) {
                       <div class="col-sm-9">
                         <div class="input-group mb-3">
                           <span class="input-group-text">đ</span>
-                          <input type="text" class="form-control" value=0 min=0  name="gia" aria-label="Amount (to the nearest dollar)">
+                          <input type="text" class="form-control" value=100000 min=0  name="gia" aria-label="Amount (to the nearest dollar)">
                           <span class="input-group-text">Vnđ</span>
                         </div>
                       </div>
@@ -817,7 +817,7 @@ async function addNewFormProductDetailKichThuoc(idhoavan, idkichthuocselect) {
                     <div class="col-6 row mb-3">
                       <label for="inputNumber" class="col-sm-4 col-form-label">Số lượng</label>
                       <div class="col-sm-6">
-                        <input type="number" class="form-control" value=0 min=0 name="soluong">
+                        <input type="number" class="form-control" value=10 min=0 name="soluong">
                       </div>
                     </div>
                     <div class="col-6 row mb-3">
@@ -825,7 +825,7 @@ async function addNewFormProductDetailKichThuoc(idhoavan, idkichthuocselect) {
                       <div class="col-sm-9">
                         <div class="input-group mb-3">
                           <span class="input-group-text">đ</span>
-                          <input type="text" class="form-control" value=0 min=0  name="gia" aria-label="Amount (to the nearest dollar)">
+                          <input type="text" class="form-control" value=100000 min=0  name="gia" aria-label="Amount (to the nearest dollar)">
                           <span class="input-group-text">Vnđ</span>
                         </div>
                       </div>
