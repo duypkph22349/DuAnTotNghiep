@@ -18,7 +18,6 @@ async function addToCart() {
   );
 
   if (selectedHovan) {
-    console.log("Selected Hovan: ", selectedHovan.getAttribute("id-hovan"));
     const divname = selectedHovan.getAttribute("id-hovan");
     const selectProduct = document.querySelector(
       `#${divname} form input[type='radio'].product-chooese:checked`
@@ -26,122 +25,138 @@ async function addToCart() {
     if (selectProduct) {
       const idproductselect = selectProduct.getAttribute("id-product");
       const product = await getProductDetails(idproductselect);
-      console.log(product);
       try {
-        const quantityValue = parseInt(quantityinput.value, 10);
-        if (quantityValue) {
-          if (product.quantity < quantityValue) {
-            new Notify({
-              status: "warning",
-              title: "Số lượng không đủ",
-              text: `${product.nameProduct} - ${product.idPattern.name} - ${product.idSize.name} còn - ${product.quantity} sản phẩm`,
-              effect: "fade",
-              speed: 300,
-              customClass: "",
-              customIcon: "",
-              showIcon: true,
-              showCloseButton: false,
-              autoclose: true,
-              autotimeout: 3000,
-              gap: 20,
-              distance: 20,
-              type: 1,
-              position: "right top",
-              customWrapper: "",
-            });
-            return;
-          }
-          else if(quantityValue > 5){
-            new Notify({
-              status: "warning",
-              title: "Đã có lỗi khi thêm sản phẩm",
-              text: `Bạn chỉ có thể thêm 5 sản phẩm`,
-              effect: "fade",
-              speed: 300,
-              customClass: "",
-              customIcon: "",
-              showIcon: true,
-              showCloseButton: false,
-              autoclose: true,
-              autotimeout: 3000,
-              gap: 20,
-              distance: 20,
-              type: 1,
-              position: "right top",
-              customWrapper: "",
-            });
-            return;
-          }
-          else {
-             await axios
-              .get(
-                `${API_BASE_URL}/add/${idproductselect}?quantity=${quantityValue}`
-              )
-              .then((response) => {
-                console.log("Item added to cart:", response.data);
-                new Notify({
-                  status: "success",
-                  title: "Thêm vào giỏ hàng thành công",
-                  text: "Đã thêm sản phẩm",
-                  effect: "fade",
-                  speed: 300,
-                  customClass: "",
-                  customIcon: "",
-                  showIcon: true,
-                  showCloseButton: false,
-                  autoclose: true,
-                  autotimeout: 3000,
-                  gap: 20,
-                  distance: 20,
-                  type: 1,
-                  position: "right top",
-                  customWrapper: "",
-                });
-              })
-              .catch((error) => {
-                new Notify({
-                  status: "error",
-                  title: "Thêm thất bại",
-                  text:  error.response ? error.response.data : error.message,
-                  effect: "fade",
-                  speed: 300,
-                  customClass: "",
-                  customIcon: "",
-                  showIcon: true,
-                  showCloseButton: false,
-                  autoclose: true,
-                  autotimeout: 3000,
-                  gap: 20,
-                  distance: 20,
-                  type: 1,
-                  position: "right top",
-                  customWrapper: "",
-                });
-              });
+        await axios.get(`/client/cart/find-cart-by-id/${idproductselect}`).then(
+            async (response) => {
+              const cartDetail = response.data;
+              try {
+                const quantityValue = parseInt(quantityinput.value, 10);
 
-             await  get_quantity_of_cart();
-          }
-        }
-      } catch (err) {
-        new Notify({
-          status: "warning",
-          title: "xẩy ra lỗi không đúng",
-          text: `Số lượng không đúng"`,
-          effect: "fade",
-          speed: 300,
-          customClass: "",
-          customIcon: "",
-          showIcon: true,
-          showCloseButton: false,
-          autoclose: true,
-          autotimeout: 3000,
-          gap: 20,
-          distance: 20,
-          type: 1,
-          position: "right top",
-          customWrapper: "",
-        });
+                if (quantityValue) {
+                  if(cartDetail !== '' || cartDetail !== null){
+                    if(Number(cartDetail.quantity) + (quantityValue) > 5){
+                      new Notify({
+                        status: "warning",
+                        title: "Đã có lỗi khi thêm sản phẩm",
+                        text: `Bạn chỉ có thể thêm 5 sản phẩm`,
+                        effect: "fade",
+                        speed: 300,
+                        customClass: "",
+                        customIcon: "",
+                        showIcon: true,
+                        showCloseButton: false,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 20,
+                        distance: 20,
+                        type: 1,
+                        position: "right top",
+                        customWrapper: "",
+                      });
+                      return;
+                    }
+                  }
+
+                  if (product.quantity < quantityValue) {
+                    new Notify({
+                      status: "warning",
+                      title: "Số lượng không đủ",
+                      text: `${product.nameProduct} - ${product.idPattern.name} - ${product.idSize.name} còn - ${product.quantity} sản phẩm`,
+                      effect: "fade",
+                      speed: 300,
+                      customClass: "",
+                      customIcon: "",
+                      showIcon: true,
+                      showCloseButton: false,
+                      autoclose: true,
+                      autotimeout: 3000,
+                      gap: 20,
+                      distance: 20,
+                      type: 1,
+                      position: "right top",
+                      customWrapper: "",
+                    });
+                    return;
+                  }
+                  else {
+                    await axios
+                        .get(
+                            `${API_BASE_URL}/add/${idproductselect}?quantity=${quantityValue}`
+                        )
+                        .then((response) => {
+                          console.log("Item added to cart:", response.data);
+                          new Notify({
+                            status: "success",
+                            title: "Thêm vào giỏ hàng thành công",
+                            text: "Đã thêm sản phẩm",
+                            effect: "fade",
+                            speed: 300,
+                            customClass: "",
+                            customIcon: "",
+                            showIcon: true,
+                            showCloseButton: false,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            gap: 20,
+                            distance: 20,
+                            type: 1,
+                            position: "right top",
+                            customWrapper: "",
+                          });
+                        })
+                        .catch((error) => {
+                          new Notify({
+                            status: "error",
+                            title: "Thêm thất bại",
+                            text:  error.response ? error.response.data : error.message,
+                            effect: "fade",
+                            speed: 300,
+                            customClass: "",
+                            customIcon: "",
+                            showIcon: true,
+                            showCloseButton: false,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            gap: 20,
+                            distance: 20,
+                            type: 1,
+                            position: "right top",
+                            customWrapper: "",
+                          });
+                        });
+
+                    await  get_quantity_of_cart();
+                  }
+                }
+              } catch (err) {
+                new Notify({
+                  status: "warning",
+                  title: "xẩy ra lỗi không đúng",
+                  text: `Số lượng không đúng"`,
+                  effect: "fade",
+                  speed: 300,
+                  customClass: "",
+                  customIcon: "",
+                  showIcon: true,
+                  showCloseButton: false,
+                  autoclose: true,
+                  autotimeout: 3000,
+                  gap: 20,
+                  distance: 20,
+                  type: 1,
+                  position: "right top",
+                  customWrapper: "",
+                });
+              }
+            }
+        ).catch((error) => {
+          console.log(error)
+        })
+      } catch (error) {
+        alert("Không thể tìm thấy sản phẩm !!!");
+        throw error;
       }
+
     } else {
       new Notify({
         status: "warning",
@@ -192,6 +207,10 @@ async function getProductDetails(id) {
     alert("Không thể tìm thấy sản phẩm !!!");
     throw error;
   }
+}
+
+async function getCartDetail(id) {
+
 }
 
 const get_quantity_of_cart = () => {
