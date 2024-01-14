@@ -129,7 +129,7 @@
                         </button>
 
                     </a>
-                    <input type="text" hidden th:value="${addresss.id}" id="idcustomer">
+                    <input value="" type="text" hidden th:value="${addresss.id}" id="idcustomer">
                     <a th:href="@{/admin/customer/detail/{id}/delete_address/{id_address}(id=${detail.id},id_address=${addresss.id})}"
                     >
                         <button>Xóa</button>
@@ -223,7 +223,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <input hidden="" id="id_customer" value=""/>
+                            <input hidden="" id="id_customer" value="" th:value="${id_customer}"/>
                             <div class="col-md-12 form-group">
                                 <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
                                     Họ và tên
@@ -344,8 +344,11 @@
 
         const ERROR_BORDER = '1px solid #dd3333'
         const SUCCESS_BORDER = '1px solid green'
-        var API_BASE_URL = "/test/api/cart";
-        var API_BASE_COOKIE_URL = "/test/api/cart/cookie";
+
+        var LIST_ADDRESS = [];
+        const ID_CUSTOMER = document.querySelector("#id_customer").value;
+        var ID_ADDRESS = null;
+
 
         // FORMAT VND
         function formatToVND(amount) {
@@ -474,212 +477,14 @@
 
         async function loadCustomer(){
             getAllprovideCustomer()
-            var customer_view = document.querySelector("#infor_customer")
-            console.log(localStorage.getItem("type_cart"))
-            if(localStorage.getItem("type_cart") === "login"){
-                await axios.get("/client/address/find-all").then((e) => {
-                    console.log(e.data)
-                    if(e.data.length === 0){
-                        customer_view.innerHTML =
-                            `
-                 <div class="row"
-                    > Bạn chưa có địa chỉ
-                         <button
-                            data-toggle="modal"
-                            data-target="#modelId"
-                            style="
-                                display: inline-block;
-                                color: #004aad;
-                                cursor: pointer;
-                                border: none;
-                                background: none;
-                             ">Thêm địa chỉ mới</button>
-                    </div>
-             `
-                    }else{
-                        var flag = true
-                        LIST_ADDRESS = e.data
-                        e.data.map((e) => {
-                            if(String(e.trangThai) === "true"){
-                                ADDRESS_CURRENT = e
-                                checkButtonCheckoutCustomer(e)
-                                getAllprovideByCode(e.districtCode, e.wardCode, e.provinceCode)
-                                customer_view.innerHTML = `
-                       <div class="row"
-                      style="
-                      padding: 12px 12px 12px 16px;
-                      border: 1px solid #e5e5e5;
-                      border-left: 6px solid #FFD333;"
-                    >
-                        <div style="width: 87%;color:#000">
-                            <div >
-                                <span style="display: inline-block;font-weight: bold">${e.tenNguoiNhan}</span> <span>${e.sdt_nguoi_nhan}</span>
-
-                                <button
-                                data-toggle="modal"
-                                data-target="#model_list_address"
-                                onclick="showListAddress()"
-                                style="
-                                    display: inline-block;
-                                    color: #004aad;
-                                    cursor: pointer;
-                                    border: 0;
-                                    background: none;
-                                 ">Thay đổi</button>
-                            </div>
-                            <div>
-                                <div>
-                                    ${e.tenDiaChi}
-                                </div>
-                                <div>
-                                    ${e.xa},${e.huyen},${e.thanh_pho}
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="changeAddress('${String(e.id)}')" style="border-color: #000;background-color: #fff;
-                                min-width: 80px;
-                                height: 28px;
-                                line-height: 26px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                margin-top: 25px;
-                                position: relative;
-                                z-index: 200;" data-toggle="modal" data-target="#modelId" >
-                            sửa địa chỉ
-                        </button>
-                    </div>
-                     <div class=" form-group" style="margin-top: 20px">
-                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Ghi chú</label>
-                        <textarea class="form-control"
-                                  type="text"
-                                  id="note"
-                                  rows="4"
-                                  placeholder="Nhập ghi chú của bạn"
-                        >
-                            </textarea>
-                    </div>
-                         `
-                                flag = false
-                                return;
-                            }
-                        })
-
-                        if(flag){
-                            customer_view.innerHTML =
-                                `
-                 <div class="row"
-                    > Bạn chưa chọn địa chỉ nào làm địa chỉ mặc định
-                         <button
-                            data-toggle="modal"
-                            data-target="#model_list_address"
-                            onclick="showListAddress()"
-                            style="
-                                display: inline-block;
-                                color: #004aad;
-                                cursor: pointer;
-                                border: none;
-                                background: none;
-                             ">Chọn địa chỉ</button>
-                    </div>
-             `
-                        }
-
-                        document.querySelector("#modal_checkout").innerHTML = text
-                    }
-                }).catch((e) => {
-                    console.log(e)
-                })
-            }
-        }
-        async function showListAddress () {
-            await axios.get("/client/address/find-all").then((e) => {
-
-                if(e.data.length === 0){
-                    customer_view.innerHTML =
-                        `
-                 <div class="row"
-                    > Bạn chưa có địa chỉ
-                         <button
-                            data-toggle="modal"
-                            data-target="#modelId"
-                            style="
-                                display: inline-block;
-                                color: #004aad;
-                                cursor: pointer;
-                                border: none;
-                                background: none;
-                             ">Thêm địa chỉ mới</button>
-                    </div>
-             `
-                }else{
-                    var text = ""
-                    e.data.map((e) =>{
-                        text += `
-                    <div class="row"
-                         style="
-                          padding: 12px 12px 12px 16px;
-                          border: 1px solid #e5e5e5;
-                          border-left: 6px solid #FFD333;
-                          width: 40%;
-                          font-size: 13px;
-                          margin-left: 15px;
-                          cursor: pointer;
-                          margin-top: 20px;
-                          margin-left: 50px;
-                    "
-
-                    >
-                        <div style="width: 87%;color:#000;" >
-                            <div onclick="changeStatus('${String(e.id)}')" >
-                                <span style="display: inline-block;font-weight: bold">${e.tenNguoiNhan}</span> <span>${e.sdt_nguoi_nhan}</span>
-                                  ${e.trangThai === true ? " <button  style=\" display: inline-block;color: #004aad;cursor: pointer;border: 1px solid #004aad;\">Mặc định</button>" : ""}
-                            </div>
-                            <div onclick="changeStatus('${String(e.id)}')">
-                                <div>
-                                   ${e.tenDiaChi}
-                                </div>
-                                <div>
-                                    ${e.xa},${e.huyen},${e.thanh_pho}
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            onclick="changeAddress('${String(e.id)}')"
-                            style="border-color: #000;background-color: #fff;
-                            min-width: 80px;
-                            height: 28px;
-                            line-height: 26px;
-                            font-size: 12px;
-                            font-weight: 600;
-                            margin-top: 25px;
-                            position: relative;
-                            z-index: 200;" data-toggle="modal" data-target="#modelId" data-dismiss="modal"  aria-hidden="true" >
-                            sửa địa chỉ
-                        </button>
-                         <button
-                            onclick="deleteAddress('${String(e.id)}')"
-                            style="border-color: #dd3333;background-color: #fff;
-                            color: #dd3333;
-                            min-width: 80px;
-                            height: 28px;
-                            line-height: 26px;
-                            font-size: 12px;
-                            font-weight: 600;
-                            margin-top: 25px;
-                            margin-left: 15px;
-                            position: relative;
-                            z-index: 200;" data-toggle="modal" data-target="#modelId" data-dismiss="modal"  aria-hidden="true" >
-                            Xóa
-                        </button>
-                    </div>
-                    `
-                    })
-                    document.querySelector("#modal_checkout").innerHTML = text
-                }
+            await axios.get("/client/address/find-all-customer/" + ID_CUSTOMER).then((e) => {
+                LIST_ADDRESS = e.data
+                console.log(e.data)
             }).catch((e) => {
+                console.log(e)
             })
-        }
 
+        }
         function getAllprovideCustomer() {
             // const thisOrder = document.getElementById(`hoaDon${orderId}`);
             fetch( `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province`, {
@@ -915,11 +720,9 @@
             const code_district = document.querySelector("#districtCode").value;
             const code_city = document.querySelector("#cityCode").value;
             const is_default = document.querySelector("#default_customer").checked
-            const id = document.querySelector("#id_customer").value;
-            console.log(is_default)
 
             var address = {
-                "id" : id,
+                "id" : ID_ADDRESS,
                 "name" : name,
                 "email" : email,
                 "phone_number" : phone_number,
@@ -943,7 +746,7 @@
                 confirmButtonText: "Thêm mới"
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    await axios.post("/client/address/add", address).then(res => {
+                    await axios.post("/client/address/add-customer?id_customer=" + ID_CUSTOMER, address).then(res => {
                         console.log(res.data)
                     }).catch(err => {
                         console.log(err)
@@ -974,6 +777,7 @@
             const name_view = document.querySelector("#name_customer");
             const phone_number_view = document.querySelector("#phone_number_customer");
 
+            console.log(id)
             if(LIST_ADDRESS.find((e) => e.id === id) !== undefined){
                 var address = LIST_ADDRESS.find((e) => e.id === id)
                 console.log(address)
@@ -986,6 +790,7 @@
                 getAllprovideByCode(address.districtCode, address.wardCode, address.provinceCode)
 
             }else{
+                console.log(LIST_ADDRESS)
                 console.log("Không tìm thấy phần tử nào trong mảng")
             }
         }
@@ -1098,10 +903,8 @@
 
         function editAddress() {
             var idadress = document.getElementById("idcustomer").value
-            axios.get(`/admin/customer/details/${idadress}`).then((res) =>{
-                changeAddress(res.id)
-
-            })
+            changeAddress(idadress)
+            ID_ADDRESS = idadress;
         }
     </script>
 

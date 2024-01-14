@@ -106,6 +106,7 @@ public class CustomerController {
     public String detail(Model model, @PathVariable("id") UUID id) {
         Optional<Customer> customer = customerService.getCustomerById(id);
         List<Address> addresses = addressService.getAllAddressByIdCustomer(id);
+        model.addAttribute("id_customer", id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
             model.addAttribute("addresss", addresses);

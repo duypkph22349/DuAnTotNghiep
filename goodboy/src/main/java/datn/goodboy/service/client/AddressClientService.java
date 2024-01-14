@@ -70,6 +70,37 @@ public class AddressClientService {
         return addressRepository.save(address);
     }
 
+    public Address addNewAddressCustomer(AddressRequest req, String idCustomer){
+        Customer customer = customerRepository.findById(UUID.fromString(idCustomer)).orElse(null);
+        ArrayList<Address> list = (ArrayList<Address>) addressRepository.findAddressByIDCustomer(UUID.fromString(idCustomer));
+
+        if(req.getIs_default()){
+            for (Address address : list) {
+                address.setTrangThai(false);
+                addressRepository.save(address);
+            }
+        }
+
+        Address address = new Address();
+        if(req.getId() != ""){
+            address.setId(UUID.fromString(req.getId()));
+        }
+        address.setDistrictCode(req.getCode_district());
+        address.setProvinceCode(req.getCode_city());
+        address.setWardCode(req.getCode_ward());
+        address.setTenDiaChi(req.getAddress());
+        address.setThanh_pho(req.getCity());
+        address.setHuyen(req.getDistrict());
+        address.setXa(req.getWard());
+        address.setSdt_nguoi_nhan(req.getPhone_number());
+        address.setTenNguoiNhan(req.getName());
+        address.setId_customer(customer);
+        address.setTrangThai(req.getIs_default());
+        address.setEmail(req.getEmail());
+        return addressRepository.save(address);
+    }
+
+
     public String changeStatus(UUID id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account user = userService.getAccountByEmail(authentication.getName());
