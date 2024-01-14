@@ -168,8 +168,15 @@ public class ProductController {
         return "redirect:/admin/product/dsProduct";
     }
 
+    @GetMapping("/dicription/update/{id}")
+    public String updateDiscription(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("product", productService.getById(id));
+        return "admin/pages/product/dicription";
+    }
 
-
-
-
+    @PostMapping("/dicription/update")
+    public String SaveDiscription(Model model, @ModelAttribute("product") Product product) {
+        model.addAttribute("product", productService.saveDicription(product));
+        return "redirect:/admin/managerproduct";
+    }
 }

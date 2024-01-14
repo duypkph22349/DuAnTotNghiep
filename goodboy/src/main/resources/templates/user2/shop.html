@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html layout:decorate="~{user2/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Shope</title>
+</head>
+
+
+<body layout:fragment="content">
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/index">Trang chủ</a>
+                    <span class="breadcrumb-item active" th:unless="${textSearch}">Sản Phẩm</span>
+                    <span class="breadcrumb-item active" th:if="${textSearch}"
+                        th:text="'kết quả tìm kiếm cho: ' + ${textSearch}"></span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <!-- Shop Sidebar Start -->
+            <div class="col-lg-3 col-md-4">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" id="text-search"
+                            th:value="${textSearch != null ? textSearch : ''}">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary" onclick="updateFillter()">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- category Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Loại
+                        khăn</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        <!-- th:each="option : ${categoryCbb}" th:value="${option.key}" th:text="${option.value}" -->
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+                            th:each="option : ${categoryCbb}">
+                            <input type="checkbox" class="custom-control-input category-fillter"
+                                th:value="${option.key}" th:id-category="${option.key}"
+                                th:checked="${categorychoose != null and option.key == categorychoose}"
+                                th:id=" ${'category-'+option.key}" name="idCategorys" onclick="updateFillter()">
+                            <label class="custom-control-label" th:for="${'category-'+option.key}"
+                                th:text="${option.value}"></label>
+                        </div>
+                    </form>
+                </div>
+                <!-- category End -->
+                <!-- brand Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thương
+                        Hiệu</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        <!-- th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}" -->
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+                            th:each="option : ${brandCbb}">
+                            <input type="checkbox" class="custom-control-input brand-fillter" th:value="${option.key}"
+                                th:id-brand="${option.key}" th:id="${'brand-'+option.key}" name="idBrands"
+                                onclick="updateFillter()">
+                            <label class="custom-control-label" th:for="${'brand-'+option.key}"
+                                th:text="${option.value}"></label>
+                        </div>
+                    </form>
+                </div>
+                <!-- category End -->
+
+                <!-- material Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Chất
+                        liệu</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+                            th:each="option : ${materialCbb}">
+                            <input type="checkbox" class="custom-control-input material-fillter"
+                                th:value="${option.key}" th:id-brand="${option.key}" th:id="${'material-'+option.key}"
+                                name="idMaterials" onclick="updateFillter()">
+                            <label class="custom-control-label" th:for="${'material-'+option.key}"
+                                th:text="${option.value}"></label>
+                        </div>
+                    </form>
+                </div>
+                <!-- material End -->
+                <!-- Origin Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Nguồn
+                        gốc</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+                            th:each="option : ${originCbb}">
+                            <input type="checkbox" class="custom-control-input origin-fillter" th:value="${option.key}"
+                                th:id-brand="${option.key}" th:id="${'origin-'+option.key}" name="idOrigins"
+                                onclick="updateFillter()">
+                            <label class="custom-control-label" th:for="${'origin-'+option.key}"
+                                th:text="${option.value}"></label>
+                        </div>
+                    </form>
+                </div>
+                <!-- Origin End -->
+                <!-- Styless Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Kiểu
+                        dáng</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+                            th:each="option : ${stylesCbb}">
+                            <input type="checkbox" class="custom-control-input styles-fillter" th:value="${option.key}"
+                                onclick="updateFillter()" th:id-brand="${option.key}" th:id="${'styles-'+option.key}"
+                                name="idStyless">
+                            <label class="custom-control-label" th:for="${'styles-'+option.key}"
+                                th:text="${option.value}"></label>
+                        </div>
+                    </form>
+                </div>
+                <!-- Styless End -->
+            </div>
+            <!-- Shop Sidebar End -->
+            <!-- Shop Product Start -->
+            <div class="col-lg-9 col-md-8">
+                <div class="container-fluid pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                        </div>
+                        <div class="ml-2">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                    data-toggle="dropdown">Sắp xếp</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" role="button" onclick="sortBy('createdAt',true)">Mới
+                                        Nhất</a>
+                                    <a class="dropdown-item" role="button" onclick="sortBy('price',true)">Giá tăng</a>
+                                    <a class="dropdown-item" role="button" onclick="sortBy('price',false)">Giá giảm</a>
+                                </div>
+                            </div>
+                            <div class="btn-group ml-2">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                    data-toggle="dropdown">Hiển thị</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" role="button" onclick="updateNumBerOfRow(10)">10</a>
+                                    <a class="dropdown-item" role="button" onclick="updateNumBerOfRow(20)">20</a>
+                                    <a class="dropdown-item" role="button" onclick="updateNumBerOfRow(30)">30</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-3" id="productview">
+                </div>
+                <div class="container-fluid">
+                    <nav>
+                        <ul class="pagination justify-content-center" id="panigation">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- Shop Product End -->
+        </div>
+    </div>
+    <!-- Shop End -->
+    <script th:src="@{/assets/js/user/product/product.js}"></script>
+</body>
+
+</html>

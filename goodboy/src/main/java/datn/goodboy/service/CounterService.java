@@ -3,6 +3,7 @@ package datn.goodboy.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,13 @@ import datn.goodboy.model.request.OrderCounterRequest;
 import datn.goodboy.repository.BillDetailRepository;
 import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.EmployeeRepository;
+import datn.goodboy.service.EmailService;
 import datn.goodboy.repository.PayDetailRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class CounterService {
   @Autowired
   BillRepository billRepository;
@@ -41,6 +45,9 @@ public class CounterService {
 
   @Autowired
   VoucherService voucherService;
+
+  @Autowired
+  EmailService emailService;
   public Pay cashpay;
   public Pay transderPay;
   public Pay counterPay;
@@ -79,7 +86,7 @@ public class CounterService {
     } else {
       bill.setPay(payService.getTransferMethod());
     }
-    bill = billRepository.save(bill);
+    // bill = billRepository.save(bill);
     Double total = 0d;
     // bill detail
     List<OrderCounterRequest.Product> products = request.getProducts();
@@ -100,7 +107,7 @@ public class CounterService {
       }
     }
     bill.setTotal_money(total);
-    // appy voucher
+    bill = billRepository.save(bill);
     // thanh toan
     if (request.getOrderTypes() == 0) {
       if (request.getCashMoney() > 0) {
@@ -125,6 +132,7 @@ public class CounterService {
       bill.setCompletion_date(LocalDateTime.now());
       bill.setPay(counterPay);
       bill.setStatus(5);
+      bill.setStatus_pay(1);
     } else if (request.getOrderTypes() == 1) {
       bill.setConfirmation_date(LocalDateTime.now());
       bill.setAddress(request.getSpecificAddress() + ", " + request.getFullAddress());
@@ -132,12 +140,26 @@ public class CounterService {
       bill.setStatus(2);
       bill.setPay(payService.getTransferMethod());
     }
-    bill.setDeposit(bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
+    bill.setDeposit((bill.getTotal_money() == null ? 0 : bill.getTotal_money())
+        + (bill.getMoney_ship() == null ? 0 : bill.getTotal_money())
+        - (bill.getReduction_amount() == null ? 0 : bill.getReduction_amount()));
     bill.setNote(request.getNote());
+    bill = billRepository.save(bill);
+    // appy voucher
+
     if (request.getVoucher() > 0) {
       voucherService.useVoucher(bill, request.getVoucher());
     }
-    return billRepository.save(bill);
+
+    Bill finalBill = billRepository.save(bill);
+    if (finalBill.getCustomer() != null) {
+      if (finalBill.getCustomer().getAccount() != null) {
+        CompletableFuture.runAsync(() -> {
+          emailService.sendEmailBill(finalBill.getId(), "Đơn hàng của bạn");
+        });
+      }
+    }
+    return finalBill;
   }
 
   public Bill saveWaitBill(OrderCounterRequest orderCounterRequest) {

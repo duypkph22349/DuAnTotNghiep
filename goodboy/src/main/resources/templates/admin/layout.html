@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -29,7 +29,7 @@
     <link th:href="@{/assets/css/style.css}" rel="stylesheet">
     <link th:href="@{/assets/dist/simple-notify.min.css}" rel="stylesheet">
     <title>Bảng Điều Khiển</title>
-    <script th:src="@{/assets/js/main.js}"></script>
+    <script th:src="@{/assets/js/errormage/errorhtmltag.js}"></script>
 </head>
 
 <body>
@@ -77,21 +77,28 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" th:href="@{/updateprofile/employee}">
-                                <i class="bi bi-person"></i>
-                                <span>Tài khoản của bạn</span>
-                            </a>
+                            <form th:action="@{/admin/employee/detailAccount/{id}(id=${session.authenemployee.id})}">
+                                <button class="dropdown-item d-flex align-items-center" type="submit">
+                                    <i class="bi bi-person"></i>
+                                    <span>Tài khoản của bạn</span>
+                                </button>
+                            </form>
                         </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" th:href="@{/updateprofile/employee}">
+                            <form th:action="@{/admin/employee/detail-account/{id}(id=${session.authenemployee.id})}">
+                                <input type="hidden" name="_method" value="post">
+                                <button class="dropdown-item d-flex align-items-center" type="submit">
                                 <i class="bi bi-gear"></i>
                                 <span>Cập nhật thông tin</span>
-                            </a>
+                                </button>
+                            </form>
                         </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -134,6 +141,11 @@
             <li class="nav-item">
                 <a class="nav-link " th:href="@{/admin/voucher}">
                     <i class="bi bi-cash-coin"></i><span>Phiếu Giảm Giá</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/admin/promotion}">
+                    <i class="bi bi-cash-coin"></i><span>Khuyến mại</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -196,16 +208,6 @@
                         class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <!-- <li>
-                        <a th:href="@{/admin/product/dsProduct}">
-                            <i class="bi bi-circle"></i><span>Sản Phẩm</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{/admin/productdetail}">
-                            <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
-                        </a>
-                    </li> -->
                     <li>
                         <a th:href="@{/admin/pattern/dsPattern}">
                             <i class="bi bi-circle"></i><span>Kiểu Hoa Văn</span>
@@ -234,6 +236,11 @@
                     <li>
                         <a th:href="@{/admin/brand/dsBrand}">
                             <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/category/dsCategory}">
+                            <i class="bi bi-circle"></i><span>Công dụng</span>
                         </a>
                     </li>
                 </ul>
@@ -267,6 +274,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.js"
         integrity="sha512-Fd3EQng6gZYBGzHbKd52pV76dXZZravPY7lxfg01nPx5mdekqS8kX4o1NfTtWiHqQyKhEGaReSf4BrtfKc+D5w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script th:src="@{/assets/js/main.js}"></script>
 </body>
 
 </html>

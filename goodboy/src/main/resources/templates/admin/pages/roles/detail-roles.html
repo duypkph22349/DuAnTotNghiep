@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<body>
+<section layout:fragment="content">
+    <div class="pagetitle">
+        <h1>Chức Vụ</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Trang Chủ</a></li>
+                <li class="breadcrumb-item active">Sửa Chức Vụ</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <form th:object="${detail}" th:action="@{'/admin/roles/update'}" action="#" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+            <label class="form-label bold-label">Tên Chức Vụ</label>
+            <input th:name="role" th:value="${detail.role}"  placeholder="Nhập tên chức vụ" class="form-control">
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 mb-3">
+            <label class="form-label font-weight-bold">Status</label>
+            <select class="form-control" th:name="status">
+                <option th:value="1" th:selected="${detail.status == 1}">Hoạt Động</option>
+                <option th:value="0" th:selected="${detail.status == 0}">Không Hoạt Động</option>
+            </select>
+        </div>
+
+            <div class="submit-btn" style="text-align: right; bottom: 1px">
+                <button class="btn btn-danger" href="/admin/roles/hien-thi">
+                    <i class="fas fa-arrow-left"></i> Close
+                </button>
+                <button class="btn btn-primary" type="submit">Lưu</button>
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Getter
 @Setter
 @Table(name = "bill_detail")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString

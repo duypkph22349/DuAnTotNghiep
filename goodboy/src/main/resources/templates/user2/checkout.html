@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html layout:decorate="~{user2/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Shope</title>
+    <style>
+        .add-dup-parent-fields{
+            margin-left: 203px;
+        }
+        .__remove-field{
+            position: relative;
+            top: -110px;
+            right: -80px;
+        }
+        #add-dup{
+            display: none;
+        }
+        .upload-area{
+            border-radius:3px;
+            margin: 0 auto;
+            text-align: center;
+            overflow: auto;
+        }
+        .upload-area:hover{
+            cursor: pointer;
+        }
+        .upload-area h4{
+            text-align: center;
+            font-weight: normal;
+            font-family: sans-serif;
+            color: darkslategray;
+        }
+        .user-file{
+            display: none;
+        }
+
+    </style>
+</head>
+
+
+<body layout:fragment="content" onload="loadCustomer()">
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/index">Trang chủ</a>
+                <span class="breadcrumb-item active">Thanh toán</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5" style="margin-bottom: 20px;width: 100%">
+        <div style="margin-left: 18px;margin-bottom: 5px;color: #3D464D ">
+            Bạn có mã giảm giá?
+            <div style="display: inline-block; color: #004aad;cursor: pointer;" onclick="openEditVoucher()">
+                Ấn vào đây để nhập mã
+            </div>
+        </div>
+        <div id="voucher_zone"
+             style="width: 100%;transform: translateX(18px);display: none;transition: 4s"
+        >
+            <h5 class="section-title position-relative text-uppercase mb-3" style="border: 2px dashed #FFD333 ;">
+
+                <div class="bg-light p-30"
+                     style="
+                             display: flex;
+                             justify-content: space-between;"
+                >
+                    <input class="form-control"
+                           type="text"
+                           placeholder="Nhập mã giảm giá"
+                           id="voucher_code"
+                           style="box-shadow: inset 0 1px 2px rgba(0,0,0,.1);"/>
+                    <button class="btn btn-block btn-primary font-weight-bold py-3"
+                            style="
+                                            height: calc(1.5em + 0.75rem + 9px);
+                                            align-items: center;
+                                            display: flex;
+                                            width: 10%;
+                                            transform: translate(-3px, -4px);
+                                            font-size: 18px;
+                                    "
+                            onclick="findVoucherByCode()"
+                    >ÁP DỤNG</button>
+                </div>
+            </h5>
+        </div>
+        <br/>
+        <div id="voucher_zone_note" style="width: 100%;transform: translateX(18px);display: none;transition: 4s"></div>
+        <div class="col-lg-12" style=" height: 3px;
+                        transform: translateX(17px);
+                        width: 100%;
+                        background-position-x: -30px;
+                        background-size: 116px 3px;
+                        background-image: repeating-linear-gradient(45deg,#6fa6d6,#6fa6d6 33px,transparent 0,transparent 41px,#f18d9b 0,#f18d9b 74px,transparent 0,transparent 82px);">
+        </div>
+
+    </div>
+    <div class="row px-xl-5">
+
+        <div class="col-lg-8">
+            <h5 class="section-title position-relative text-uppercase mb-3">
+                    <span class="bg-secondary pr-3"  style="font-size: 18px;font-weight: bold!important;color: #3D464D">
+                        Thông tin thanh toán</span></h5>
+            <div class="bg-light p-30 mb-5" id="infor_customer">
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Họ và tên
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="Nguyễn" id="name" value="" oninput="checkButtonCheckout()"
+                        >
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="name_error">Bạn phải nhập tên</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Số điện thoại
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="099999999"  value="" oninput="checkButtonCheckout()"
+                               id="phone_number">
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="phone_error">Bạn phải nhập số điện thoại</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Email<span style="display: inline-block;">*</span></label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="example@email.com"  value=""  oninput="checkButtonCheckout()"
+                               id="email">
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="email_error">Bạn phải nhập email</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Tỉnh/Thành phố
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select"  id="city" onchange="getAllDistrict()">
+
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="city_error">Bạn phải chọn thành phố</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Quận/huyện
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select" id="district" onchange="getFullWardCode()">
+                            <option value="" selected>Chọn quận/huyện</option>
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="district_error">Bạn phải chọn quận huyện</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Phường/Xã
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select" id="ward" onchange="getFeeShipping()">
+                            <option value="" selected>Chọn phường/xã</option>
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="ward_error">Bạn phải chọn phường/xã</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Địa chỉ
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333"
+                               value=""
+                               class="form-control" type="text"
+                               placeholder="Đường Cầu Diễn" id="name_house"
+                               oninput="checkButtonCheckout()"
+                        >
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="name_house_error">Bạn phải nhập địa chỉ</span>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Ghi chú</label>
+                        <textarea class="form-control"
+                                  type="text"
+                                  id="note"
+                                  rows="4"
+                                  placeholder="Nhập ghi chú của bạn"
+                        >
+                            </textarea>
+                    </div>
+                    <!-- <div class="col-md-12 form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="newaccount">
+                            <label class="custom-control-label" for="newaccount" data-toggle="collapse"
+                                data-target="#new-account">Tạo tài khoản</label>
+                        </div>
+                    </div> -->
+
+                </div>
+
+            </div>
+            <!-- <div class="collapse mb-5" id="new-account">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tạo
+                        Tài khoản</span></h5>
+                <div class="bg-light p-30">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Country</label>
+                            <select class="custom-select">
+                                <option selected>United States</option>
+                                <option>Afghanistan</option>
+                                <option>Albania</option>
+                                <option>Algeria</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>City</label>
+                            <input class="form-control" type="text" placeholder="New York">
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!--                <div class="mb-5" >-->
+            <!--                    <h5 class="section-title position-relative text-uppercase mb-3"><span-->
+            <!--                            class="bg-secondary pr-3">Địa chỉ nhận hàng</span></h5>-->
+            <!--                    <div class="bg-light p-30">-->
+            <!--                        <div class="row">-->
+            <!--                           -->
+            <!--                        </div>-->
+
+            <!--                        <div class="row">-->
+            <!--                           -->
+            <!--                        </div>-->
+
+            <!--                        <div class="col-md-12">-->
+            <!--                            <div class="custom-control custom-checkbox">-->
+            <!--                                <input type="checkbox" class="custom-control-input" id="shipto" checked>-->
+            <!--                                <label class="custom-control-label" for="shipto"-->
+            <!--                                >Chọn địa chỉ khác</label>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+        </div>
+        <div class="col-lg-4">
+            <!--                <div class="mb-5">-->
+            <!--                    <h5 class="section-title position-relative text-uppercase mb-3"><span-->
+            <!--                            class="bg-secondary pr-3">Mã phiếu giảm giá</span></h5>-->
+            <!--                    <div class="bg-light p-30"-->
+            <!--                         style="    display: flex;-->
+            <!--                                    justify-content: space-between;"-->
+            <!--                    >-->
+            <!--                        <input class="form-control" type="text" placeholder="Nguyễn" id="number_voucher"-->
+            <!--                               th:value="${bill.customer.name}">-->
+            <!--                        <button class="btn btn-block btn-primary font-weight-bold py-3"-->
+            <!--                                style="-->
+            <!--                                        height: calc(1.5em + 0.75rem + 2px);-->
+            <!--                                        align-items: center;-->
+            <!--                                        display: flex;-->
+            <!--                                        width: 30%;-->
+            <!--                                        margin-left: 10px;-->
+            <!--                                "-->
+            <!--                                onclick="checkout()"-->
+            <!--                        >Áp dụng</button>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+
+            <h5 class="section-title position-relative text-uppercase mb-3">
+                    <span class="bg-secondary pr-3" style="font-size: 18px;font-weight: bold!important;color: #3D464D">
+                    Đơn hàng của bạn</span></h5>
+            <div class="bg-light p-30 mb-5" style="border: 2px solid black;">
+                <div  >
+                    <div class="d-flex justify-content-between"  style="border-bottom: 3px solid #ececec;">
+                        <h6 class="mb-2" style="font-weight: 600!important;" >Sản phẩm</h6>
+                        <h6 class="mb-2"  style="font-weight: 600!important;">Tạm tính</h6>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom" th:each="billdetail : ${bill.billDetail}">
+                        <div style="font-size: 13px;width: 70%;margin-bottom: 15px;margin-top: 15px">
+                            <p style="display: inline;" th:text="${billdetail.productDetail.getNameProduct()
+                                    + ' ' +
+                                    billdetail.productDetail.idSize?.name
+                                    + ' '
+                                    + billdetail.productDetail.idPattern?.name}">
+
+                            </p>
+                            <span style="display: inline-block;font-weight: 800;font-size: 14px;">
+                                    <span
+                                            style="     display: inline-block;
+                                                    font-size: 10px;
+                                                    transform: translateY(-2px);"
+                                    >x</span>
+                                    <span th:text="${billdetail.quantity}"></span>
+                                </span>
+
+                        </div>
+
+                        <h6 style="font-weight: bold!important;font-size: 14px;margin-top: 15px"
+                            th:text="${#strings.replace(#numbers.formatDecimal(billdetail.productDetail.price * billdetail.quantity, 0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
+                        </h6>
+                    </div>
+                </div>
+                <div class=" pt-3 pb-2">
+                    <div class="border-bottom d-flex justify-content-between mb-3">
+                        <h6 style="font-weight: bold!important;font-size: 14px;">Tạm tính</h6>
+                        <input th:value="${bill.getTotalMoney()}" type="text" id="total_amount" hidden="">
+                        <h6 style="font-weight: bold!important;font-size: 14px;"
+                            th:text="${#strings.replace(#numbers.formatDecimal(bill.getTotalMoney(), 0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
+                        </h6>
+                    </div>
+
+                    <div id="coupoun" style="display: none;">
+
+                    </div>
+                    <input id="coupoun_value" type="text" hidden="" value="0">
+                    <input id="coupoun_object"  hidden="" >
+                    <input id="ship_fee_value" type="text" hidden="" value="0">
+                    <input id="bill_code" type="text" hidden="" th:value="${bill.getCode()}">
+                    <div id="ship_fee" >
+                    </div>
+                </div>
+                <div class="pt-2" >
+                    <div class=" d-flex justify-content-between mt-2"
+                         style="border-bottom: 3px solid #ececec;font-weight: bold!important;font-size: 14px;"
+                    >
+                        <h6 style="font-weight: bold!important;font-size: 14px;">Tổng </h6>
+                        <input th:value="${bill.getTotalMoney()}" type="text" id="total_price_value" hidden="">
+                        <h6 style="font-weight: bold!important;font-size: 14px;" id="total_price"
+                            th:text="${#strings.replace(#numbers.formatDecimal(bill.getTotalMoney(), 0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
+                        </h6>
+                    </div>
+                    <!--                        CASH ON DELIVERY - COD-->
+                    <div style="margin-top: 25px;" >
+                        <div class=" border-bottom">
+                            <div onclick="getNote(1)"   >
+                                <input  type="radio"  name="payment" id="cash_on_delivery" value="1" checked>
+                                <label style="font-size: 14px;font-weight: bold!important;color: #3D464D"  for="cash_on_delivery">Thanh toán khi nhận hàng</label>
+                            </div>
+                            <p style="font-size: 14px;margin-top: 5px;transition: 3s" id="note_cash_on_delivery" >Quý khách đặt hàng sau đó kiểm tra và thanh toán với nhân viên giao hàng.</p>
+                        </div>
+                        <!--                        VNPAY-->
+                        <div class="">
+                            <div onclick="getNote(2)">
+                                <input  type="radio" name="payment" id="paypal" value="2">
+                                <label style="font-size: 14px;font-weight: bold!important;color: #3D464D;" for="paypal">VN Pay</label>
+                            </div>
+                            <p style="font-size: 14px;margin-top: 5px;display: none;transition: 3s" id="note_vnpay"  >Thực hiện thanh toán vào ngay tài khoản VNPAY của chúng tôi.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="btn btn-block btn-primary font-weight-bold py-3"
+                        onclick="checkout()"
+                        id="btn_checkout"
+                        disabled
+                >Đặt hàng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Checkout End -->
+
+<!-- MODAL ADD ADDRESSS -->
+<div class="modal fade" id="modelId" tabindex="5" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 750px;;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Địa chỉ giao hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input hidden="" id="id_customer" value=""/>
+                    <div class="col-md-12 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Họ và tên
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="Nguyễn" id="name_customer" value="" oninput="validateAddress()"
+                        >
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="name_customer_error">Bạn phải nhập tên</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Số điện thoại
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="099999999"  value="" oninput="validateAddress()"
+                               id="phone_number_customer">
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="phone_number_customer_error">Bạn phải nhập số điện thoại</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Email<span style="display: inline-block;">*</span></label>
+                        <input style="border:1px solid #dd3333" class="form-control" type="text" placeholder="example@email.com"  value=""  oninput="validateAddress()"
+                               id="email_customer">
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="email_customer_error">Bạn phải nhập email</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" id="cityCode" value="0" hidden=""/>
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">
+                            Tỉnh/Thành phố
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select"  id="city_customer" onchange="getAllDistrictCustomer()">
+
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="city_customer_error">Bạn phải chọn thành phố</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" id="districtCode" value="0" hidden=""/>
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Quận/huyện
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select" id="district_customer" onchange="getFullWardCodeCustomer()">
+                            <option value="" selected>Chọn quận/huyện</option>
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="district_customer_error">Bạn phải chọn quận huyện</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" id="wardCode" value="0" hidden=""/>
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Phường/Xã
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <select style="border:1px solid #dd3333" class="custom-select" id="ward_customer" onchange="validateAddress()">
+                            <option value="" selected>Chọn phường/xã</option>
+                        </select>
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="ward_customer_error">Bạn phải chọn phường/xã</span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Địa chỉ
+                            <span style="display: inline-block;">*</span>
+                        </label>
+                        <input style="border:1px solid #dd3333"
+                               value=""
+                               class="form-control" type="text"
+                               placeholder="Đường Cầu Diễn" id="address_customer"
+                               oninput="validateAddress()"
+                        >
+                        <span style="color:#dd3333;font-size: 12px;display: block" id="address_customer_error">Bạn phải nhập địa chỉ</span>
+                    </div>
+                    <div style="margin-left: 16px;
+                                margin-top: -16px;
+                                margin-bottom: 14px;">
+                        <input type="checkbox" value="0" id="default_customer"/>
+                        Đặt làm mặc định
+                    </div>
+                    <button class="btn btn-block btn-primary font-weight-bold py-3 "
+                            onclick="addAddress()"
+                            style="     width: 96%;
+                                        margin-left: auto;
+                                        margin-right: auto;"
+                            id="btn_add_address"
+                    >LƯU</button>
+                    <!-- <div class="col-md-12 form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="newaccount">
+                            <label class="custom-control-label" for="newaccount" data-toggle="collapse"
+                                data-target="#new-account">Tạo tài khoản</label>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--MODAL LIST ADDRESS-->
+<!-- Modal -->
+<div class="modal fade" id="model_list_address" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 750px;;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Địa chỉ giao hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"  >
+                <button data-toggle="modal" data-target="#modelId"
+                        data-dismiss="modal"  aria-hidden="true"
+                        style="font-weight: bold;
+                        color: #004aad;
+                        border: 0;
+                        background: none;
+                        margin-left: 15px;
+                        margin-bottom: 7px;"
+                >
+                    <i class="fa fa-plus"></i> Thêm khách hàng
+                </button>
+                <div style="display: flex;box-sizing: border-box;
+                              flex-wrap: wrap;" id="modal_checkout"> </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--JS-->
+<script th:src="@{/assets/js/user/product/checkout.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

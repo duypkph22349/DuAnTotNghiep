@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import datn.goodboy.exeption.rest.ApiError;
 import datn.goodboy.model.entity.Brand;
 import datn.goodboy.model.entity.Category;
 import datn.goodboy.model.entity.ImageProduct;
@@ -40,6 +43,7 @@ import datn.goodboy.service.ProductService;
 import datn.goodboy.service.SizeService;
 import datn.goodboy.service.StylesService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 
 @RequestMapping("/admin/managerproduct")
 @RestController("restManagerProductController")
@@ -72,9 +76,13 @@ public class ManagerProductController {
   private ProductService productService;
 
   @PostMapping("saveproduct")
-  public Product addProduct(@RequestBody ProductAddRequest request) {
-    System.out.println(request.toString());
-    return service.saveProduct(request);
+  public ResponseEntity<?> addProduct(@Valid @RequestBody ProductAddRequest request) {
+    List<String> validationErrors = request.validateError();
+    if (!validationErrors.isEmpty()) {
+      ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ApiError(HttpStatus.BAD_REQUEST, "Lỗi khi tạo Product", validationErrors));
+    }
+    return ResponseEntity.ok(service.saveProduct(request));
   }
 
   @PostMapping("addbrand")
@@ -192,7 +200,7 @@ public class ManagerProductController {
 
   @PostMapping("/productdetail/save")
   public ProductDetail createProductDetail(@Valid @RequestBody ProductDetailRequest request) throws IOException {
-    System.out.println(request);
+    // System.out.println(request);
     return service2.saveProductDetail(request);
   }
 
@@ -206,4 +214,11 @@ public class ManagerProductController {
     return service.saveImageProduct(id, image);
   }
 
+  @PostMapping(value = "product/image/productdetails")
+  public String postMethodName(
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("idhoavan") int idhoavan,
+      @RequestParam("idproduct") int idproduct) {
+    return service.saveImage(idproduct, idhoavan, file);
+  }
 }

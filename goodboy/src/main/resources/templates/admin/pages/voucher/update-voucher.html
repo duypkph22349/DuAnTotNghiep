@@ -3,16 +3,16 @@
   xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Account Form</title>
+  <title>Cập nhật Phiếu giảm giá </title>
 </head>
 
 <body layout:fragment="content">
   <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>Bảng điều kiển</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-        <li class="breadcrumb-item active">Update Voucher</li>
+        <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật Phiếu giảm giá</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -21,23 +21,23 @@
     class="form container">
     <input type="hidden" id="id" th:field="*{id}" />
     <div class="form-group">
-      <label for="name">Name:</label>
+      <label for="name">Tên voucher:</label>
       <input type="text" class="form-control" id="name" th:field="*{name}" />
       <div th:if="${#fields.hasErrors('name')}" class="text-danger form-text" th:errors="*{name}"></div>
     </div>
     <div class="form-group">
-      <label for="startTime">Start Time:</label>
+      <label for="startTime">Ngày bắt đầu:</label>
       <input type="datetime-local" class="form-control" id="startTime" th:field="*{startTime}" />
       <div th:if="${#fields.hasErrors('startTime')}" class="text-danger form-text" th:errors="*{startTime}"></div>
     </div>
     <div class="form-group">
-      <label for="endTime">End Time:</label>
+      <label for="endTime">Ngày kết thúc:</label>
       <input type="datetime-local" class="form-control" id="endTime" th:field="*{endTime}"
         th:pa="${#temporals.format(voucherRequest.endTime, 'yyyy-MM-dd HH:mm')}" />
       <div th:if="${#fields.hasErrors('endTime')}" class="text-danger form-text" th:errors="*{endTime}"></div>
     </div>
     <div class="form-group">
-      <label for="quantity">Quantity:</label>
+      <label for="quantity">Số lượng:</label>
       <input type="number" class="form-control" id="quantity" th:field="*{quantity}" />
       <div th:if="${#fields.hasErrors('quantity')}" class="text-danger form-text" th:errors="*{quantity}"></div>
     </div>
@@ -50,23 +50,23 @@
       <div th:if="${#fields.hasErrors('types')}" class="text-danger form-text" th:errors="*{types}"></div>
     </div>
     <div class="form-group">
-      <label for="discount">Discount:</label>
+      <label for="discount">Giá trị giảm:</label>
       <input type="number" class="form-control" id="discount" th:field="*{discount}" />
       <div th:if="${#fields.hasErrors('discount')}" class="text-danger form-text" th:errors="*{discount}"></div>
     </div>
     <div class="form-group">
-      <label for="maxDiscount">Max Discount:</label>
+      <label for="maxDiscount">Giảm tối đa:</label>
       <input type="number" class="form-control" id="maxDiscount" th:field="*{maxDiscount}" />
       <div th:if="${#fields.hasErrors('maxDiscount')}" class="text-danger form-text" th:errors="*{maxDiscount}"></div>
     </div>
     <div class="form-group">
-      <label for="minOrder">Min Order:</label>
+      <label for="minOrder">Hóa đơn tối thiểu:</label>
       <input type="number" class="form-control" id="minOrder" th:field="*{minOrder}" />
       <div th:if="${#fields.hasErrors('minOrder')}" class="text-danger form-text" th:errors="*{minOrder}"></div>
     </div>
 
     <div class="form-group">
-      <label for="status">Status:</label>
+      <label for="status">Trạng thái:</label>
       <input type="radio" id="active" th:field="*{status}" value="0" name="type" class="mx-1" />
       <label for="active" class="mx-1">Không hoạt động</label>
       <input type="radio" id="disable" th:field="*{status}" value="1" name="type" class="mx-1" />
@@ -75,7 +75,7 @@
     </div>
 
     <div class="text-center">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Lưu</button>
     </div>
   </form>
 </body>

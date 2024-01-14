@@ -26,8 +26,7 @@
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
       <use xlink:href="#info-fill" />
     </svg>
-    <div th:text="${message}">
-    </div>
+    <div th:text="${message}"></div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   <div class="container">
@@ -35,16 +34,10 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-            <div class="d-flex justify-content-center py-4">
-              <a th:href="@{index.html}" class="logo d-flex align-items-center w-auto">
-                <img th:src="@{/assets/img/logo.png}" alt="">
-                <span class="d-none d-lg-block"></span>
-              </a>
-            </div>
             <div class="card mb-3">
               <div class="card-body">
                 <div class="d-flex justify-content-center py-4">
-                  <a th:href="@{index.html}" class="logo d-flex align-items-center w-auto">
+                  <a th:href="@{/index}" class="logo d-flex align-items-center w-auto">
                     <img th:src="@{/assets/img/logo.png}" alt="">
                     <span class="d-none d-lg-block">Wemercy</span>
                   </a>
@@ -53,15 +46,12 @@
                   <div class="col-12">
                     <h2 style="text-align: center"><strong>Khôi phục mật khẩu</strong></h2>
                     <label for="yourUsername" class="form-label">Email</label>
-
-                    <label for="yourUsername" class="form-label">email</label>
                     <div class="input-group has-validation">
                       <input type="email" name="email" class="form-control" id="yourUsername" required>
                       <div class="invalid-feedback">Nhập email của bạn.</div>
-                      <div></div>
                     </div>
                   </div>
-                  <input type="submit" class="btn btn-primary" value="Send Code">
+                  <input type="submit" class="btn btn-primary" value="Gửi mã">
                   <a href="login">Tiếp tục đăng nhập</a>
                 </form>
               </div>
@@ -71,15 +61,8 @@
       </div>
     </section>
   </div>
-  </main>
-  <script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
   <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-  <script th:src="@{/assets/vendor/chart.js/chart.umd.js}"></script>
-  <script th:src="@{/assets/vendor/echarts/echarts.min.js}"></script>
   <script th:src="@{/assets/vendor/quill/quill.min.js}"></script>
-  <script th:src="@{/assets/vendor/simple-datatables/simple-datatables.js}"></script>
-  <script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
-  <script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
   <script th:src="@{/assets/js/main.js}"></script>
 </body>
 

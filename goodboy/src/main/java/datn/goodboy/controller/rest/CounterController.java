@@ -21,6 +21,7 @@ import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.model.entity.Voucher;
 import datn.goodboy.model.request.OrderCounterRequest;
+import datn.goodboy.service.BillService;
 import datn.goodboy.service.CounterService;
 import datn.goodboy.service.CustomerService;
 import datn.goodboy.service.EmployeeService;
@@ -41,8 +42,12 @@ public class CounterController {
 
   @Autowired
   private VoucherService voucherService;
+
   @Autowired
   private CounterService countService;
+
+  @Autowired
+  private BillService billService;
 
   @GetMapping("voucherAble")
   public ResponseEntity<List<Voucher>> getAbleVoucher() {
@@ -83,6 +88,13 @@ public class CounterController {
   @GetMapping("productDetails")
   public ResponseEntity<List<ProductDetail>> getAllProductDetails() {
     return ResponseEntity.ok().body(productDetailService.getAllProductDetail());
+  }
+
+  @PostMapping("addProduct")
+  public ResponseEntity<String> addProduct(@RequestParam("idBill") int id, @RequestParam("quantity") int quantity,
+      @RequestParam("productId") int productId) {
+    billService.updateBillDetails(id, quantity, productId);
+    return ResponseEntity.ok("Success");
   }
 
   @GetMapping("productDetails/{id}")

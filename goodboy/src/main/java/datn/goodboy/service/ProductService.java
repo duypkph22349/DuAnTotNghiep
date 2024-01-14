@@ -139,7 +139,6 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         return productRepository.save(productExits);
     }
 
-
     public Product getById(Integer id) {
         return productRepository.findById(id).get();
     }
@@ -299,4 +298,12 @@ public class ProductService implements PanigationInterface<Product>, IPanigation
         return productRepository.findById(idproduct).get();
     }
 
+    public Product saveDicription(Product product) {
+        Optional<Product> productexit = productRepository.findById(product.getId());
+        if (productexit.isPresent()) {
+            productexit.get().setDescription(product.getDescription());
+            return productRepository.save(productexit.get());
+        }
+        return null;
+    }
 }

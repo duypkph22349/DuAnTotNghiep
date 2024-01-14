@@ -504,6 +504,7 @@ function generateModalHeader(product) {
   div.classList.add("modal-header");
   const innerHtml = `
     <h5 class="modal-title" id="modelEditProductLabel">${product.name}</h5>
+    <a href="/admin/product/dicription/update/${product.id}" class="btn btn-info mx-5 text-light">Chỉnh sửa mô tả</a>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 `;
   div.innerHTML = innerHtml;

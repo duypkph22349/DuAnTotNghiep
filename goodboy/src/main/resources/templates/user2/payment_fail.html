@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html layout:decorate="~{user2/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Shope</title>
+    <style>
+        .add-dup-parent-fields{
+            margin-left: 203px;
+        }
+        .__remove-field{
+            position: relative;
+            top: -110px;
+            right: -80px;
+        }
+        #add-dup{
+            display: none;
+        }
+        .upload-area{
+            border-radius:3px;
+            margin: 0 auto;
+            text-align: center;
+            overflow: auto;
+        }
+        .upload-area:hover{
+            cursor: pointer;
+        }
+        .upload-area h4{
+            text-align: center;
+            font-weight: normal;
+            font-family: sans-serif;
+            color: darkslategray;
+        }
+        .user-file{
+            display: none;
+        }
+
+    </style>
+</head>
+
+
+<body layout:fragment="content" >
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Checkout</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+
+        <div class="col-lg-12">
+            <h5
+                    style="  font-size: 59px;
+                        border-radius: 50%;
+                        border: none;
+                        padding: 20px;
+                        color: #dd3333;
+                        margin-left: 633px;
+                        width: 107px;
+                        height: 107px;
+"
+            ><i class="fa fa-times"></i></h5>
+            <h5 style=" text-align: center">
+                    <span style="font-size: 25px;font-weight: bold!important;color: #dd3333; text-align: center">
+                        Thanh toán thất bại</span>
+            </h5>
+            <div class=" p-30 mb-5" id="infor_customer">
+                <div id="code_bill" style="font-size: 20px;font-weight: bold!important;color: #3D464D; text-align: center">
+                   Đã có lỗi trong quá trình thanh toán.
+                </div>
+                <a href="/index">
+                    <button style="
+                            font-size: 20px;
+                            font-weight: bold!important;
+                            color: #3D464D;
+                            text-align: center;
+                            margin-left: 509px;
+                            margin-top: 20px;
+                            height: 50px;
+                            width: 278px;
+                            "
+                    >
+                        Quay về trang chủ
+                    </button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout End -->
+<!--JS-->
+</body>
+
+</html>

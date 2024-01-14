@@ -23,6 +23,66 @@
         <div>
         </div>
       </div>
+      <form th:action="@{/admin/managerproduct/filter}" th:object="${fillter}" method="get">
+        <div class="d-flex mt-3 mb-4">
+          <h2 class="mx-3">Lọc</h2>
+          <div>
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+              aria-describedby="search-addon" th:field="*{txtSearch}" />
+          </div>
+          <button type="submit" class="btn "><i class="fas fa-filter fa-lg"></i></button>
+          <a href="/admin/managerproduct/resetfilter" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></a>
+        </div>
+        <div class="row">
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="idOrigin" class="m-auto fw-bold">Nguồn gốc:</label>
+            <select class="form-control   form-group-0 text-center" id="idOrigin" name="idOrigin"
+              th:field="*{idOrigin}">
+              <option value="-1"> Chọn Nguồn gốc </option>
+              <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="idCategory" class="m-auto fw-bold">Loại khăn</label>
+            <select class="form-control form-group-0 text-center" id="idCategory" name="idCategory"
+              th:field="*{idCategory}">
+              <option value="-1"> Chọn Loại khăn </option>
+              <!-- Add options for pattern selection -->
+              <option th:each="option : ${categoryCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="" class="m-auto fw-bold">Thương hiệu</label>
+            <select class="form-control form-group-0 text-center" id="idBrand" name="idBrand" th:field="*{idBrand}">
+              <option value="-1"> Chọn Thương hiệu </option>
+              <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="" class="m-auto fw-bold">Chất liệu</label>
+            <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
+              th:field="*{idMaterial}">
+              <option value="-1"> Chọn Chất liệu </option>
+              <option th:each="option : ${materialCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+            <label for="" class="m-auto fw-bold">Kiểu dáng</label>
+            <select class="form-control   form-group-0 text-center" id="idStyles" name="idStyles"
+              th:field="*{idStyles}">
+              <option value="-1"> Chọn Kiểu dáng </option>
+              <option th:each="option : ${stylesCbb}" th:value="${option.key}" th:text="${option.value}">
+              </option>
+              <!-- Add options for stylesCbb selection -->
+            </select>
+          </div>
+        </div>
+        <!-- Add similar form elements for other filter fields -->
+      </form>
     </div>
     <div style="overflow: auto" class="mt-4">
       <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
@@ -285,7 +345,6 @@
   </div>
   <script th:src="@{/assets/js/product/managerproduct.js}"></script>
 </body>
-
 </html>
 <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal"
                 th:attr="data-bs-target='#modelEditProduct'+ ${product.id}">

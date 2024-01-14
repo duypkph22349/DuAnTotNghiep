@@ -55,7 +55,7 @@ public class Cart {
         return cartItems;
     }
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
     @ToString.Include
     public List<CartDetail> cartDetails;
 
@@ -71,4 +71,5 @@ public class Cart {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }

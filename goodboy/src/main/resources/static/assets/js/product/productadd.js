@@ -7,6 +7,7 @@ const chatlieuInput = formaddproduct.querySelector("#chatlieuInput");
 const kieudangInput = formaddproduct.querySelector("#kieudangInput");
 const productdetailAdd = formaddproduct.querySelector("#productdetailAdd");
 const hoavanmuladd = document.getElementById("hoavanmuladd");
+const kichthuocmuladd = document.getElementById("kichthuocmuladd");
 const listhoavan = [];
 // lay data form backend
 function getLoaiSanPham() {
@@ -110,15 +111,60 @@ function getHoaVan() {
       console.error("Error getting chatlieu:", error);
     });
 }
-function getKichThuoc(kichthuocSelect) {
-  axios;
+function getKichTuocMulAdd() {
   axios
+    .get("/admin/managerproduct/size")
+    .then(function (response) {
+      for (var i = 0; i < response.data.length; i++) {
+        const newCheckbox = document.createElement("input");
+        newCheckbox.type = "checkbox";
+        newCheckbox.classList.add("form-check-input", "sizemulchoose");
+        newCheckbox.setAttribute("nametext", response.data[i].name);
+        newCheckbox.id = "sizemulCheck" + response.data[i].id;
+        newCheckbox.value = response.data[i].id;
+
+        const newLabel = document.createElement("label");
+        newLabel.classList.add("form-check-label");
+        newLabel.setAttribute("for", "sizemulCheck" + response.data[i].id);
+        newLabel.textContent = response.data[i].name;
+
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("form-check", "col-sm-6");
+        newDiv.appendChild(newCheckbox);
+        newDiv.appendChild(newLabel);
+        kichthuocmuladd.appendChild(newDiv);
+      }
+    })
+    .catch(function (error) {
+      console.error("Error getting data:", error);
+    });
+}
+async function getKichThuoc(kichthuocSelect) {
+  await axios
     .get("/admin/managerproduct/size")
     .then(function (response) {
       for (var i = 0; i < response.data.length; i++) {
         const newOption = document.createElement("option");
         newOption.value = response.data[i].id;
         newOption.text = response.data[i].name;
+        kichthuocSelect.appendChild(newOption);
+      }
+    })
+    .catch(function (error) {
+      console.error("Error getting size:", error);
+    });
+}
+async function getKichThuocSelected(kichthuocSelect, selected) {
+  await axios
+    .get("/admin/managerproduct/size")
+    .then(function (response) {
+      for (var i = 0; i < response.data.length; i++) {
+        const newOption = document.createElement("option");
+        newOption.value = response.data[i].id;
+        newOption.text = response.data[i].name;
+        if (selected == response.data[i].id) {
+          newOption.selected = true;
+        }
         kichthuocSelect.appendChild(newOption);
       }
     })
@@ -138,6 +184,24 @@ function AddLoaiSanPham(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       loaisanphamInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding addLoaiSanPham:", error);
@@ -154,6 +218,24 @@ function AddNguonGoc(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       nguongocInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding origin:", error);
@@ -170,6 +252,24 @@ function AddThuongHieu(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       thuonghieuInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding addThonghieu:", error);
@@ -186,6 +286,24 @@ function AddChatLieu(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       chatlieuInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding material:", error);
@@ -202,6 +320,24 @@ function AddKieuDang(event) {
       newOption.value = response.data.id;
       newOption.text = response.data.name;
       kieudangInput.appendChild(newOption);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding addkieudang:", error);
@@ -230,18 +366,72 @@ function AddHoaVan(event) {
       newDiv.appendChild(newCheckbox);
       newDiv.appendChild(newLabel);
       hoavanmuladd.appendChild(newDiv);
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
     })
     .catch(function (error) {
       console.error("Error adding HoaVan:", error);
     });
 }
+
 function AddKichThuoc(event) {
   event.preventDefault();
   var formData = new FormData(document.getElementById("addKichThuoc"));
   axios
     .post("/admin/managerproduct/addsize", formData)
     .then(function (response) {
+      const newCheckbox = document.createElement("input");
+      newCheckbox.type = "checkbox";
+      newCheckbox.classList.add("form-check-input", "sizemulchoose");
+      newCheckbox.setAttribute("nametext", response.data.name);
+      newCheckbox.id = "sizemulCheck" + response.data.id;
+      newCheckbox.value = response.data.id;
+
+      const newLabel = document.createElement("label");
+      newLabel.classList.add("form-check-label");
+      newLabel.setAttribute("for", "sizemulCheck" + response.data.id);
+      newLabel.textContent = response.data.name;
+
+      const newDiv = document.createElement("div");
+      newDiv.classList.add("form-check", "col-sm-6");
+      newDiv.appendChild(newCheckbox);
+      newDiv.appendChild(newLabel);
+      kichthuocmuladd.appendChild(newDiv);
       $("#modelAddKichThuoc").modal("hide");
+      new Notify({
+        status: "success",
+        title: "Thêm thành công !!!",
+        text: `Thêm "${response.data.name}" thành công !!!`,
+        effect: "fade",
+        speed: 300,
+        customClass: "",
+        customIcon: "",
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right top",
+        customWrapper: "",
+      });
       const listKichThuoc = formaddproduct.querySelectorAll(".kichthuocselect");
       listKichThuoc.forEach((element) => {
         const newOption = document.createElement("option");
@@ -249,10 +439,14 @@ function AddKichThuoc(event) {
         newOption.text = response.data.name;
         element.appendChild(newOption);
       });
+      1;
     })
     .catch(function (error) {
       console.error("Error adding KichThuoc:", error);
     });
+}
+function OpenModalAddKichThuoc() {
+  $("#modelAddKichThuoc").modal("show");
 }
 // function to handle submit form
 function submitForm(event) {
@@ -299,6 +493,7 @@ function submitForm(event) {
   }
   const hoavanDetails = [];
   const hoavanElements = document.querySelectorAll(".productdetail");
+
   hoavanElements.forEach(function (element) {
     const patternName = element.getAttribute("idhoavan");
     const size = element.querySelector('select[name="khichthuoc"]');
@@ -347,10 +542,110 @@ function submitForm(event) {
       .then((response) => {
         $("#modelThemProductThanhCong").modal("show");
         console.log("Response:", response.data);
+        if (response.data.id) {
+          const inputImageProductDetails = document.querySelectorAll(
+            "input[type='file'].hoavanimages"
+          );
+
+          const uploadPromises = [];
+
+          inputImageProductDetails.forEach((element) => {
+            const files = element.files;
+            const idhoavan = element.getAttribute("idhoavan");
+
+            Array.from(files).forEach((file) => {
+              const formData = new FormData();
+              formData.append("file", file);
+              formData.append("idhoavan", idhoavan);
+              formData.append("idproduct", response.data.id);
+
+              const uploadPromise = axios.post(
+                "/admin/managerproduct/product/image/productdetails",
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                }
+              );
+
+              uploadPromises.push(uploadPromise);
+            });
+          });
+
+          Promise.all(uploadPromises)
+            .then((uploadResponses) => {
+              uploadResponses.forEach((uploadResponse) => {
+                console.log("Upload Response:", uploadResponse);
+
+                new Notify({
+                  status: "success",
+                  title: "Thành công",
+                  text: "Thêm ảnh thành công",
+                  effect: "fade",
+                  speed: 300,
+                  customClass: "",
+                  customIcon: `<img src="${uploadResponse.data}" alt="Ảnh sản phẩm" class="img-fluid" style="height: 30px;">`,
+                  showIcon: true,
+                  showCloseButton: true,
+                  autoclose: true,
+                  autotimeout: 3000,
+                  gap: 20,
+                  distance: 20,
+                  type: 1,
+                  position: "right top",
+                  customWrapper: "",
+                });
+              });
+            })
+            .catch((uploadError) => {
+              console.error("Upload Error:", uploadError);
+            });
+        }
       })
       .catch((error) => {
         $("#modalThemThatBai").modal("show");
-        console.error("Error:", error);
+        if (error.response.data.errors) {
+          error.response.data.errors.forEach((error) => {
+            new Notify({
+              status: "error",
+              title: "Kiểm tra lại đầu vào",
+              text: error,
+              effect: "fade",
+              speed: 300,
+              customClass: "",
+              customIcon: "",
+              showIcon: true,
+              showCloseButton: true,
+              autoclose: true,
+              autotimeout: 3000,
+              gap: 20,
+              distance: 20,
+              type: 1,
+              position: "right top",
+              customWrapper: "",
+            });
+          });
+        } else if (error.response.data.message) {
+          new Notify({
+            status: "error",
+            title: "Kiểm tra lại đầu vào",
+            text: error.response.data.message,
+            effect: "fade",
+            speed: 300,
+            customClass: "",
+            customIcon: "",
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right top",
+            customWrapper: "",
+          });
+        }
       });
   }
 }
@@ -363,7 +658,7 @@ function getAllHoaVanChoose() {
       if (!listhoavan.includes(checkbox.value)) {
         listhoavan.push(checkbox.value);
         text = checkbox.getAttribute("nametext");
-        addNewDivHoaVan(`${checkbox.value}`, text);
+        addNewDivHoaVan(`${checkbox.value}`, text, getAllSizeChoose());
       }
     } else {
       checkbox.disabled = false;
@@ -373,7 +668,25 @@ function getAllHoaVanChoose() {
       }
     }
   });
+  removeSizeChoose();
   return listhoavan;
+}
+function getAllSizeChoose() {
+  const checkboxes = kichthuocmuladd.querySelectorAll(".sizemulchoose");
+  let listsize = [];
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      checkbox.disabled = true;
+      listsize.push(checkbox.value);
+    } else {
+      checkbox.disabled = false;
+      const index = listsize.indexOf(checkbox.value);
+      if (index !== -1) {
+        listsize.splice(index, 1);
+      }
+    }
+  });
+  return listsize;
 }
 function removeHoaVanChoose(idHoaVan) {
   // Remove the specified idHoaVan from the listhoavan array
@@ -392,7 +705,16 @@ function removeHoaVanChoose(idHoaVan) {
   }
   return listhoavan;
 }
-function addNewDivHoaVan(idhoavan, hoavanname) {
+function removeSizeChoose() {
+  const checkboxes = kichthuocmuladd.querySelectorAll(`input.sizemulchoose`);
+  checkboxes.forEach((element) => {
+    if (element) {
+      element.disabled = false;
+      element.checked = false; // Uncheck the checkbox if needed
+    }
+  });
+}
+async function addNewDivHoaVan(idhoavan, hoavanname, sizeSelects) {
   const hoavanexits = document.getElementById(idhoavan);
   if (hoavanexits) {
     return;
@@ -404,16 +726,26 @@ function addNewDivHoaVan(idhoavan, hoavanname) {
   // Set the HTML content for the new div
   newDiv.innerHTML = `
     <hr>
-    <div class="hoavannamemb-3 mb-2">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">${hoavanname}</span><button
+    <div class="hoavannamemb-3 mb-2 d-flex align-items-center">Kiêu Hoa Văn: <span class="fw-bold" id="patternname">${hoavanname}</span><button
         class="btn btn-secondary mx-2" type="button" onclick="addNewFormProductDetail('${idhoavan}')">Thêm</button>
         <button
-        class="btn btn-danger mx-2" type="button" onclick="removeHoaVanChoose('${idhoavan}')">Xóa</button></div>
+        class="btn btn-danger mx-2" type="button" onclick="removeHoaVanChoose('${idhoavan}')">Xóa</button>
+        <div>
+        <input class="form-control hoavanimages" type="file" idhoavan="${idhoavan}" id="formFileMultiple" multiple />
+        </div>
+        </div>
   `;
   // Append the new div to the 'productdetailAdd' element
   productdetailAdd.appendChild(newDiv);
-  addNewFormProductDetail(`${idhoavan}`);
+  if (!sizeSelects || sizeSelects.length === 0) {
+    addNewFormProductDetail(`${idhoavan}`);
+  } else {
+    sizeSelects.forEach(async (size) => {
+      await addNewFormProductDetailKichThuoc(`${idhoavan}`, size);
+    });
+  }
 }
-function addNewFormProductDetail(idhoavan) {
+async function addNewFormProductDetail(idhoavan) {
   // Create a new div element for the product detail form
   const newFormDiv = document.createElement("div");
   newFormDiv.classList.add("row", "border", "py-3", "mb-3", "productdetail");
@@ -460,13 +792,58 @@ function addNewFormProductDetail(idhoavan) {
   const targetElement = document.getElementById(`hoavan${idhoavan}`);
   targetElement.appendChild(newFormDiv);
   const kichthuocselect = newFormDiv.querySelector(".kichthuocselect");
-  getKichThuoc(kichthuocselect);
+  await getKichThuoc(kichthuocselect);
+  await checkHoaVanSeleted(`hoavan${idhoavan}`);
 }
-function removeProductDetail(element) {
-  const productDetailDiv = element.closest(".productdetail");
-  if (productDetailDiv) {
-    productDetailDiv.remove();
-  }
+async function addNewFormProductDetailKichThuoc(idhoavan, idkichthuocselect) {
+  // Create a new div element for the product detail form
+  const newFormDiv = document.createElement("div");
+  newFormDiv.classList.add("row", "border", "py-3", "mb-3", "productdetail");
+  newFormDiv.setAttribute("idhoavan", idhoavan);
+  // HTML content for the product detail form
+  newFormDiv.innerHTML = `
+                      <div class="col-6 row mb-3">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Kích thước</label>
+                      <div class="col-sm-6">
+                        <select class="form-select kichthuocselect" aria-label="Default select example" name="khichthuoc" id="kichthuocInput" onchange="checkHoaVanSeleted('hoavan${idhoavan}')">
+                          <option value="-1" selected="selected" disabled > Chọn kích thước </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3">
+                      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modelAddKichThuoc">
+                        Thêm</button>
+                      </div>
+                    </div>
+                    <div class="col-6 row mb-3">
+                      <label for="inputNumber" class="col-sm-4 col-form-label">Số lượng</label>
+                      <div class="col-sm-6">
+                        <input type="number" class="form-control" value=0 min=0 name="soluong">
+                      </div>
+                    </div>
+                    <div class="col-6 row mb-3">
+                      <label for="inputNumber" class="col-sm-3 col-form-label">Giá</label>
+                      <div class="col-sm-9">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text">đ</span>
+                          <input type="text" class="form-control" value=0 min=0  name="gia" aria-label="Amount (to the nearest dollar)">
+                          <span class="input-group-text">Vnđ</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-floating mb-3 col-12">
+                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                        style="height: 18px;" name="mota"></textarea>
+                      <label for="floatingTextarea">Mô tả</label>
+                    </div>
+                    <div class="col-2">
+                      <button class="btn btn-danger" onclick="removeFormProductDetails(event)">Xóa</button>
+                    </div>
+  `;
+  const targetElement = document.getElementById(`hoavan${idhoavan}`);
+  targetElement.appendChild(newFormDiv);
+  const kichthuocselect = newFormDiv.querySelector(".kichthuocselect");
+  await getKichThuocSelected(kichthuocselect, idkichthuocselect);
+  await checkHoaVanSeleted(`hoavan${idhoavan}`);
 }
 // Add a click event listener to the "Xóa" button
 function removeFormProductDetails(event) {
@@ -482,23 +859,7 @@ function checkHoaVanDivExits(idhoavan) {
   }
   return false;
 }
-function checkFormKichThuocDivExits(idhoavan, idkichthuoc) {
-  if (idkichthuoc == -1) {
-    return false;
-  }
-  const hoavandivCheck = document.getElementById(idhoavan);
-  const hoavanElements = hoavandivCheck.querySelectorAll(".productdetail");
-  hoavanElements.forEach(function (element) {
-    const size = element.querySelector('select[name="khichthuoc"]');
-    if (size.value == -1) {
-    } else {
-      if (size.value == idkichthuoc) {
-        return true;
-      }
-    }
-  });
-  return false;
-}
+
 // function to handle set message
 function setErrorElement(element, message) {
   resetErrorElement(element);
@@ -518,10 +879,28 @@ function resetErrorElement(element) {
 }
 function init() {
   getHoaVan();
+  getKichTuocMulAdd();
   getLoaiSanPham();
   getNguonGoc();
   getThuongHieu();
   getChatLieu();
   getKieuDang();
 }
+async function checkHoaVanSeleted(idhoavan) {
+  const hoavandivCheck = document.getElementById(idhoavan);
+  const allSizeSelects = hoavandivCheck.querySelectorAll(
+    'select[name="khichthuoc"]'
+  );
+  const allSizeValues = Array.from(allSizeSelects).map(
+    (sizeSelect) => sizeSelect.value
+  );
+  allSizeSelects.forEach((sizeSelect) => {
+    Array.from(sizeSelect.options).forEach((option) => {
+      option.disabled =
+        allSizeValues.includes(option.value) || option.value == -1;
+    });
+  });
+}
 init();
+
+//

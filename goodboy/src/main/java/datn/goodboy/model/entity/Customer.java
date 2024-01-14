@@ -3,18 +3,20 @@ package datn.goodboy.model.entity;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -35,22 +37,38 @@ public class Customer {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   UUID id;
+
   @Column(name = "code", insertable = false, updatable = false)
   String code;
+
+  @NotNull(message = "Tên không được để trống")
+  @NotBlank(message = "Tên không được để trống")
   @Column(name = "name")
   String name;
+
   @Column(name = "gender")
   boolean gender;
+
+  @NotBlank(message = "Số điện thoại không được để trống")
+  @Pattern(regexp = "\\d{10}", message = "Đủ 10 số")
   @Column(name = "phone")
   String phone;
+
   @Column(name = "birth_date")
   LocalDate birth_date;
+
+  @NotBlank(message = "Thành phố không được để trống")
   @Column(name = "thanh_pho")
   String address;
+
+  @NotBlank(message = "Huyện không được để trống")
   @Column(name = "new_huyen")
   String city;
+
+  @NotBlank(message = "Xã không được để trống")
   @Column(name = "xa")
   String country;
+
   @Column(name = "fulladdress")
   String fulladdress;
   @Column(name = "status")
@@ -70,4 +88,98 @@ public class Customer {
   @JsonIgnore
   private Cart cart;
 
+  @OneToMany(mappedBy = "customer")
+  @ToString.Exclude
+  // @JsonProperty("bills")
+  @JsonIgnore
+  private List<Bill> bills;
+
+
+  @JsonIgnore
+  public List<Bill> getAllBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getConFirmBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 1)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getCancelBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 6)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getWaitingForGetBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 2)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getWaitingForDeliveryBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 3)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getDeliveringBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 4)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @JsonIgnore
+  public List<Bill> getSuccessBills() {
+    if (bills == null) {
+      return Collections.emptyList();
+    }
+
+    return bills.stream()
+        .filter(bill -> bill.getStatus() == 5)
+        .sorted(Comparator.comparing(Bill::getUpdatedAt).reversed())
+        .collect(Collectors.toList());
+  }
+
+  @OneToOne(mappedBy = "customer")
+  @ToString.Exclude
+  @JsonIgnore
+  private Account account;
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,10 +41,12 @@ public class Bill {
 
   @ManyToOne
   @JoinColumn(name = "id_customer")
+  // @JsonIgnore
   private Customer customer;
 
   @ManyToOne
   @JoinColumn(name = "id_employee")
+  // @JsonIgnore
   private Employee employee;
 
   @ManyToOne
@@ -147,6 +150,9 @@ public class Bill {
   @JsonIgnore
   private VoucherDetail voucherDetail;
 
+  @OneToMany(mappedBy = "bill", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+  @JsonIgnore
+  private List<PayDetail> payDetails;
 
   public String getbillDetailString() {
     String result = "BillDetail = [ idproductdetail = {";
@@ -156,4 +162,24 @@ public class Bill {
     result += "}]";
     return result;
   }
+
+  @JsonProperty("totalmoney")
+  public Double getTotalMoney() {
+    return billDetail.stream()
+        .mapToDouble(bildt -> bildt.getProductDetail().getPrice() * bildt.getQuantity())
+        .sum();
+  }
+
+  @JsonProperty("reductionamout")
+  public Double getReductionAmount() {
+    Double totalMoney = billDetail.stream()
+        .mapToDouble(bildt -> bildt.getProductDetail().getPrice() * bildt.getQuantity())
+        .sum();
+    return totalMoney;
+  }
+
+  @OneToMany(mappedBy = "bill")
+  // @JsonIgnore
+  @JsonIgnore
+  private List<Evaluate> evaluates;
 }

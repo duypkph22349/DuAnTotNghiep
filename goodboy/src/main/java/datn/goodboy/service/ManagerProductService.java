@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,17 +26,20 @@ import datn.goodboy.model.request.ProductAddRequest;
 import datn.goodboy.model.request.ProductRequest;
 import datn.goodboy.model.request.UpdateProductDetail;
 import datn.goodboy.model.request.ProductAddRequest.ProductDetailAdd;
+import datn.goodboy.model.request.ProductFillterManager;
 import datn.goodboy.repository.ImageProductRepository;
 import datn.goodboy.repository.ImageRepository;
 import datn.goodboy.repository.ProductDetailRepository;
 import datn.goodboy.repository.ProductRepository;
 import datn.goodboy.service.cloud.CloudinaryImageService;
+import datn.goodboy.service.serviceinterface.IPanigationWithFIllter;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class ManagerProductService implements PanigationInterface<Product> {
+public class ManagerProductService
+    implements PanigationInterface<Product>, IPanigationWithFIllter<Product, ProductFillterManager> {
   @Autowired
   private ProductRepository productRepository;
   @Autowired
@@ -235,6 +239,30 @@ public class ManagerProductService implements PanigationInterface<Product> {
     return null;
   }
 
+  public String saveImage(int idProduct, int idhoavan, MultipartFile image) {
+    Optional<Product> product = productRepository.findById(idProduct);
+    if (product.isPresent()) {
+      List<ProductDetail> listHoaVanProduct = product.get().getProductDetails().stream()
+          .filter(t -> t.getIdPattern().getId() == idhoavan).collect(Collectors.toList());
+      if (!listHoaVanProduct.isEmpty()) {
+        try {
+          String url = cloudService.saveImage(image);
+          listHoaVanProduct.stream().forEach(
+              element -> {
+                Images images = new Images();
+                images.setImg(url);
+                images.setIdProductDetail(element);
+                imagesRepository.save(images);
+              });
+          return url;
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return null;
+  }
+
   public ImageProduct saveImageProduct(int id, MultipartFile image) {
     Optional<Product> product = productRepository.findById(id);
     if (product.isPresent()) {
@@ -253,5 +281,41 @@ public class ManagerProductService implements PanigationInterface<Product> {
 
   public Product updateProduct(ProductRequest request) {
     return productService.updateProduct(request);
+  }
+
+  @Override
+  public List<Product> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
+      ProductFillterManager filter) {
+    if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
+      return null;
+    }
+    List<Product> products;
+    products = new ArrayList<>();
+    Sort sort;
+    if (sortDir) {
+      sort = Sort.by(sortBy).ascending();
+    } else {
+      sort = Sort.by(sortBy).descending();
+    }
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    Page<Product> page = productRepository.filter(filter, pageable);
+    products = page.getContent();
+    return products;
+  }
+
+  @Override
+  public int getPageNumber(int rowcount, ProductFillterManager filter) {
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<Product> page = productRepository.filter(filter, pageable);
+    int totalPage = page.getTotalPages();
+    return totalPage;
+  }
+
+  @Override
+  public int[] getPanigation(int rowcount, int pageno, ProductFillterManager filter) {
+    Pageable pageable = PageRequest.of(0, rowcount);
+    Page<Product> page = productRepository.filter(filter, pageable);
+    int totalPage = page.getTotalPages();
+    return Panigation(pageno, totalPage);
   }
 }

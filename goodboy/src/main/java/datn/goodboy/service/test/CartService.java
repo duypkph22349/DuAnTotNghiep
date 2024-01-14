@@ -1,8 +1,8 @@
 package datn.goodboy.service.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import datn.goodboy.exeption.AuthenticationException;
+import datn.goodboy.model.cookieentity.CartResponse;
 import datn.goodboy.model.entity.Account;
 import datn.goodboy.model.entity.Bill;
 import datn.goodboy.model.entity.BillDetail;
@@ -17,26 +19,39 @@ import datn.goodboy.model.entity.Cart;
 import datn.goodboy.model.entity.CartDetail;
 import datn.goodboy.model.entity.ProductDetail;
 import datn.goodboy.repository.AccountRepository;
+import datn.goodboy.repository.BillRepository;
 import datn.goodboy.repository.CartDetailRepository;
 import datn.goodboy.repository.CartRepository;
 import datn.goodboy.repository.ProductDetailRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service("testCartService")
 public class CartService {
   @Autowired
   CartRepository cartRepository;
+
+  @Autowired
+  private CartCookieService cartCookieServices;
   @Autowired
   CartDetailRepository cartDetailRepository;
   @Autowired
   AccountRepository accountRepository;
   @Autowired
   ProductDetailRepository productDetailRepository;
+  @Autowired
+  BillRepository billRepository;
+  @Autowired // You need to implement getProductDetailsById method
+  CartCookieService cartCookieService;
 
   public Cart getCart() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();
       Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+      if (account == null) {
+        throw new AuthenticationException("Vui lòng đăng nhập");
+      }
       Cart cart = null;
       if (account.getCustomer().getCart() == null) {
         cart = new Cart();
@@ -45,12 +60,24 @@ public class CartService {
       } else {
         return account.getCustomer().getCart();
       }
+    } else {
+      throw new AuthenticationException("Vui lòng đăng nhập");
     }
-    return null;
   };
 
   public void deleteCartDetails(int idcartdetails) {
     cartDetailRepository.delete(cartDetailRepository.findById(idcartdetails).get());
+  }
+
+  public void addCookieCartToUser(HttpServletRequest request, HttpServletResponse response) {
+    List<CartResponse> cartResponses = cartCookieServices.getCartResponses(request, response);
+    if (cartResponses == null) {
+      return;
+    }
+    cartResponses.forEach(cart -> {
+      addToCart(cart.getProductDetaill().getId(), cart.getQuantity());
+    });
+    cartCookieService.deleltedCartCookie(request, response);
   }
 
   public Cart addToCart(int idproduct, int quantity) {
@@ -59,20 +86,28 @@ public class CartService {
 
     if (productDetailOptional.isPresent()) {
       ProductDetail productDetail = productDetailOptional.get();
-
-      // Check if the Cart already contains a CartDetail with the same ProductDetail
       Optional<CartDetail> existingCartDetailOptional = cart.getCartDetails()
           .stream()
           .filter(cd -> cd.getProductDetail().equals(productDetail))
           .findFirst();
 
       if (existingCartDetailOptional.isPresent()) {
-        // Cart already contains the same ProductDetail, update quantity
         CartDetail existingCartDetail = existingCartDetailOptional.get();
-        existingCartDetail.setQuantity(existingCartDetail.getQuantity() + quantity);
+
+        if (existingCartDetail.getProductDetail().getQuantity() < quantity) {
+          throw new RuntimeException("Sản phẩm không chỉ còn: " + existingCartDetail.getProductDetail().getQuantity());
+        }
+        if(quantity > 5){
+          throw new RuntimeException("Bạn chỉ có thể thêm 5 sản phẩm.Vui lòng chọn sản phẩm khác");
+        }
+
+        if (existingCartDetail.getQuantity() + quantity < existingCartDetail.getProductDetail().getQuantity()) {
+          existingCartDetail.setQuantity(existingCartDetail.getQuantity() + quantity);
+        } else {
+          existingCartDetail.setQuantity(existingCartDetail.getProductDetail().getQuantity());
+        }
         cartDetailRepository.save(existingCartDetail);
       } else {
-        // Cart does not contain the ProductDetail, add a new CartDetail
         CartDetail cartDetail = new CartDetail();
         cartDetail.setProductDetail(productDetail);
         cartDetail.setCart(cart);
@@ -88,45 +123,71 @@ public class CartService {
     if (cartDetailOptional.isPresent()) {
       CartDetail cartDetail = cartDetailOptional.get();
       cartDetail.setQuantity(quantity);
+      if (cartDetail.getProductDetail().getQuantity() < quantity) {
+        throw new RuntimeException("Sản phẩm không chỉ còn: " + cartDetail.getProductDetail().getQuantity());
+      }
+      if(quantity > 5){
+        throw new RuntimeException("Bạn chỉ có thể thêm 5 sản phẩm.Vui lòng chọn sản phẩm khác");
+      }
       return cartDetailRepository.save(cartDetail);
     } else {
-      throw new RuntimeException("CartDetail not found with id: " + idcartdetails);
+      throw new RuntimeException("Sản phẩm không tồn tại trong cart : " + idcartdetails);
     }
   }
 
-  public Bill getCheckOutPage(List<Integer> cartDetails) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (!(authentication instanceof AnonymousAuthenticationToken)) {
-      String currentUserName = authentication.getName();
-      Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
-      Bill bill = new Bill();
-      bill.setCustomer(account.getCustomer());
-      bill.setCustomer_name(account.getCustomer().getName());
-      bill.setPhone(account.getCustomer().getPhone());
-      bill.setAddress(account.getCustomer().getAddress());
-      bill.setStatus(0);
-      bill.setLoaiDon(1);
-      bill.setStatus_pay(0);
-      List<BillDetail> billDetails = cartDetails.stream()
-          .map(idcartdetails -> cartDetailRepository.findById(idcartdetails))
-          .filter(Optional::isPresent)
-          .map(Optional::get)
-          .map(cartDetail -> {
-            BillDetail billDetail = new BillDetail();
-            billDetail.setProductDetail(cartDetail.getProductDetail());
-            billDetail.setQuantity(cartDetail.getQuantity());
-            billDetail
-                .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
-            return billDetail;
-          })
-          .collect(Collectors.toList());
-      bill.setBillDetail(billDetails);
-      double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
-      bill.setTotal_money(totalMoney);
-      bill.setDeposit(0d);
-      bill.setMoney_ship(0d);
-      return bill;
+  public Double calculateTotalPrice(List<Integer> idCartDetails) {
+    return getCart().getCartDetails().stream()
+        .filter(cartDetail -> idCartDetails.contains(cartDetail.getId()))
+        .mapToDouble(CartDetail::getTotalMoney).sum();
+  }
+
+  public List<CartDetail> reorderBill(int idBill) {
+    Cart cartExits = getCart();
+    Optional<Bill> optionalBill = billRepository.findById(idBill);
+
+    if (optionalBill.isPresent()) {
+      Bill bill = optionalBill.get();
+      List<CartDetail> results = new ArrayList<>();
+
+      List<Integer> existingProductDetailIds = new ArrayList<>();
+      for (CartDetail cartDetail : cartExits.getCartDetails()) {
+        existingProductDetailIds.add(cartDetail.getProductDetail().getId());
+      }
+
+      for (BillDetail billDetail : bill.getBillDetail()) {
+        int productId = billDetail.getProductDetail().getId();
+
+        if (!existingProductDetailIds.contains(productId)) {
+          CartDetail cartDetail = new CartDetail();
+          cartDetail.setProductDetail(billDetail.getProductDetail());
+          if (cartDetail.getQuantity() > billDetail.getProductDetail().getQuantity()) {
+            cartDetail.setQuantity(billDetail.getProductDetail().getQuantity());
+          } else {
+            cartDetail.setQuantity(billDetail.getQuantity());
+          }
+          cartDetail.setCart(cartExits);
+          results.add(cartDetailRepository.save(cartDetail));
+        } else {
+          for (CartDetail existingCartDetail : cartExits.getCartDetails()) {
+            if (existingCartDetail.getProductDetail().getId() == productId) {
+              existingCartDetail.setQuantity(billDetail.getQuantity());
+              results.add(cartDetailRepository.save(existingCartDetail));
+              break;
+            }
+          }
+        }
+      }
+      return results;
     }
+    return null; // Return an empty list if the Bill is not present
+  }
+
+  public Bill getCheckOutPage(List<Integer> cartDetails) {
     return null;
   }
+
+  public CartDetail getCartDetails(int id) {
+    return cartDetailRepository.findById(id).get();
+  }
+
 }

@@ -1,10 +1,16 @@
 package datn.goodboy.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
+import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.model.request.EmployeeRequest;
+import datn.goodboy.model.request.VoucherRequest;
+import datn.goodboy.service.cloud.CloudinaryImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,11 +22,15 @@ import datn.goodboy.model.entity.Employee;
 import datn.goodboy.model.response.EmployeeResponse;
 import datn.goodboy.repository.EmployeeRepository;
 import datn.goodboy.service.serviceinterface.PanigationInterface;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EmployeeService implements PanigationInterface<Employee> {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    CloudinaryImageService cloudService;
 
     public Page<Employee> getPage(Pageable pageable) {
         return employeeRepository.findAll(pageable);
@@ -35,10 +45,103 @@ public class EmployeeService implements PanigationInterface<Employee> {
         return employeeRepository.save(employee);
     }
 
-//    public void deleteEmployee(UUID id) {
-//
-//        employeeRepository.deleteById(id);
-//    }
+
+    public Employee saveEmployeeImage(EmployeeRequest employeeRequest, List<MultipartFile> listImage) throws IOException {
+        Employee employee = new Employee();
+        employee.setEmail(employeeRequest.getEmail());
+        employee.setName(employeeRequest.getName());
+        employee.setRoles(employeeRequest.getRoles());
+        employee.setGender(employeeRequest.isGender());
+        employee.setPhone(employeeRequest.getPhone());
+        employee.setCccd(employeeRequest.getCccd());
+        employee.setBirth_date(employeeRequest.getBirth_date());
+        employee.setCity(employeeRequest.getCity());
+        employee.setAddress(employeeRequest.getAddress());
+        employee.setCountry(employeeRequest.getCountry());
+        employee.setFulladdress(employeeRequest.getFulladdress());
+        employee.setStatus(employeeRequest.getStatus());
+        employee.setDeleted(false);
+        Employee savedEmployee = employeeRepository.save(employee);
+        List<String> listURL = new ArrayList<>();
+        boolean hasNewImage = false;
+
+        if (!listImage.isEmpty()) {
+            for (MultipartFile multipartFile : listImage) {
+                if (!multipartFile.isEmpty()) {
+                    try {
+                        String imageUrl = cloudService.saveImage(multipartFile);
+                        listURL.add(imageUrl);
+                        hasNewImage = true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if (hasNewImage) {
+                savedEmployee.setImage(listURL.get(0));
+                employeeRepository.save(savedEmployee);
+            }
+        }
+
+        return savedEmployee;
+    }
+
+
+    public Employee updateEmployeeImage(EmployeeRequest request, List<MultipartFile> listImage) {
+        Optional<Employee> employee = employeeRepository.findById(request.getId());
+        if (employee.isPresent()) {
+            Employee employee1 = employee.get();
+            employee1.setEmail(request.getEmail());
+            employee1.setName(request.getName());
+            employee1.setRoles(request.getRoles());
+            employee1.setGender(request.isGender());
+            employee1.setPhone(request.getPhone());
+            employee1.setCccd(request.getCccd());
+            employee1.setBirth_date(request.getBirth_date());
+            employee1.setCity(request.getCity());
+            employee1.setAddress(request.getAddress());
+            employee1.setCountry(request.getCountry());
+            employee1.setFulladdress(request.getFulladdress());
+            employee1.setStatus(request.getStatus());
+
+            Employee savedEmployee = employeeRepository.save(employee1);
+            List<String> listURL = new ArrayList<>();
+            boolean hasNewImage = false;
+
+            if (!listImage.isEmpty()) {
+                for (MultipartFile multipartFile : listImage) {
+                    if (!multipartFile.isEmpty()) {
+                        try {
+                            String imageUrl = cloudService.saveImage(multipartFile);
+                            listURL.add(imageUrl);
+                            hasNewImage = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                if (hasNewImage) {
+                    savedEmployee.setImage(listURL.get(0));
+                    employeeRepository.save(savedEmployee);
+                }
+            }
+            return savedEmployee;
+        }else {
+            return null;
+        }
+    }
+
+    public EmployeeRequest getEmployeeRequetById(UUID id) {
+        Optional<EmployeeRequest> response = employeeRepository.getEmployeeFindById(id);
+        if (response.isPresent()) {
+            return response.get();
+        } else {
+            return null;
+        }
+    }
+
 
     public void deleteEmployee(UUID id) {
         Optional<Employee> employee = employeeRepository.findById(id);

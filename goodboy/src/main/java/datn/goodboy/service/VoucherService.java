@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class VoucherService implements PanigationInterface<Voucher>, PanigationWithSearchStatus<Voucher> {
@@ -33,6 +34,8 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
   VoucherRepository voucherRepository;
   @Autowired
   VoucherDetailRepository voucherdetailRepository;
+  @Autowired
+  EmailService emailService;
 
   public List<Voucher> getAllVouchers() {
     return voucherRepository.findAll();
@@ -62,7 +65,13 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
     voucher1.setMax_discount(voucher.getMaxDiscount());
     voucher1.setMin_order(voucher.getMinOrder());
     voucher1.setDeleted(false);
-    return voucherRepository.save(voucher1);
+    Voucher savevoucher = voucherRepository.save(voucher1);
+    if (savevoucher.sendMail()) {
+      CompletableFuture.runAsync(() -> {
+        emailService.sendVoucherMail(savevoucher.getId(), "Thông báo cập nhật Voucher mới");
+      });
+    }
+    return savevoucher;
   }
 
   public void deleteVoucher(int id) {
@@ -91,7 +100,14 @@ public class VoucherService implements PanigationInterface<Voucher>, PanigationW
       voucher1.setTypes(request.isTypes());
       voucher1.setMax_discount(request.getMaxDiscount());
       voucher1.setMin_order(request.getMinOrder());
-      return voucherRepository.save(voucher1);
+      Voucher savevoucher = voucherRepository.save(voucher1);
+
+      if (savevoucher.sendMail()) {
+        CompletableFuture.runAsync(() -> {
+          emailService.sendVoucherMail(savevoucher.getId(), "Thông báo cập nhật Voucher ");
+        });
+      }
+      return savevoucher;
     } else {
       return null;
     }

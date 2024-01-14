@@ -12,11 +12,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
@@ -65,9 +70,6 @@ public class Employee {
     @Column(name = "cccd")
     String cccd;
 
-    @Column(name = "password")
-    String password;
-
     @Column(name = "image")
     String image;
 
@@ -84,4 +86,19 @@ public class Employee {
     int status;
     @Column(name = "actived")
     private boolean actived;
+
+    @Column(name = "password")
+    String password;
+    //
+    // @NotBlank(message = "Vui lòng nhập trường này!")
+    // @NotNull(message = "Vui lòng nhập trường này!")
+    // String passwordRepeat;
+    //
+    // public String ValidateError() {
+    // String errors = "";
+    // if (!password.equals(passwordRepeat)) {
+    // errors += "Password not Match";
+    // }
+    // return errors;
+    // }
 }

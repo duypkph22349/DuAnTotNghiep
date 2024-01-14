@@ -18,11 +18,11 @@
 <body>
     <section layout:fragment="content">
         <div class="pagetitle">
-            <h1>Dashboard</h1>
+            <h1>Bảng điều kiển</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                    <li class="breadcrumb-item active">Product</li>
+                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Sản phẩm</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -43,7 +43,6 @@
                 <thead class="table-primary text-center m-5">
                     <tr>
                         <th>#</th>
-                        <th>Code</th>
                         <th>Name</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -52,7 +51,6 @@
                 <tbody class="text-center">
                     <tr th:each="b, i : ${brandPage}">
                         <td th:text="${i.index + 1}"></td>
-                        <td th:text="${b.code}"></td>
                         <td th:text="${b.name}"></td>
                         <td th:unless="${b.deleted}" th:text="${convert.convertTrangThai(b.status)}"></td>
                         <td th:if="${b.deleted}" class="text-decoration-line-through"

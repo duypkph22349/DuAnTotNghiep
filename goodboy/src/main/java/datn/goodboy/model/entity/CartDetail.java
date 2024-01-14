@@ -9,6 +9,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringExclude;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Getter
@@ -80,5 +81,10 @@ public class CartDetail {
     @Override
     public int hashCode() {
         return Objects.hash(productDetail.getId(), cart.getId());
+    }
+
+    @JsonProperty("totalMoeny")
+    public float getTotalMoney() {
+        return this.getQuantity() * this.getProductDetail().getPrice();
     }
 }

@@ -52,11 +52,43 @@ public class BillController {
     public String updateStatusBillDetail(@RequestParam("id") Integer id,
                                          @RequestParam("status") Integer status) {
         try {
-            billService.updateStatus(id, status);
+            if (status == 5) {
+                billService.updateStatusAndPayStatus(id, status);
+            } else {
+                billService.updateStatus(id, status);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/admin/bill/bill-detail?id=" + id;
     }
 
+    @GetMapping("/bill-detail-cancel")
+    public String cancelStatusBillDetail(@RequestParam("id") Integer id,
+                                         @RequestParam("status") Integer status, @RequestParam("idBill") Integer ibBill,
+                                         @RequestParam("note") String note) {
+        try {
+            billService.updateStatusAndNote(id, status, note);
+
+            //
+            billService.cancelBill(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/bill/bill-detail?id=" + id;
+    }
+
+    @GetMapping("/bill-detail-deposit")
+    public String updatedeposit(@RequestParam("id") Integer id,
+                                @RequestParam("deposit") float deposit, @RequestParam("idBill") Integer ibBill){
+        try {
+            billService.updatedeposit(id, deposit);
+
+            //
+            billService.cancelBill(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/bill/bill-detail?id=" + id;
+    }
 }

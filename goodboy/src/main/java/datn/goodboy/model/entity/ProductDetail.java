@@ -1,6 +1,7 @@
 package datn.goodboy.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -82,7 +83,12 @@ public class ProductDetail {
     @OneToMany(mappedBy = "idProductDetail", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonProperty("imageProducts")
-    private List<Images> imageProducts;
+    private List<Images> imageProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonProperty("evaluates")
+    private List<Evaluate> evaluates = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
@@ -117,6 +123,30 @@ public class ProductDetail {
             return idProduct.getImageProducts().get(0).getImg();
         } else {
             return null;
+        }
+    }
+
+    @JsonProperty("nameProduct")
+    public String getNameProduct() {
+        if (this.name == null) {
+            return idProduct.getName();
+        }
+        if (this.name.equals("")) {
+            return idProduct.getName();
+        } else {
+            return this.name;
+        }
+    }
+
+    @JsonProperty("fullnameProduct")
+    public String getFullNameProduct() {
+        if (this.name == null) {
+            return idProduct.getName() + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        }
+        if (this.name.equals("")) {
+            return idProduct.getName() + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
+        } else {
+            return this.name + " - " + this.getIdPattern().getName() + " - " + this.getIdSize().getName();
         }
     }
 

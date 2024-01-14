@@ -69,6 +69,34 @@ public class PayService  {
         paymethod.setCreated_at(LocalDateTime.now());
         return payRepository.save(paymethod);
     }
+
+    public Pay getVNPay() {
+        Optional<Pay> optionalPay = payRepository.getByNameMethod("VNPAY");
+        if (optionalPay.isPresent()) {
+            Pay pay = optionalPay.get();
+            return optionalPay.get();
+        }
+        Pay paymethod = new Pay();
+        paymethod.setPayment_method("VNPAY");
+        paymethod.setDeleted(0);
+        paymethod.setStatus(1);
+        paymethod.setCreated_at(LocalDateTime.now());
+        return payRepository.save(paymethod);
+    }
+
+    public Pay getCashOnDelivery() {
+        Optional<Pay> optionalPay = payRepository.getByNameMethod("Thanh toán khi nhận hàng");
+        if (optionalPay.isPresent()) {
+            Pay pay = optionalPay.get();
+            return optionalPay.get();
+        }
+        Pay paymethod = new Pay();
+        paymethod.setPayment_method("Thanh toán khi nhận hàng");
+        paymethod.setDeleted(0);
+        paymethod.setStatus(1);
+        paymethod.setCreated_at(LocalDateTime.now());
+        return payRepository.save(paymethod);
+    }
     // public Page<Pay> getPage(Pageable pageable){
     // return payRepository.findAll(pageable);
     // }

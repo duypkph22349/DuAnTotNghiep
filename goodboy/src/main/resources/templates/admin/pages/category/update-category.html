@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Category</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<section layout:fragment="content">
+
+    <h1 style="text-align: center">Cập nhật công dụng của khăn</h1>
+    <form th:object="${categoryU}" th:action="@{'/admin/category/update/' + ${categoryU.id}}" method="post">
+
+        <div class="form-group">
+            <label>Tên:</label>
+            <input type="text" th:name="name" class="form-control" th:value="${categoryU.name}">
+        </div>
+        <div class="form-group">
+            <label>Trạng thái:</label>
+            <input type="radio" th:name="status" id="r1" value="1" th:checked="${categoryU.status == 1}">
+            <label for="r1">Activity</label>
+            <input type="radio" th:name="status" id="r2" value="0" th:checked="${categoryU.status == 0}">
+            <label for="r2">Unactivity</label>
+        </div>
+        <input type="submit" class="btn btn-success" value="Update"/>
+    </form>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>
