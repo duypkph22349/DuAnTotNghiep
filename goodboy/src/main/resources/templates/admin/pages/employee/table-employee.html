@@ -125,22 +125,22 @@
                 <thead class="position-sticky top-0">
                     <tr>
                         <th>#</th>
-                        <th scope="col">Code
+                        <th scope="col">Mã
                             <a href="#" onclick="sortTableCode('asc', 1)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                             <a href="#" onclick="sortTableCode('desc', 1)"><i
                                     class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
-                        <th scope="col">Name
+                        <th scope="col">Tên
                             <a href="#" onclick="sortTable('asc', 2)"><i class="fa-solid fa-sort-up fa-xs"></i></i></a>
                             <a href="#" onclick="sortTable('desc', 2)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
 
-                        <th>Gender
+                        <th>Giới Tính
                             <a href="#" onclick="sortTable('asc', 3)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                             <a href="#" onclick="sortTable('desc', 3)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
-                        <th>Birth_Date</th>
-                        <th>Phone
+                        <th>Ngày Sinh</th>
+                        <th>Số Điện Thoại
                             <a href="#" onclick="sortTable('asc', 5)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                             <a href="#" onclick="sortTable('desc', 5)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
@@ -149,13 +149,13 @@
                             <a href="#" onclick="sortTable('desc', 6)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
 <!--                        <th class="break-text">Address</th>-->
-                        <th>Roles</th>
-                        <th>Image</th>
-                        <th>Status
+                        <th>Chức Vụ</th>
+                        <th>Ảnh</th>
+                        <th>Trạng Thái
                             <a href="#" onclick="sortTable('asc', 9)"><i class="fa-solid fa-sort-up fa-xs"></i></a>
                             <a href="#" onclick="sortTable('desc', 9)"><i class="fa-solid fa-sort-down fa-xs"></i></a>
                         </th>
-                        <th>Action</th>
+                        <th>Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody id="myTable"  >
@@ -234,7 +234,7 @@
                                                                                 <span th:text="${employee.email}"></span>
                                                                             </div>
                                                                             <div class="col-12 col-sm-6 col-lg-6 mb-3">
-                                                                                <label class="form-label bold-label">Họ và tên:</label>
+                                                                                <label class="form-label bold-label">Họ Tên:</label>
 
                                                                                 <span th:text="${employee.name}"></span>
                                                                             </div>
@@ -242,16 +242,16 @@
 
                                                                         <div class="row">
                                                                             <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                                                                                <label class="form-label bold-label">Chức vụ:</label>
+                                                                                <label class="form-label bold-label">Chức Vụ:</label>
                                                                                 <span th:text="${employee.roles.name}"></span>
                                                                             </div>
                                                                             <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                                                                                <label class="form-label bold-label">Giới tính:</label>
+                                                                                <label class="form-label bold-label">Giới Tính:</label>
 
                                                                                 <span th:text="${employee.gender} == true? 'Nam':'Nữ'"></span>
                                                                             </div>
                                                                             <div class="col-12 col-sm-6 col-lg-6 mb-3">
-                                                                                <label class="form-label bold-label">Số điện thoại:</label>
+                                                                                <label class="form-label bold-label">Số Điện Thoại:</label>
 
                                                                                 <span th:text="${employee.phone}"></span>
                                                                             </div>
@@ -263,14 +263,14 @@
                                                                                 <span th:text="${employee.cccd}"></span>
                                                                             </div>
                                                                             <div class="col-12 col-sm-6 col-lg-6 mb-3">
-                                                                                <label class="form-label bold-label" >Birth Date:</label>
+                                                                                <label class="form-label bold-label" >Ngày Sinh:</label>
 
                                                                                 <span th:text="${employee.birth_date}"></span>
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="mb-3">
-                                                                            <label class="form-label bold-label">Địa chỉ cụ thể:</label>
+                                                                            <label class="form-label bold-label">Địa Chỉ Cụ Thể:</label>
                                                                             <span th:text="${employee.fulladdress}"></span>
                                                                         </div>
                                                                         <div class="mb-3">
@@ -285,7 +285,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                                                 </div>
                                             </div>
                                     </div>

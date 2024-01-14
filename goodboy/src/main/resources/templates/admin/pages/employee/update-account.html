@@ -74,20 +74,20 @@
           <div class="p-3">
 
             <div class="row">
-              <div class="col-12 col-sm-6 col-lg-6 mb-3">
+              <div class="col-12 col-sm-6 col-lg-10 mb-3">
                 <label class="form-label bold-label"  >Email:</label>
                 <input   th:field="*{email}" type="email" th:value="${detailAccount.email}" class="form-control" placeholder="Hãy nhập email" />
                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
               </div>
-              <div class="col-12 col-sm-6 col-lg-4 mb-3">
-                <label class="form-label font-weight-bold">Chức vụ:</label>
-                <select name="roles" class="form-control">
-                  <option th:each="role : ${roles}" th:value="${role.id}"
-                          th:selected="${role.id == roles}">
-                    <span th:text="${role.name}"></span>
-                  </option>
-                </select>
-              </div>
+<!--              <div class="col-12 col-sm-6 col-lg-4 mb-3">-->
+<!--                <label class="form-label font-weight-bold">Chức vụ:</label>-->
+<!--                <select name="roles" class="form-control">-->
+<!--                  <option th:each="role : ${roles}" th:value="${role.id}"-->
+<!--                          th:selected="${role.id == roles}">-->
+<!--                    <span th:text="${role.name}"></span>-->
+<!--                  </option>-->
+<!--                </select>-->
+<!--              </div>-->
             </div>
 
             <div class="row">
@@ -134,7 +134,7 @@
                 <div th:if="${#fields.hasErrors('cccd')}" th:errors="*{cccd}" class="text-danger"></div>
               </div>
               <div class="col-12 col-sm-6 col-lg-4 mb-3">
-                <label class="form-label bold-label">Birth Date:</label>
+                <label class="form-label bold-label">Ngày Sinh:</label>
                 <input type="date" th:name="birth_date" th:value="${detailAccount.birth_date}" class="form-control" style="width: 220px;">
               </div>
             </div>
