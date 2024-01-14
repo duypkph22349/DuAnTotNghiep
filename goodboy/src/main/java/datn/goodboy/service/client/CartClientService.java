@@ -120,7 +120,7 @@ public class CartClientService {
             String currentUserName = authentication.getName();
             Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
             if (account == null) {
-                throw new AuthenticationException("Vui lòng đăng nhập");
+                throw new AuthenticationException(null);
             }
             Cart cart = null;
             if (account.getCustomer().getCart() == null) {
@@ -131,7 +131,7 @@ public class CartClientService {
                 return account.getCustomer().getCart();
             }
         } else {
-            throw new AuthenticationException("Vui lòng đăng nhập");
+            throw new AuthenticationException(null);
         }
     };
 }
