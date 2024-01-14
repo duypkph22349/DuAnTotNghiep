@@ -126,10 +126,14 @@ public class CustomerController {
 
 
     @GetMapping("detail/{id}/edit_address/{id_address}")
-    public String editAddress(@PathVariable("id") UUID id, @PathVariable("id_address") UUID id_address, Model model){
+    public String editAddress( @PathVariable("id_address") UUID id_address, Model model){
         model.addAttribute("detail_address", addressService.findById(id_address));
         return "/admin/pages/customer/customer-detail";
     }
+
+
+
+
     @GetMapping("detail/{id}/delete_address/{id_address}")
     public String deleteAddress(@PathVariable("id") UUID id, @PathVariable("id_address") UUID id_address){
         addressService.deleteById(id_address);
