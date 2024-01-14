@@ -417,7 +417,7 @@
         </div>
       </div>
       <div class="tab-pane fade" id="chogiaohang" role="tabpanel" aria-labelledby="chogiaohang-tab">
-        <div class="container-fluid mt-5" th:each="bill : ${customer.getDeliveringBills()}">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getWaitingForDeliveryBills()}">
           <div class="container-fluid mt-5">
             <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
             <div class="card cart-history">
