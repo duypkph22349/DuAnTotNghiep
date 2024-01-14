@@ -68,7 +68,7 @@ public class BillClientService {
         }
 
         for(BillDetail billDetail: bill.getBillDetail()){
-            ProductDetail productDetail = billDetail.getProductDetail();
+            ProductDetail productDetail = productDetailRepository.findProductByLongId(billDetail.getProductDetail().getId());
             if(productDetail.getQuantity() < billDetail.getQuantity()){
                 throw  new RuntimeException("Số lượng sản phẩm hiện tại không đủ. Vui lòng trở lại giỏ hàng");
             }
