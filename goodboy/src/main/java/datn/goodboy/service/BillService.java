@@ -135,6 +135,9 @@ public class BillService {
     public void updateBillDetails(int idBill, int quantity, int productId) {
         Bill bill = billRepository.findStatusById(idBill);
         Optional<ProductDetail> productdetail = productDetailService.getProductDetailById(productId);
+        ProductDetail obj = productdetail.orElse(null);
+        obj.setQuantity(obj.getQuantity() - quantity);
+        productDetailRepository.saveAndFlush(obj);
         bill.setTotal_money(bill.getTotal_money() + (productdetail.get().getPrice() * quantity));
         // code tui
         float depositValue = (float) (bill.getTotal_money() + bill.getMoney_ship() - bill.getReduction_amount());
@@ -163,7 +166,6 @@ public class BillService {
         }
 
     }
-
 
     public Page<Bill> searchBillByCode(Integer numberSize, String code) {
         Pageable pageable = PageRequest.of(numberSize, 5);
