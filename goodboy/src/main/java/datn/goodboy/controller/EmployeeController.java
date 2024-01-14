@@ -1,12 +1,16 @@
 package datn.goodboy.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import datn.goodboy.model.request.EmployeeRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +23,7 @@ import datn.goodboy.model.response.EmployeeResponse;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.RolesService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("admin/employee")
@@ -30,6 +35,9 @@ public class EmployeeController {
 
     @Autowired
     private RolesService rolesService;
+
+    @Autowired
+    private EmployeeRequest employeeRequest;
 
     @Autowired
     TrangThaiConvert convert;
@@ -62,7 +70,6 @@ public class EmployeeController {
         return "admin/pages/employee/table-employee";
     }
 
-
     @GetMapping("/hien-thi")
     public String hienThi(Model model) {
         this.pageno = 1;
@@ -80,27 +87,47 @@ public class EmployeeController {
 
     }
 
-
     @GetMapping("/form-add")
     public String add(Model model) {
+        employeeRequest = new EmployeeRequest();
+        model.addAttribute("employeeRequest", employeeRequest);
         model.addAttribute("roles", rolesService.getAllRoles());
-        return "admin/pages/employee/table-employee";
+        return "admin/pages/employee/create-employee";
+    }
+
+    @ModelAttribute("employee")
+    public Employee getEmployee() {
+        return new Employee();
     }
 
     @PostMapping("/add")
-    public String add(Model model, @ModelAttribute Employee employee) {
-        model.addAttribute("roles", rolesService.getAllRoles());
-        employeeService.saveEmployee(employee);
-        return "redirect:/admin/employee/hien-thi";
+    public String addEmployee(Model model, @Valid @ModelAttribute("employeeRequest") EmployeeRequest employee, BindingResult bindingResult,
+                              @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "admin/pages/employee/create-employee";
+        } else {
+            try {
+                Employee savedEmployee = employeeService.saveEmployeeImage(employee, imageFiles);
+                employee.setImage(savedEmployee.getImage());
+                model.addAttribute("successMessage", "Thêm nhân viên thành công");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "errorPage";
+            }
+
+        }
+        return "redirect:/admin/employee/hien-thi?success";
     }
 
-    @GetMapping("/delete")
-    public String delete(Model model, @RequestParam("id") UUID id) {
-        employeeService.deleteEmployee(id);
-        return "redirect:/admin/employee/hien-thi";
+
+    @ModelAttribute("detail")
+    public EmployeeRequest setEmpllyee() {
+        return employeeRequest;
     }
+
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") UUID id){
+    public String detailEmployee(Model model, @PathVariable("id") UUID id){
         Optional<Employee> customer = employeeService.findByIdEmployee(id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
@@ -108,15 +135,72 @@ public class EmployeeController {
         } else {
             model.addAttribute("detail", null);
         }
-        return "admin/pages/employee/detail-employee";
+        return "admin/pages/employee/update-employee";
+    }
+
+    @PostMapping("update")
+    public String updateEmployee(@Valid @ModelAttribute("detail") EmployeeRequest employeeRequest,
+                         BindingResult theBindingResult, Model model,  @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        if (theBindingResult.hasErrors()) {
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "admin/pages/employee/update-employee";
+        }
+        employeeService.updateEmployeeImage(employeeRequest, imageFiles);
+        return "redirect:/admin/employee/hien-thi";
     }
 
 
 
+    @GetMapping("/delete")
+    public String delete(Model model, @RequestParam("id") UUID id) {
+        employeeService.deleteEmployee(id);
+        return "redirect:/admin/employee/hien-thi";
+    }
+
+
+    @GetMapping("/detailAccount/{id}")
+    public String detailAcount2(Model model, @PathVariable("id") UUID id) {
+        Optional<Employee> customer = employeeService.findByIdEmployee(id);
+        if (customer.isPresent()) {
+            model.addAttribute("detail", customer.get());
+            model.addAttribute("roles", rolesService.getAllRoles());
+        } else {
+            model.addAttribute("detail", null);
+        }
+        return "admin/pages/employee/detail-account";
+    }
+
+    @ModelAttribute("detailAccount")
+    public EmployeeRequest setAccount() {
+        return employeeRequest;
+    }
+
+    @GetMapping("/detail-account/{id}")
+    public String detailAccount(Model model, @PathVariable("id") UUID id) {
+        Optional<Employee> customer = employeeService.findByIdEmployee(id);
+        if (customer.isPresent()) {
+            model.addAttribute("detailAccount", customer.get());
+            model.addAttribute("roles", rolesService.getAllRoles());
+        } else {
+            model.addAttribute("detail", null);
+        }
+        return "admin/pages/employee/update-account";
+    }
+
+    @PostMapping("/update-account")
+    public String updateAccount(@Valid @ModelAttribute("detailAccount") EmployeeRequest employeeRequest,
+                                 BindingResult theBindingResult, Model model,  @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        if (theBindingResult.hasErrors()) {
+            model.addAttribute("roles", rolesService.getAllRoles());
+            return "/admin/pages/employee/update-account";
+        }
+        employeeService.updateEmployeeImage(employeeRequest, imageFiles);
+        return "redirect:/admin/pages/dashboard";
+    }
 
     @GetMapping("sort")
     public String getPageSort(Model model, @RequestParam("sortBy") String sortby,
-                              @RequestParam("sortDir") boolean sordir) {
+            @RequestParam("sortDir") boolean sordir) {
         this.sortBy = sortby;
         this.sortDir = sordir;
         this.pageno = 1;
@@ -148,6 +232,5 @@ public class EmployeeController {
         model.addAttribute("rowcount", rowcount);
         return "/admin/pages/employee/table-employee.html";
     }
-
 
 }

@@ -100,7 +100,13 @@ public class BillService {
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();
       Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
+
+      // GEN CODE
+      Random rand = new Random();
+      int random_code_bill = rand.nextInt(1000);
+
       Bill bill = new Bill();
+      bill.setCode("HD" + random_code_bill);
       bill.setStatus(0);
       bill.setLoaiDon(1);
       bill.setStatus_pay(0);
@@ -128,7 +134,12 @@ public class BillService {
       bill.setMoney_ship(0d);
       return bill;
     }else{
+      // GEN CODE
+      Random rand = new Random();
+      int random_code_bill = rand.nextInt(1000);
+
       Bill bill = new Bill();
+      bill.setCode("HD" + random_code_bill);
       bill.setStatus(0);
       bill.setLoaiDon(1);
       bill.setStatus_pay(0);
@@ -172,7 +183,7 @@ public class BillService {
     }
   }
 
-  public Customer getCustomỏer() {
+  public Customer getCustomer() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       String currentUserName = authentication.getName();

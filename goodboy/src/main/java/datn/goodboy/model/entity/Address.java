@@ -65,6 +65,9 @@ public class Address {
     @Column(name = "province_code")
     private String provinceCode;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "trang_thai")
     private Boolean trangThai;
 }

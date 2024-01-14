@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import datn.goodboy.model.entity.Employee;
+import datn.goodboy.exeption.AuthenticationException;
+import datn.goodboy.exeption.AuthenticationException.PasswordNotMatchException;
 import datn.goodboy.model.entity.VertifyEmail;
 import datn.goodboy.model.request.EmployeeSignUpRequest;
 import datn.goodboy.model.request.ResetPasswordRequest;
+import datn.goodboy.model.request.UserChangePassword;
 import datn.goodboy.model.request.UserSignUpRequest;
 import datn.goodboy.security.service.SercurityService;
 import datn.goodboy.security.service.SignUpService;
@@ -28,7 +30,6 @@ import datn.goodboy.service.EmailService;
 import datn.goodboy.service.EmployeeService;
 import datn.goodboy.service.VertifyEmailService;
 import datn.goodboy.utils.validate.EmailHelper;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -188,7 +189,7 @@ public class SecurityController {
       vertifyemail.setEmail(username);
       if (vertifyEmailsService.vertifyEmail(vertifyemail)) {
         securityService.ActiveAccount();
-        thRedirectAttributes.addFlashAttribute("sucssesmessage", "Xác thực thành công vui lòng đăng nhập lại!!!");
+        thRedirectAttributes.addFlashAttribute("successmessage", "Xác thực thành công vui lòng đăng nhập lại!!!");
         return "redirect:/signOut";
       } else {
         thRedirectAttributes.addFlashAttribute("message",
@@ -217,6 +218,26 @@ public class SecurityController {
       });
       emailrest = email.trim();
       thRedirectAttributes.addFlashAttribute("message", "Vui lòng kiểm tra email!!!");
+      model.addAttribute("emailreset", emailrest);
+      model.addAttribute("vertifyemail", new VertifyEmail());
+      return "reset-password-code.html";
+    }
+  }
+
+  @GetMapping("/resendresetpasswordcode")
+  public String reSendResetPasswordCode(Model model, RedirectAttributes thRedirectAttributes,
+      @RequestParam("email") String email) {
+    if (emailHelper.isEmailNotExists(email)) {
+      model.addAttribute("message", "Email Chưa đăng ký tài khoản nào!");
+      return "find-account.html";
+    } else {
+      CompletableFuture.runAsync(() -> {
+        emailService.resetEmailMessage(vertifyEmailsService.createVertifyEmail(email));
+        System.out.println("Additional code executed for username: " + email);
+      });
+      emailrest = email.trim();
+      thRedirectAttributes.addFlashAttribute("message", "Vui lòng kiểm tra email!!!");
+      model.addAttribute("emailreset", emailrest);
       model.addAttribute("vertifyemail", new VertifyEmail());
       return "reset-password-code.html";
     }
@@ -225,7 +246,7 @@ public class SecurityController {
   @GetMapping("/resetpasswordcode")
   public String getResetPasswordCodePage(Model model) {
     model.addAttribute("vertifyemail", new VertifyEmail());
-    return "reset-password-code";
+    return "reset-password-code.html";
   }
 
   @PostMapping("/resetpasswordcode")
@@ -235,13 +256,13 @@ public class SecurityController {
       @ModelAttribute("vertifyemail") VertifyEmail vertifyemail) {
     vertifyemail.setEmail(emailrest);
     if (vertifyEmailsService.vertifyEmail(vertifyemail)) {
-      thRedirectAttributes.addFlashAttribute("sucssesmessage", "Xác thực thành công nhập mật khẩu mới!!!");
+      thRedirectAttributes.addFlashAttribute("successmessage", "Xác thực thành công nhập mật khẩu mới!!!");
       return "redirect:/resetpassword";
     }
     model.addAttribute("message",
         "Xác thực không thành công mã kích hoạt không đúng hoặc đã hết hạn vui lòng thử lại !!!");
     model.addAttribute("vertifyemail", new VertifyEmail());
-    return "reset-password-code";
+    return "reset-password-code.html";
   }
 
   @GetMapping("resetpassword")
@@ -260,7 +281,7 @@ public class SecurityController {
       return "reset-password.html";
     }
     securityService.updatePassword(emailrest, request.getPassword());
-    thRedirectAttributes.addFlashAttribute("message", "Đổi mật khẩu thành công vui lòng đăng nhập lại!!!");
+    thRedirectAttributes.addFlashAttribute("successmessage", "Đổi mật khẩu thành công vui lòng đăng nhập lại!!!");
     return "redirect:/login";
   }
 
@@ -269,17 +290,39 @@ public class SecurityController {
     return "pages-error-403.html";
   }
 
-  @GetMapping("/updateprofile/employee")
-  public String getUpdateIdForm(Model model, HttpSession session) {
-    Employee authenEmployee = (Employee) session.getAttribute("authenemployee");
-    model.addAttribute("requset", authenEmployee);
-    return "concac";
+  @Autowired
+  UserChangePassword userPasswordRequest;
+
+  @ModelAttribute("userchangepassword")
+  public UserChangePassword getResetPasswordRequest() {
+    return userPasswordRequest;
   }
 
-  @PostMapping("/updateprofile/employee")
-  public String updateEmpInfo(Model model, @Valid @ModelAttribute("requset") Employee employee, HttpSession session) {
-
-    session.setAttribute("authenemployee", empService.saveEmployee(employee));
-    return "concac";
+  @PostMapping("/user/passwordchange")
+  public String userResetPassword(Model model, RedirectAttributes thRedirectAttributes,
+      @Valid @ModelAttribute("userchangepassword") UserChangePassword request, BindingResult bindResult) {
+    System.out.println(request);
+    if (bindResult.hasErrors()) {
+      return "/user2/change_password.html";
+    } else if (request.validateHasError()) {
+      model.addAttribute("message", request.ValidateError());
+      return "/user2/change_password.html";
+    }
+    try {
+      securityService.changePassword(request);
+      thRedirectAttributes.addFlashAttribute("successmessage", "Đổi mật khẩu thành công !!!");
+      return "redirect:/user/change_password";
+    } catch (PasswordNotMatchException e) {
+      model.addAttribute("message", e.getMessage());
+      return "/user2/change_password.html";
+    }
   }
+
+  @GetMapping("/user/change_password")
+  public String changePassword(Model model, RedirectAttributes thRedirectAttributes) {
+    userPasswordRequest = securityService.getUserChangePassword();
+    model.addAttribute("userchangepassword", securityService.getUserChangePassword());
+    return "/user2/change_password.html";
+  }
+
 }

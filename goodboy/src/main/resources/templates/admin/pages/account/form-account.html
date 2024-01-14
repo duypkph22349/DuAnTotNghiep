@@ -3,20 +3,20 @@
   xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Account Form</title>
+  <title>Tài khoản</title>
 </head>
 
 <body>
   <section layout:fragment="content">
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Bảng điều kiển</h1>
       <nav>
-          <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Account</li>
-          </ol>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Tài khoản</li>
+        </ol>
       </nav>
-  </div><!-- End Page Title -->
+    </div><!-- End Page Title -->
     <div class="container">
       <!-- Form to store new cuahang -->
       <form enctype="multipart/form-data" th:action="@{/admin/pages/account/store}" th:object="${accountRequest}"
@@ -45,7 +45,7 @@
           <label for="status">Trạng Thái:</label>
           <input type="radio" value="-1" id="VoHieuHoa" class="m-2" th:field="*{status}" />
           <label for="VoHieuHoa">Vô Hiệu Hóa</label>
-          <input type="radio" value="0" id="DangSuDung"  class="m-2" th:field="*{status}" />
+          <input type="radio" value="0" id="DangSuDung" class="m-2" th:field="*{status}" />
           <label for="DangSuDung">Được Phép</label>
           <input type="radio" value="1" id="DaXoa" class="m-2" th:field="*{status}" />
           <label for="DaXoa">Đã Xóa</label>
@@ -68,8 +68,8 @@
           </div>
         </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <button type="reset" class="btn btn-secondary">Reset</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+          <button type="reset" class="btn btn-secondary">Làm mới</button>
         </div>
       </form>
     </div>
