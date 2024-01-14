@@ -122,7 +122,7 @@
                       <div th:if="${#fields.hasErrors('cccd')}" th:errors="*{cccd}" class="text-danger"></div>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3 mb-3">
-                      <label class="form-label bold-label">Birth Date:</label>
+                      <label class="form-label bold-label">Ngày Sinh:</label>
                       <input type="date" th:name="birth_date" th:value="${detail.birth_date}" class="form-control" style="width: 220px;">
                     </div>
                   </div>
@@ -178,7 +178,7 @@
           </div>
     <div style="text-align: right">
       <a type="button" class="btn btn-danger" th:href="@{/admin/employee/hien-thi}">
-        <i class="fas fa-arrow-left"></i> Close
+        <i class="fas fa-arrow-left"></i> Thoát
       </a>
       <button type="submit" class="btn btn-primary">Lưu</button>
     </div>
