@@ -101,22 +101,36 @@ public class EmailService {
         });
   }
 
-  public void sendEmailBill(Bill bill, String title) {
+  @Transactional
+  public void sendEmailBill(int idbill, String title) {
     MimeMessage message = emailSender.createMimeMessage();
     try {
-      System.out.println(
-          "Start sending bill mail for custmoer: " + bill.getCustomer().getAccount().getEmail());
-      MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-      helper.setFrom("thatdeptraivjpro@26kleft.com");
-      helper.setTo(bill.getCustomer().getAccount().getEmail());
-      helper.setSubject(title);
-      Context context = new Context();
-      context.setVariable("bill", bill);
-      context.setVariable("convert", new TrangThaiConvert());
-      String htmlCode = templateEngine.process("mail/billTemplate", context);
-      helper.setText(htmlCode, true);
-      emailSender.send(message);
+      Bill bill = billRepository.findById(idbill).orElse(null);
+
+      if (bill != null) {
+        // Eagerly fetch associated entities
+        bill.getCustomer().getAccount();
+        bill.getCode();
+
+        System.out.println("Start sending bill mail for customer: " +
+            bill.getCustomer().getAccount().getEmail());
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom("thatdeptraivjpro@26kleft.com");
+        helper.setTo(bill.getCustomer().getAccount().getEmail());
+        helper.setSubject(title);
+
+        Context context = new Context();
+        context.setVariable("bill", bill);
+        context.setVariable("convert", new TrangThaiConvert());
+        String htmlCode = templateEngine.process("mail/billTemplate", context);
+        helper.setText(htmlCode, true);
+
+        emailSender.send(message);
+      }
     } catch (MessagingException e) {
+      // Handle the exception as needed
+      System.out.println("Error sending bill mail for customer: " + e);
     }
   }
 }
