@@ -54,7 +54,7 @@
                                                 onclick="selectProductDetails()" th:id-cart-detail="${cartDetail.id}">
                                         </td>
                                         <td class="align-middle">
-                                            <img th:src="${cartDetail.productDetail.getFirstImage()}" alt="Ảnh sản phẩm"
+                                            <img th:src="${cartDetail.productDetail?.getFirstImage()}" alt="Ảnh sản phẩm"
                                                 style="width: 50px;">
                                         </td>
                                         <td class="align-middle" th:text="${cartDetail.productDetail?.getNameProduct()}">
@@ -65,7 +65,7 @@
                                         <td class="align-middle" th:text="${cartDetail.productDetail?.idPattern?.name}">
                                         </td>
                                         <td class="align-middle"
-                                            th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
+                                            th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetail?.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
                                         </td>
                                         <td class="align-middle quantitytd">
                                             <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -163,27 +163,27 @@
                                     </thead>
                                     <tbody class="align-middle" id="cartcookietable">
                                         <tr th:each="cartDetail : ${cartcookie}"
-                                            th:id="${'productdetail'+cartDetail.productDetaill.id}">
+                                            th:id="${'productdetail'+cartDetail.productDetaill?.id}">
                                             <td class="align-middle">
                                                 <input type="checkbox" name="pdselect" class="pdselect"
                                                     onclick="selectProductDetailsCookie()"
-                                                    th:id-product-detail="${cartDetail.productDetaill.id}">
+                                                    th:id-product-detail="${cartDetail.productDetaill?.id}">
                                             </td>
                                             <td class="align-middle">
-                                                <img th:src="${cartDetail.productDetaill.getFirstImage()}"
+                                                <img th:src="${cartDetail.productDetaill?.getFirstImage()}"
                                                     alt="Ảnh sản phẩm" style="width: 50px;">
                                             </td>
                                             <td class="align-middle"
-                                                th:text="${cartDetail.productDetaill.getNameProduct()}">
+                                                th:text="${cartDetail.productDetaill?.getNameProduct()}">
                                             </td>
                                             <td class="align-middle"
-                                                th:text="${cartDetail.productDetaill.idSize?.name}">
+                                                th:text="${cartDetail.productDetaill?.idSize?.name}">
                                             </td>
                                             <td class="align-middle"
-                                                th:text="${cartDetail.productDetaill.idPattern?.name}">
+                                                th:text="${cartDetail.productDetaill?.idPattern?.name}">
                                             </td>
                                             <td class="align-middle"
-                                                th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetaill.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
+                                                th:text="${#strings.replace(#numbers.formatDecimal(cartDetail.productDetaill?.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' ₫'">
                                             </td>
                                             <td class="align-middle quantitytd">
                                                 <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -194,7 +194,7 @@
                                                     </div>
                                                     <input type="text"
                                                         class="form-control form-control-sm bg-secondary border-0 text-center quantityinput"
-                                                        th:id-productdetails="${cartDetail.productDetaill.id}"
+                                                        th:id-productdetails="${cartDetail.productDetaill?.id}"
                                                         th:value="${cartDetail.quantity}"
                                                         onchange="updateQuantityCookie(this)" pattern="[0-9]+"
                                                         title="Please enter a valid quantity (only digits)">
@@ -210,12 +210,12 @@
                                             </td>
                                             <td class="totalMoney align-middle" th:unless="${cartDetail.quantity==0}"
                                                 th:text="
-                                                ${#strings.replace(#numbers.formatDecimal(cartDetail.quantity * cartDetail.productDetaill.price ,
+                                                ${#strings.replace(#numbers.formatDecimal(cartDetail.quantity * cartDetail.productDetaill?.price ,
                                                 0, 'COMMA' , 2, 'POINT' ), '.00' , '' )} + ' ₫'">
                                             </td>
                                             <td class=" align-middle close-td first-row">
                                                 <a class="btn btn-outline-danger"
-                                                    th:onclick="'deletedCartCookie(' + ${cartDetail.productDetaill.id} + ')'">
+                                                    th:onclick="'deletedCartCookie(' + ${cartDetail.productDetaill?.id} + ')'">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                         <path
