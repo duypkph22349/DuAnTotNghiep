@@ -19,59 +19,59 @@
 </head>
 
 <body layout:fragment="content">
-    <section>
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-                    <li class="breadcrumb-item active">Product Detail</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
-        <div class="container-fluid">
-            <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')">
-                <a href="/admin/productdetail/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
-                <div>
-                    <!-- <div class="input-group">
+    <div class="pagetitle">
+        <h1>Quản lý sản phẩm</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/admin/managerproduct}">Quản lý sản phẩm</a></li>
+                <li class="breadcrumb-item active">Sản phẩm chi tiết</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="d-flex" sec:authorize="hasAnyAuthority('ADMIN')">
+            <a href="/admin/productdetail/create" class="btn btn-primary mx-5"><i class="fas fa-plus"></i></a>
+            <div>
+                <!-- <div class="input-group">
                         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                             aria-describedby="search-addon" />
                         <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
                     </div> -->
-                </div>
             </div>
-            <form th:action="@{/admin/productdetail/filter}" th:object="${fillter}" method="get">
-                <div class="d-flex mt-3 mb-4">
-                    <h2 class="mx-3">Filter</h2>
-                    <div>
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                            aria-describedby="search-addon" th:field="*{txtSearch}" />
-                    </div>
-                    <button type="submit" class="btn "><i class="fas fa-filter fa-lg"></i></button>
-                    <a href="/admin/productdetail/resetfilter" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></a>
+        </div>
+        <form th:action="@{/admin/productdetail/filter}" th:object="${fillter}" method="get">
+            <div class="d-flex mt-3 mb-4">
+                <h2 class="mx-3">Filter</h2>
+                <div>
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon" th:field="*{txtSearch}" />
                 </div>
-                <div class="row">
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex d-flex ">
-                        <label for="idProduct" class="m-auto fw-bold">Product:</label>
-                        <select class="form-control form-group-0 text-center  form-group-0 text-center" id="idProduct"
-                            th:field="*{idProduct}" name="idProduct">
-                            <option value="-1"> Chọn Product</option>
-                            <!-- Add options for product selection -->
-                            <option th:each="option : ${productCbb}" th:value="${option.key}" th:text="${option.value}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="idPattern" class="m-auto fw-bold">Pattern:</label>
-                        <select class="form-control   form-group-0 text-center" id="idPattern" name="idPattern"
-                            th:field="*{idPattern}">
-                            <option value="-1"> Chọn Pattern </option>
-                            <!-- Add options for pattern selection -->
-                            <option th:each="option : ${pattenCbb}" th:value="${option.key}" th:text="${option.value}">
-                            </option>
-                        </select>
-                    </div>
-                    <!-- <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                <button type="submit" class="btn "><i class="fas fa-filter fa-lg"></i></button>
+                <a href="/admin/productdetail/resetfilter" class="btn "><i class="fa-solid fa-xmark fa-xl"></i></a>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex d-flex ">
+                    <label for="idProduct" class="m-auto fw-bold">Product:</label>
+                    <select class="form-control form-group-0 text-center  form-group-0 text-center" id="idProduct"
+                        th:field="*{idProduct}" name="idProduct">
+                        <option value="-1"> Chọn Product</option>
+                        <!-- Add options for product selection -->
+                        <option th:each="option : ${productCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <label for="idPattern" class="m-auto fw-bold">Pattern:</label>
+                    <select class="form-control   form-group-0 text-center" id="idPattern" name="idPattern"
+                        th:field="*{idPattern}">
+                        <option value="-1"> Chọn Pattern </option>
+                        <!-- Add options for pattern selection -->
+                        <option th:each="option : ${pattenCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                    </select>
+                </div>
+                <!-- <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
                         <label for="idColor" class="m-auto fw-bold">Color</label>
                         <select class="form-control   form-group-0 text-center" id="idColor" name="idColor"
                             th:field="*{idColor}">
@@ -80,259 +80,257 @@
                             </option>
                         </select>
                     </div> -->
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="" class="m-auto fw-bold">Origin</label>
-                        <select class="form-control form-group-0 text-center" id="idOrigin" name="idOrigin"
-                            th:field="*{idOrigin}">
-                            <option value="-1"> Chọn Origin </option>
-                            <!-- Add options for pattern selection -->
-                            <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="" class="m-auto fw-bold">Brand</label>
-                        <select class="form-control form-group-0 text-center" id="idBrand" name="idBrand"
-                            th:field="*{idBrand}">
-                            <option value="-1"> Chọn Brand </option>
-                            <!-- Add options for pattern selection -->
-                            <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="" class="m-auto fw-bold">MeTerial</label>
-                        <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
-                            th:field="*{idMaterial}">
-                            <option value="-1"> Chọn MeTerial </option>
-                            <!-- Add options for pattern selection -->
-                            <option th:each="option : ${materialCbb}" th:value="${option.key}"
-                                th:text="${option.value}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="" class="m-auto fw-bold">Size</label>
-                        <select class="form-control   form-group-0 text-center" id="idSize" name="idSize"
-                            th:field="*{idSize}">
-                            <option value="-1"> Chọn Size </option>
-                            <option th:each="option : ${sizeCbb}" th:value="${option.key}" th:text="${option.value}">
-                            </option>
-                            <!-- Add options for pattern selection -->
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <label for="" class="m-auto fw-bold">Styles</label>
-                        <select class="form-control   form-group-0 text-center" id="idStyles" name="idStyles"
-                            th:field="*{idStyles}">
-                            <option value="-1"> Chọn Styles </option>
-                            <option th:each="option : ${stylesCbb}" th:value="${option.key}" th:text="${option.value}">
-                            </option>
-                            <!-- Add options for pattern selection -->
-                        </select>
-                    </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <label for="" class="m-auto fw-bold">Origin</label>
+                    <select class="form-control form-group-0 text-center" id="idOrigin" name="idOrigin"
+                        th:field="*{idOrigin}">
+                        <option value="-1"> Chọn Origin </option>
+                        <!-- Add options for pattern selection -->
+                        <option th:each="option : ${originCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                    </select>
                 </div>
-                <!-- Add similar form elements for other filter fields -->
-            </form>
-        </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <label for="" class="m-auto fw-bold">Brand</label>
+                    <select class="form-control form-group-0 text-center" id="idBrand" name="idBrand"
+                        th:field="*{idBrand}">
+                        <option value="-1"> Chọn Brand </option>
+                        <!-- Add options for pattern selection -->
+                        <option th:each="option : ${brandCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <label for="" class="m-auto fw-bold">MeTerial</label>
+                    <select class="form-control   form-group-0 text-center" id="idMaterial" name="idMaterial"
+                        th:field="*{idMaterial}">
+                        <option value="-1"> Chọn MeTerial </option>
+                        <!-- Add options for pattern selection -->
+                        <option th:each="option : ${materialCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <label for="" class="m-auto fw-bold">Size</label>
+                    <select class="form-control   form-group-0 text-center" id="idSize" name="idSize"
+                        th:field="*{idSize}">
+                        <option value="-1"> Chọn Size </option>
+                        <option th:each="option : ${sizeCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                        <!-- Add options for pattern selection -->
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-2 d-flex">
+                    <label for="" class="m-auto fw-bold">Styles</label>
+                    <select class="form-control   form-group-0 text-center" id="idStyles" name="idStyles"
+                        th:field="*{idStyles}">
+                        <option value="-1"> Chọn Styles </option>
+                        <option th:each="option : ${stylesCbb}" th:value="${option.key}" th:text="${option.value}">
+                        </option>
+                        <!-- Add options for pattern selection -->
+                    </select>
+                </div>
+            </div>
+            <!-- Add similar form elements for other filter fields -->
+        </form>
+    </div>
 
-        <div style="overflow: auto" class="mt-4">
-            <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
-                <thead class="position-sticky top-0">
-                    <tr class="text-center">
-                        <th class="fw-bold">STT</th>
-                        <th scope="col">Giá bán
-                            <a th:href="@{/admin/productdetail/sort(sortBy=price ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=price ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Số lượng
-                            <a th:href="@{/admin/productdetail/sort(sortBy=quantity ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=quantity ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Tên sản phẩm
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Chất liệu
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idMaterial.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idMaterial.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Kích thước
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idSize.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idSize.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Kiểu dáng
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idStyles.name ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idStyles.name ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col" class="text-center">Trạng thái
-                            <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=true)}"><i
-                                    class="fas fa-arrow-up"></i></a>
-                            <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=false)}"><i
-                                    class="fas fa-arrow-down"></i></a>
-                        </th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="productdetail, index  : ${list}">
-                        <td class="fw-bold" th:text="${index.index + 1}"></td>
-                        <td
-                            th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
-                        </td>
-                        <td th:text="${productdetail.quantity}"></td>
-                        <td th:text="${productdetail.idProduct?.name}"></td>
-                        <td th:text="${productdetail.idProduct?.idMaterial?.name}"></td>
-                        <td th:text="${productdetail.idSize?.name}"></td>
-                        <td th:text="${productdetail.idProduct?.idStyles?.name}"></td>
-                        <td th:unless="${productdetail.deleted}" class="text-center">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-                                    th:checked="${productdetail.status}"
-                                    th:onchange="'updateProductDetailStatus(' + this.checked + ',' + ${productdetail.id} + ')'"
-                                    th:attr="data-productdetail-id=${productdetail.id}">
-                            </div>
-                        </td>
-                        <td th:if="${productdetail.deleted}">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-                                    th:checked="${productdetail.status}"
-                                    th:onchange="'updateProductDetailStatus(' + this.checked + ',' + ${productdetail.id} + ')'">
-                            </div>
-                        </td>
-                        <td>
-                            <a th:unless="${productdetail.deleted}"
-                                th:href="@{/admin/productdetail/delete(id=${productdetail.id})}"
-                                class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                            <a th:if="${productdetail.deleted}"
-                                th:href="@{/admin/productdetail/delete(id=${productdetail.id})}"
-                                class="btn btn-secondary"><i class="fas fa-undo-alt"></i></a>
-                            <a th:href="@{'/admin/productdetail/edit/'+${productdetail.id}}" class="btn btn-success"><i
-                                    class="fas fa-edit"></i></a>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                th:attr="data-bs-target='#staticBackdrop'+ ${productdetail.id}">
-                                <i class=" far fa-eye"></i>
-                            </button>
-                            <div class="modal fade" th:id="'staticBackdrop' + ${productdetail.id}"
-                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel"
-                                                th:text="${productdetail.idProduct?.name}"></h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p><strong>name :</strong>
-                                                <span th:text="${productdetail.name}"></span>
-                                            </p>
-                                            <p><strong>price :</strong>
-                                                <span
-                                                    th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
-                                                </span>
-                                            </p>
-                                            </p>
-                                            <p><strong>quantity :</strong>
-                                                <span th:text="${productdetail.quantity}"></span>
-                                            </p>
-                                            <p><strong>Product :</strong>
-                                                <span th:text="${productdetail.idProduct?.name}"></span>
-                                            </p>
-                                            <p><strong>Pattern :</strong>
-                                                <span th:text="${productdetail.idPattern?.name}"></span>
-                                            </p>
-                                            <!-- <p><strong>Color :</strong>
+    <div style="overflow: auto" class="mt-4">
+        <table class="table table-hover text-start" style="min-width: max-content; max-height: 500px; ">
+            <thead class="position-sticky top-0">
+                <tr class="text-center">
+                    <th class="fw-bold">STT</th>
+                    <th scope="col">Giá bán
+                        <a th:href="@{/admin/productdetail/sort(sortBy=price ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=price ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Số lượng
+                        <a th:href="@{/admin/productdetail/sort(sortBy=quantity ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=quantity ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Tên sản phẩm
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.name ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.name ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Chất liệu
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idMaterial.name ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idMaterial.name ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Kích thước
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idSize.name ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idSize.name ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Kiểu dáng
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idStyles.name ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=idProduct.idStyles.name ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col" class="text-center">Trạng thái
+                        <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=true)}"><i
+                                class="fas fa-arrow-up"></i></a>
+                        <a th:href="@{/admin/productdetail/sort(sortBy=status ,sortDir=false)}"><i
+                                class="fas fa-arrow-down"></i></a>
+                    </th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="productdetail, index  : ${list}">
+                    <td class="fw-bold" th:text="${index.index + 1}"></td>
+                    <td
+                        th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                    </td>
+                    <td th:text="${productdetail.quantity}"></td>
+                    <td th:text="${productdetail.idProduct?.name}"></td>
+                    <td th:text="${productdetail.idProduct?.idMaterial?.name}"></td>
+                    <td th:text="${productdetail.idSize?.name}"></td>
+                    <td th:text="${productdetail.idProduct?.idStyles?.name}"></td>
+                    <td th:unless="${productdetail.deleted}" class="text-center">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                                th:checked="${productdetail.status}"
+                                th:onchange="'updateProductDetailStatus(' + this.checked + ',' + ${productdetail.id} + ')'"
+                                th:attr="data-productdetail-id=${productdetail.id}">
+                        </div>
+                    </td>
+                    <td th:if="${productdetail.deleted}">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                                th:checked="${productdetail.status}"
+                                th:onchange="'updateProductDetailStatus(' + this.checked + ',' + ${productdetail.id} + ')'">
+                        </div>
+                    </td>
+                    <td>
+                        <a th:unless="${productdetail.deleted}"
+                            th:href="@{/admin/productdetail/delete(id=${productdetail.id})}" class="btn btn-danger"><i
+                                class="fas fa-trash-alt"></i></a>
+                        <a th:if="${productdetail.deleted}"
+                            th:href="@{/admin/productdetail/delete(id=${productdetail.id})}"
+                            class="btn btn-secondary"><i class="fas fa-undo-alt"></i></a>
+                        <a th:href="@{'/admin/productdetail/edit/'+${productdetail.id}}" class="btn btn-success"><i
+                                class="fas fa-edit"></i></a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            th:attr="data-bs-target='#staticBackdrop'+ ${productdetail.id}">
+                            <i class=" far fa-eye"></i>
+                        </button>
+                        <div class="modal fade" th:id="'staticBackdrop' + ${productdetail.id}" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel"
+                                            th:text="${productdetail.idProduct?.name}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>name :</strong>
+                                            <span th:text="${productdetail.name}"></span>
+                                        </p>
+                                        <p><strong>price :</strong>
+                                            <span
+                                                th:text="${#strings.replace(#numbers.formatDecimal(productdetail.price, 0, 'COMMA', 2, 'POINT'), '.00', '')} + ' VNĐ'">
+                                            </span>
+                                        </p>
+                                        </p>
+                                        <p><strong>quantity :</strong>
+                                            <span th:text="${productdetail.quantity}"></span>
+                                        </p>
+                                        <p><strong>Product :</strong>
+                                            <span th:text="${productdetail.idProduct?.name}"></span>
+                                        </p>
+                                        <p><strong>Pattern :</strong>
+                                            <span th:text="${productdetail.idPattern?.name}"></span>
+                                        </p>
+                                        <!-- <p><strong>Color :</strong>
                                                 <span th:text="${productdetail.idColor?.name}"></span>
                                             </p> -->
-                                            <p><strong>Origin :</strong>
-                                                <span th:text="${productdetail.idProduct?.idOrigin?.name}"></span>
-                                            </p>
-                                            <p><strong>Brand :</strong>
-                                                <span th:text="${productdetail.idProduct?.idBrand?.name}"></span>
-                                            </p>
-                                            <p><strong>Material :</strong>
-                                                <span th:text="${productdetail.idProduct?.idMaterial?.name}"></span>
-                                            </p>
-                                            <p><strong>Size :</strong>
-                                                <span th:text="${productdetail.idSize?.name}"></span>
-                                            </p>
-                                            <p><strong>Styles :</strong>
-                                                <span th:text="${productdetail.idProduct?.idStyles?.name}"></span>
-                                            </p>
-                                            <p><strong>description :</strong>
-                                                <span th:text="${productdetail.description}"></span>
-                                            </p>
+                                        <p><strong>Origin :</strong>
+                                            <span th:text="${productdetail.idProduct?.idOrigin?.name}"></span>
+                                        </p>
+                                        <p><strong>Brand :</strong>
+                                            <span th:text="${productdetail.idProduct?.idBrand?.name}"></span>
+                                        </p>
+                                        <p><strong>Material :</strong>
+                                            <span th:text="${productdetail.idProduct?.idMaterial?.name}"></span>
+                                        </p>
+                                        <p><strong>Size :</strong>
+                                            <span th:text="${productdetail.idSize?.name}"></span>
+                                        </p>
+                                        <p><strong>Styles :</strong>
+                                            <span th:text="${productdetail.idProduct?.idStyles?.name}"></span>
+                                        </p>
+                                        <p><strong>description :</strong>
+                                            <span th:text="${productdetail.description}"></span>
+                                        </p>
 
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
+    </div>
+    <div class="table-footer d-flex justify-content-between mt-3">
+        <div class="text-start">This page is <span th:text="${crpage}"></span> of <span th:text="${totalpage}"></span>
         </div>
-        <div class="table-footer d-flex justify-content-between mt-3">
-            <div class="text-start">This page is <span th:text="${crpage}"></span> of <span
-                    th:text="${totalpage}"></span> </div>
-            <div class="text-center">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled" th:if="${crpage-1 < 1}">
-                            <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage-1})}"
-                                tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-left fa-sm"></i></a>
+        <div class="text-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled" th:if="${crpage-1 < 1}">
+                        <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage-1})}" tabindex="-1"
+                            aria-disabled="true"><i class="fas fa-chevron-left fa-sm"></i></a>
+                    </li>
+                    <li class="page-item" th:unless="${crpage-1 < 1}">
+                        <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage-1})}"><i
+                                class="fas fa-chevron-left fa-sm"></i></a>
+                    </li>
+                    <th:block th:each="page : ${pagenumber}">
+                        <li class="page-item" th:class="${crpage == page} ? 'page-item active' : 'page-item'">
+                            <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${page})}"
+                                th:text="${page}"></a>
                         </li>
-                        <li class="page-item" th:unless="${crpage-1 < 1}">
-                            <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage-1})}"><i
-                                    class="fas fa-chevron-left fa-sm"></i></a>
-                        </li>
-                        <th:block th:each="page : ${pagenumber}">
-                            <li class="page-item" th:class="${crpage == page} ? 'page-item active' : 'page-item'">
-                                <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${page})}"
-                                    th:text="${page}"></a>
-                            </li>
-                        </th:block>
-                        <li class="page-item disabled" th:if="${crpage == totalpage}">
-                            <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage+1})}"
-                                tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-right fa-sm"></i></a>
-                        </li>
-                        <li class="page-item" th:unless="${crpage == totalpage}">
-                            <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage+1})}"><i
-                                    class="fas fa-chevron-right fa-sm"></i></a>
-                        </li>
-                    </ul>
-                </nav><!-- End Centered Pagination -->
-            </div>
-            <form action="#" class="mx-2" th:action="@{/admin/productdetail/getcountrow}" method="get"
-                id="rowCountForm">
-                Number of rows
-                <select name="selectedValue" class="border-0 px-2"
-                    onchange="document.getElementById('rowCountForm').submit();">
-                    <option value="10" th:selected="${rowcount == 10}">10</option>
-                    <option value="20" th:selected="${rowcount == 20}">20</option>
-                    <option value="50" th:selected="${rowcount == 50}">50</option>
-                </select>
-            </form>
+                    </th:block>
+                    <li class="page-item disabled" th:if="${crpage == totalpage}">
+                        <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage+1})}" tabindex="-1"
+                            aria-disabled="true"><i class="fas fa-chevron-right fa-sm"></i></a>
+                    </li>
+                    <li class="page-item" th:unless="${crpage == totalpage}">
+                        <a class="page-link" th:href="@{/admin/productdetail/page(pageno=${crpage+1})}"><i
+                                class="fas fa-chevron-right fa-sm"></i></a>
+                    </li>
+                </ul>
+            </nav><!-- End Centered Pagination -->
         </div>
+        <form action="#" class="mx-2" th:action="@{/admin/productdetail/getcountrow}" method="get" id="rowCountForm">
+            Number of rows
+            <select name="selectedValue" class="border-0 px-2"
+                onchange="document.getElementById('rowCountForm').submit();">
+                <option value="10" th:selected="${rowcount == 10}">10</option>
+                <option value="20" th:selected="${rowcount == 20}">20</option>
+                <option value="50" th:selected="${rowcount == 50}">50</option>
+            </select>
+        </form>
+    </div>
     </section>
     <script>function updateProductDetailStatus(checked,productId) {
             var url = '/admin/productdetail/setactive/' + productId;
