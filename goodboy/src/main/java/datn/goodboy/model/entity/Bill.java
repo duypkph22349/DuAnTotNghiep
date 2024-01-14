@@ -181,5 +181,5 @@ public class Bill {
   @OneToMany(mappedBy = "bill")
   // @JsonIgnore
   @JsonIgnore
-  private List<Evaluate> evaluates;
+  private List<Evaluate> evaluates = new ArrayList<Evaluate>();
 }

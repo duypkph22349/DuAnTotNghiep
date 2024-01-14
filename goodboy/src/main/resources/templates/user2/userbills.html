@@ -74,8 +74,7 @@
             <div class="card cart-history">
               <div class="card-body">
                 <div class="d-flex justify-content-between">
-                  <p class="card-text"
-                    th:text="'Ngày đặt : ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                  <p class="card-text" th:text="'Ngày đặt : ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
                   </p>
                   <p th:utext="${convert.statusOfBill(bill.status)}"></p>
                 </div>
@@ -175,9 +174,10 @@
                         <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
 
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
-                        class="btn btn-danger mx-3"
-                        onclick="return confirm('Bạn có muốn hủy hóa đơn này không ?');">Hủy</a>
-                        <a  th:if="${bill.status == 5}" th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
+                          class="btn btn-danger mx-3"
+                          onclick="return confirm('Bạn có muốn hủy hóa đơn này không ?');">Hủy</a>
+                        <a th:if="${bill.status == 5 && bill.evaluates.size() == 0}"
+                          th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
                       </div>
                     </div>
                   </li>
@@ -541,8 +541,7 @@
               <div class="card-body">
 
                 <div class="d-flex justify-content-between">
-                  <p class="card-text"
-                    th:text="'Ngày đặt hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                  <p class="card-text" th:text="'Ngày đặt hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
                   </p>
                   <p th:utext="${convert.statusOfBill(bill.status)}"></p>
                 </div>
@@ -757,7 +756,8 @@
                       <hr>
                       <div class="d-flex justify-content-end">
                         <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
-                        <a th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
+                        <a th:if="${bill.status == 5 && bill.evaluates.size() == 0}"
+                          th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
                       </div>
                     </div>
                   </li>
