@@ -76,7 +76,7 @@ public class BillClientService {
             productDetailRepository.save(productDetail);
             billDetail.setIdBill(bill);
         }
-        billRepository.save(bill);
+        bill = billRepository.save(bill);
 
         for(BillDetail billDetail: bill.getBillDetail()){
             billDetailRepository.save(billDetail);

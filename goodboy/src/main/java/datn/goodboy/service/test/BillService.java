@@ -107,11 +107,19 @@ public class BillService {
       Account account = accountRepository.fillAcccoutbyEmail(currentUserName);
 
       // GEN CODE
-      Random rand = new Random();
-      int random_code_bill = rand.nextInt(1000);
+      String  oldCode = String.valueOf(billRepository.findNewCodeBill() + 1);
+      String newCode = "";
+
+      if(oldCode.length() == 1){
+        newCode += "00" + oldCode;
+      }else if(oldCode.length() == 2){
+        newCode += "0" + oldCode;
+      }else{
+        newCode += oldCode;
+      }
 
       Bill bill = new Bill();
-      bill.setCode("HD" + random_code_bill);
+      bill.setCode("HD" + newCode);
       bill.setStatus(0);
       bill.setLoaiDon(1);
       bill.setStatus_pay(0);
@@ -140,11 +148,19 @@ public class BillService {
       return bill;
     } else {
       // GEN CODE
-      Random rand = new Random();
-      int random_code_bill = rand.nextInt(1000);
+      String  oldCode = String.valueOf(billRepository.findNewCodeBill() + 1);
+      String newCode = "";
+
+      if(oldCode.length() == 1){
+        newCode += "00" + oldCode;
+      }else if(oldCode.length() == 2){
+        newCode += "0" + oldCode;
+      }else{
+        newCode += oldCode;
+      }
 
       Bill bill = new Bill();
-      bill.setCode("HD" + random_code_bill);
+      bill.setCode("HD" + newCode);
       bill.setStatus(0);
       bill.setLoaiDon(1);
       bill.setStatus_pay(0);
