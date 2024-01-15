@@ -516,7 +516,7 @@ async function checkout(){
                                         customWrapper: "",
                                     });
                                     setTimeout(() =>{
-                                        window.location.href = "/index"
+                                        window.location.href = "/client/bill/detail/"+e.data.id
                                     }, 500)
                                 }
                             ).catch(error => {
@@ -614,7 +614,7 @@ async function checkout(){
                                         customWrapper: "",
                                     });
                                     setTimeout(() =>{
-                                        window.location.href = "/index"
+                                        window.location.href = "/client/bill/detail/"+e.data.id
                                     }, 500)
                                 }
                             ).catch(error => {
