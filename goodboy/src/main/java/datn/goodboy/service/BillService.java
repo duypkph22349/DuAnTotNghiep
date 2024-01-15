@@ -151,7 +151,7 @@ public class BillService {
             billDetailRepository.save(billDetail);
         } else {
             if (productdetail.isPresent()) {
-                productDetailService.saleProduct(productdetail.get().getId(), quantity);
+                // productDetailService.saleProduct(productdetail.get().getId(), quantity);
                 BillDetail bd = new BillDetail();
                 bd.setProductDetail(productdetail.get());
                 bd.setIdBill(bill);
