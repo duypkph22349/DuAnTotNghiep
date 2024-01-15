@@ -3,6 +3,7 @@ package datn.goodboy.service.test;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,6 +31,7 @@ import datn.goodboy.repository.CartDetailRepository;
 import datn.goodboy.repository.CartRepository;
 import datn.goodboy.repository.CustomerRepository;
 import datn.goodboy.repository.ProductDetailRepository;
+import datn.goodboy.service.EmailService;
 import datn.goodboy.service.EvaluateService;
 import jakarta.validation.Valid;
 
@@ -44,6 +46,9 @@ public class BillService {
 
   @Autowired
   CustomerRepository customerRepository;
+
+  @Autowired
+  EmailService emailService;
   @Autowired
   EvaluateService evaluateService;
 
@@ -111,29 +116,29 @@ public class BillService {
       bill.setLoaiDon(1);
       bill.setStatus_pay(0);
       List<BillDetail> billDetails = cartDetails.stream()
-              .map(idcartdetails -> cartDetailRepository.findById(idcartdetails))
-              .filter(Optional::isPresent)
-              .map(Optional::get)
-              .map(cartDetail -> {
-                BillDetail billDetail = new BillDetail();
-                billDetail.setIdBill(bill);
-                billDetail.setProductDetail(cartDetail.getProductDetail());
-                if(cartDetail.getProductDetail().getQuantity() < cartDetail.getQuantity()){
-                      throw new RuntimeException("Hiện tại số lượng sản phẩm không đủ.");
-                }
-                billDetail.setQuantity(cartDetail.getQuantity());
-                billDetail
-                        .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
-                return billDetail;
-              })
-              .collect(Collectors.toList());
+          .map(idcartdetails -> cartDetailRepository.findById(idcartdetails))
+          .filter(Optional::isPresent)
+          .map(Optional::get)
+          .map(cartDetail -> {
+            BillDetail billDetail = new BillDetail();
+            billDetail.setIdBill(bill);
+            billDetail.setProductDetail(cartDetail.getProductDetail());
+            if (cartDetail.getProductDetail().getQuantity() < cartDetail.getQuantity()) {
+              throw new RuntimeException("Hiện tại số lượng sản phẩm không đủ.");
+            }
+            billDetail.setQuantity(cartDetail.getQuantity());
+            billDetail
+                .setTotalMoney(Double.valueOf(cartDetail.getProductDetail().getPrice() * cartDetail.getQuantity()));
+            return billDetail;
+          })
+          .collect(Collectors.toList());
       bill.setBillDetail(billDetails);
       double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
       bill.setTotal_money(totalMoney);
       bill.setDeposit(0d);
       bill.setMoney_ship(0d);
       return bill;
-    }else{
+    } else {
       // GEN CODE
       Random rand = new Random();
       int random_code_bill = rand.nextInt(1000);
@@ -144,36 +149,36 @@ public class BillService {
       bill.setLoaiDon(1);
       bill.setStatus_pay(0);
       List<BillDetail> billDetails = cartDetails.stream()
-              .map(idcartdetails -> productDetailRepository.findById(idcartdetails))
-              .filter(Optional::isPresent)
-              .map(Optional::get)
-              .map(cartDetail -> {
-                BillDetail billDetail = new BillDetail();
-                Cookie[] cookies = request.getCookies();
-                if (cookies != null) {
-                  for (Cookie cookie : cookies) {
-                    if (CART_COOKIE_NAME.equals(cookie.getName())) {
-                      if(cookie.getValue() != null){
-                        if(deserializeCart(cookie.getValue()) != null){
-                          Integer quantity = deserializeCart(cookie.getValue()).get(cartDetail.getId());
-                          if(cartDetail.getQuantity() < quantity){
-                            throw new RuntimeException("Hiện tại số lượng sản phẩm không đủ.");
-                          }
-                          billDetail.setQuantity(quantity);
-                          billDetail
-                                  .setTotalMoney(Double.valueOf(cartDetail.getPrice() * quantity));
-                          break;
-                         }
+          .map(idcartdetails -> productDetailRepository.findById(idcartdetails))
+          .filter(Optional::isPresent)
+          .map(Optional::get)
+          .map(cartDetail -> {
+            BillDetail billDetail = new BillDetail();
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+              for (Cookie cookie : cookies) {
+                if (CART_COOKIE_NAME.equals(cookie.getName())) {
+                  if (cookie.getValue() != null) {
+                    if (deserializeCart(cookie.getValue()) != null) {
+                      Integer quantity = deserializeCart(cookie.getValue()).get(cartDetail.getId());
+                      if (cartDetail.getQuantity() < quantity) {
+                        throw new RuntimeException("Hiện tại số lượng sản phẩm không đủ.");
                       }
-
+                      billDetail.setQuantity(quantity);
+                      billDetail
+                          .setTotalMoney(Double.valueOf(cartDetail.getPrice() * quantity));
+                      break;
                     }
                   }
+
                 }
-                billDetail.setIdBill(bill);
-                billDetail.setProductDetail(cartDetail);
-                return billDetail;
-              })
-              .collect(Collectors.toList());
+              }
+            }
+            billDetail.setIdBill(bill);
+            billDetail.setProductDetail(cartDetail);
+            return billDetail;
+          })
+          .collect(Collectors.toList());
       bill.setBillDetail(billDetails);
       double totalMoney = bill.getBillDetail().stream().mapToDouble(BillDetail::getTotalMoney).sum();
       bill.setTotal_money(totalMoney);
@@ -207,6 +212,13 @@ public class BillService {
             productDetailRepository.save(productDetails.get());
           }
         });
+        if (bill.get().getCustomer() != null) {
+          if (bill.get().getCustomer().getAccount() != null) {
+            CompletableFuture.runAsync(() -> {
+              emailService.sendEmailBill(bill.get().getId(), "Đơn hàng của bạn");
+            });
+          }
+        }
       }
     }
     return null;
