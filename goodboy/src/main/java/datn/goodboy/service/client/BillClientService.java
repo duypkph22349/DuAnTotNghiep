@@ -107,7 +107,7 @@ public class BillClientService {
     public Bill getBillByCode(String code){
         Bill bill = billRepository.findByCode(code).get();
         if(bill == null){
-            throw new RuntimeException("Không tìm thể hóa đơn.");
+            throw new RuntimeException("Không tìm hóa đơn.");
         }
         return bill;
     }

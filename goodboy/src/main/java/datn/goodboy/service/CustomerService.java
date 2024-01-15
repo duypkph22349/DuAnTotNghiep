@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.model.request.CustomerRequest;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +52,37 @@ public class CustomerService {
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
+    public Customer updateCustomer(CustomerRequest customerRequest) {
+        Optional<Customer> cus = customerRepository.findById(customerRequest.id);
+        if(cus.isPresent()) {
+            Customer cus1 = cus.get();
+            cus1.setName(customerRequest.getName());
+            cus1.setGender(customerRequest.isGender());
+            cus1.setBirth_date(customerRequest.getBirth_date());
+            cus1.setPhone(customerRequest.getPhone());
+            cus1.setDeleted(false);
+            return customerRepository.save(cus1);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public Customer updateCustomerAcc(CustomerRequest customerRequest) {
+        Optional<Customer> cus = customerRepository.findById(customerRequest.id);
+        if(cus.isPresent()) {
+            Customer cus1 = cus.get();
+            cus1.setName(customerRequest.name);
+            cus1.setGender(customerRequest.isGender());
+            cus1.setBirth_date(customerRequest.getBirth_date());
+            cus1.setPhone(customerRequest.getPhone());
+            cus1.setDeleted(false);
+            return customerRepository.save(cus1);
+        }
+        else{
+            return null;
+        }
+    }
 
     public void deleteVoucher(UUID id) {
         Optional<Customer> customer = customerRepository.findById(id);
@@ -89,5 +122,8 @@ public class CustomerService {
         return customerRepository.searchByText(searchText);
     }
     // that deptrai viet
-
+    public Customer getCustomerByAccount(UUID accountId) {
+        return customerRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khách hàng với tài khoản ID: " + accountId));
+    }
 }

@@ -173,10 +173,9 @@
                 <div class="swiper-slide" th:each="product : ${productDetails}">
                     <a class="h6 text-decoration-none text-truncate" th:href="@{/product/detail/{id}(id = ${product.id})}">
                         <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
+                            <div  th:if="${product.productDetails != null && !product.productDetails.empty}" class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100"
-                                     th:src="${
-                                    product.imageProducts[0].img }"
+                                     th:src="${ product.productDetails[0].imageProducts[0].img }"
                                      style="max-width: 100%;">
                             </div>
                             <div class="text-center py-4"
@@ -230,10 +229,9 @@
                 <div class="swiper-slide" th:each="product : ${product}">
                     <a class="h6 text-decoration-none text-truncate" th:href="@{/product/detail/{id}(id = ${product.id})}">
                         <div class="product-item bg-light">
-                            <div class="product-img position-relative overflow-hidden">
+                            <div th:if="${product.productDetails != null && !product.productDetails.empty}" class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100"
-                                     th:src="${
-                                    product.imageProducts[0].img }"
+                                     th:src="${ product.productDetails[0].imageProducts[0].img }"
                                      style="max-width: 100%;">
                             </div>
                             <div class="text-center py-4"
