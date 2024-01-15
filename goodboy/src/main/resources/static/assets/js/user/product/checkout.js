@@ -520,10 +520,11 @@ async function checkout(){
                                     }, 500)
                                 }
                             ).catch(error => {
+                                console.log(error)
                                 new Notify({
                                     status: "error",
                                     title: "Thêm thất bại",
-                                    text: error.response ? error.response.data : error.message,
+                                    text: "Hệ thống đang lỗi.Xin lỗi bạn vì sự bất tiện này",
                                     effect: "fade",
                                     speed: 300,
                                     customClass: "",
