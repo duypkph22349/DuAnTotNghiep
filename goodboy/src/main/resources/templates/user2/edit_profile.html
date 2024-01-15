@@ -29,8 +29,8 @@
         <!-- Profile Section Begin -->
         <section class="profile p-3">
             <div class="container rounded bg-white mt-3 mb-3">
-                <form th:action="@{/shop/edit_profile}" method="post" id="edit_profile" enctype="multipart/form-data">
-                    <input type="hidden" th:name="${session.authenuser.id}">
+                <form th:action="@{/shop/edit_profile}" th:object="${edit}" method="post" id="edit_profile" enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{id}">
                     <div class="py-5">
                         <h2 class="font-weight text-center"><strong>Thông tin</strong> </h2>
                     </div>
@@ -48,7 +48,7 @@
                                         </div>
                                     </div>
                                     <div class="mt-3">
-                                        <label class="h3" th:text="${session.authenuser.getCustomer().name}">
+                                        <label class="h3" th:text="${edit.name}">
                                             <strong></strong> </label>
                                     </div>
                                 </div>
@@ -68,15 +68,15 @@
                             <div class="p-3 pb-5">
                                 <div class="mb-3">
                                     <label class="form-label font-weight-bold">Họ và tên</label>
-                                    <input name="fullname" type="text" class="form-control"
-                                        th:value="${session.authenuser.getCustomer().name}"
+                                    <input name="name" type="text" class="form-control"
+                                        th:value="${edit.name}" th:field="*{name}"
                                         placeholder="Hãy nhập họ và tên" />
                                 </div>
                                 <div class="row">
                                     <div class="col-12 col-sm-6 col-lg-6 mb-3">
                                         <label class="form-label font-weight-bold">Giới tính</label>
-                                        <select class="form-control" name="gender" id="gender"
-                                            th:value="${session.authenuser.getCustomer().gender}">
+                                        <select class="form-control" name="gender" id="gender" th:field="*{gender}"
+                                            th:value="${edit.gender}">
                                             <option value="true">Nam</option>
                                             <option value="false">Nữ</option>
                                         </select>
@@ -84,41 +84,14 @@
                                     <div class="col-12 col-sm-6 col-lg-6 mb-3">
                                         <label class="form-label font-weight-bold">Điện thoại</label>
                                         <input name="phone" type="text" class="form-control"
-                                            th:value="${session.authenuser.getCustomer().phone}"
+                                            th:value="${edit.phone}" th:field="*{phone}"
                                             placeholder="Hãy nhập số điện thoại" />
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label font-weight-bold">Email</label>
                                     <input name="email" type="email" class="form-control"
-                                        th:value="${session.authenuser.email}" placeholder="Hãy nhập Email" />
-                                </div>
-                                <div class="mb-3">
-                                    <!--                                <label class="form-label font-weight-bold">Địa chỉ</label>-->
-                                    <!--                                <input name="address" type="text" class="form-control" th:value="${session.authenuser.email}" placeholder="Hãy nhập địa chỉ" />-->
-                                    <div class="row align-items-start">
-                                        <div class="col">
-                                            <label><b>Thành phố</b></label>
-                                            <select class="form-control" id="Provinces"
-                                                onchange="getDistricts()"></select>
-                                        </div>
-                                        <div class="col">
-                                            <label><b>Huyện</b></label>
-                                            <select class="form-control" id="Districts" th:name="city"
-                                                onchange="getWards()">
-
-                                            </select>
-                                        </div>
-                                        <div class="col">
-                                            <label><b>Xã</b></label>
-                                            <select class="form-control" th:name="country" onchange="setFullAdress()"
-                                                id="Wards">
-                                                Chọn
-                                                Thị trấn/ Xã/ Phường
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="FullAddress" th:name="fulladdress">
+                                        th:value="${session.authenuser.email}" placeholder="Hãy nhập Email" disabled  />
                                 </div>
                             </div>
                             <div class="mt-5">

@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -111,7 +113,33 @@ public class AccountService implements PanigationInterface<Account> {
       throw new RuntimeException();
     }
   }
+  public void updateAccount(UUID id, String fullname, boolean gender, String phone, String email, int status) {
+    Optional<Account> optionalAccount = accountRepository.findById(id);
 
+    if (optionalAccount.isPresent()) {
+      Account account = optionalAccount.get();
+      Customer customer = account.getCustomer();
+
+      // Cập nhật các thuộc tính của Customer
+      customer.setName(fullname);
+      customer.setGender(gender);
+      customer.setPhone(phone);
+
+      // Cập nhật các thuộc tính của Account
+      account.setEmail(email);
+      account.setStatus(status);
+
+      // Lưu lại vào cơ sở dữ liệu
+      accountRepository.save(account);
+    } else {
+      // Xử lý khi không tìm thấy tài khoản
+      throw new EntityNotFoundException("Không tìm thấy tài khoản với ID: " + id);
+    }
+  }
+  public Account findAccountByEmail(String email) {
+    // Sử dụng phương thức findByEmail từ repository để tìm tài khoản theo email
+    return accountRepository.getAccountByEmails(email);
+  }
   public Account createAccout(AccountRequest request) {
     Account newAcc = new Account();
     newAcc.setEmail(request.email);
