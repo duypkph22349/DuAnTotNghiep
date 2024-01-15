@@ -1408,13 +1408,11 @@ async function handleOrderSubmit(event) {
   if (isNaN(formData.voucherid) || discountValue <= 0) {
     formData.voucherid = 0;
   }
-  formData.totalMoney = totalMoney - discountValue;
+  formData.totalMoney = totalMoney - (isNaN(discountValue) ? 0 : discountValue);
   formData.reductionAmount = 0;
   if (formData.orderTypes === 0) {
     formData.totalShip = 0;
-
-    const allmoney = formData.cashMoney + formData.transferMoney;
-    if (allmoney < formData.totalMoney) {
+    if ((formData.cashMoney + formData.transferMoney) < formData.totalMoney) {
       errorCount++;
       // ("Tiền chưa đủ !!! \n");
       setErrorElement(form.querySelector("#changeAmount"), "Chưa đủ tiền !!!");
@@ -1439,7 +1437,7 @@ async function handleOrderSubmit(event) {
     }
   } else if (formData.orderTypes === 1) {
     formData.totalShip = form.querySelector(`#total-ship`).value;
-    if (formData.totalShip < 0) {
+    if (formData.totalShip < 0 || isNaN(formData.totalShip)) {
       errorCount++;
       setErrorElement(
         form.querySelector(`#shipService`),
@@ -1977,7 +1975,7 @@ async function getShipCost(orderId, quantity) {
 }
 function errorShip(orderId) {
   document.querySelector(`#hoaDon${orderId} #total-ship`).value = 0;
-  document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML = "Error";
+  document.querySelector(`#hoaDon${orderId} #amount-ship`).innerHTML = "Không hợp lệ ";
 }
 async function finalPrice(formId) {
   const tableRows = document.querySelectorAll(
@@ -2139,6 +2137,7 @@ function genhoadoncho(data) {
 }
 function saveHoaDonCho() {}
 async function buildFormData(formId) {
+  updateTongTien(formId)
   const formData = {};
   const form = document.getElementById(`hoaDon${formId}`);
   formData.id = formId;
@@ -2290,7 +2289,7 @@ async function updateName(formid, id) {
       `<input type="hidden" id="customerid" value="${customer.id}">`
     ); // Add the country name
     dropselect.append(
-      `<button onclick="removeSelection(${formid})"><i class="bi bi-x"></i></i></button>`
+      `<a onclick="removeSelection(this,${formid})"><i class="bi bi-x"></i></i></a>`
     );
     const updateValue = (selector, value) => {
       const input = form.find(selector);
@@ -2321,7 +2320,8 @@ async function updateName(formid, id) {
     console.error(error);
   }
 }
-function removeSelection(formid) {
+function removeSelection(element, formid) {
+  console.log(element);
   const form = $(`#hoaDon${formid}`);
   const dropselect = form.find(`#selectkhachhang`);
   form.find("input#tenKhachHang").val("");
