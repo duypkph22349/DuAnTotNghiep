@@ -118,7 +118,6 @@ public class CustomerController {
         } else {
             model.addAttribute("detail", null);
         }
-        System.out.println(addressService.getAllAddressByIdCustomer(id));
         return "/admin/pages/customer/customer-detail";
     }
 
