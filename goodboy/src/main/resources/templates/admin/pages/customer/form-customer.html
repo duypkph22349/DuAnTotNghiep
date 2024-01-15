@@ -43,19 +43,21 @@
             }
         </style>
         <div class="container-fluid">
-            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                        <path fill-rule="evenodd"
-                            d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-                    </svg>
-                </button>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example" >
+                <a href="/admin/customer/view-add">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                            <path fill-rule="evenodd"
+                                  d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                    </button>
+                </a>
                 <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
-                    id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm ....">
+                    id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm ...." style="height: 37px">
 
-                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                <button style="height: 37px" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">Filter
                 </button>
                 <ul class="dropdown-menu">
@@ -82,14 +84,7 @@
                     </li>
 
                 </ul>
-                <a href="http://localhost:8080/admin/customer/get-all"><button class="btn btn-secondary"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                            <path
-                                d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                        </svg>Reload</button>
+                <a href="http://localhost:8080/admin/customer/get-all" style="height: 37px"><button class="btn btn-secondary">Reload</button>
                 </a>
             </div>
 
@@ -104,7 +99,6 @@
                     <th scope="col">Giới tính</th>
                     <th scope="col">Ngày sinh</th>
                     <th scope="col">Số điện thoại</th>
-                    <th scope="col">Địa chỉ</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Chức năng</th>
                 </tr>
@@ -115,9 +109,6 @@
                     <td th:text="${customer.gender}==false?'Male':'Female'"></td>
                     <td th:text="${customer.birth_date}"></td>
                     <td th:text="${customer.phone}"></td>
-                    <td>[[${customer.country}]],
-                        [[${customer.city}]],
-                        [[${customer.address}]]</td>
                     <td th:unless="${customer.deleted}" th:text="${convert.convertTrangThai(customer.status)}"></td>
                     <td th:if="${customer.deleted}" class="text-decoration-line-through"
                         th:text="${convert.convertTrangThaiEmployee(customer.status)}"></td>
@@ -146,81 +137,13 @@
                 </th:block>
             </ul>
         </div>
-
-
-        <!--    Thêm khách hàng-->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="staticBackdropLabel"><strong>ADD Customer</strong></h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post"
-                            class="row g-3">
-                            <div>
-                                <label for="name"><b>Name:</b></label>
-                                <input type="text" id="name" th:field="*{name}" class="form-control" />
-                                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">aaaaa</div>
-                            </div>
-
-
-                            <div>
-                                <label><b>Gender:</b></label>
-                                <input type="radio" th:field="*{gender}" th:value="false" th:text="Male" checked>
-                                <input type="radio" th:field="*{gender}" th:value="true" th:text="Female">
-                            </div>
-                            <div>
-                                <label><b>Birth Date:</b></label>
-                                <input type="date" th:field="*{birth_date}" class="form-control" required>
-                                <div th:if="${#fields.hasErrors('birth_date')}" th:errors="*{birth_date}" class="text-danger">Birth Date error</div>
-                            </div>
-                            <div>
-                                <label><b>Phone:</b></label>
-                                <input type="text" th:field="*{phone}" class="form-control" required>
-                                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger">Phone error</div>
-                            </div>
-                            <div class="container">
-                                <div class="row align-items-start">
-                                    <div class="form-group col-4">
-                                        <label>Tỉnh/Thành phố</label>
-                                        <select class="form-control" id="province" th:name="address">
-                                            <option value="">Chọn Tỉnh/Thành phố</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-4">
-                                        <label>Quận/Huyện</label>
-                                        <select class="form-control " id="district" th:name="city">
-                                            <option value="">Chọn Quận/Huyện</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-4">
-                                        <label>Xã/Phường</label>
-                                        <select class="form-control" id="ward" th:name="country">
-                                            <option value="">Chọn Xã/Phường</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" id="FullAddress" th:name="fulladdress">
-
-                            <!--                        <input type="submit" class="btn btn-success" value="ADD"/>-->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><b>Close</b>
-                                </button>
-                                <button type="submit" class="btn btn-success"><b>ADD</b></button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
         </div>
-
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.4/dist/simple-notify.min.js"></script> -->
+        <script src="../dist/simple-notify.min.js"></script>
+        <script src="./assets/js/prism.js"></script>
+        <script src="./assets/js/OverlayScrollbars.min.js"></script>
+        <script src="./assets/js/main.js"></script>
         <!--    Lọc trạng thái với giới tính-->
         <script>
             function filterGender(gender) {

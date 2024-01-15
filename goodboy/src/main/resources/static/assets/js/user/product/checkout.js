@@ -1320,7 +1320,7 @@ const addAddress = async() => {
                 console.log(err)
             })
 
-            location.reload()
+            // location.reload()
         }
     });
 
