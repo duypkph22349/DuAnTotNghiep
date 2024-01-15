@@ -31,7 +31,7 @@ import datn.goodboy.service.serviceinterface.PanigationWithSearch;
 
 @Service
 public class ProductDetailService implements PanigationInterface<ProductDetail>,
-    IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
+        IPanigationWithFIllter<ProductDetail, ProductDetailFilter>, PanigationWithSearch<ProductDetail> {
 
   @Autowired
   private PatternTypeService patternTypeService;
@@ -91,7 +91,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
   }
 
   public ProductDetail updateProductDetail(ProductDetailRequest request, List<MultipartFile> listImage)
-      throws IOException {
+          throws IOException {
     Optional<ProductDetail> productDetail = productDetailRepository.findById(request.getId());
     if (productDetail.isPresent()) {
       ProductDetail exitproductDetail = productDetail.get();
@@ -125,7 +125,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
     productDetail.setCreatedAt(LocalDateTime.now());
     productDetail.setId(null);
     if (productDetail.getIdProduct().exitSizes(productDetail.getIdSize().getId(),
-        productDetail.getIdPattern().getId())) {
+            productDetail.getIdPattern().getId())) {
       throw new RuntimeException("Kích thước này đã tồn tại");
     }
     return productDetailRepository.save(productDetail);
@@ -257,7 +257,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
 
   @Override
   public List<ProductDetail> getPageNo(int pageNo, int pageSize, String sortBy, boolean sortDir,
-      ProductDetailFilter filter) {
+                                       ProductDetailFilter filter) {
     if (pageNo > getPageNumber(pageSize, filter) || pageNo < 1) {
       return null;
     }
@@ -387,7 +387,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       ProductDetail exitProductDetail = productDetail.get();
       if (exitProductDetail.getQuantity() < quantity) {
         throw new ErrorCreateBill("Số lượng của sản phẩm: " + productDetail.get().getName() // throw another exeption
-            + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
+                + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
       } else {
         exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
         productDetailRepository.save(exitProductDetail);
@@ -401,7 +401,7 @@ public class ProductDetailService implements PanigationInterface<ProductDetail>,
       ProductDetail exitProductDetail = productDetail.get();
       if (exitProductDetail.getQuantity() < quantity) {
         throw new ErrorCreateBill("Số lượng của sản phẩm: " + productDetail.get().getName() // throw another exeption
-            + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
+                + " không đủ, hiện chỉ còn lại " + exitProductDetail.getQuantity() + " sản phẩm");
       } else {
         exitProductDetail.setQuantity(exitProductDetail.getQuantity() - quantity);
         productDetailRepository.save(exitProductDetail);
