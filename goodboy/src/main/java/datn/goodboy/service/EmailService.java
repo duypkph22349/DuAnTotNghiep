@@ -133,4 +133,30 @@ public class EmailService {
       System.out.println("Error sending bill mail for customer: " + e);
     }
   }
+
+  @Transactional
+  public void sendEmailBillWithEmailAnother(int idbill, String title, String email) {
+    MimeMessage message = emailSender.createMimeMessage();
+    try {
+      Bill bill = billRepository.findById(idbill).orElse(null);
+
+      if (bill != null) {
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom("thatdeptraivjpro@26kleft.com");
+        helper.setTo(email);
+        helper.setSubject(title);
+
+        Context context = new Context();
+        context.setVariable("bill", bill);
+        context.setVariable("convert", new TrangThaiConvert());
+        String htmlCode = templateEngine.process("mail/billTemplate", context);
+        helper.setText(htmlCode, true);
+
+        emailSender.send(message);
+      }
+    } catch (MessagingException e) {
+      // Handle the exception as needed
+      System.out.println("Error sending bill mail for customer: " + e);
+    }
+  }
 }
