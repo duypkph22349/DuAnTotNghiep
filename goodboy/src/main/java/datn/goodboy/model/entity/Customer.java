@@ -41,31 +41,24 @@ public class Customer {
   @Column(name = "code", insertable = false, updatable = false)
   String code;
 
-  @NotNull(message = "Tên không được để trống")
-  @NotBlank(message = "Tên không được để trống")
   @Column(name = "name")
   String name;
 
   @Column(name = "gender")
   boolean gender;
 
-  @NotBlank(message = "Số điện thoại không được để trống")
-  @Pattern(regexp = "\\d{10}", message = "Đủ 10 số")
   @Column(name = "phone")
   String phone;
 
   @Column(name = "birth_date")
   LocalDate birth_date;
 
-  @NotBlank(message = "Thành phố không được để trống")
   @Column(name = "thanh_pho")
   String address;
 
-  @NotBlank(message = "Huyện không được để trống")
   @Column(name = "new_huyen")
   String city;
 
-  @NotBlank(message = "Xã không được để trống")
   @Column(name = "xa")
   String country;
 

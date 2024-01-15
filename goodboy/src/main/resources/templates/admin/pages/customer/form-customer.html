@@ -44,14 +44,16 @@
         </style>
         <div class="container-fluid">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                        <path fill-rule="evenodd"
-                            d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-                    </svg>
-                </button>
+                <a href="/admin/customer/view-add">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                            <path fill-rule="evenodd"
+                                  d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                    </button>
+                </a>
                 <input type="text" class="form-control" aria-label="Text input with segmented dropdown button"
                     id="searchInput" onkeyup="myFunction()" placeholder="Tìm kiếm ....">
 
@@ -145,50 +147,50 @@
 
 
         <!--    Thêm khách hàng-->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="staticBackdropLabel"><strong>ADD Customer</strong></h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post"
-                            class="row g-3">
-                            <div>
-                                <label for="name"><b>Name:</b></label>
-                                <input type="text" id="name" th:field="*{name}" class="form-control" />
-                                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">aaaaa</div>
-                            </div>
+<!--        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"-->
+<!--            aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog modal-xl">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h3 class="modal-title" id="staticBackdropLabel"><strong>ADD Customer</strong></h3>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <form th:object="${customer}" th:action="@{/admin/customer/add}" action="#" method="post"-->
+<!--                            class="row g-3">-->
+<!--                            <div>-->
+<!--                                <label for="name"><b>Name:</b></label>-->
+<!--                                <input type="text" id="name" th:field="*{name}" class="form-control" />-->
+<!--                                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">aaaaa</div>-->
+<!--                            </div>-->
 
 
-                            <div>
-                                <label><b>Gender:</b></label>
-                                <input type="radio" th:field="*{gender}" th:value="false" th:text="Male" checked>
-                                <input type="radio" th:field="*{gender}" th:value="true" th:text="Female">
-                            </div>
-                            <div>
-                                <label><b>Birth Date:</b></label>
-                                <input type="date" th:field="*{birth_date}" class="form-control" required>
-                                <div th:if="${#fields.hasErrors('birth_date')}" th:errors="*{birth_date}" class="text-danger">Birth Date error</div>
-                            </div>
-                            <div>
-                                <label><b>Phone:</b></label>
-                                <input type="text" th:field="*{phone}" class="form-control" required>
-                                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger">Phone error</div>
-                            </div>
+<!--                            <div>-->
+<!--                                <label><b>Gender:</b></label>-->
+<!--                                <input type="radio" th:field="*{gender}" th:value="false" th:text="Male" checked>-->
+<!--                                <input type="radio" th:field="*{gender}" th:value="true" th:text="Female">-->
+<!--                            </div>-->
+<!--                            <div>-->
+<!--                                <label><b>Birth Date:</b></label>-->
+<!--                                <input type="date" th:field="*{birth_date}" class="form-control" required>-->
+<!--                                <div th:if="${#fields.hasErrors('birth_date')}" th:errors="*{birth_date}" class="text-danger">Birth Date error</div>-->
+<!--                            </div>-->
+<!--                            <div>-->
+<!--                                <label><b>Phone:</b></label>-->
+<!--                                <input type="text" th:field="*{phone}" class="form-control" required>-->
+<!--                                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger">Phone error</div>-->
+<!--                            </div>-->
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><b>Close</b>
-                                </button>
-                                <button type="submit" class="btn btn-success" id="btn"><b>ADD</b></button>
-                            </div>
-                        </form>
+<!--                            <div class="modal-footer">-->
+<!--                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><b>Close</b>-->
+<!--                                </button>-->
+<!--                                <button type="submit" class="btn btn-success" id="btn"><b>ADD</b></button>-->
+<!--                            </div>-->
+<!--                        </form>-->
 
-                    </div>
-                </div>
-            </div>
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.4/dist/simple-notify.min.js"></script> -->

@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import datn.goodboy.model.entity.Address;
+import datn.goodboy.model.request.CustomerRequest;
 import datn.goodboy.service.AddressService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
@@ -38,6 +39,9 @@ public class CustomerController {
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private CustomerRequest customerRequest;
+
     @ModelAttribute("convert")
     public TrangThaiConvert convert() {
         return convert;
@@ -59,7 +63,8 @@ public class CustomerController {
     // /admin/customer/add
     @GetMapping("/view-add")
     public String viewAdd(Model model) {
-        model.addAttribute("customer", new Customer()); // Add an empty customer object to the model
+        customerRequest = new CustomerRequest();
+        model.addAttribute("customerRequest", customerRequest); // Add an empty customer object to the model
         return "/admin/pages/customer/customer_modal";
 
     }
@@ -70,27 +75,27 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("customer") Customer customer, BindingResult bindingResult, Model model) {
+    public String add(@Valid @ModelAttribute("customerRequest") CustomerRequest customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
 //           model.addAttribute("customer", customer); // Đưa đối tượng customer vào model để giữ giá trị đã nhập
             System.out.println(bindingResult.hasErrors());
-            return "/admin/pages/customer/form-customer";
+            return "/admin/pages/customer/customer_modal";
         } else {
             customer.setStatus(1);
             customer.setCreatedAt(LocalDateTime.now());
-            customerService.saveCustomer(customer);
+            customerService.updateCustomer(customer);
         }
         return "redirect:/admin/customer/get-all";
     }
 
     @PostMapping("/update")
-    public String update(@Valid @ModelAttribute("detail") Customer customer, BindingResult bindingResult, Model model) {
+    public String update(@Valid @ModelAttribute("detail") CustomerRequest customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/admin/pages/customer/customer-detail";
         } else {
 
             customer.setUpdatedAt(LocalDateTime.now());
-            customerService.saveCustomer(customer);
+            customerService.updateCustomer(customer);
         }
 
         return "redirect:/admin/customer/get-all";
