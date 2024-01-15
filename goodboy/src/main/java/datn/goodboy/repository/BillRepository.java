@@ -48,4 +48,9 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
   @Query("SELECT b FROM Bill b WHERE b.status = 1")
   List<Bill> findBillByStatus1();
+
+  @Query(value = """
+    SELECT TOP 1 SUBSTRING(code, 3,len(code)) FROM bill order by id desc
+    """, nativeQuery = true)
+  Integer findNewCodeBill();
 }
