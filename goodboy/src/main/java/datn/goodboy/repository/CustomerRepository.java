@@ -25,4 +25,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
   @Query(value = "SELECT cus FROM Customer cus WHERE LOWER(cus.name) LIKE CONCAT('%', :searchText, '%') OR LOWER(cus.phone) LIKE CONCAT('%', :searchText, '%')")
   public List<Customer> searchByText(@Param("searchText") String searchText);
+
+  Optional<Customer> findByAccountId(UUID accountId);
+
 }
