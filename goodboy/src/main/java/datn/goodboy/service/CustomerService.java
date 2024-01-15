@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import datn.goodboy.model.entity.Voucher;
+import datn.goodboy.model.request.CustomerRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +50,15 @@ public class CustomerService {
 
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
+    }
+    public Customer updateCustomer(CustomerRequest customer) {
+        Customer cus = new Customer();
+        cus.setName(customer.getName());
+        cus.setGender(customer.isGender());
+        cus.setBirth_date(customer.getBirth_date());
+        cus.setPhone(customer.getPhone());
+        cus.setDeleted(false);
+        return customerRepository.save(cus);
     }
 
     public void deleteVoucher(UUID id) {
