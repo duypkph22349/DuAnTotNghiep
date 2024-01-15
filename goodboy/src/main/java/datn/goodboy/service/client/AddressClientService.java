@@ -82,7 +82,7 @@ public class AddressClientService {
         }
 
         Address address = new Address();
-        if(req.getId() != ""){
+        if(req.getId() != "" ){
             address.setId(UUID.fromString(req.getId()));
         }
         address.setDistrictCode(req.getCode_district());

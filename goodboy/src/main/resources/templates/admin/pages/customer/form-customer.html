@@ -104,7 +104,6 @@
                     <th scope="col">Giới tính</th>
                     <th scope="col">Ngày sinh</th>
                     <th scope="col">Số điện thoại</th>
-                    <th scope="col">Địa chỉ</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Chức năng</th>
                 </tr>
@@ -115,9 +114,6 @@
                     <td th:text="${customer.gender}==false?'Male':'Female'"></td>
                     <td th:text="${customer.birth_date}"></td>
                     <td th:text="${customer.phone}"></td>
-                    <td>[[${customer.country}]],
-                        [[${customer.city}]],
-                        [[${customer.address}]]</td>
                     <td th:unless="${customer.deleted}" th:text="${convert.convertTrangThai(customer.status)}"></td>
                     <td th:if="${customer.deleted}" class="text-decoration-line-through"
                         th:text="${convert.convertTrangThaiEmployee(customer.status)}"></td>
@@ -182,37 +178,11 @@
                                 <input type="text" th:field="*{phone}" class="form-control" required>
                                 <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger">Phone error</div>
                             </div>
-                            <div class="container">
-                                <div class="row align-items-start">
-                                    <div class="form-group col-4">
-                                        <label>Tỉnh/Thành phố</label>
-                                        <select class="form-control" id="province" th:name="address">
-                                            <option value="">Chọn Tỉnh/Thành phố</option>
-                                        </select>
-                                    </div>
 
-                                    <div class="form-group col-4">
-                                        <label>Quận/Huyện</label>
-                                        <select class="form-control " id="district" th:name="city">
-                                            <option value="">Chọn Quận/Huyện</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-4">
-                                        <label>Xã/Phường</label>
-                                        <select class="form-control" id="ward" th:name="country">
-                                            <option value="">Chọn Xã/Phường</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" id="FullAddress" th:name="fulladdress">
-
-                            <!--                        <input type="submit" class="btn btn-success" value="ADD"/>-->
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><b>Close</b>
                                 </button>
-                                <button type="submit" class="btn btn-success"><b>ADD</b></button>
+                                <button type="submit" class="btn btn-success" id="btn"><b>ADD</b></button>
                             </div>
                         </form>
 
@@ -220,7 +190,12 @@
                 </div>
             </div>
         </div>
-
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.4/dist/simple-notify.min.js"></script> -->
+        <script src="../dist/simple-notify.min.js"></script>
+        <script src="./assets/js/prism.js"></script>
+        <script src="./assets/js/OverlayScrollbars.min.js"></script>
+        <script src="./assets/js/main.js"></script>
         <!--    Lọc trạng thái với giới tính-->
         <script>
             function filterGender(gender) {

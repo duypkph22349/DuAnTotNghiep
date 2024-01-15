@@ -56,6 +56,7 @@ public class AddressClientRestController {
         try {
             return ResponseEntity.ok(addressClientService.addNewAddressCustomer(req, idCustomer));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

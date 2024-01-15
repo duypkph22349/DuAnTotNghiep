@@ -42,7 +42,7 @@
 <body onload="loadCustomer()">
 <section layout:fragment="content">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Khách hàng</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
@@ -84,7 +84,7 @@
         <input type="hidden" id="FullAddress" th:name="fulladdress">
         <div style="clear: both; display: block; height: 10px"></div>
         <div>
-            <select th:name="status">
+            <select class="form-control" th:name="status">
                 <option th:value="1" class="form-control" th:selected="${detail.status==1}">Hoạt động</option>
                 <option th:value="0" class="form-control" th:selected="${detail.status==0}">Không hoạt động</option>
             </select>
@@ -123,16 +123,16 @@
                 <td th:text="${addresss.trangThai==0?'Hoạt động':'Không hoạt động'}"></td>
                 <td>
                     <a>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modelId" data-bs-whatever="@getbootstrap" th:data-id="${addresss.id}"
-                                th:onclick="editAddress()">Chỉnh sửa
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                data-bs-target="#modelId" data-bs-whatever="@getbootstrap"
+                                th:onclick="'editAddress()'">Chỉnh sửa
                         </button>
 
                     </a>
                     <input value="" type="text" hidden th:value="${addresss.id}" id="idcustomer">
                     <a th:href="@{/admin/customer/detail/{id}/delete_address/{id_address}(id=${detail.id},id_address=${addresss.id})}"
-                    >
-                        <button>Xóa</button>
+                       class="btn btn-danger">
+                        Xóa
                     </a>
                 </td>
             </tr>
@@ -141,76 +141,6 @@
         <div th:unless="${customer}">
             <p>Không tìm thấy thông tin khách hàng</p>
         </div>
-<!--        &lt;!&ndash;Modal edit địa chỉ&ndash;&gt;-->
-<!--        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--            <div class="modal-dialog">-->
-<!--                <div class="modal-content">-->
-<!--                    <div class="modal-header">-->
-<!--                        <h5 class="modal-title" id="exampleModalLabel1">New message</h5>-->
-<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                    </div>-->
-<!--                    <div class="modal-body">-->
-<!--                        <form th:object="${detail_address}">-->
-<!--                            <div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>Địa chỉ</label>-->
-<!--                                    <input type="text" class="form-control" id="address" th:value="${detail_address.tenDiaChi}" th: th:name="tenDiaChi"></div>-->
-<!--                            </div>-->
-<!--                            <div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>Ten người nhân</label>-->
-<!--                                    <input type="text" class="form-control" id="name" th:value="${detail_address.tenNguoiNhan}" th:name="tenNguoiNhan"></div>-->
-<!--                            </div>-->
-<!--                            <div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>Sdt người nhân</label>-->
-<!--                                    <input type="text" class="form-control" id="phone" th:value="${detail_address.sdt_nguoi_nhan}" th:name="sdt_nguoi_nhan"></div>-->
-<!--                            </div>-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-4">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label>Tỉnh/Thành phố</label>-->
-<!--                                        <input type="text" id="province_code" th:name="provinceCode" hidden="">-->
-<!--                                        <select class="form-control" th:name="thanh_pho" id="city_address"-->
-<!--                                                onclick="getAllDistrict()">-->
-<!--                                            <option value="0">Chọn Tỉnh/Thành phố</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                                <div class="col-4">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label>Quận/Huyện</label>-->
-<!--                                        <input type="text" id="district_code" th:name="districtCode" hidden="">-->
-<!--                                        <select class="form-control" th:name="huyen" id="district_address"-->
-<!--                                                onclick="getFullWardCode()">-->
-<!--                                            <option value="0">Chọn Quận/Huyện</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                                <div class="col-4">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label>Xã/Phường</label>-->
-<!--                                        <input type="text" id="ward_code" th:name="wardCode" hidden="">-->
-<!--                                        <select class="form-control" th:name="xa" id="ward_address"-->
-<!--                                                onclick="getWallCode()">-->
-<!--                                            <option value="0">Chọn Xã/Phường</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!--                    <div class="modal-footer">-->
-<!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                        <button type="button" class="btn btn-primary">Xác nhận</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-
         <!--        Modal save địa chỉ-->
         <div class="modal fade" id="modelId" tabindex="5" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 750px;;">
@@ -254,7 +184,7 @@
                                     Tỉnh/Thành phố
                                     <span style="display: inline-block;">*</span>
                                 </label>
-                                <select style="border:1px solid #dd3333" class="custom-select"  id="city_customer" onchange="getAllDistrictCustomer()">
+                                <select style="border:1px solid #dd3333" class="form-control"  id="city_customer" onchange="getAllDistrictCustomer()">
 
                                 </select>
                                 <span style="color:#dd3333;font-size: 12px;display: block" id="city_customer_error">Bạn phải chọn thành phố</span>
@@ -264,7 +194,7 @@
                                 <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Quận/huyện
                                     <span style="display: inline-block;">*</span>
                                 </label>
-                                <select style="border:1px solid #dd3333" class="custom-select" id="district_customer" onchange="getFullWardCodeCustomer()">
+                                <select style="border:1px solid #dd3333" class="form-control" id="district_customer" onchange="getFullWardCodeCustomer()">
                                     <option value="" selected>Chọn quận/huyện</option>
                                 </select>
                                 <span style="color:#dd3333;font-size: 12px;display: block" id="district_customer_error">Bạn phải chọn quận huyện</span>
@@ -274,7 +204,7 @@
                                 <label style="font-weight: bold!important;font-size: 14px;color: #3D464D">Phường/Xã
                                     <span style="display: inline-block;">*</span>
                                 </label>
-                                <select style="border:1px solid #dd3333" class="custom-select" id="ward_customer" onchange="validateAddress()">
+                                <select style="border:1px solid #dd3333" class="form-control" id="ward_customer" onchange="validateAddress()">
                                     <option value="" selected>Chọn phường/xã</option>
                                 </select>
                                 <span style="color:#dd3333;font-size: 12px;display: block" id="ward_customer_error">Bạn phải chọn phường/xã</span>
@@ -304,14 +234,6 @@
                                         margin-right: auto;"
                                     id="btn_add_address"
                             >LƯU</button>
-                            <!-- <div class="col-md-12 form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="newaccount">
-                                    <label class="custom-control-label" for="newaccount" data-toggle="collapse"
-                                        data-target="#new-account">Tạo tài khoản</label>
-                                </div>
-                            </div> -->
-
                         </div>
                     </div>
 
@@ -347,7 +269,7 @@
 
         var LIST_ADDRESS = [];
         const ID_CUSTOMER = document.querySelector("#id_customer").value;
-        var ID_ADDRESS = null;
+        var ID_ADDRESS = "";
 
 
         // FORMAT VND
@@ -777,7 +699,6 @@
             const name_view = document.querySelector("#name_customer");
             const phone_number_view = document.querySelector("#phone_number_customer");
 
-            console.log(id)
             if(LIST_ADDRESS.find((e) => e.id === id) !== undefined){
                 var address = LIST_ADDRESS.find((e) => e.id === id)
                 console.log(address)
@@ -788,11 +709,12 @@
                 document.querySelector("#default_customer").checked = address.trangThai
                 document.querySelector("#id_customer").value = address.id
                 getAllprovideByCode(address.districtCode, address.wardCode, address.provinceCode)
-
+                validateAddress()
             }else{
                 console.log(LIST_ADDRESS)
                 console.log("Không tìm thấy phần tử nào trong mảng")
             }
+
         }
 
         function getAllprovideByCode(district_code, ward_code, province_code) {
@@ -904,6 +826,7 @@
         function editAddress() {
             var idadress = document.getElementById("idcustomer").value
             changeAddress(idadress)
+            console.log(idadress)
             ID_ADDRESS = idadress;
         }
     </script>
