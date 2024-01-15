@@ -1304,8 +1304,8 @@ const addAddress = async() => {
     }
 
     Swal.fire({
-        title: "Xác nhận thêm địa chỉ",
-        text: "Bạn đồng ý với các thông tin trên và xác nhận thêm địa chỉ mới",
+        title: "Xác nhận thêm/sửa địa chỉ",
+        text: "Bạn đồng ý với các thông tin trên và xác nhận thêm/sửa địa chỉ",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -1319,7 +1319,7 @@ const addAddress = async() => {
                 console.log(err)
             })
 
-            // location.reload()
+            location.reload()
         }
     });
 
