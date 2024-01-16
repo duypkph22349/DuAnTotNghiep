@@ -5,11 +5,27 @@ var API_BASE_COOKIE_URL = "/test/api/cart/cookie";
 const loadPaymentSuccess = async () =>{
     var code_bill = document.querySelector("#code_bill")
     var payment_bill = document.querySelector("#payment_bill")
+    var link_to_show_bill = document.querySelector("#button-check-bill")
 
     var bill = JSON.parse(localStorage.getItem("bill_success"));
     await axios.post(`/client/bill/add`, bill).then(
         e => {
-            console.log(JSON.parse(localStorage.getItem("cart_details")))
+            link_to_show_bill.innerHTML =`
+                 <a href="/client/bill/detail/${e.data.id}">
+                    <button style="
+                            font-size: 20px;
+                            font-weight: bold!important;
+                            color: #3D464D;
+                            text-align: center;
+                            margin-top: 20px;
+                            height: 50px;
+                            width: 278px;
+                            "
+                            >
+                       Xem thông tin đơn hàng
+                    </button>
+                </a>
+    `
             if(localStorage.getItem("type_cart") === "login"){
                 JSON.parse(localStorage.getItem("cart_details")).map((e) => {
                     deleteCartDetail(e);
@@ -24,11 +40,12 @@ const loadPaymentSuccess = async () =>{
     })
 
     code_bill.innerHTML = `
-     Bạn đã thanh toán thành công
+     Bạn đã thanh toán thành công đơn hàng ${bill.bill.code}
     `
     payment_bill.innerHTML = `
      Số tiền thanh toán là : <span style="color: #dd3333">${formatToVND(bill.total_money)}</span>
     `
+
 }
 
 const get_quantity_of_cart = () => {
