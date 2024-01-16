@@ -192,6 +192,11 @@ public class BillService {
     public void updateStatus(Integer id, Integer status) throws NotFoundException {
         Bill bill = getBillById(id);
         bill.setStatus(status);
+        if(status ==5 ){
+            bill.setCompletion_date(LocalDateTime.now());
+        } else if (status == 3) {
+            bill.setDelivery_date(LocalDateTime.now());
+        }
         billRepository.save(bill);
         //code thật
         if (bill.getCustomer() != null) {
@@ -209,6 +214,11 @@ public class BillService {
         Bill bill = getBillById(id);
         bill.setNote(note);
         bill.setStatus(status);
+        if(status ==5 ){
+            bill.setCompletion_date(LocalDateTime.now());
+        } else if (status == 3) {
+            bill.setDelivery_date(LocalDateTime.now());
+        }
         billRepository.save(bill);
         //code thật
         if (bill.getCustomer() != null) {
@@ -240,6 +250,11 @@ public class BillService {
         Bill bill = getBillById(id);
         bill.setStatus_pay(1);
         bill.setStatus(status);
+        if(status ==5 ){
+            bill.setCompletion_date(LocalDateTime.now());
+        } else if (status == 3) {
+            bill.setDelivery_date(LocalDateTime.now());
+        }
         billRepository.save(bill);
         //code thật
         if (bill.getCustomer() != null) {
