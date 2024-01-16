@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,9 @@ public class BillService {
 
     @Autowired
     ProductDetailService productDetailService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     ProductDetailRepository productDetailRepository;
@@ -189,13 +193,32 @@ public class BillService {
         Bill bill = getBillById(id);
         bill.setStatus(status);
         billRepository.save(bill);
+        //code thật
+        if (bill.getCustomer() != null) {
+            if (bill.getCustomer().getAccount() != null) {
+                CompletableFuture.runAsync(() -> {
+                    emailService.sendEmailBill(bill.getId(), "Đơn hàng của bạn");
+                });
+            }
+        }
+        //code thật
     }
+
 
     public void updateStatusAndNote(Integer id, Integer status, String note) throws NotFoundException {
         Bill bill = getBillById(id);
         bill.setNote(note);
         bill.setStatus(status);
         billRepository.save(bill);
+        //code thật
+        if (bill.getCustomer() != null) {
+            if (bill.getCustomer().getAccount() != null) {
+                CompletableFuture.runAsync(() -> {
+                    emailService.sendEmailBill(bill.getId(), "Đơn hàng của bạn");
+                });
+            }
+        }
+        //code thật
     }
 
     public void updatedeposit(Integer id, Float deposit) throws NotFoundException {
@@ -218,6 +241,15 @@ public class BillService {
         bill.setStatus_pay(1);
         bill.setStatus(status);
         billRepository.save(bill);
+        //code thật
+        if (bill.getCustomer() != null) {
+            if (bill.getCustomer().getAccount() != null) {
+                CompletableFuture.runAsync(() -> {
+                    emailService.sendEmailBill(bill.getId(), "Đơn hàng của bạn");
+                });
+            }
+        }
+        //code thật
     }
 
     public void updateStatusPay(Integer id, Integer status_pay) throws NotFoundException {
