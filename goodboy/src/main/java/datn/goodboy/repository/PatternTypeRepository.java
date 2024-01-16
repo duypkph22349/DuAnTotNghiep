@@ -19,7 +19,7 @@ public interface PatternTypeRepository extends JpaRepository<PatternType, Intege
 
     Page<PatternType> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @Query("SELECT new map(e.id as key, e.name as value) FROM PatternType e")
+    @Query("SELECT new map(e.id as key, e.name as value) FROM PatternType e  WHERE e.status = 1 AND e.deleted = false")
     List<Map<Integer, String>> getComboBoxMap();
 
     @Query("SELECT b FROM PatternType b WHERE b.status = 1 AND b.deleted = false")
