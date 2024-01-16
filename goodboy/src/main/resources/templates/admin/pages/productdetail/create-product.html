@@ -9,10 +9,11 @@
 <body layout:fragment="content">
   <section>
     <div class="pagetitle">
-      <h1>Bảng điều khiển</h1>
+      <h1>Quản lý sản phẩm</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/admin/managerproduct}">Quản lý sản phẩm</a></li>
           <li class="breadcrumb-item active">Thêm sản phảm mới</li>
         </ol>
       </nav>
@@ -160,6 +161,7 @@
             <div class="row mb-3" id="hoavanmuladd">
             </div>
             <hr>
+            <h5 class="modal-title" id="exampleModalToggleLabel">Chọn kích thước</h5>
             <button type="button" class="btn btn-secondary" onclick="OpenModalAddKichThuoc()">
               Thêm</button>
             <div class="row mb-3" id="kichthuocmuladd">
@@ -300,6 +302,7 @@
           </div>
           <div class="modal-body">
             <p> Thêm sản phẩm thành công !!! </p>
+            <p> Vui lòng chờ 1 chút !!! </p>
           </div>
         </div>
       </div>

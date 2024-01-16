@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import datn.goodboy.model.entity.Address;
+import datn.goodboy.model.request.CustomerRequest;
 import datn.goodboy.service.AddressService;
 import datn.goodboy.utils.convert.TrangThaiConvert;
 import jakarta.validation.Valid;
@@ -38,6 +39,9 @@ public class CustomerController {
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private CustomerRequest customerRequest;
+
     @ModelAttribute("convert")
     public TrangThaiConvert convert() {
         return convert;
@@ -59,7 +63,8 @@ public class CustomerController {
     // /admin/customer/add
     @GetMapping("/view-add")
     public String viewAdd(Model model) {
-        model.addAttribute("customer", new Customer()); // Add an empty customer object to the model
+        customerRequest = new CustomerRequest();
+        model.addAttribute("customerRequest", customerRequest); // Add an empty customer object to the model
         return "/admin/pages/customer/customer_modal";
 
     }
@@ -70,27 +75,27 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("customer") Customer customer, BindingResult bindingResult, Model model) {
+    public String add(@Valid @ModelAttribute("customerRequest") CustomerRequest customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
 //           model.addAttribute("customer", customer); // Đưa đối tượng customer vào model để giữ giá trị đã nhập
             System.out.println(bindingResult.hasErrors());
-            return "/admin/pages/customer/form-customer";
+            return "/admin/pages/customer/customer_modal";
         } else {
             customer.setStatus(1);
             customer.setCreatedAt(LocalDateTime.now());
-            customerService.saveCustomer(customer);
+            customerService.updateCustomer(customer);
         }
         return "redirect:/admin/customer/get-all";
     }
 
     @PostMapping("/update")
-    public String update(@Valid @ModelAttribute("detail") Customer customer, BindingResult bindingResult, Model model) {
+    public String update(@Valid @ModelAttribute("detail") CustomerRequest customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/admin/pages/customer/customer-detail";
         } else {
 
             customer.setUpdatedAt(LocalDateTime.now());
-            customerService.saveCustomer(customer);
+            customerService.updateCustomer(customer);
         }
 
         return "redirect:/admin/customer/get-all";
@@ -106,26 +111,37 @@ public class CustomerController {
     public String detail(Model model, @PathVariable("id") UUID id) {
         Optional<Customer> customer = customerService.getCustomerById(id);
         List<Address> addresses = addressService.getAllAddressByIdCustomer(id);
+        model.addAttribute("id_customer", id);
         if (customer.isPresent()) {
             model.addAttribute("detail", customer.get());
             model.addAttribute("addresss", addresses);
         } else {
             model.addAttribute("detail", null);
         }
-        System.out.println(addressService.getAllAddressByIdCustomer(id));
         return "/admin/pages/customer/customer-detail";
     }
 
-    //    @PostMapping("detail/{id}/save_address")
-//    public String saveAddress(@ModelAttribute Address address, @PathVariable("id")UUID id){
-//        addressService.getSave(address);
-//        return "redirect:/admin/customer/detail/{id}";
-//    }
+
     @PostMapping("detail/{id}/save_address")
     public String saveAddress(@ModelAttribute("addresss") Address addresss) {
         System.out.println(addresss.getId_customer().getId());
         addressService.getSave(addresss);
-
         return "redirect:/admin/customer/detail/" + addresss.getId_customer().getId();
+    }
+
+
+    @GetMapping("detail/{id}/edit_address/{id_address}")
+    public String editAddress( @PathVariable("id_address") UUID id_address, Model model){
+        model.addAttribute("detail_address", addressService.findById(id_address));
+        return "/admin/pages/customer/customer-detail";
+    }
+
+
+
+
+    @GetMapping("detail/{id}/delete_address/{id_address}")
+    public String deleteAddress(@PathVariable("id") UUID id, @PathVariable("id_address") UUID id_address){
+        addressService.deleteById(id_address);
+        return "redirect:/admin/customer/detail/" + id;
     }
 }

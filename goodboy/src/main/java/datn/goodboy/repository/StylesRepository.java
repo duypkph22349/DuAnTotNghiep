@@ -19,7 +19,7 @@ public interface StylesRepository extends JpaRepository<Styles, Integer> {
 
     Page<Styles> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @Query("SELECT new map(e.id as key, e.name as value) FROM Styles e")
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Styles e  WHERE e.status = 1 AND e.deleted = false")
     List<Map<Integer, String>> getComboBoxMap();
 
     @Query("SELECT b FROM Styles b WHERE b.status = 1 AND b.deleted = false")

@@ -43,7 +43,7 @@
                 <td th:text="${i.index + 1}"></td>
                 <td th:text="${b.code}"></td>
                 <td th:text="${b.name}"></td>
-                <td th:text="${b.status}"></td>
+                <td th:text="${b.status==1?'Hoạt động':'Không hoạt động'}"></td>
                 <td>
                   <a th:href="@{'/admin/category/view-update/' + ${b.id}}" class="btn btn-info"><i
                             class="fas fa-edit"></i></a>

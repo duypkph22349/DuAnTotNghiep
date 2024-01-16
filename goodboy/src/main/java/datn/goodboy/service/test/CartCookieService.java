@@ -208,7 +208,7 @@ public class CartCookieService {
                 cartResponse.getQuantity();
           } catch (NumberFormatException e) {
             e.printStackTrace();
-            return 0.0; // Default value or handle it based on your requirements
+            return 0.0;
           }
         })
         .sum();

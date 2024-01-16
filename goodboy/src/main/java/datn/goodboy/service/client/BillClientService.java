@@ -68,7 +68,7 @@ public class BillClientService {
         }
 
         for(BillDetail billDetail: bill.getBillDetail()){
-            ProductDetail productDetail = billDetail.getProductDetail();
+            ProductDetail productDetail = productDetailRepository.findProductByLongId(billDetail.getProductDetail().getId());
             if(productDetail.getQuantity() < billDetail.getQuantity()){
                 throw  new RuntimeException("Số lượng sản phẩm hiện tại không đủ. Vui lòng trở lại giỏ hàng");
             }
@@ -76,7 +76,7 @@ public class BillClientService {
             productDetailRepository.save(productDetail);
             billDetail.setIdBill(bill);
         }
-        billRepository.save(bill);
+        bill = billRepository.save(bill);
 
         for(BillDetail billDetail: bill.getBillDetail()){
             billDetailRepository.save(billDetail);
@@ -107,7 +107,7 @@ public class BillClientService {
     public Bill getBillByCode(String code){
         Bill bill = billRepository.findByCode(code).get();
         if(bill == null){
-            throw new RuntimeException("Không tìm thể hóa đơn.");
+            throw new RuntimeException("Không tìm hóa đơn.");
         }
         return bill;
     }

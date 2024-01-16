@@ -19,7 +19,7 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 
     Page<Size> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @Query("SELECT new map(e.id as key, e.name as value) FROM Size e")
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Size e  WHERE e.status = 1 AND e.deleted = false")
     List<Map<Integer, String>> getComboBoxMap();
 
     @Query("SELECT b FROM Size b WHERE b.status =1 AND b.deleted = false")

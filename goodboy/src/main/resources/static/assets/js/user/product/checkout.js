@@ -516,14 +516,15 @@ async function checkout(){
                                         customWrapper: "",
                                     });
                                     setTimeout(() =>{
-                                        window.location.href = "/index"
+                                        window.location.href = "/client/bill/detail/"+e.data.id
                                     }, 500)
                                 }
                             ).catch(error => {
+                                console.log(error)
                                 new Notify({
                                     status: "error",
                                     title: "Thêm thất bại",
-                                    text: error.response ? error.response.data : error.message,
+                                    text: "Hệ thống đang lỗi.Xin lỗi bạn vì sự bất tiện này",
                                     effect: "fade",
                                     speed: 300,
                                     customClass: "",
@@ -613,7 +614,7 @@ async function checkout(){
                                         customWrapper: "",
                                     });
                                     setTimeout(() =>{
-                                        window.location.href = "/index"
+                                        window.location.href = "/client/bill/detail/"+e.data.id
                                     }, 500)
                                 }
                             ).catch(error => {
@@ -1304,8 +1305,8 @@ const addAddress = async() => {
     }
 
     Swal.fire({
-        title: "Xác nhận thêm địa chỉ",
-        text: "Bạn đồng ý với các thông tin trên và xác nhận thêm địa chỉ mới",
+        title: "Xác nhận thêm/sửa địa chỉ",
+        text: "Bạn đồng ý với các thông tin trên và xác nhận thêm/sửa địa chỉ",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

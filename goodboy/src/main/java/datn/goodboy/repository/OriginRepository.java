@@ -19,7 +19,7 @@ public interface OriginRepository extends JpaRepository<Origin, Integer> {
 
     Page<Origin> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @Query("SELECT new map(e.id as key, e.name as value) FROM Origin e")
+    @Query("SELECT new map(e.id as key, e.name as value) FROM Origin e  WHERE e.status = 1 AND e.deleted = false")
     List<Map<Integer, String>> getComboBoxMap();
 
     @Query("SELECT b FROM Origin b WHERE b.status = 1 AND b.deleted = false")

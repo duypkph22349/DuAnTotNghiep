@@ -74,8 +74,7 @@
             <div class="card cart-history">
               <div class="card-body">
                 <div class="d-flex justify-content-between">
-                  <p class="card-text"
-                    th:text="'Ngày đặt : ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
+                  <p class="card-text" th:text="'Ngày đặt : ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
                   </p>
                   <p th:utext="${convert.statusOfBill(bill.status)}"></p>
                 </div>
@@ -97,12 +96,12 @@
                           <tbody>
                             <tr th:each="billDetail, i : ${bill.billDetail}">
                               <td>
-                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                <img th:src="${billDetail.productDetail?.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
@@ -173,9 +172,12 @@
                       <hr>
                       <div class="d-flex justify-content-end">
                         <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
                           class="btn btn-danger mx-3"
-                          onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
+                          onclick="return confirm('Bạn có muốn hủy hóa đơn này không ?');">Hủy</a>
+                        <a th:if="${bill.status == 5 && bill.evaluates.size() == 0}"
+                          th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
                       </div>
                     </div>
                   </li>
@@ -217,9 +219,9 @@
                                 <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
@@ -292,7 +294,7 @@
                         <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
                         <a th:if="${bill.status == 1}" th:href="${'/shop/order/cancel/'+bill.id}"
                           class="btn btn-danger mx-3"
-                          onclick="return confirm('Are you sure you want to cancel this order?');">Hủy</a>
+                          onclick="return confirm('Bạn có muốn hủy hóa đơn này không ?');">Hủy</a>
                       </div>
                     </div>
                   </li>
@@ -331,12 +333,12 @@
                           <tbody>
                             <tr th:each="billDetail, i : ${bill.billDetail}">
                               <td>
-                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                <img th:src="${billDetail.productDetail?.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
@@ -417,7 +419,7 @@
         </div>
       </div>
       <div class="tab-pane fade" id="chogiaohang" role="tabpanel" aria-labelledby="chogiaohang-tab">
-        <div class="container-fluid mt-5" th:each="bill : ${customer.getDeliveringBills()}">
+        <div class="container-fluid mt-5" th:each="bill : ${customer.getWaitingForDeliveryBills()}">
           <div class="container-fluid mt-5">
             <h2 th:text="${'Mã hóa đơn : ' + bill.code}"></h2>
             <div class="card cart-history">
@@ -446,12 +448,12 @@
                           <tbody>
                             <tr th:each="billDetail, i : ${bill.billDetail}">
                               <td>
-                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                <img th:src="${billDetail.productDetail?.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
@@ -539,8 +541,7 @@
               <div class="card-body">
 
                 <div class="d-flex justify-content-between">
-                  <p class="card-text"
-                    th:text="'Ngày Giao Hàng: ' + ${#temporals.format(bill.delivery_date, 'dd/MM/yyyy')}">
+                  <p class="card-text" th:text="'Ngày đặt hàng: ' + ${#temporals.format(bill.createdAt, 'dd/MM/yyyy')}">
                   </p>
                   <p th:utext="${convert.statusOfBill(bill.status)}"></p>
                 </div>
@@ -562,12 +563,12 @@
                           <tbody>
                             <tr th:each="billDetail, i : ${bill.billDetail}">
                               <td>
-                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                <img th:src="${billDetail.productDetail?.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
@@ -679,12 +680,12 @@
                           <tbody>
                             <tr th:each="billDetail, i : ${bill.billDetail}">
                               <td>
-                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                <img th:src="${billDetail.productDetail?.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
@@ -755,6 +756,8 @@
                       <hr>
                       <div class="d-flex justify-content-end">
                         <a th:href="${'/client/bill/detail/'+bill.id}" class="btn btn-success mx-3">Xem Chi tiết</a>
+                        <a th:if="${bill.status == 5 && bill.evaluates.size() == 0}"
+                          th:href="${'/shop/order/evaluate/'+bill.id}" class="btn btn-warning mx-3">Đánh giá</a>
                       </div>
                     </div>
                   </li>
@@ -793,12 +796,12 @@
                           <tbody>
                             <tr th:each="billDetail, i : ${bill.billDetail}">
                               <td>
-                                <img th:src="${billDetail.productDetail.getFirstImage()}" class="image-fluid"
+                                <img th:src="${billDetail.productDetail?.getFirstImage()}" class="image-fluid"
                                   style="height: 40px; max-width: 60px;" />
                               </td>
-                              <td th:text="${billDetail.productDetail.name}"></td>
-                              <td th:text="${billDetail.productDetail.idSize.name}"></td>
-                              <td th:text="${billDetail.productDetail.idPattern.name}"></td>
+                              <td th:text="${billDetail.productDetail?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idSize?.name}"></td>
+                              <td th:text="${billDetail.productDetail?.idPattern?.name}"></td>
                               <td th:text="${billDetail.quantity}"></td>
                               <td
                                 th:text="${#strings.replace(#numbers.formatDecimal(billDetail?.totalMoney, 0, 'COMMA', 2, 'POINT'), '.00', '') + ' VNĐ'}">
