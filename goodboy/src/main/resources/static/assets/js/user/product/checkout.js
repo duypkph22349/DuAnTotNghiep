@@ -854,6 +854,7 @@ async function loadCustomer(){
                  <div class="row"
                     > Bạn chưa có địa chỉ
                          <button 
+                            onclick="resetFormAddress()"
                             data-toggle="modal"
                             data-target="#modelId" 
                             style="
@@ -1077,17 +1078,24 @@ function getAllprovideCustomer() {
                 option.setAttribute("providecode", options[i].ProvinceID);
                 selectCityCustomer.appendChild(option); // Add the option to the select element
             }
+
+
         })
         .catch((error) => console.error("Error:", error));
 }
 
 function getAllDistrictCustomer() {
     const selectedOption = selectCityCustomer.options[selectCityCustomer.selectedIndex];
-
     const customAttribute = selectedOption.getAttribute("providecode");
     const provinceid = parseInt(customAttribute);
     document.querySelector("#cityCode").value = provinceid
     const selectDistrict = document.querySelector(` #district_customer`);
+
+    // RESET
+    var option_districts = districtSelectCustomer.getElementsByTagName('option');
+    for (var i=0; i<option_districts.length; i++) {
+        districtSelectCustomer.removeChild(option_districts[i]);
+    }
 
     axios
         .get(`https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district`, {
@@ -1119,6 +1127,13 @@ function getFullWardCodeCustomer() {
     const customAttribute = selectedOption.getAttribute("districtcode");
     const districtid = parseInt(customAttribute);
     document.querySelector("#districtCode").value = districtid
+
+    // RESET
+    var option_wards = selectWardCodeCustomer.getElementsByTagName('option');
+    for (var i=0; i<option_wards.length; i++) {
+        selectWardCodeCustomer.removeChild(option_wards[i]);
+    }
+
     axios.get( `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward`, {
         headers: {
             Accept: "application/json",
@@ -1261,8 +1276,8 @@ function validateAddress() {
 
     if(flag === 0 ){
         const ward_selected = selectWardCodeCustomer.options[selectWardCodeCustomer.selectedIndex];
-        const ward_attribute = ward_selected.getAttribute("WardCode");
-        const code_ward = parseInt(ward_attribute);
+        const ward_attribute = ward_selected.getAttribute("wardcode");
+        const code_ward = ward_attribute;
 
         document.querySelector("#wardCode").value = code_ward
         document.querySelector("#btn_add_address").disabled = false
@@ -1287,7 +1302,7 @@ const addAddress = async() => {
     const code_city = document.querySelector("#cityCode").value;
     const is_default = document.querySelector("#default_customer").checked
     const id = document.querySelector("#id_customer").value;
-    console.log(is_default)
+    console.log(code_ward)
 
     var address = {
         "id" : id,
@@ -1431,6 +1446,7 @@ function getAllDistrictByCode(ward_code, district_code, provinceCode) {
 }
 
 function getFullWardCodeByCode(ward_code, district_code) {
+    console.log(ward_code+" "+ district_code)
     getFeeShippingCustomer(district_code,ward_code);
     axios.get( `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward`, {
         headers: {
@@ -1590,6 +1606,15 @@ function checkButtonCheckoutCustomer(e) {
     }
 
     return flag;
+}
+
+const resetFormAddress = () =>{
+     document.querySelector("#email_customer").value = "";
+     document.querySelector("#address_customer").value = "";
+     document.querySelector("#name_customer").value = "";
+     document.querySelector("#phone_number_customer").value = "";
+     getAllprovideByCode(0,0,0)
+     document.querySelector("#id_customer").value = ""
 }
 
 
