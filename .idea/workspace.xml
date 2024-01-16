@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89c25bf0-44a9-4934-8f31-416038480c40" name="Default Changelist" comment="" />
+    <list default="true" id="89c25bf0-44a9-4934-8f31-416038480c40" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/controller/BillController.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/controller/BillController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillService.java" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/java/datn/goodboy/service/BillService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goodboy/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/goodboy/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,19 +27,30 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2VQWWcL3PUnMIWBPklD33CCGrhd" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "duypk2024",
-    "last_opened_file_path": "D:/DATN3/goodboy",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;duypk2024&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/DATN3/goodboy&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;57e7f266bb0dc62f2cb0f25976c14e93&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -47,10 +63,24 @@
       <workItem from="1694773908103" duration="3000" />
       <workItem from="1699722580585" duration="37000" />
       <workItem from="1700145848258" duration="56000" />
+      <workItem from="1705366850838" duration="75000" />
+      <workItem from="1705373714662" duration="1033000" />
     </task>
+    <task id="LOCAL-00001" summary="status theo email">
+      <created>1705373762026</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705373762026</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="status theo email" />
+    <option name="LAST_COMMIT_MESSAGE" value="status theo email" />
   </component>
 </project>
